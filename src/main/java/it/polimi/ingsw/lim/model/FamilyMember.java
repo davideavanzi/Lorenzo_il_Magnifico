@@ -8,22 +8,28 @@ import java.util.*;
 public class FamilyMember {
 
     /**
-     * Default constructor
+     * Constructor
      */
-    public FamilyMember(String diceColor) {
+    public FamilyMember(String diceColor, String ownerColor) {
         this.diceColor = diceColor;
+        this.ownerColor = ownerColor;
     }
 
     /**
-     * 
+     * The color of the owner, as the real game
      */
-    private int ownerId;
+    private String ownerColor;
 
     /**
      * 
      */
     private String diceColor;
 
-
+    public String getOwnerColor(){
+        return this.ownerColor;
+    }
+    public String getDiceColor(){
+        return this.diceColor;
+    }
 
 }

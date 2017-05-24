@@ -77,7 +77,16 @@ public class Player {
      */
     private Assets defaultHarvestBonus;
 
+    /**
+     *
+     */
+    public void addFamilyMember(FamilyMember fm){
+        this.familyMembers.add(fm);
+    }
 
+    public String getColor(){
+        return this.color;
+    }
 
 
 

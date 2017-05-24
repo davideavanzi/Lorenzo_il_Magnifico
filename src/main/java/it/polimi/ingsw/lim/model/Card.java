@@ -47,4 +47,11 @@ public abstract class Card {
      */
     public Card(){}
 
+    /**
+     * Temporary method to print the card
+     */
+    public void printCard(){
+        System.out.println("TESTPRINT: Name:"+name+"Age:"+age);
+    }
+
 }

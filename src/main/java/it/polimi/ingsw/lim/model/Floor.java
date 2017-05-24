@@ -41,11 +41,14 @@ public class Floor {
     }
 
     /**
-     * @param level
      * @param familyMember
      */
-    public void occupyStory(int level, FamilyMember familyMember) {
-        // TODO implement here
+    public void setFamilyMemberSlot(FamilyMember familyMember) {
+        this.familyMemberSlot = familyMember;
+    }
+
+    public void setCardSlot(Card card) {
+        this.cardSlot = card;
     }
 
 }
