@@ -10,7 +10,7 @@ public class BlueCard extends Card {
      * Constructor
      */
     public BlueCard(String name, int age, Assets cost,
-                    ArrayList<ImmediateEffect> iEffect,
+                    ArrayList<ImmediateEffect> iEffects,
                     Strengths permaBonus,
                     Assets greenDiscount,
                     Assets blueDiscount,
@@ -18,7 +18,7 @@ public class BlueCard extends Card {
                     Assets purpleDiscount,
                     Assets blackDiscount,
                     boolean towerBonusAllowed) {
-        super(name, age, cost, iEffect);
+        super(name, age, cost, iEffects);
         this.permanentBonus = permaBonus;
         this.greenDiscount = greenDiscount;
         this.blueDiscount = blueDiscount;

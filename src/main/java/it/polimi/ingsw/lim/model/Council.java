@@ -41,4 +41,8 @@ public class Council {
         return this.councilBonus;
     }
 
+    public void addFamilyMember(FamilyMember fm){
+        this.slots.add(fm);
+    }
+
 }

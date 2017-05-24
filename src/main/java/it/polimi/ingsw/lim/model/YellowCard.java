@@ -1,5 +1,4 @@
 package it.polimi.ingsw.lim.model;
-import javafx.scene.effect.Effect;
 
 import java.util.*;
 
