@@ -19,6 +19,9 @@ public class Tower {
         //Creating floors
         this.floors = new Floor[TOWER_HEIGHT];
         //Adding bonuses to each floor, ordered
+        for (int j = 0; j < slotsBonuses.length; j++){
+            slotsBonuses[j].printAssets();
+        }
         int i = 0;
         for (Floor fl : floors){
             fl.setIstantBonus(slotsBonuses[i]);

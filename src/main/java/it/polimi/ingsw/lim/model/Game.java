@@ -115,6 +115,7 @@ public class Game {
     public void setUpGame(int playersNumber, Parser parsedGame){
         //TODO: handle players creation in the controller
         //Creating towers with respective bonus.
+
         DEFAULT_TOWERS_COLORS.forEach(color ->
                 this.towers.put(color, new Tower(parsedGame.getTowerbonuses(color))));
         //Adding one more tower if there are 5 players
