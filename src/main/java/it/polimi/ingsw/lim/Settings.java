@@ -8,9 +8,15 @@ import java.util.List;
  * This class holds some settings of the game, not required to be set by users.
  */
 public class Settings {
+    //misc settings
     public static final int MAX_USERS_NUMBER = 5;
     public static final int FAITH_TRACK_LENGTH = 30;
     public static final int TOWER_HEIGHT = 4;
+
+    //faith points corresponding to excommunications
+    public static final int FIRST_EXCOMM_FP = 3;
+    public static final int SECOND_EXCOMM_FP = 4;
+    public static final int THIRD_EXCOMM_FP = 5;
 
     //We can add more cards and decide how long will the game be
     public static final int ROUNDS_PER_AGE = 2;
@@ -26,6 +32,7 @@ public class Settings {
     public static final String ORANGE_COLOR = "ORANGE";
     public static final String WHITE_COLOR = "WHITE";
     public static final String NEUTRAL_COLOR = "NEUTRAL";
+    public static final String RED_COLOR = "RED";
 
     //These are utilized by lambda functions
     public static final List<String> FM_COLORS = Arrays.asList(BLACK_COLOR, ORANGE_COLOR, WHITE_COLOR, NEUTRAL_COLOR);
@@ -33,9 +40,9 @@ public class Settings {
     public static final List<String> DEFAULT_TOWERS_COLORS =
             Arrays.asList(GREEN_COLOR, BLUE_COLOR, YELLOW_COLOR, PURPLE_COLOR);
 
-    public static void main(String[] args){
-        System.out.println(FM_COLORS);
-        System.out.println(DICE_COLORS);
-    }
+    public static final List<String> PLAYER_COLORS =
+            Arrays.asList(GREEN_COLOR, YELLOW_COLOR, BLUE_COLOR, RED_COLOR, PURPLE_COLOR);
+
+
 
 }

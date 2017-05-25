@@ -79,7 +79,7 @@ public class Strengths {
         // TODO implement here
     }
 
-    public void printStrenghts(){
+    public void printStrengths(){
         System.out.println("[STRENGHTS PRINT]");
         System.out.println("    - Harvest:          "+harvestBonus);
         System.out.println("    - Production:       "+productionBonus);

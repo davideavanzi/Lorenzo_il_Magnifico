@@ -88,6 +88,12 @@ public class Player {
         return this.color;
     }
 
+    public Assets getResources() { return this.resources; }
+
+    public void setResources(Assets resources){
+        this.resources = resources;
+    }
+
 
 
 

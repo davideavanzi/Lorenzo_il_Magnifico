@@ -65,8 +65,16 @@ public class Assets {
      * This method executes a sum between two objects of this class.
      * @param operand is the second operand.
      */
-    public void add(Assets operand) {
-        // TODO implement here
+    public Assets add(Assets operand) {
+        Assets sum = new Assets();
+        sum.coins = this.coins + operand.getCoins();
+        sum.wood = this.wood + operand.getWood();
+        sum.stone = this.stone + operand.getStone();
+        sum.servants = this.servants + operand.getServants();
+        sum.faithPoints = this.faithPoints + operand.getFaithPoints();
+        sum.battlePoints = this.battlePoints + operand.getBattlePoints();
+        sum.victoryPoints = this.victoryPoints + operand.getVictoryPoints();
+        return sum;
     }
 
     /**
@@ -100,5 +108,23 @@ public class Assets {
         System.out.println("    - VictoryPoints:    "+victoryPoints);
         System.out.println("[END ASSETS PRINT]");
     }
+
+    /**
+     * Single getters
+     */
+    public int getCoins(){ return this.coins; }
+    public int getWood(){ return this.wood; }
+    public int getStone(){ return this.stone; }
+    public int getServants(){ return this.stone; }
+    public int getFaithPoints(){ return this.faithPoints; }
+    public int getBattlePoints(){ return this.battlePoints; }
+    public int getVictoryPoints(){ return this.victoryPoints; }
+
+    /**
+     * Single adders. At the moment we don't need direct setters
+     * Write here more adders if needed.
+     * @return the object itself (used in game setup)
+     */
+    public Assets addCoins(int amount) { this.coins += amount; return this; }
 
 }

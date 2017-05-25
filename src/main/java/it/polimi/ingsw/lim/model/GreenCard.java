@@ -10,10 +10,10 @@ public class GreenCard extends Card {
      * Constructor
      */
     public GreenCard(String name, int age, Assets cost,
-                     ArrayList<ImmediateEffect> iEffect,
+                     ArrayList<ImmediateEffect> iEffects,
                      Assets harvestResult,
                      Strengths actionStrength) {
-        super(name, age, cost, iEffect);
+        super(name, age, cost, iEffects);
         this.actionStrength = actionStrength;
         this.harvestResult = harvestResult;
     }

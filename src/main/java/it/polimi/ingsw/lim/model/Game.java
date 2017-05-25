@@ -12,10 +12,23 @@ import static it.polimi.ingsw.lim.Settings.*;
 public class Game {
 
     /**
-     * Constructor
+     * Constructor. Sets starting age and turn. These go from 1 inclusive to their MAX value defined in the settings
      */
     public Game() {
+        this.age = 1;
+        this.turn = 1;
     }
+
+    /**
+     * The age in which the game is.
+     */
+    private int age;
+
+    /**
+     * The turn in which the game is.
+     */
+
+    private int turn;
 
     /**
      * List of all the players
@@ -94,16 +107,16 @@ public class Game {
      */
     private void allotFamilyMembers(){
         //Give all family members to the players
-        for (Player pl : this.players){
-            //for (DICE_COLORS color : DICE_COLORS.values())
-               // pl.addFamilyMember(new FamilyMember(color, pl.getColor()));
-        }
+        this.players.forEach(player ->
+                DICE_COLORS.forEach(color ->
+                        player.addFamilyMember((new FamilyMember(color, player.getColor())))));
     }
 
     /**
      * This method sets up the game after it is created by the constructor.
      */
     public void setUpGame(int playersNumber, Parser parsedGame){
+        //TODO: handle players creation in the controller
         //Creating towers with respective bonus.
         DEFAULT_TOWERS_COLORS.forEach(color -> this.towers.put(color, new Tower(color, parsedGame.getTowerbonuses(color))));
         //Adding one more tower if there are 5 players
@@ -114,11 +127,20 @@ public class Game {
         this.market = new Market(playersNumber, parsedGame.getMarketBonuses());
         //Create council
         this.council = new Council(parsedGame.getCouncilFavors(), parsedGame.getCouncilBonus());
-
+        //Do we have to create a faith track or we just check the players's amount of FP?
+        //TODO: Get a random excommunication for every age
+        //TODO: When we allot leadercards?
         /*
-         *Distribute initial resources starting from the first player,
-         *the following will have a coin more than the player before them.
+         * Distribute initial resources starting from the first player,
+         * the following will have a coin more than the player before them.
+         * TODO: where we decide the player order? at the beginning we consider their order of creation in the list.
          */
+        int moreCoin = 0;
+        for (Player pl : players){
+            //TODO: check if this really works
+            pl.setResources(pl.getResources().add(parsedGame.getStartingGameBonus()).addCoins(moreCoin));
+            moreCoin++;
+        }
     }
 
     /**
@@ -130,12 +152,9 @@ public class Game {
         this.cleanProduction();
         this.cleanCouncil();
         //Clean towers
-        for (String color : towers.keySet()){
-            //Clean the tower
-            //TODO:Do we really need to clean the tower or we can simply overwrite them? (yes, maybe not for cards slots)
-            towers.get(color).clean();
-            //fill the towers with new cards
-        }
+        //TODO:Do we really need to clean the towers or we can simply overwrite them?
+        towers.keySet().forEach(color -> {towers.get(color).clean(); towers.get(color).addCards(cardsDeck.getCardsForTower(color, age));});
+        //TODO: do we have to check if the arraylist of cards is the same length of the tower?
 
         //Distribute family members
         allotFamilyMembers();
@@ -158,10 +177,11 @@ public class Game {
     }
 
     private void cleanCouncil(){
-
+        //TODO: implement
     }
 
-
+    public int getAge() { return  this.age; }
+    public int getTurn() { return  this.turn; }
 
 
 
