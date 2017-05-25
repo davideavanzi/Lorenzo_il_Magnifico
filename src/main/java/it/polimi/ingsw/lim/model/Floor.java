@@ -15,7 +15,7 @@ public class Floor {
     /**
      * The bonus given when a player puts his family member in this floor
      */
-    private Assets istantBonus;
+    private Assets instantBonus;
 
     /**
      * This slot holds the card
@@ -51,6 +51,8 @@ public class Floor {
         this.cardSlot = card;
     }
 
-    public void setIstantBonus(Assets bonus) { this.istantBonus = bonus; }
+    public void setInstantBonus(Assets bonus) { this.instantBonus = bonus; }
+
+    public Assets getInstantBonus() { return this.instantBonus; }
 
 }

@@ -42,6 +42,10 @@ public class Settings {
     public static final List<String> PLAYER_COLORS =
             Arrays.asList(GREEN_COLOR, YELLOW_COLOR, BLUE_COLOR, RED_COLOR, PURPLE_COLOR);
 
+    //PATHS
+    protected static final String LOG_PATH = "src/main/gameData/logs/";
+    public static final String CONFIGS_PATH = "src/main/gameData/configs/";
+
 
 
 }

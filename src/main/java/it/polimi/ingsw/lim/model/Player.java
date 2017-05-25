@@ -10,6 +10,7 @@ public class Player {
      * Default constructor
      */
     public Player() {
+        this.resources = new Assets();
     }
 
     /**

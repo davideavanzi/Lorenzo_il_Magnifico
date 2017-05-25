@@ -14,20 +14,17 @@ public class Tower {
 
     /**
      * Default constructor
+     * TODO: can I do better?
      */
     public Tower(Assets[] slotsBonuses) {
         //Creating floors
         this.floors = new Floor[TOWER_HEIGHT];
-        //Adding bonuses to each floor, ordered
-        for (int j = 0; j < slotsBonuses.length; j++){
-            slotsBonuses[j].printAssets();
+        //Adding bonuses to each floor, ordere
+        for(int i = 0; i < TOWER_HEIGHT; i++){
+            Floor fl = new Floor();
+            floors[i] = fl;
+            fl.setInstantBonus(slotsBonuses[i]);
         }
-        int i = 0;
-        for (Floor fl : floors){
-            fl.setIstantBonus(slotsBonuses[i]);
-            i++;
-        }
-
     }
 
 

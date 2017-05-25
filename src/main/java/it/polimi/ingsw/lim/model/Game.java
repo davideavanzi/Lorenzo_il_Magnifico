@@ -3,6 +3,7 @@ import it.polimi.ingsw.lim.parser.Parser;
 
 import java.util.*;
 import static it.polimi.ingsw.lim.Settings.*;
+import static it.polimi.ingsw.lim.Log.*;
 
 /**
  * THE GAME INSTANCE
@@ -13,10 +14,13 @@ public class Game {
 
     /**
      * Constructor. Sets starting age and turn. These go from 1 inclusive to their MAX value defined in the settings
+     * TODO: should we leave them here?
      */
     public Game() {
         this.age = 1;
         this.turn = 1;
+        this.players = new ArrayList<>();
+        this.towers = new HashMap<>();
     }
 
     /**
@@ -113,18 +117,22 @@ public class Game {
      * This method sets up the game after it is created by the constructor.
      */
     public void setUpGame(int playersNumber, Parser parsedGame){
+        getLog().info("[GAME SETUP BEGIN]");
         //TODO: handle players creation in the controller
         //Creating towers with respective bonus.
-
+        getLog().info("Creating towers with bonuses");
         DEFAULT_TOWERS_COLORS.forEach(color ->
                 this.towers.put(color, new Tower(parsedGame.getTowerbonuses(color))));
         //Adding one more tower if there are 5 players
         if (playersNumber == 5){
+            getLog().info("Creating fifth tower.");
             this.towers.put(BLACK_COLOR, new Tower(parsedGame.getTowerbonuses(BLACK_COLOR)));
         }
         //Create market
+        getLog().info("Creating market with bonuses");
         this.market = new Market(playersNumber, parsedGame.getMarketBonuses());
         //Create council
+        getLog().info("Creating council with bonuses");
         this.council = new Council(parsedGame.getCouncilFavors(), parsedGame.getCouncilBonus());
         //Do we have to create a faith track or we just check the players's amount of FP?
         //TODO: Get a random excommunication for every age
@@ -134,12 +142,16 @@ public class Game {
          * the following will have a coin more than the player before them.
          * TODO: where we decide the player order? at the beginning we consider their order of creation in the list.
          */
+        getLog().info("Giving initial resources to players");
         int moreCoin = 0;
-        for (Player pl : players){
-            //TODO: check if this really works
-            pl.setResources(pl.getResources().add(parsedGame.getStartingGameBonus()).addCoins(moreCoin));
-            moreCoin++;
-        }
+        //TODO: exception if creating a game without players?
+        if (!players.isEmpty())
+            for (Player pl : players){
+                //TODO: check if this really works
+                pl.setResources(pl.getResources().add(parsedGame.getStartingGameBonus()).addCoins(moreCoin));
+                moreCoin++;
+            }
+        getLog().info("[GAME SETUP END]");
     }
 
     /**
