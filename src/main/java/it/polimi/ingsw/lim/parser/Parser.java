@@ -21,13 +21,18 @@ public class Parser {
     private HashMap<String, Assets[]> boardAssetsBonuses = new HashMap<>();
     private int councilFavors;
     private Assets councilBonus;
+    private Assets startingGameBonus;
+
+    public void setStartingGameBonus(Assets startingGameBonus){
+        this.startingGameBonus = startingGameBonus;
+    }
 
     public void setCards(ArrayList<HashMap<String, ArrayList<Card>>> cards) {
         this.cards = cards;
     }
 
     public void setBoardAssetsBonuses(String key, Assets[] assets) {
-        boardAssetsBonuses.put(key, assets);
+        this.boardAssetsBonuses.put(key, assets);
     }
 
     public void setBoardAssetsBonuses(HashMap<String, Assets[]> boardAssetsBonuses) {
@@ -56,23 +61,27 @@ public class Parser {
 
     //use only for tower
     public Assets[] getTowerbonuses(String key) {
-        return boardAssetsBonuses.get(key);
+        return this.boardAssetsBonuses.get(key);
     }
 
     public Assets[] getMarketBonuses() {
-        return boardAssetsBonuses.get("MARKET");
+        return this.boardAssetsBonuses.get("MARKET");
     }
 
     public Assets[] getFaithTrackbonuses() {
-        return boardAssetsBonuses.get("FAITH");
+        return this.boardAssetsBonuses.get("FAITH");
     }
 
     public int getCouncilFavors() {
-        return councilFavors;
+        return this.councilFavors;
     }
 
     public Assets getCouncilBonus() {
-        return councilBonus;
+        return this.councilBonus;
+    }
+
+    public Assets getStartingGameBonus() {
+        return this.startingGameBonus;
     }
 
     /**
@@ -500,6 +509,25 @@ public class Parser {
         return councilFavours;
     }
 
+    public static Assets parseStartingGameBonus (String pathToConfiguratorBonusAssetsFile){
+        Assets startingGameBonus = null;
+        try {
+            //read JSon all file data
+            byte[] jsonData = Files.readAllBytes(Paths.get(pathToConfiguratorBonusAssetsFile));
+
+            //create ObjectMapper instance
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            //create the cardNode and the cardIterator (used for iterating through the JSon's array of card)
+            JsonNode rootNode = objectMapper.readTree(jsonData);
+            JsonNode bonusesNode = rootNode.path("bonuses");
+            startingGameBonus = parseAssets(bonusesNode.path("startingGameBonus"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return startingGameBonus;
+    }
+
     /**
      * TODO:see params and return
      */
@@ -511,6 +539,7 @@ public class Parser {
             //parser.setBoardAssetsBonuses(boardAssetsParser(pathToDirectory + "configuratorBonusesAssetsFile.txt"));
             //parser.setCouncilBonus(parseCouncilBonus(pathToDirectory + "configuratorBonusAssetsFile.txt"));
             //parser.setCouncilFavors(parseCouncilFavours(pathToDirectory + "configuratorBonusAssetsFile.txt"));
+            //parser.setStartingGameBonus(parseStartingGameBonus((pathToDirectory + "configuratorBonusAssetsFile.txt")));
         } catch (Exception e) {
             e.printStackTrace();
             //TODO: catch all the exception
