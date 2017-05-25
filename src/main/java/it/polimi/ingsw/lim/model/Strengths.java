@@ -79,4 +79,17 @@ public class Strengths {
         // TODO implement here
     }
 
+    public void printStrenghts(){
+        System.out.println("[STRENGHTS PRINT]");
+        System.out.println("    - Harvest:          "+harvestBonus);
+        System.out.println("    - Production:       "+productionBonus);
+        System.out.println("    - Green Bonus:      "+greenBonus);
+        System.out.println("    - Blue Bonus:       "+blueBonus);
+        System.out.println("    - Yellow Bonus:     "+yellowBonus);
+        System.out.println("    - Purple Bonus:     "+purpleBonus);
+        System.out.println("    - Black Bonus:      "+blackBonus);
+        //TODO: print dices bonuses
+        System.out.println("[END STRENGHTS PRINT]");
+    }
+
 }

@@ -51,7 +51,11 @@ public abstract class Card {
      * Temporary method to print the card
      */
     public void printCard(){
-        System.out.println("TESTPRINT: Name:"+name+"Age:"+age);
+        System.out.println("[CARD PRINT]:\n Name:"+name+"\nAge:"+age+"\n PRINTING COST");
+        cost.printAssets();
+        //TODO:print effect
+        for (ImmediateEffect ie : immediateEffects)
+            ie.printEffect();
     }
 
 }

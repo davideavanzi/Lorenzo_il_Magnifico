@@ -22,4 +22,13 @@ public class AssetsEffect extends ImmediateEffect {
         return this.bonus;
     }
 
+    public void printEffect(){
+        System.out.println("[IMMEDIATE EFFECT PRINT]");
+        System.out.println("      ---- Effect type ----      ");
+        System.out.println("          Assets bonus");
+        System.out.println("        ---- Bonus ----      ");
+        bonus.printAssets();
+
+    }
+
 }

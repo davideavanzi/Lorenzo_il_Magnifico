@@ -18,4 +18,11 @@ public class CouncilFavorsEffect extends ImmediateEffect {
      */
     private int amount;
 
+    public void printEffect(){
+        System.out.println("[IMMEDIATE EFFECT PRINT]");
+        System.out.println("      ---- Effect type ----      ");
+        System.out.println("           Council favor");
+        System.out.println("     ---- Favors amount ----      ");
+        System.out.println(amount);
+    }
 }

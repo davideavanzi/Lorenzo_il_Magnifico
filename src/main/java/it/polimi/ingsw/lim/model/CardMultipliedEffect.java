@@ -25,5 +25,15 @@ public class CardMultipliedEffect extends ImmediateEffect {
      */
     private String multiplierColor;
 
+    public void printEffect(){
+        System.out.println("[IMMEDIATE EFFECT PRINT]");
+        System.out.println("      ---- Effect type ----      ");
+        System.out.println("      Card multiplied bonus");
+        System.out.println("       ---- Base Bonus ----      ");
+        bonus.printAssets();
+        System.out.println("    ---- Multiplier color ----      ");
+        System.out.println(multiplierColor);
+    }
+
 
 }

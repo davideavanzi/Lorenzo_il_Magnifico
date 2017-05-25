@@ -14,10 +14,11 @@ public class Tower {
     /**
      * Default constructor
      */
-    public Tower(String color) {
+    public Tower(String color, Assets[] slotsBonuses) {
         //a tower has always four floors
         this.floors = new Floor[TOWER_HEIGHT];
         this.color = color;
+        //TODO: add bonus to each floor, assuming they are in the right order
     }
 
     /**

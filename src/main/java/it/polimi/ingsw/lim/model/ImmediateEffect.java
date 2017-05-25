@@ -16,4 +16,6 @@ public abstract class ImmediateEffect {
      */
     public ImmediateEffect() {
     }
+
+    public abstract void printEffect();
 }

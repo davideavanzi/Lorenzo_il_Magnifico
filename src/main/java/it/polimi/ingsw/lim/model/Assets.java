@@ -86,4 +86,19 @@ public class Assets {
         // TODO implement here
     }
 
+    /**
+     * This prints assets
+     */
+    public void printAssets(){
+        System.out.println("[ASSETS PRINT]");
+        System.out.println("    - Gold:             "+coins);
+        System.out.println("    - Wood:             "+wood);
+        System.out.println("    - Stone:            "+stone);
+        System.out.println("    - Servants:         "+servants);
+        System.out.println("    - FaithPoints:      "+faithPoints);
+        System.out.println("    - BattlePoints:     "+battlePoints);
+        System.out.println("    - VictoryPoints:    "+victoryPoints);
+        System.out.println("[END ASSETS PRINT]");
+    }
+
 }

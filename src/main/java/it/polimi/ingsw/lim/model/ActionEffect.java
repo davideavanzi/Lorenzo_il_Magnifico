@@ -29,4 +29,15 @@ public class ActionEffect extends ImmediateEffect {
      */
     private Assets discount;
 
+    public void printEffect(){
+        System.out.println("[IMMEDIATE EFFECT PRINT]");
+        System.out.println("      ---- Effect type ----      ");
+        System.out.println("            New Action");
+        System.out.println("    ---- Action Strenght ----      ");
+        strength.printStrenghts();
+        System.out.println("    ---- Action Discount ----      ");
+        discount.printAssets();
+
+    }
+
 }

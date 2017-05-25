@@ -1,4 +1,6 @@
 package it.polimi.ingsw.lim.model;
+import it.polimi.ingsw.lim.parser.Parser;
+
 import java.util.*;
 import static it.polimi.ingsw.lim.Settings.*;
 
@@ -93,28 +95,25 @@ public class Game {
     private void allotFamilyMembers(){
         //Give all family members to the players
         for (Player pl : this.players){
-            for (String color : FAMILY_MEMBERS_COLORS)
-                pl.addFamilyMember(new FamilyMember(color, pl.getColor()));
+            //for (DICE_COLORS color : DICE_COLORS.values())
+               // pl.addFamilyMember(new FamilyMember(color, pl.getColor()));
         }
     }
 
     /**
      * This method sets up the game after it is created by the constructor.
      */
-    public void setUpGame(int playersNumber){
-        //Create towers.
-        this.towers.put(GREEN_COLOR, new Tower(GREEN_COLOR));
-        this.towers.put(BLUE_COLOR, new Tower(BLUE_COLOR));
-        this.towers.put(YELLOW_COLOR, new Tower(YELLOW_COLOR));
-        this.towers.put(PURPLE_COLOR, new Tower(PURPLE_COLOR));
-        //TODO: put bonuses in every tower
+    public void setUpGame(int playersNumber, Parser parsedGame){
+        //Creating towers with respective bonus.
+        DEFAULT_TOWERS_COLORS.forEach(color -> this.towers.put(color, new Tower(color, parsedGame.getTowerbonuses(color))));
+        //Adding one more tower if there are 5 players
         if (playersNumber == 5){
-            this.towers.put(BLACK_COLOR, new Tower(BLACK_COLOR));
+            this.towers.put(BLACK_COLOR, new Tower(BLACK_COLOR, parsedGame.getTowerbonuses(BLACK_COLOR)));
         }
-        //Create market TODO: put bonuses in the market
-        this.market = new Market(playersNumber);
-        //Create council TODO: get values from game parser
-        //TODO: this.council = new Council();
+        //Create market
+        this.market = new Market(playersNumber, parsedGame.getMarketBonuses());
+        //Create council
+        this.council = new Council(parsedGame.getCouncilFavors(), parsedGame.getCouncilBonus());
 
         /*
          *Distribute initial resources starting from the first player,
