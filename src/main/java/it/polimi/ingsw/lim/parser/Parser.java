@@ -72,6 +72,10 @@ public class Parser {
         return this.boardAssetsBonuses.get("FAITH");
     }
 
+    public Assets[] getCouncilFavourBonuses(){
+        return this.boardAssetsBonuses.get("FAVOUR");
+    }
+
     public int getCouncilFavors() {
         return this.councilFavors;
     }
@@ -158,6 +162,7 @@ public class Parser {
             bonuses.put("BLACK", parseArrayAssets(bonusesNode.path("towerBonus").path("blackTowerBonus")));
             bonuses.put("MARKET", parseArrayAssets(bonusesNode.path("marketBonus")));
             bonuses.put("FAITH", parseArrayAssets(bonusesNode.path("faithBonus")));
+            bonuses.put("FAVOUR", parseArrayAssets(bonusesNode.path("councilFavoursBonus")));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -557,9 +562,9 @@ public class Parser {
         try {
             parser.setCards(cardParser(pathToDirectory + "configuratorCardFile.json"));
             parser.setBoardAssetsBonuses(boardAssetsParser(pathToDirectory + "configuratorBonusesAssetsFile.json"));
-            //parser.setCouncilBonus(parseCouncilBonus(pathToDirectory + "configuratorBonusAssetsFile.json"));
-            //parser.setCouncilFavors(parseCouncilFavours(pathToDirectory + "configuratorBonusAssetsFile.json"));
-            //parser.setStartingGameBonus(parseStartingGameBonus((pathToDirectory + "configuratorBonusAssetsFile.json")));
+            parser.setCouncilBonus(parseCouncilBonus(pathToDirectory + "configuratorBonusesAssetsFile.json"));
+            parser.setCouncilFavors(parseCouncilFavours(pathToDirectory + "configuratorBonusesAssetsFile.json"));
+            parser.setStartingGameBonus(parseStartingGameBonus((pathToDirectory + "configuratorBonusesAssetsFile.json")));
         } catch (Exception e) {
             e.printStackTrace();
             //TODO: catch all the exception
