@@ -1,7 +1,6 @@
 {
   "bonuses": {
     "towerBonus": {
-      "towerBonus": {
         "greenTowerBonus": [ {}, {}, { "wood": 1 }, { "wood": 2 } ],
         "blueTowerBonus": [ {}, {}, { "stone": 1 }, { "stone": 2 } ],
         "yellowTowerBonus": [ {}, {}, { "battlePoints": 1 }, { "battlePoints": 2 } ],
