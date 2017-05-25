@@ -1,0 +1,26 @@
+{
+  "bonuses": {
+    "towerBonus": {
+      "greenTowerBonus": [
+        {
+          "coin": 1,
+          "wood": 2,
+          "stone": 3,
+          "servants": 4,
+          "faithPoints": 5,
+          "battlePoints": 6,
+          "victoryPoints": 7
+        },
+        {
+          "coin": 10,
+          "wood": 11,
+          "stone": 12,
+          "servants": 13,
+          "faithPoints": 14,
+          "battlePoints": 15,
+          "victoryPoints": 16
+        }
+      ]
+    }
+  }
+}

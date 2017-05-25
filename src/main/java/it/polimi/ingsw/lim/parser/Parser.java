@@ -116,6 +116,7 @@ public class Parser {
         while (arrayAssetsIterator.hasNext()) {
             arrayAssetsNode = arrayAssetsIterator.next();
             assets[i] = parseAssets(arrayAssetsNode);
+            i++;
         }
         return assets;
     }
@@ -555,7 +556,7 @@ public class Parser {
 
         try {
             parser.setCards(cardParser(pathToDirectory + "configuratorCardFile.json"));
-            //parser.setBoardAssetsBonuses(boardAssetsParser(pathToDirectory + "configuratorBonusesAssetsFile.json"));
+            parser.setBoardAssetsBonuses(boardAssetsParser(pathToDirectory + "configuratorBonusesAssetsFile.json"));
             //parser.setCouncilBonus(parseCouncilBonus(pathToDirectory + "configuratorBonusAssetsFile.json"));
             //parser.setCouncilFavors(parseCouncilFavours(pathToDirectory + "configuratorBonusAssetsFile.json"));
             //parser.setStartingGameBonus(parseStartingGameBonus((pathToDirectory + "configuratorBonusAssetsFile.json")));
