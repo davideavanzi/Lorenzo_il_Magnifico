@@ -46,12 +46,12 @@ public class Parser {
         return this.cards;
     }
 
-    public ArrayList<Card> getCard(int age, String key){
-        return this.cards.get(age).get(key);
+    public ArrayList<Card> getCard(int age, String key) {
+        return this.cards.get(age - 1).get(key);
     }
 
-    public HashMap<String, ArrayList<Card>> getCard(int age){
-        return this.cards.get(age);
+    public HashMap<String, ArrayList<Card>> getCard(int age) {
+        return this.cards.get(age - 1);
     }
 
     //use only for tower
@@ -168,12 +168,12 @@ public class Parser {
         ArrayList<ImmediateEffect> immediateEffects = new ArrayList<ImmediateEffect>();
 
         //check they type of the immediateEffect
-        if (immediateEffectType.path("ActionEffect").isContainerNode()) {
+        if (immediateEffectType.path("actionEffect").isContainerNode()) {
             immediateEffectExist = true;
             Strengths tmpGreenActionStrengths = null;
-            if (immediateEffectType.path("ActionEffect").path("greenActionStrengths").isContainerNode()) {
-                JsonNode greenActionStrengths = immediateEffectType.path("ActionEffect").path("greenActionStrengths");
-                tmpGreenActionStrengths = parseStrengths(greenActionStrengths);
+            if (immediateEffectType.path("actionEffect").path("actionEffectStrength").isContainerNode()) {
+                JsonNode actionEffectStrength = immediateEffectType.path("ActionEffect").path("actionEffectStrength");
+                tmpGreenActionStrengths = parseStrengths(actionEffectStrength);
             }
 
             Assets tmpActionEffectDiscount = null;
@@ -312,12 +312,12 @@ public class Parser {
                     case "greenCard":
                         Assets tmpGreenHarvestResult = null;
                         if (cardNode.path("greenHarvestResult").isContainerNode()) {
-                            JsonNode greenHarvestResult = cardNode.path("greenHarvestResult");
+                            JsonNode greenHarvestResult = cardNode.path("cardImmediateEffect").path("greenHarvestResult");
                             tmpGreenHarvestResult = parseAssets(greenHarvestResult);
                         }
                         Strengths tmpGreenActionStrengths = null;
                         if (cardNode.path("greenActionStrengths").isContainerNode()) {
-                            JsonNode greenActionStrengths = cardNode.path("greenActionStrengths");
+                            JsonNode greenActionStrengths = cardNode.path("cardImmediateEffect").path("greenActionStrengths");
                             tmpGreenActionStrengths = parseStrengths(greenActionStrengths);
                         }
                         GreenCard greenCard = new GreenCard(
@@ -475,8 +475,7 @@ public class Parser {
             JsonNode rootNode = objectMapper.readTree(jsonData);
             JsonNode bonusesNode = rootNode.path("bonuses");
             councilBonus = parseAssets(bonusesNode.path("councilBonus"));
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return councilBonus;
@@ -495,8 +494,7 @@ public class Parser {
             JsonNode rootNode = objectMapper.readTree(jsonData);
             JsonNode bonusesNode = rootNode.path("bonuses");
             councilFavours = bonusesNode.path("councilFavours").asInt();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return councilFavours;
@@ -505,7 +503,7 @@ public class Parser {
     /**
      * TODO:see params and return
      */
-    public static Parser parser (String pathToDirectory){
+    public static Parser parser(String pathToDirectory) {
         Parser parser = new Parser();
 
         try {
@@ -513,8 +511,7 @@ public class Parser {
             //parser.setBoardAssetsBonuses(boardAssetsParser(pathToDirectory + "configuratorBonusesAssetsFile.txt"));
             //parser.setCouncilBonus(parseCouncilBonus(pathToDirectory + "configuratorBonusAssetsFile.txt"));
             //parser.setCouncilFavors(parseCouncilFavours(pathToDirectory + "configuratorBonusAssetsFile.txt"));
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             //TODO: catch all the exception
         }
@@ -525,7 +522,7 @@ public class Parser {
         }
         catch (){
             //TODO: catch all the exception
-        }*/parser.getCard(0).get(GREEN_COLOR).get(0).printCard()
+        }*/
         return parser;
     }
 }

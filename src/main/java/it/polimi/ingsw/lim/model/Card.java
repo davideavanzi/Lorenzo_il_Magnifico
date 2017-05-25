@@ -54,8 +54,9 @@ public abstract class Card {
         System.out.println("[CARD PRINT]:\n Name:"+name+"\nAge:"+age+"\n PRINTING COST");
         cost.printAssets();
         //TODO:print effect
-        for (ImmediateEffect ie : immediateEffects)
+        for (ImmediateEffect ie : immediateEffects) {
             ie.printEffect();
+        }
     }
 
 }
