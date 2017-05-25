@@ -38,7 +38,7 @@ public class Game {
     /**
      * This maps the three excommunication with an int representing it's age
      */
-    private HashMap<Integer, Excommunication> Excomunications;
+    private HashMap<Integer, Excommunication> Excommunications;
 
     /**
      * This list holds slots for the production site.
@@ -84,11 +84,10 @@ public class Game {
     // ############################################################# METHODS AHEAD
 
     /**
-     * @return an excommunication based on it's
-     * @param age
+     * @return an excommunication based on the game's age
      */
-    public Excommunication GetExcommunication(int age){
-        return this.Excomunications.get(age);
+    public Excommunication GetExcommunication(){
+        return this.Excommunications.get(this.age);
     }
 
     /**
@@ -97,9 +96,7 @@ public class Game {
     public void rollDices(){
         //For every dice, generates a random number between 1 and 6.
         Random randomGenerator = new Random();
-        this.dice.put("BLACK", randomGenerator.nextInt(5)+1);
-        this.dice.put("ORANGE", randomGenerator.nextInt(5)+1);
-        this.dice.put("WHITE", randomGenerator.nextInt(5)+1);
+        DICE_COLORS.forEach(color -> this.dice.put(color, randomGenerator.nextInt(5)+1));
     }
 
     /**
@@ -118,10 +115,11 @@ public class Game {
     public void setUpGame(int playersNumber, Parser parsedGame){
         //TODO: handle players creation in the controller
         //Creating towers with respective bonus.
-        DEFAULT_TOWERS_COLORS.forEach(color -> this.towers.put(color, new Tower(color, parsedGame.getTowerbonuses(color))));
+        DEFAULT_TOWERS_COLORS.forEach(color ->
+                this.towers.put(color, new Tower(parsedGame.getTowerbonuses(color))));
         //Adding one more tower if there are 5 players
         if (playersNumber == 5){
-            this.towers.put(BLACK_COLOR, new Tower(BLACK_COLOR, parsedGame.getTowerbonuses(BLACK_COLOR)));
+            this.towers.put(BLACK_COLOR, new Tower(parsedGame.getTowerbonuses(BLACK_COLOR)));
         }
         //Create market
         this.market = new Market(playersNumber, parsedGame.getMarketBonuses());
@@ -146,14 +144,17 @@ public class Game {
     /**
      * This method cleans the board and sets up another turn (specified)
      */
-    public void setUpTurn(int turn){
+    public void setUpTurn(){
         //Clean every structure
-        this.cleanHarvest();
-        this.cleanProduction();
-        this.cleanCouncil();
+        cleanHarvest();
+        cleanProduction();
+        council.clear();
+        market.clear();
+
+        //TODO: Clean market
         //Clean towers
-        //TODO:Do we really need to clean the towers or we can simply overwrite them?
-        towers.keySet().forEach(color -> {towers.get(color).clean(); towers.get(color).addCards(cardsDeck.getCardsForTower(color, age));});
+        towers.keySet().forEach(color ->
+            {towers.get(color).clear(); towers.get(color).addCards(cardsDeck.getCardsForTower(color, age));});
         //TODO: do we have to check if the arraylist of cards is the same length of the tower?
 
         //Distribute family members
@@ -176,13 +177,11 @@ public class Game {
         //TODO: implement
     }
 
-    private void cleanCouncil(){
-        //TODO: implement
-    }
-
     public int getAge() { return  this.age; }
     public int getTurn() { return  this.turn; }
 
+    public void setAge(int age) { this.age = age; }
+    public void setTurn(int turn) { this.turn = turn; }
 
 
 }

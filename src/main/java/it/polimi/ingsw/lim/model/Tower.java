@@ -7,24 +7,26 @@ import java.util.*;
 import static it.polimi.ingsw.lim.Settings.*;
 
 /**
- * Class representing a tower
+ * Class representing a tower.
+ * TODO: The tower itself doesn't know it's color, only the game knows. Is this right?
  */
 public class Tower {
 
     /**
      * Default constructor
      */
-    public Tower(String color, Assets[] slotsBonuses) {
-        //a tower has always four floors
+    public Tower(Assets[] slotsBonuses) {
+        //Creating floors
         this.floors = new Floor[TOWER_HEIGHT];
-        this.color = color;
-        //TODO: add bonus to each floor, assuming they are in the right order
+        //Adding bonuses to each floor, ordered
+        int i = 0;
+        for (Floor fl : floors){
+            fl.setIstantBonus(slotsBonuses[i]);
+            i++;
+        }
+
     }
 
-    /**
-     * 
-     */
-    private String color;
 
     /**
      * 
@@ -33,12 +35,10 @@ public class Tower {
 
     /**
      * This method clears all cards and family members of the tower
+     * TODO: use lambda function
      */
-    public void clean(){
-        for (Floor fl : floors){
-            fl.setFamilyMemberSlot(null);
-            fl.setCardSlot(null);
-        }
+    public void clear(){
+        Arrays.stream(floors).forEach(floor -> {floor.setFamilyMemberSlot(null); floor.setCardSlot(null);});
     }
 
     /**

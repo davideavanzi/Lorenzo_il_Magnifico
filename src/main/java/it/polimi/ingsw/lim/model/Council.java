@@ -45,4 +45,7 @@ public class Council {
         this.slots.add(fm);
     }
 
+    public void clear(){
+        this.slots.clear();
+    }
 }

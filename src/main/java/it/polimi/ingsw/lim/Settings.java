@@ -13,10 +13,9 @@ public class Settings {
     public static final int FAITH_TRACK_LENGTH = 30;
     public static final int TOWER_HEIGHT = 4;
 
-    //faith points corresponding to excommunications
+    //faith points corresponding to the first excommunication.
+    //Following excommunications will be at +1 fp from their previosu
     public static final int FIRST_EXCOMM_FP = 3;
-    public static final int SECOND_EXCOMM_FP = 4;
-    public static final int THIRD_EXCOMM_FP = 5;
 
     //We can add more cards and decide how long will the game be
     public static final int ROUNDS_PER_AGE = 2;

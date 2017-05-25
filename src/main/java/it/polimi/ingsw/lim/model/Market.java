@@ -17,7 +17,6 @@ public class Market {
         this.slots = new FamilyMember[slotsNumber];
         this.bonuses = new Assets[slotsNumber];
         this.bonuses = marketBonuses;
-        //TODO: get assets bonuses from file
     }
 
     /**
@@ -46,4 +45,10 @@ public class Market {
             return true;
         return false;
     }
+
+    public void clear(){
+        Arrays.stream(slots).forEach(slot -> slot = null);
+    }
+
+
 }

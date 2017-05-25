@@ -51,4 +51,6 @@ public class Floor {
         this.cardSlot = card;
     }
 
+    public void setIstantBonus(Assets bonus) { this.istantBonus = bonus; }
+
 }
