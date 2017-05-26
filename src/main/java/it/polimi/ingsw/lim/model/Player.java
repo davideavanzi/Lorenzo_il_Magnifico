@@ -10,7 +10,14 @@ public class Player {
      * Default constructor
      */
     public Player() {
+        //Creating objects
         this.resources = new Assets();
+        this.strength = new Strengths();
+        this.leaderCards = new ArrayList<>();
+        this.familyMembers = new ArrayList<>();
+        this.pickDiscounts = new HashMap<>();
+        this.defaultHarvestBonus = new Assets();
+        this.defaultProductionBonus = new Assets();
     }
 
     /**

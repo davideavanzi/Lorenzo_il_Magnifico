@@ -8,7 +8,8 @@ import static it.polimi.ingsw.lim.Log.*;
 /**
  * THE GAME INSTANCE
  * This class acts as a hub between all places of the game (model), it has links to others model classes and joins the
- * model with the controller. It has al the low-level management that isn't suitable for the main controller.
+ * model with the main game controller.
+ * It deals with all the low-level management (little logic) that isn't suitable for the main controller.
  */
 public class Game {
 
@@ -17,10 +18,14 @@ public class Game {
      * TODO: should we leave them here?
      */
     public Game() {
+        getLog().info("Creating game instance");
         this.age = 1;
         this.turn = 1;
         this.players = new ArrayList<>();
         this.towers = new HashMap<>();
+        this.production = new ArrayList<>();
+        this.harvest = new ArrayList<>();
+        this.faithTrack = new Assets[FAITH_TRACK_LENGTH];
     }
 
     /**
@@ -134,7 +139,12 @@ public class Game {
         //Create council
         getLog().info("Creating council with bonuses");
         this.council = new Council(parsedGame.getCouncilFavors(), parsedGame.getCouncilBonus());
-        //Do we have to create a faith track or we just check the players's amount of FP?
+        getLog().info("Adding bonuses to faith track");
+        //TODO: maybe better with a standard for cycle?
+        int i = 0;
+        for (Assets bonus : parsedGame.getFaithTrackbonuses())
+            this.faithTrack[i] = bonus;
+
         //TODO: Get a random excommunication for every age
         //TODO: When we allot leadercards?
         /*
@@ -164,14 +174,13 @@ public class Game {
         council.clear();
         market.clear();
 
-        //TODO: Clean market
         //Clean towers
         towers.keySet().forEach(color ->
             {towers.get(color).clear(); towers.get(color).addCards(cardsDeck.getCardsForTower(color, age));});
         //TODO: do we have to check if the arraylist of cards is the same length of the tower?
 
         //Distribute family members
-        allotFamilyMembers();
+        this.allotFamilyMembers();
     }
 
     /**
