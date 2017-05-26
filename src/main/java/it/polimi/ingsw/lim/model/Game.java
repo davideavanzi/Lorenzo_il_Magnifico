@@ -121,8 +121,9 @@ public class Game {
     /**
      * This method sets up the game after it is created by the constructor.
      */
-    public void setUpGame(int playersNumber, Parser parsedGame){
+    public void setUpGame(Parser parsedGame){
         getLog().info("[GAME SETUP BEGIN]");
+        int playersNumber = this.players.size();
         //TODO: handle players creation in the controller
         //Creating towers with respective bonus.
         getLog().info("Creating towers with bonuses");
@@ -152,7 +153,7 @@ public class Game {
          * the following will have a coin more than the player before them.
          * TODO: where we decide the player order? at the beginning we consider their order of creation in the list.
          */
-        getLog().info("Giving initial resources to players");
+        getLog().info("Giving initial resources to " +playersNumber+" players");
         int moreCoin = 0;
         //TODO: exception if creating a game without players?
         if (!players.isEmpty())
@@ -201,9 +202,17 @@ public class Game {
 
     public int getAge() { return  this.age; }
     public int getTurn() { return  this.turn; }
+    public ArrayList<Player> getPlayers(){ return this.players; }
+
+    //TODO: This seems not to work
+    public Player getPlayer(String nickname) {
+        return players.stream().filter(pl -> pl.getNickname().equals(nickname)).findFirst().orElse(null);
+    }
 
     public void setAge(int age) { this.age = age; }
     public void setTurn(int turn) { this.turn = turn; }
 
-
+    public void addPlayer(String nickname) {
+        this.players.add(new Player(nickname));
+    }
 }

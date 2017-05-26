@@ -1,15 +1,17 @@
 package it.polimi.ingsw.lim.model;
 import java.util.*;
 
+import static it.polimi.ingsw.lim.Log.getLog;
+
 /**
- * 
+ * Player are indexed by nickname, which corresponds to he user that is playing, and that username is unique
  */
 public class Player {
 
     /**
-     * Default constructor
+     * Creating an empty player with a nickname.
      */
-    public Player() {
+    public Player(String nickname) {
         //Creating objects
         this.resources = new Assets();
         this.strength = new Strengths();
@@ -18,12 +20,9 @@ public class Player {
         this.pickDiscounts = new HashMap<>();
         this.defaultHarvestBonus = new Assets();
         this.defaultProductionBonus = new Assets();
-    }
 
-    /**
-     * 
-     */
-    private int playerId;
+        getLog().info("New empty player "+nickname+" created.");
+    }
 
     /**
      * 
@@ -98,9 +97,15 @@ public class Player {
 
     public Assets getResources() { return this.resources; }
 
+    public String getNickname() { return  this.nickname; }
+
+    public void setNickname(String nickname) { this.nickname = nickname; }
+
     public void setResources(Assets resources){
         this.resources = resources;
     }
+
+    public void setColor(String color) { this.color = color; }
 
 
 

@@ -12,7 +12,7 @@ import static it.polimi.ingsw.lim.Settings.CONFIGS_PATH;
  * Created by Davide on 25/05/2017.
  * This class is the main game controller.
  */
-public class gameController {
+public class GameController {
     private Game game;
 
     public static void main(String[] args){
@@ -32,8 +32,9 @@ public class gameController {
 
         //building game
         getLog().info("Setting up game with parsed data");
-        //TODO: add players before setting up the game!
-        game.setUpGame(4,parsedGame);
+        //TODO: add players before setting up the game!;
+        game.setUpGame(parsedGame);
+        //game.getPlayer("CIAONE").getResources().printAssets();
     }
 
     /**
