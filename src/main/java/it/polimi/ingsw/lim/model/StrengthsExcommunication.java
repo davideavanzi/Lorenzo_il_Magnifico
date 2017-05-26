@@ -9,7 +9,8 @@ public class StrengthsExcommunication extends Excommunication {
     /**
      * Default constructor
      */
-    public StrengthsExcommunication() {
+    public StrengthsExcommunication(Strengths malus) {
+    this.malus = malus;
     }
 
     /**

@@ -11,17 +11,14 @@ public abstract class Excommunication {
      * Default constructor
      */
     public Excommunication() {
+        this.excommunicated = new ArrayList<>();
     }
 
     /**
-     * The age of the excommunication
+     * The age of the excommunication. TODO: DELET DIS  .. ?
      */
     private int age;
 
-    /**
-     * the id of the excommunication. Is this really useful?
-     */
-    private int idExcommunication;
 
     /**
      * Excommunicated players will be stored here.
