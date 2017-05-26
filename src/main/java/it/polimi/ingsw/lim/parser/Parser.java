@@ -19,6 +19,7 @@ public class Parser {
 
     private ArrayList<HashMap<String, ArrayList<Card>>> cards = new ArrayList<>();
     private HashMap<String, Assets[]> boardAssetsBonuses = new HashMap<>();
+    private ArrayList<Excommunication> excommunications = new ArrayList<>();
     private int councilFavors;
     private Assets councilBonus;
     private Assets startingGameBonus;
@@ -45,6 +46,10 @@ public class Parser {
 
     public void setCouncilBonus(Assets councilBonus) {
         this.councilBonus = councilBonus;
+    }
+
+    public void setExcommunications(ArrayList<Excommunication> excommunications){
+        this.excommunications = excommunications;
     }
 
     public ArrayList<HashMap<String, ArrayList<Card>>> getCards() {
@@ -551,6 +556,78 @@ public class Parser {
             e.printStackTrace();
         }
         return startingGameBonus;
+    }
+
+    public static Excommunication parseSingleExcommunication (JsonNode excommunicationNode){
+        switch (excommunicationNode.path("excommunicationType").asText()){
+            case "assetsMalusExcommunicationType":
+                Assets tmpAssetsMalus = parseAssets(excommunicationNode.path("excommunicationType").path("assetsMalusExcommunicationType"));
+                AssetsExcommunication tmpExcommunicationAssetsMalus = new AssetsExcommunication(tmpAssetsMalus);
+                return tmpExcommunicationAssetsMalus;
+            case "strengthMalusExcommunication":
+                Strengths tmpStrengthMalus = parseStrengths(excommunicationNode.path("excommunicationType").path("strengthMalusExcommunication"));
+                StrengthsExcommunication tmpExcommunicationStrengthMalus = new StrengthsExcommunication(tmpStrengthMalus);
+                return tmpExcommunicationStrengthMalus;
+            case "marketExcommunication":
+                MarketExcommunication tmpExcommunicationMarket = new MarketExcommunication();
+                return tmpExcommunicationMarket;
+            case "servantsExcommunication":
+                ServantsExcommunication tmpExcommunicationServants = new ServantsExcommunication();
+                return tmpExcommunicationServants;
+            case "turnExcommunication":
+                TurnExcommunication tmpExcommunicationTurn = new TurnExcommunication();
+                return tmpExcommunicationTurn;
+            case "endGameExcommunication":
+                String tmpBlockedCardColor = excommunicationNode.path("excommunicationType").path("endGameExcommunication").asText();
+                Assets tmpProductionCardCostMalus = parseAssets(excommunicationNode.path("excommunicationType").path("productionCardCostMalus"));
+                Assets tmpOnAssetsMalus = parseAssets(excommunicationNode.path("excommunicationType").path("onAssetsMalus"));
+                EndGameExcommunication tmpExcommunicationEndGame = new EndGameExcommunication(tmpBlockedCardColor, tmpProductionCardCostMalus, tmpOnAssetsMalus);
+                return tmpExcommunicationEndGame;
+            default:
+                Excommunication tmpExcommunication = null;
+                return tmpExcommunication;
+        }
+    }
+
+    public static ArrayList<Excommunication> parseArrayExcommunication (JsonNode arrayExcommunicationNode){
+        ArrayList<Excommunication> tmpArrayExcommunication = new ArrayList<Excommunication>();
+        Iterator<JsonNode> arrayExcommunicationIterator = arrayExcommunicationNode.getElements();
+        while(arrayExcommunicationIterator.hasNext()){
+            arrayExcommunicationNode = arrayExcommunicationIterator.next();
+            Excommunication tmpSingleExcommunication = parseSingleExcommunication(arrayExcommunicationNode);
+            tmpArrayExcommunication.add(tmpSingleExcommunication);
+        }
+        return tmpArrayExcommunication;
+    }
+
+    public static HashMap<Integer, ArrayList<Excommunication>> parseExcommunications (String pathToExcommunicationsConfiguratorFile){
+        HashMap<Integer, ArrayList<Excommunication>> tmpExcommunications = new HashMap<>();
+        try {
+            //read JSon all file data
+            byte[] jsonData = Files.readAllBytes(Paths.get(pathToExcommunicationsConfiguratorFile));
+
+            //create ObjectMapper instance
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            //create the cardNode and the cardIterator (used for iterating through the JSon's array of card)
+            JsonNode rootNode = objectMapper.readTree(jsonData);
+            JsonNode excommunicationNode = rootNode.path("excommunications");
+            Iterator<JsonNode> excommunicationIterator = excommunicationNode.getElements();
+
+            //start to parse one by one the card
+            int i = 0;
+            while (excommunicationIterator.hasNext()) {
+                //get all info from file
+                excommunicationNode = excommunicationIterator.next();
+                ArrayList<Excommunication> tmpExcommunicationAge = parseArrayExcommunication (excommunicationNode);
+                i++;
+                tmpExcommunications.put(i, tmpExcommunicationAge);
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return tmpExcommunications;
     }
 
     /**
