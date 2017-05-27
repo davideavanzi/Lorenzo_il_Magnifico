@@ -20,9 +20,11 @@ public class SocketClient {
     private Scanner command;
     private String commandToSend;
 
-    public SocketClient() {}
+    public SocketClient() {
 
-    public void connectToServer() {
+    }
+
+    public void connectSocket() {
         command = new Scanner(System.in);
 
         try {
@@ -38,11 +40,9 @@ public class SocketClient {
                 System.out.println("[Server]: "+objToClient.readObject());
             }
         } catch (IOException ioe) {
-            getLog().log(Level.SEVERE, "Could not connect to "+address+" on port "+port);
-            System.exit(-1);
+           System.out.println("Could not connect to "+address+" on port "+port);
         } catch (ClassNotFoundException cnfe) {
-            getLog().log(Level.SEVERE, "ClassNotFoundException raised", cnfe);
-            System.exit(-1);
+            System.out.println("ClassNotFoundException raised");
         }
     }
 
@@ -53,6 +53,6 @@ public class SocketClient {
      */
     public static void main(String[] args) throws Exception {
         SocketClient client = new SocketClient();
-        client.connectToServer();
+        client.connectSocket();
     }
 }

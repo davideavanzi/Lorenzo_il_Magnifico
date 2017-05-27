@@ -1,4 +1,4 @@
-package it.polimi.ingsw.lim.network.server;
+package it.polimi.ingsw.lim.network.server.Socket;
 
 import static it.polimi.ingsw.lim.Log.*;
 
@@ -37,13 +37,9 @@ public class SocketServer implements Runnable {
      * This method is use for starting the socket server
      * @throws IOException
      */
-    public void startSocketServer() throws IOException {
-        try {
-            serverSck = new ServerSocket(socketPort);
-            System.out.println("The server is starting...");
-        } catch (IOException ioe) {
-            getLog().log(Level.SEVERE,"Could not deploy socket server on port "+ socketPort, ioe);
-        }
+    public void SocketServerStart() throws IOException {
+        serverSck = new ServerSocket(socketPort);
+        System.out.println("The server is starting...");
     }
 
     /**
@@ -52,7 +48,7 @@ public class SocketServer implements Runnable {
      */
     public void run() {
         while(isServerRunning) {
-            Socket clientSck = null;
+            Socket clientSck;
             try {
                 System.out.println("Waiting for a client...");
                 clientSck = serverSck.accept();
@@ -60,7 +56,6 @@ public class SocketServer implements Runnable {
                 clientSckThread.start();
             } catch (IOException ioe) {
                 getLog().log(Level.SEVERE,"Could not create a new thread", ioe);
-
             }
         }
         try {

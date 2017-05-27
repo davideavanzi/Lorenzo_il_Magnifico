@@ -1,4 +1,4 @@
-package it.polimi.ingsw.lim.network.server;
+package it.polimi.ingsw.lim.network.server.Socket;
 
 import static it.polimi.ingsw.lim.Log.*;
 

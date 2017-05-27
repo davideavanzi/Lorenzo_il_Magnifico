@@ -18,13 +18,14 @@ public class Log {
 
     /**
      * Create log file.
+     *
      * @throws IOException
      */
     public static void createLogFile() throws IOException {
         FileHandler logFile = null;
         String fileName = new SimpleDateFormat("dd-MM-yyyy_hh-mm-ss'.log'").format(new Date());
         try {
-            logFile = new FileHandler(LOG_PATH+fileName);
+            logFile = new FileHandler(LOG_PATH + fileName);
             log.addHandler(logFile);
             MyFormatter formatter = new MyFormatter();
             logFile.setFormatter(formatter);
@@ -35,6 +36,7 @@ public class Log {
 
     /**
      * Return the Logger object.
+     *
      * @return
      */
     public static Logger getLog() {
@@ -48,7 +50,7 @@ public class Log {
  */
 class MyFormatter extends Formatter {
     // Create a DateFormat to format the logger timestamp.
-    private static final DateFormat df = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss.SSS");
+    private final DateFormat df = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss.SSS");
 
     public String format(LogRecord record) {
         StringBuilder builder = new StringBuilder(1000);
