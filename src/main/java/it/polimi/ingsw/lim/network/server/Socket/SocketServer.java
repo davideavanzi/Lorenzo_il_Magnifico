@@ -12,7 +12,6 @@ import java.util.logging.Level;
  */
 
 public class SocketServer implements Runnable {
-    private static int socketPort = 8924;
     private ServerSocket serverSck = null;
     private static Boolean isServerRunning = true;
 
@@ -37,8 +36,8 @@ public class SocketServer implements Runnable {
      * This method is use for starting the socket server
      * @throws IOException
      */
-    public void SocketServerStart() throws IOException {
-        serverSck = new ServerSocket(socketPort);
+    public void SocketServerStart(int port) throws IOException {
+        serverSck = new ServerSocket(port);
         System.out.println("The server is starting...");
     }
 
@@ -48,10 +47,9 @@ public class SocketServer implements Runnable {
      */
     public void run() {
         while(isServerRunning) {
-            Socket clientSck;
             try {
                 System.out.println("Waiting for a client...");
-                clientSck = serverSck.accept();
+                Socket clientSck = serverSck.accept();
                 ClientHandler clientSckThread = new ClientHandler(clientSck);
                 clientSckThread.start();
             } catch (IOException ioe) {
