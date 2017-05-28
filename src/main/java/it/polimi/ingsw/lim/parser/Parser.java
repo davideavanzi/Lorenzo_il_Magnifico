@@ -19,7 +19,7 @@ public class Parser {
 
     private ArrayList<HashMap<String, ArrayList<Card>>> cards = new ArrayList<>();
     private HashMap<String, Assets[]> boardAssetsBonuses = new HashMap<>();
-    private ArrayList<Excommunication> excommunications = new ArrayList<>();
+    private HashMap<Integer, ArrayList<Excommunication>> excommunications = new ArrayList<>();
     private int councilFavors;
     private Assets councilBonus;
     private Assets startingGameBonus;
@@ -48,7 +48,7 @@ public class Parser {
         this.councilBonus = councilBonus;
     }
 
-    public void setExcommunications(ArrayList<Excommunication> excommunications){
+    public void setExcommunications(HashMap<Integer, ArrayList<Excommunication>> excommunications){
         this.excommunications = excommunications;
     }
 
@@ -91,6 +91,10 @@ public class Parser {
 
     public Assets getStartingGameBonus() {
         return this.startingGameBonus;
+    }
+
+    public HashMap<Integer, ArrayList<Excommunication>> getExcommunications{
+        return this.excommunications;
     }
 
     /**
@@ -580,7 +584,7 @@ public class Parser {
             case "endGameExcommunication":
                 String tmpBlockedCardColor = excommunicationNode.path("excommunicationType").path("endGameExcommunication").asText();
                 Assets tmpProductionCardCostMalus = parseAssets(excommunicationNode.path("excommunicationType").path("productionCardCostMalus"));
-                Assets tmpOnAssetsMalus = parseAssets(excommunicationNode.path("excommunicationType").path("onAssetsMalus"));
+                Assets[] tmpOnAssetsMalus = parseArrayAssets(excommunicationNode.path("excommunicationType").path("onAssetsMalus"));
                 EndGameExcommunication tmpExcommunicationEndGame = new EndGameExcommunication(tmpBlockedCardColor, tmpProductionCardCostMalus, tmpOnAssetsMalus);
                 return tmpExcommunicationEndGame;
             default:
@@ -642,6 +646,7 @@ public class Parser {
             parser.setCouncilBonus(parseCouncilBonus(pathToDirectory + "configuratorBonusesAssetsFile.json"));
             parser.setCouncilFavors(parseCouncilFavours(pathToDirectory + "configuratorBonusesAssetsFile.json"));
             parser.setStartingGameBonus(parseStartingGameBonus((pathToDirectory + "configuratorBonusesAssetsFile.json")));
+            parser.setExcommunications(parseExcommunications(pathToDirectory + "configuratorExcommunicationFile.json"));
         } catch (Exception e) {
             e.printStackTrace();
             //TODO: catch all the exception
