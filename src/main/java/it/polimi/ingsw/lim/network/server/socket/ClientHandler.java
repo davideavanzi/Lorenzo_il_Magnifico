@@ -1,4 +1,4 @@
-package it.polimi.ingsw.lim.network.server.Socket;
+package it.polimi.ingsw.lim.network.server.socket;
 
 import static it.polimi.ingsw.lim.Log.*;
 
@@ -32,7 +32,6 @@ public class ClientHandler extends Thread {
             objToServer = new ObjectInputStream(socketClient.getInputStream());
         } catch (IOException ioe) {
             getLog().log(Level.SEVERE,"Could not open I/O stream", ioe);
-            System.exit(-1);
         }
         while (isThreadRunning) {
             try {
@@ -73,10 +72,8 @@ public class ClientHandler extends Thread {
                 }
             } catch (IOException ioe) {
                 getLog().log(Level.SEVERE,"Could not reading incoming command", ioe);
-                System.exit(-1);
             } catch (ClassNotFoundException cnfe) {
                 getLog().log(Level.SEVERE,"ClassNotFoundException raised", cnfe);
-                System.exit(-1);
             }
         }
 
