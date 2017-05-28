@@ -21,7 +21,7 @@ public class Log {
      *
      * @throws IOException
      */
-    public static void createLogFile() throws IOException {
+    public static void createLogFile() {
         FileHandler logFile = null;
         String fileName = new SimpleDateFormat("dd-MM-yyyy_hh-mm-ss'.log'").format(new Date());
         try {

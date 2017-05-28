@@ -2,8 +2,6 @@ package it.polimi.ingsw.lim.network.server.RMI;
 
 import it.polimi.ingsw.lim.Log;
 
-import static it.polimi.ingsw.lim.Log.*;
-
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
