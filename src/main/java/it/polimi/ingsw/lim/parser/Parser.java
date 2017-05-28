@@ -19,7 +19,7 @@ public class Parser {
 
     private ArrayList<HashMap<String, ArrayList<Card>>> cards = new ArrayList<>();
     private HashMap<String, Assets[]> boardAssetsBonuses = new HashMap<>();
-    private HashMap<Integer, ArrayList<Excommunication>> excommunications = new ArrayList<>();
+    private HashMap<Integer, ArrayList<Excommunication>> excommunications = new HashMap<>();
     private int councilFavors;
     private Assets councilBonus;
     private Assets startingGameBonus;
@@ -93,7 +93,7 @@ public class Parser {
         return this.startingGameBonus;
     }
 
-    public HashMap<Integer, ArrayList<Excommunication>> getExcommunications{
+    public HashMap<Integer, ArrayList<Excommunication>> getExcommunications(){
         return this.excommunications;
     }
 
