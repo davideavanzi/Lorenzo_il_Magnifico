@@ -2,8 +2,9 @@ package it.polimi.ingsw.lim.network.server;
 
 import static it.polimi.ingsw.lim.Log.*;
 
+import com.sun.org.apache.regexp.internal.RE;
 import it.polimi.ingsw.lim.network.server.RMI.RMIServer;
-import it.polimi.ingsw.lim.network.server.Socket.SocketServer;
+import it.polimi.ingsw.lim.network.server.socket.SocketServer;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.Scanner;
@@ -11,7 +12,7 @@ import java.util.logging.Level;
 
 /**
  * Created by nico.
- * This is the server command line interface.
+ * This is the server command line interface
  */
 class ServerCLI {
     private static boolean isServerStarted = false;
@@ -29,8 +30,10 @@ class ServerCLI {
 
     /**
      * Set the server port for socket or rmi
-     * @param protocol (socket or rmi)
+     * @param protocol socket or rmi
+     * @param newPort port number
      */
+    // TODO: check if the input is a number port
     private void setPort(String protocol, String newPort) {
         if(protocol.equalsIgnoreCase("socket")) {
             // Cast String to int
@@ -47,7 +50,7 @@ class ServerCLI {
 
     /**
      * Enable socket or rmi protocol
-     * @param protocol (socket or rmi)
+     * @param protocol socket or rmi
      */
     private void enableProtocol(String protocol) {
        if(protocol.equalsIgnoreCase("socket")) {
@@ -61,7 +64,7 @@ class ServerCLI {
 
     /**
      * Disable socket or rmi protocol
-     * @param protocol (socket or rmi)
+     * @param protocol socket or rmi
      */
     private void disableProtocol(String protocol) {
         if(protocol.equalsIgnoreCase("socket")) {
@@ -99,8 +102,11 @@ class ServerCLI {
         }
     }
 
-    public void startCLI() {
-        Scanner userInput = new Scanner(System.in);
+    /**
+     * Start a cli for server configuration
+     */
+    private void startCLI() {
+        Scanner input = new Scanner(System.in);
         String[] command;
 
         System.out.println("Welcome to the Lorenzo's Server CLI!");
@@ -114,7 +120,7 @@ class ServerCLI {
 
         while(!isServerStarted) {
             System.out.print("$ ");
-            command = userInput.nextLine().split(" ");
+            command = input.nextLine().split(" ");
             switch (command[0]) {
                 case "set-port":
                     setPort(command[1], command[2]);
@@ -133,5 +139,10 @@ class ServerCLI {
                     System.out.println("Command not found: "+command[0]);
             }
         }
+    }
+
+    public static void main(String[] args) {
+        ServerCLI cli = new ServerCLI();
+        cli.startCLI();
     }
 }

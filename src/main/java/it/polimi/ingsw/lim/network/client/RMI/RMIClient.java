@@ -1,4 +1,4 @@
-package it.polimi.ingsw.lim.network.client;
+package it.polimi.ingsw.lim.network.client.RMI;
 
 import it.polimi.ingsw.lim.network.server.RMI.RMIServerInterf;
 
@@ -25,6 +25,8 @@ public class RMIClient extends UnicastRemoteObject implements ClientInterf {
             rmiServer = (RMIServerInterf)registry.lookup("RMIServerInt");
         } catch (NotBoundException nbe) {
             System.out.println("The element is not bound to the registry");
+        } catch (RemoteException re) {
+            System.out.println("Could not connect to RMI server");
         }
     }
 }

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.lim.network.client;
+package it.polimi.ingsw.lim.network.client.RMI;
 
 /**
  * Created by Nico.
