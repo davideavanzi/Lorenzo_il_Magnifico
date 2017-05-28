@@ -1,6 +1,8 @@
 package it.polimi.ingsw.lim.model;
 import java.util.*;
 
+import static it.polimi.ingsw.lim.Log.getLog;
+
 /**
  * This class represents the market. Slots and bonuses are mapped one-to-one
  */
@@ -11,6 +13,7 @@ public class Market {
      */
     public Market(int playersNumber, Assets[] marketBonuses) {
         //TODO: exception for wrong player number or wrong bonuses number?
+        getLog().info("Creating market instance");
         int slotsNumber = 2;
         if(playersNumber < 6 && playersNumber > 3) //do we have to check if there are more than 6 players?
             slotsNumber = playersNumber;
@@ -47,6 +50,7 @@ public class Market {
     }
 
     public void clear(){
+        getLog().info("Clearing market spaces");
         Arrays.stream(slots).forEach(slot -> slot = null);
     }
 

@@ -1,4 +1,5 @@
 package it.polimi.ingsw.lim.model;
+import it.polimi.ingsw.lim.exceptions.GameSetupException;
 import it.polimi.ingsw.lim.parser.Parser;
 
 import java.util.*;
@@ -109,22 +110,14 @@ public class Game {
     }
 
     /**
-     * This method distributes four family member to any player, one per kind
-     */
-    private void allotFamilyMembers(){
-        //Give all family members to the players
-        this.players.forEach(player ->
-                DICE_COLORS.forEach(color ->
-                        player.addFamilyMember((new FamilyMember(color, player.getColor())))));
-    }
-
-    /**
      * This method sets up the game after it is created by the constructor.
      */
-    public void setUpGame(Parser parsedGame){
+    public void setUpGame(Parser parsedGame) throws GameSetupException {
         getLog().info("[GAME SETUP BEGIN]");
         int playersNumber = this.players.size();
-        //TODO: handle players creation in the controller
+        if (playersNumber < 2 || playersNumber > 5)
+            throw new GameSetupException("Wrong player number on game setup");
+
         //Creating towers with respective bonus.
         getLog().info("Creating towers with bonuses");
         DEFAULT_TOWERS_COLORS.forEach(color ->
@@ -155,33 +148,35 @@ public class Game {
          */
         getLog().info("Giving initial resources to " +playersNumber+" players");
         int moreCoin = 0;
-        //TODO: exception if creating a game without players?
-        if (!players.isEmpty())
-            for (Player pl : players){
-                //TODO: check if this really works
-                pl.setResources(pl.getResources().add(parsedGame.getStartingGameBonus()).addCoins(moreCoin));
-                moreCoin++;
-            }
+        for (Player pl : players)
+            pl.setResources(pl.getResources().add(parsedGame.getStartingGameBonus()).addCoins(moreCoin));
+            moreCoin++;
+
         getLog().info("[GAME SETUP END]");
     }
 
     /**
-     * This method cleans the board and sets up another turn (specified)
+     * This method cleans the board and sets up another turn (reading it from it's state)
+     * Deciding when to advance in ages and turn is a task of the main game controller.
      */
     public void setUpTurn(){
-        //Clean every structure
-        cleanHarvest();
-        cleanProduction();
+        getLog().info("[NEW_TURN_SETUP] - Setting up turn number: " + this.turn);
+        clearHarvest();
+        clearProduction();
         council.clear();
         market.clear();
-
-        //Clean towers
+        players.forEach(pl -> pl.clearFamilyMembers());
         towers.keySet().forEach(color ->
-            {towers.get(color).clear(); towers.get(color).addCards(cardsDeck.getCardsForTower(color, age));});
-        //TODO: do we have to check if the arraylist of cards is the same length of the tower?
-
-        //Distribute family members
-        this.allotFamilyMembers();
+            {
+                getLog().info("Clearing "+color+" tower");
+                towers.get(color).clear();
+                //towers.get(color).addCards(cardsDeck.getCardsForTower(color, age));
+            });
+        getLog().info("Allotting family members to players");
+        this.players.forEach(player ->
+                DICE_COLORS.forEach(color ->
+                        player.addFamilyMember((new FamilyMember(color, player.getColor())))));
+        getLog().info("[NEW_TURN_SETUP_END]");
     }
 
     /**
@@ -192,11 +187,13 @@ public class Game {
         this.players.add(pl);
     }
 
-    private void cleanHarvest(){
+    private void clearHarvest(){
+        getLog().info("Clearing Harvest space");
         //TODO: implement
     }
 
-    private void cleanProduction(){
+    private void clearProduction(){
+        getLog().info("Clearing Production space");
         //TODO: implement
     }
 
@@ -206,13 +203,28 @@ public class Game {
 
     //TODO: This seems not to work
     public Player getPlayer(String nickname) {
+        getLog().info("Getting player "+nickname+" from "+players.size()+" Players.");
         return players.stream().filter(pl -> pl.getNickname().equals(nickname)).findFirst().orElse(null);
     }
 
-    public void setAge(int age) { this.age = age; }
-    public void setTurn(int turn) { this.turn = turn; }
+
 
     public void addPlayer(String nickname) {
         this.players.add(new Player(nickname));
+    }
+
+    /**
+     * This method advances the game state of one turn
+     */
+
+    public void newTurn(){
+        if(this.turn >= TURNS_PER_AGE){
+            this.turn = 1;
+            this.age++;
+            getLog().info("Advancing into new age, number:" +this.age);
+        } else {
+            this.turn++;
+            getLog().info("Advancing into new turn, number:" + this.turn);
+        }
     }
 }

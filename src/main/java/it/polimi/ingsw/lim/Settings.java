@@ -18,7 +18,7 @@ public class Settings {
     public static final int FIRST_EXCOMM_FP = 3;
 
     //We can add more cards and decide how long will the game be
-    public static final int ROUNDS_PER_AGE = 2;
+    public static final int TURNS_PER_AGE = 2;
     public static final int AGES_NUMBER = 3;
 
     //Color strings used in the code.

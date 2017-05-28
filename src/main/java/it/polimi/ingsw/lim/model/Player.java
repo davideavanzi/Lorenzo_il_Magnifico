@@ -13,6 +13,7 @@ public class Player {
      */
     public Player(String nickname) {
         //Creating objects
+        this.nickname = nickname;
         this.resources = new Assets();
         this.strength = new Strengths();
         this.leaderCards = new ArrayList<>();
@@ -70,7 +71,7 @@ public class Player {
     private Card cards;
 
     /**
-     * 
+     * TODO: Is it better to store them with an hashmap?
      */
     private ArrayList<FamilyMember> familyMembers;
 
@@ -87,6 +88,9 @@ public class Player {
     /**
      *
      */
+
+    public void clearFamilyMembers() { this.familyMembers = new ArrayList<>(); }
+
     public void addFamilyMember(FamilyMember fm){
         this.familyMembers.add(fm);
     }
