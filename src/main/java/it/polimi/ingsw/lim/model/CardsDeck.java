@@ -1,6 +1,8 @@
 package it.polimi.ingsw.lim.model;
 
 import java.util.*;
+
+import static it.polimi.ingsw.lim.Log.getLog;
 import static  it.polimi.ingsw.lim.Settings.*;
 
 /**
@@ -14,12 +16,13 @@ public class CardsDeck {
      * Default constructor
      */
     public CardsDeck() {
+        this.developementCards = new HashMap<>();
     }
 
     /**
-     * The development cards
+     * The development cards. Indexed first by Age, then by color
      */
-    private ArrayList<HashMap<String,ArrayList<Card>>> developementCards;
+    private HashMap<Integer, HashMap<String,ArrayList<Card>>> developementCards;
 
     /**
      *
@@ -36,12 +39,13 @@ public class CardsDeck {
     public ArrayList <Card> getCardsForTower(String color, int age) {
         ArrayList<Card> cards = new ArrayList<>();
         for (int i = 0; i < TOWER_HEIGHT; i++){
-            //Generate a random number and pick that card from the arraylist
             Random randomGenerator = new Random();
-            //Age starts from 1, the arraylist from 0
-            //TODO: Check if this really works :S
-            cards.add(developementCards.get(age+1).get(color).get(randomGenerator.nextInt(developementCards.get(age+1).get(color).size())));
+            cards.add(developementCards.get(age).get(color).get(randomGenerator.nextInt(developementCards.get(age).get(color).size())));
         }
         return cards;
+    }
+
+    public void addDevelopementCardsOfAge(int age, HashMap<String, ArrayList<Card>> cards){
+        this.developementCards.put(age, cards);
     }
 }

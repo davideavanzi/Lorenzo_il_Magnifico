@@ -36,7 +36,8 @@ public class Floor {
      * @return
      */
     public boolean isOccupied() {
-        // TODO implement here
+        if(this.familyMemberSlot != null)
+            return true;
         return false;
     }
 
@@ -54,5 +55,13 @@ public class Floor {
     public void setInstantBonus(Assets bonus) { this.instantBonus = bonus; }
 
     public Assets getInstantBonus() { return this.instantBonus; }
+
+    public FamilyMember getFamilyMember(){
+        return this.familyMemberSlot;
+    }
+
+    public Card getCard(){
+        return this.cardSlot;
+    }
 
 }

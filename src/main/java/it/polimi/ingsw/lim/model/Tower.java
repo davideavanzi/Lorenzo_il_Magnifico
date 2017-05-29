@@ -47,4 +47,8 @@ public class Tower {
         Arrays.stream(floors).forEach(floor -> floor.setCardSlot(cards.remove(0)));
     }
 
+    public Floor getFloor(int number) {
+        return this.floors[number];
+    }
+
 }

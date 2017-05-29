@@ -27,6 +27,7 @@ public class Game {
         this.production = new ArrayList<>();
         this.harvest = new ArrayList<>();
         this.faithTrack = new Assets[FAITH_TRACK_LENGTH];
+        this.cardsDeck = new CardsDeck();
     }
 
     /**
@@ -148,9 +149,16 @@ public class Game {
          */
         getLog().info("Giving initial resources to " +playersNumber+" players");
         int moreCoin = 0;
-        for (Player pl : players)
+        for (Player pl : players) {
             pl.setResources(pl.getResources().add(parsedGame.getStartingGameBonus()).addCoins(moreCoin));
             moreCoin++;
+        }
+
+        getLog().info("Moving loaded cards to Cards Deck");
+        //TODO: when the china's work is done, change 1 to AGES_NUMBER
+        for (int j = 1; j <= 1; j++) {
+            cardsDeck.addDevelopementCardsOfAge(j,parsedGame.getCard(j));
+        }
 
         getLog().info("[GAME SETUP END]");
     }
@@ -170,7 +178,8 @@ public class Game {
             {
                 getLog().info("Clearing "+color+" tower");
                 towers.get(color).clear();
-                //towers.get(color).addCards(cardsDeck.getCardsForTower(color, age));
+                getLog().info("Adding cards to "+color+" tower");
+                towers.get(color).addCards(cardsDeck.getCardsForTower(color, age));
             });
         getLog().info("Allotting family members to players");
         this.players.forEach(player ->
@@ -226,5 +235,23 @@ public class Game {
             this.turn++;
             getLog().info("Advancing into new turn, number:" + this.turn);
         }
+    }
+
+    /**
+     * This method checks if a player is able to put a family member in a tower on a specified floor.
+     * @param towerColor
+     * @param floorNumber
+     */
+    public boolean isTowerMoveAllowed(String towerColor, int floorNumber, FamilyMember fm) {
+        if(towers.get(towerColor).getFloor(floorNumber).isOccupied())
+            return false;
+        for (int i = 1; i <= TOWER_HEIGHT; i++)
+            if (towers.get(towerColor).getFloor(i).getFamilyMember().getOwnerColor() == fm.getOwnerColor())
+                return false;
+        return true;
+    }
+
+    public Tower getTower(String color){
+        return this.towers.get(color);
     }
 }

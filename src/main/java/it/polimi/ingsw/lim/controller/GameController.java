@@ -5,7 +5,7 @@ import it.polimi.ingsw.lim.model.Game;
 import it.polimi.ingsw.lim.parser.Parser;
 
 import static it.polimi.ingsw.lim.Log.*;
-import static it.polimi.ingsw.lim.Settings.CONFIGS_PATH;
+import static it.polimi.ingsw.lim.Settings.*;
 
 /**
  * Created by Davide on 25/05/2017.
@@ -26,11 +26,13 @@ public class GameController {
         getLog().info("Validating game data with current settings.");
         //TODO: how to call validating method?
 
+
         //building game
         getLog().info("Setting up game with parsed data");
         //TODO: add players before setting up the game!;
         game.addPlayer("CIAONE");
         game.addPlayer("HELLONE");
+        game.addPlayer("HOLAONE");
         try {
             game.setUpGame(parsedGame);
         } catch (GameSetupException e) {
@@ -38,10 +40,8 @@ public class GameController {
             e.printStackTrace();
         }
         game.setUpTurn();
-        game.newTurn();
-        game.setUpTurn();
-        game.newTurn();
-        game.setUpTurn();
+        game.getTower("GREEN").getFloor(1).getCard().printCard();
+
     }
 
     /**
