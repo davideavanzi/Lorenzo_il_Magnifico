@@ -12,6 +12,7 @@ import java.util.Iterator;
 
 import static it.polimi.ingsw.lim.Settings.*;
 
+
 /**
  * Created by FabCars.
  */
@@ -195,10 +196,10 @@ public class Parser {
         if (immediateEffectType.path("actionEffect").isContainerNode()) {
             immediateEffectExist = true;
 
-            Strengths tmpGreenActionStrengths = null;
+            Strengths tmpActionStrengths = null;
             if (immediateEffectType.path("actionEffect").path("actionEffectStrength").isContainerNode()) {
                 JsonNode actionEffectStrength = immediateEffectType.path("ActionEffect").path("actionEffectStrength");
-                tmpGreenActionStrengths = parseStrengths(actionEffectStrength);
+                tmpActionStrengths = parseStrengths(actionEffectStrength);
             }
 
             Assets tmpActionEffectDiscount = null;
@@ -207,7 +208,7 @@ public class Parser {
                 tmpActionEffectDiscount = parseAssets(actionEffectDiscount);
             }
 
-            ActionEffect actionEffect = new ActionEffect(tmpGreenActionStrengths, tmpActionEffectDiscount);
+            ActionEffect actionEffect = new ActionEffect(tmpActionStrengths, tmpActionEffectDiscount);
             immediateEffects.add(actionEffect);
         } else {
             //TODO: use the constructor to set NULL immediateEffectType effect
