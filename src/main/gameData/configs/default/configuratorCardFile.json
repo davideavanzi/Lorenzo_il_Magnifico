@@ -1,82 +1,593 @@
 {
 	"card":[
-		{"cardName":"blackCardName",
-		"cardAge":2,
-		"cardType":"blackCard",
-		"cardAssetsCost":
-			{"coin":1,"wood":2,"stone":3,"servants":4,"faithPoints":5,"battlePoints":6,"victoryPoints":7}
-		},
-		{"cardName":"cardName2",
-		"cardAge":1,
-		"cardType":"greenCard",
-		"cardAssetsCost":
-			{"coin":10,"wood":11,"stone":12,"servants":13,"faithPoints":14,"battlePoints":15,"victoryPoints":16},
-		"cardImmediateEffect":
-            {"assetsEffect":
-                {"assetsEffectBonus":
-                    {"coin":20,"wood":21,"stone":22,"servants":23,"faithPoints":24,"battlePoints":25,"victoryPoints":26}
-                },
-            "councilFavorsEffectAmount":{"councilFavorsEffectAmountAmount":55}
-            },
-		"greenHarvestResult":
-		    {"coin":20,"wood":21,"stone":22,"servants":23,"faithPoints":24,"battlePoints":25,"victoryPoints":26},
-        "greenActionStrengths":
-            {"coin":30,"wood":31,"stone":32,"servants":33,"faithPoints":34,"battlePoints":35,"victoryPoints":36}
-		},
-
-		{"cardName":"cardName3",
-		"cardAge":1,
-		"cardType":"yellowCard",
-		"cardAssetsCost":
-        	{"coin":10,"wood":11,"stone":12,"servants":13,"faithPoints":14,"battlePoints":15,"victoryPoints":16},
-        "yellowProduction":
-            [
-                {"yellowProductionResult":
-                    {"coin":30,"wood":31,"stone":32,"servants":33,"faithPoints":34,"battlePoints":35,"victoryPoints":36}
-                },
-                {"yellowProductionResult":
-                     {"coin":30,"wood":31,"stone":32,"servants":33,"faithPoints":34,"battlePoints":35,"victoryPoints":36}
-                }
-            ],
-        "cardImmediateEffect":
-            {"assetsEffect":
-                {"assetsEffectBonus":
-                    {"coin":20,"wood":21,"stone":22,"servants":23,"faithPoints":24,"battlePoints":25,"victoryPoints":26}
-                },
-            "councilFavorsEffectAmount":55
-            }
-		},
-
-		{"cardName":"cardName4",
-            "cardAge":1,
-            "cardType":"blueCard",
-            "cardAssetsCost":
-                {"coin":10,"wood":11,"stone":12,"servants":13,"faithPoints":14,"battlePoints":15,"victoryPoints":16},
-            "bluePermanentBonus":
-                {"harvestBonus":40,"productionBonus":41
-                },
-            "cardImmediateEffect":
-                {"assetsEffect":
-                    {"assetsEffectBonus":
-                        {"coin":20,"wood":21,"stone":22,"servants":23,"faithPoints":24,"battlePoints":25,"victoryPoints":26}
-                    },
-                "councilFavorsEffectAmount":55
-                }
+      {
+        "cardName": "Citta",
+        "cardAge": 1,
+        "cardType": "greenCard",
+        "greenHarvestResult": {
+          "coin": 3
         },
-
-        {"cardName":"cardName5",
-            "cardAge":1,
-            "cardType":"purpleCard",
-            "cardAssetsCost":
-                {"coin":10,"wood":11,"stone":12,"servants":13,"faithPoints":14,"battlePoints":15,"victoryPoints":16},
-            "purpleOptionalBattlePointsRequirement":60,
-            "cardImmediateEffect":
-                {"assetsEffect":
-                    {"assetsEffectBonus":
-                        {"coin":20,"wood":21,"stone":22,"servants":23,"faithPoints":24,"battlePoints":25,"victoryPoints":26}
-                    },
-                "councilFavorsEffectAmount":55
-                }
+        "greenActionStrengths": {
+          "harvestBonus": 1
         }
+      },
+      {
+        "cardName": "Avamposto Commerciale",
+        "cardAge": 1,
+        "cardType": "greenCard",
+        "greenHarvestResult": {
+          "coin": 1
+        },
+        "greenActionStrengths": {
+          "harvestBonus": 1
+        }
+      },
+      {
+        "cardName": "Foresta",
+        "cardAge": 1,
+        "cardType": "greenCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "assetsEffectBonus": {
+              "wood": 1
+            }
+          }
+        },
+        "greenHarvestResult": {
+          "wood": 3
+        },
+        "greenActionStrengths": {
+          "harvestBonus": 5
+        }
+      },
+      {
+        "cardName": "Bosco",
+        "cardAge": 1,
+        "cardType": "greenCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "assetsEffectBonus": {
+              "wood": 1
+            }
+          }
+        },
+        "greenHarvestResult": {
+          "wood": 1
+        },
+        "greenActionStrengths": {
+          "harvestBonus": 2
+        }
+      },
+      {
+        "cardName": "Monastero",
+        "cardAge": 1,
+        "cardType": "greenCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "assetsEffectBonus": {
+              "battlePoints": 2,
+              "servants": 1
+            }
+          }
+        },
+        "greenHarvestResult": {
+          "stone": 1,
+          "faithPoints": 1
+        },
+        "greenActionStrengths": {
+          "harvestBonus": 6
+        }
+      },
+      {
+        "cardName": "Cava di Ghiaia",
+        "cardAge": 1,
+        "cardType": "greenCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "assetsEffectBonus": {
+              "stone": 2
+            }
+          }
+        },
+        "greenHarvestResult": {
+          "stone": 2
+        },
+        "greenActionStrengths": {
+          "harvestBonus": 4
+        }
+      },
+      {
+        "cardName": "Borgo",
+        "cardAge": 1,
+        "cardType": "greenCard",
+        "greenHarvestResult": {
+          "coin": 1,
+          "servants": 1
+        },
+        "greenActionStrengths": {
+          "harvestBonus": 3
+        }
+      },
+      {
+        "cardName": "Rocca",
+        "cardAge": 1,
+        "cardType": "greenCard",
+        "greenHarvestResult": {
+          "stone": 1,
+          "battlePoints": 2
+        },
+        "greenActionStrengths": {
+          "harvestBonus": 5
+        }
+      },
+      {
+        "cardName": "Contadino",
+        "cardAge": 1,
+        "cardAssetsCost": {
+          "coin": 3
+        },
+        "cardType": "blueCard",
+        "bluePermanentBonus": {
+          "harvestBonus": 2
+        }
+      },
+      {
+        "cardName": "Dama",
+        "cardAge": 1,
+        "cardAssetsCost": {
+          "coin": 4
+        },
+        "cardType": "blueCard",
+        "bluePermanentBonus": {
+          "blueBonus": 2
+        },
+        "blueBlueDiscount": {
+          "coin":1
+        }
+      },
+      {
+        "cardName": "Artigiano",
+        "cardAge": 1,
+        "cardAssetsCost": {
+          "coin": 3
+        },
+        "cardType": "blueCard",
+        "bluePermanentBonus": {
+          "productionBonus": 2
+        }
+      },
+      {
+        "cardName": "Cavaliere",
+        "cardAge": 1,
+        "cardAssetsCost": {
+          "coin": 2
+        },
+        "cardType": "blueCard",
+        "cardImmediateEffect": {
+          "councilFavorsEffectAmount": 1
+        },
+        "bluePermanentBonus": {
+          "purpleBonus": 2
+        }
+      },
+      {
+        "cardName": "Condottiero",
+        "cardAge": 1,
+        "cardAssetsCost": {
+          "coin": 2
+        },
+        "cardType": "blueCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "battlePoints": 3
+          }
+        },
+        "bluePermanentBonus": {
+          "greenBonus": 2
+        }
+      },
+      {
+        "cardName": "Predicatore",
+        "cardAge": 1,
+        "cardAssetsCost": {
+          "coin": 2
+        },
+        "cardType": "blueCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "faithPoints": 4
+          }
+        },
+        "blueTowerBonusAllowed": false
+      },
+      {
+        "cardName": "Badessa",
+        "cardAge": 1,
+        "cardAssetsCost": {
+          "coin": 3
+        },
+        "cardType": "blueCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "faithPoints": 1
+          },
+          "actionEffect":{
+            "actionEffectStrength":{
+              "greenBonus":4,
+              "blueBonus":4,
+              "yellowBonus":4,
+              "purpleBonus":4,
+              "blackBonus":4
+            }
+          }
+        }
+      },
+      {
+        "cardName": "Costruttore",
+        "cardAge": 1,
+        "cardAssetsCost": {
+          "coin": 4
+        },
+        "cardType": "blueCard",
+        "bluePermanentBonus": {
+          "yellowBonus": 2
+        },
+        "blueYellowDiscount":
+        {
+          "wood": 1,
+          "stone": 1
+        }
+      },
+      {
+        "cardName": "Tagliapietre",
+        "cardAge": 1,
+        "cardAssetsCost": {
+          "coin": 1,
+          "stone": 2
+        },
+        "cardType": "yellowCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "victoryPoints": 2
+          }
+        },
+        "yellowProductionCost": [
+          {
+            "stone": 1
+          },
+          {
+            "stone": 2
+          }
+        ],
+        "yellowProductionResult": [
+          {
+            "coin": 3
+          },
+          {
+            "coin": 5
+          }
+        ],
+        "yellowActionStrengths":
+        {
+          "productionBonus": 3
+        }
+      },
+      {
+        "cardName": "Zecca",
+        "cardAge": 1,
+        "cardAssetsCost": {
+          "wood": 1,
+          "stone": 3
+        },
+        "cardType": "yellowCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "victoryPoints": 5
+          }
+        },
+        "yellowProductionResult": [
+          {
+            "coin": 1
+          }
+        ],
+        "yellowBonusMultiplier": "YELLOW",
+        "yellowActionStrengths":
+        {
+          "productionBonus": 5
+        }
+      },
+      {
+        "cardName": "Teatro",
+        "cardAge": 1,
+        "cardAssetsCost": {
+          "coin": 2,
+          "wood": 2
+        },
+        "cardType": "yellowCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "victoryPoints": 6
+          }
+        },
+        "yellowProductionResult": [
+          {
+            "victoryPoints": 1
+          }
+        ],
+        "yellowBonusMultiplier": "BLUE",
+        "yellowActionStrengths":
+        {
+          "productionBonus": 6
+        }
+      },
+      {
+        "cardName": "Esattoria",
+        "cardAge": 1,
+        "cardAssetsCost": {
+          "wood": 3,
+          "stone": 1
+        },
+        "cardType": "yellowCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "victoryPoints": 5
+          }
+        },
+        "yellowProductionResult": [
+          {
+            "coin": 1
+          }
+        ],
+        "yellowBonusMultiplier": "GREEN",
+        "yellowActionStrengths":
+        {
+          "productionBonus": 5
+        }
+      },
+      {
+        "cardName": "Arco di Trionfo",
+        "cardAge": 1,
+        "cardAssetsCost": {
+          "coin": 1,
+          "stone": 2
+        },
+        "cardType": "yellowCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "victoryPoints": 6
+          }
+        },
+        "yellowProductionResult": [
+          {
+            "victoryPoints": 1
+          }
+        ],
+        "yellowBonusMultiplier": "PURPLE",
+        "yellowActionStrengths":
+        {
+          "productionBonus": 6
+        }
+      },
+      {
+        "cardName": "Falegnameria",
+        "cardAge": 1,
+        "cardAssetsCost": {
+          "coin": 1,
+          "wood": 2
+        },
+        "cardType": "yellowCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "victoryPoints": 3
+          }
+        },
+        "yellowProductionCost": [
+          {
+            "wood": 1
+          },
+          {
+            "wood": 2
+          }
+        ],
+        "yellowProductionResult": [
+          {
+            "coin": 3
+          },
+          {
+            "coin": 5
+          }
+        ],
+        "yellowActionStrengths":
+        {
+          "productionBonus": 4
+        }
+      },
+      {
+        "cardName": "Cappella",
+        "cardAge": 1,
+        "cardAssetsCost": {
+          "coin": 1,
+          "stone": 2
+        },
+        "cardType": "yellowCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "faithPoints": 1
+          }
+        },
+        "yellowProductionCost": [
+          {
+            "coin": 1
+          }
+        ],
+        "yellowProductionResult": [
+          {
+            "faithPoints": 1
+          }
+        ],
+        "yellowActionStrengths":
+        {
+          "productionBonus": 2
+        }
+      },
+      {
+        "cardName": "Residenza",
+        "cardAge": 1,
+        "cardAssetsCost": {
+          "stone": 2
+        },
+        "cardType": "yellowCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "victoryPoints": 1
+          }
+        },
+        "yellowProductionCost": [
+          {
+            "coin": 1
+          }
+        ],
+        "yellowActionStrengths":
+        {
+          "productionBonus": 1
+        }
+      },
+      {
+        "cardName": "Ingaggiare Reclute",
+        "cardAge": 1,
+        "cardAssetsCost": {
+          "coin": 4
+        },
+        "cardType": "purpleCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "battlePoints": 5
+          }
+        },
+        "purpleEndGameBonus": {
+          "victoryPoints": 4
+        }
+      },
+      {
+        "cardName": "Riparare la Chiesa",
+        "cardAge": 1,
+        "cardAssetsCost": {
+          "coin": 1,
+          "wood": 1,
+          "stone": 1
+        },
+        "cardType": "purpleCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "faithPoints": 1
+          }
+        },
+        "purpleEndGameBonus": {
+          "victoryPoints": 5
+        }
+      },
+      {
+        "cardName": "Costruire le Mura",
+        "cardAge": 1,
+        "cardAssetsCost": {
+          "stone": 3
+        },
+        "cardType": "purpleCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "battlePoints": 2
+          },
+          "councilFavorsEffectAmount": 1
+        },
+        "purpleEndGameBonus": {
+          "victoryPoints": 3
+        }
+      },
+      {
+        "cardName": "Innalzare una Statua",
+        "cardAge": 1,
+        "cardAssetsCost": {
+          "wood": 2,
+          "stone": 2
+        },
+        "cardType": "purpleCard",
+        "cardImmediateEffect": {
+          "councilFavorsEffectAmount": 2
+        },
+        "purpleEndGameBonus": {
+          "victoryPoints": 4
+        }
+      },
+      {
+        "cardName": "Campagna Militare",
+        "cardAge": 1,
+        "cardAssetsCost": {
+          "battlePoints": 2
+        },
+        "cardType": "purpleCard",
+        "purpleOptionalBattlePointsRequirement": 3,
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "coin": 3
+          }
+        },
+        "purpleEndGameBonus": {
+          "victoryPoints": 5
+        }
+      },{
+        "cardName": "Combattere le Eresie",
+        "cardAge": 1,
+        "cardAssetsCost": {
+          "battlePoints": 3
+        },
+        "cardType": "purpleCard",
+        "purpleOptionalBattlePointsRequirement": 5,
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "faithPoints": 2
+          }
+        },
+        "purpleEndGameBonus": {
+          "victoryPoints": 5
+        }
+      },
+      {
+        "cardName": "Campagna Militare",
+        "cardAge": 1,
+        "cardAssetsCost": {
+          "coin": 2,
+          "wood": 1,
+          "stone": 1
+        },
+        "cardType": "purpleCard",
+        "purpleOptionalBattlePointsRequirement": 4,
+        "purpleOptionalBattlePointsCost": 2,
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "fairhPoints": 3
+          }
+        },
+        "purpleEndGameBonus": {
+          "victoryPoints": 1
+        }
+      },
+      {
+        "cardName": "Ospitare i Mendicanti",
+        "cardAge": 1,
+        "cardAssetsCost": {
+          "wood": 3
+        },
+        "cardType": "purpleCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "servants": 4
+          }
+        },
+        "purpleEndGameBonus": {
+          "victoryPoints": 4
+        }
+      }
     ]
 }
+
+
