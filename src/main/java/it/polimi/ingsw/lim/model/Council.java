@@ -1,6 +1,8 @@
 package it.polimi.ingsw.lim.model;
 import java.util.*;
 
+import static it.polimi.ingsw.lim.Log.getLog;
+
 /**
  * This class represents the council. Players will put family members here. At the end of the turn, the gaming
  * order of the players is obtained by looking at the order of the family members in here. Otherwise it will be the
@@ -13,8 +15,10 @@ public class Council {
      * Constructor
      */
     public Council(int favorsAmount, Assets councilBonus) {
+        getLog().info("Creating council istance");
         this.favorsAmount = favorsAmount;
         this.councilBonus = councilBonus;
+        this.slots = new ArrayList<>();
     }
 
     /**
@@ -46,6 +50,7 @@ public class Council {
     }
 
     public void clear(){
+        getLog().info("Clearing Production space");
         this.slots.clear();
     }
 }

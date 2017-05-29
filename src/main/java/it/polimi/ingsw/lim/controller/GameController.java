@@ -1,9 +1,8 @@
 package it.polimi.ingsw.lim.controller;
 
+import it.polimi.ingsw.lim.exceptions.GameSetupException;
 import it.polimi.ingsw.lim.model.Game;
 import it.polimi.ingsw.lim.parser.Parser;
-
-import java.io.IOException;
 
 import static it.polimi.ingsw.lim.Log.*;
 import static it.polimi.ingsw.lim.Settings.CONFIGS_PATH;
@@ -16,11 +15,8 @@ public class GameController {
     private Game game;
 
     public static void main(String[] args){
-        try {
-            createLogFile();
-        }catch (IOException e){
-           //TODO: handle
-        }
+
+        createLogFile();
         getLog().info("Creating new game instance.");
         Game game = new Game();
         String defaultPath = "default/";
@@ -33,13 +29,24 @@ public class GameController {
         //building game
         getLog().info("Setting up game with parsed data");
         //TODO: add players before setting up the game!;
-        game.setUpGame(parsedGame);
-        //game.getPlayer("CIAONE").getResources().printAssets();
+        game.addPlayer("CIAONE");
+        game.addPlayer("HELLONE");
+        try {
+            game.setUpGame(parsedGame);
+        } catch (GameSetupException e) {
+            getLog().severe(e.getMessage());
+            e.printStackTrace();
+        }
+        game.setUpTurn();
+        game.newTurn();
+        game.setUpTurn();
+        game.newTurn();
+        game.setUpTurn();
     }
 
     /**
      * This method checks if all parsed data are ok with current game settings.
-     * - Development cards number for each color and age = tower_height * turns_per_age
+     * - Development cards number for each color and age = tower_height * turns_per_age (??)
      * - At least one excommunication for every age from first_excomm_fp to ages_number
      * - Tower bonuses consistent with tower heights.
      * - Market bonuses consistent.
