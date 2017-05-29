@@ -647,7 +647,7 @@ public class Parser {
             parser.setCouncilBonus(parseCouncilBonus(pathToDirectory + "configuratorBonusesAssetsFile.json"));
             parser.setCouncilFavors(parseCouncilFavours(pathToDirectory + "configuratorBonusesAssetsFile.json"));
             parser.setStartingGameBonus(parseStartingGameBonus((pathToDirectory + "configuratorBonusesAssetsFile.json")));
-            parser.setExcommunications(parseExcommunications(pathToDirectory + "configuratorExcommunicationFile.json"));
+            parser.setExcommunications(parseExcommunications(pathToDirectory + "configuratorExcommunicationsFile.json"));
         } catch (Exception e) {
             e.printStackTrace();
             //TODO: catch all the exception
