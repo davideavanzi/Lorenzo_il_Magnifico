@@ -1,92 +1,28 @@
 {
   "bonuses": {
     "towerBonus": {
-        "greenTowerBonus": [ {}, {}, { "wood": 1 }, { "wood": 2 } ],
-        "blueTowerBonus": [ {}, {}, { "stone": 1 }, { "stone": 2 } ],
-        "yellowTowerBonus": [ {}, {}, { "battlePoints": 1 }, { "battlePoints": 2 } ],
-        "purpleTowerBonus": [ {}, {}, { "coin": 1 }, { "coin": 2 } ],
-        "blackTowerBonus": [ {}, {}, { "wood": 1 }, { "wood": 2 }]
-      },
-      "marketBonus": [
-        {
-          "coin": 20,
-          "wood": 21,
-          "stone": 22,
-          "servants": 23,
-          "faithPoints": 24,
-          "battlePoints": 25,
-          "victoryPoints": 26
-        },
-        {
-          "coin": 30,
-          "wood": 31,
-          "stone": 32,
-          "servants": 33,
-          "faithPoints": 34,
-          "battlePoints": 35,
-          "victoryPoints": 36
-        }
-      ],
-      "faithBonus": [
-        {
-          "coin": 40,
-          "wood": 41,
-          "stone": 44,
-          "servants": 43,
-          "faithPoints": 44,
-          "battlePoints": 45,
-          "victoryPoints": 46
-        },
-        {
-          "coin": 50,
-          "wood": 51,
-          "stone": 54,
-          "servants": 55,
-          "faithPoints": 54,
-          "battlePoints": 55,
-          "victoryPoints": 56
-        }
-      ],
-      "councilFavoursBonus": [
-        {
-          "coin": 80,
-          "wood": 81,
-          "stone": 88,
-          "servants": 83,
-          "faithPoints": 88,
-          "battlePoints": 85,
-          "victoryPoints": 86
-        },
-        {
-          "coin": 90,
-          "wood": 91,
-          "stone": 98,
-          "servants": 99,
-          "faithPoints": 94,
-          "battlePoints": 99,
-          "victoryPoints": 96
-        }
-      ],
-      "councilBonus": {
-        "coin": 60,
-        "wood": 61,
-        "stone": 64,
-        "servants": 66,
-        "faithPoints": 64,
-        "battlePoints": 66,
-        "victoryPoints": 66
-      },
-      "councilFavours": 9,
-      "startingGameBonus": {
-        "coin": 70,
-        "wood": 71,
-        "stone": 74,
-        "servants": 77,
-        "faithPoints": 74,
-        "battlePoints": 77,
-        "victoryPoints": 76
-      }
-    }
+      "greenTowerBonus": [ {}, {}, { "wood": 1 }, { "wood": 2 } ],
+      "blueTowerBonus": [ {}, {}, { "stone": 1 }, { "stone": 2 } ],
+      "yellowTowerBonus": [ {}, {}, { "battlePoints": 1 }, { "battlePoints": 2 } ],
+      "purpleTowerBonus": [ {}, {}, { "coin": 1 }, { "coin": 2 } ],
+      "blackTowerBonus": [ {}, {}, { "faithPoints": 1 }, { "faithPoints": 2 }]
+    },
+    "marketBonus": [
+      {"coin": 5}, {"servants": 5}, {"coin": 2, "battlePoints": 3}, {}, {"faithPoints": 5}
+    ],
+    "faithBonus": [
+      {}, {"victoryPoints": 1}, {"victoryPoints": 2}, {"victoryPoints": 3}, {"victoryPoints": 4},
+      {"victoryPoints": 5}, {"victoryPoints": 7}, {"victoryPoints": 9}, {"victoryPoints": 11}, {"victoryPoints": 13},
+      {"victoryPoints": 15}, {"victoryPoints": 17}, {"victoryPoints": 19}, {"victoryPoints": 22},
+      {"victoryPoints": 25}, {"victoryPoints": 30}
+    ],
+    "councilFavoursBonus": [
+      {"wood": 1, "stone": 1}, {"servants": 2}, {"coin": 2}, {"battlePoints": 2}, {"faithPoints": 1}
+    ],
+    "councilBonus": {"coin": 1},
+    "councilFavours": 1,
+    "startingGameBonus": {"coin": 5, "wood": 3, "stone": 3, "servants": 3}
   }
 }
+
 

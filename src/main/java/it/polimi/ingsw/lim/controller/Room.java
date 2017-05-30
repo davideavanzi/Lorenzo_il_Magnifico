@@ -17,14 +17,14 @@ public class Room extends UnicastRemoteObject {
     private ArrayList<User> users;
     private GameController gameController;
     private boolean roomStatus = true; // room open
-    //private ArrayList<SocketClientHandler> socketUsers;
-    //private ArrayList<ClientInterf> rmiUsers;
 
     public Room(int index) throws RemoteException {
         roomIndex = index;
         users = new ArrayList<>();
-        //socketUsers = new ArrayList<>();
-        //rmiUsers = new ArrayList<>();
     }
+
+    private ArrayList<String> playOrder;
+
+
 
 }

@@ -35,8 +35,11 @@ public class ActionEffect extends ImmediateEffect {
         System.out.println("            New Action");
         System.out.println("    ---- Action Strenght ----      ");
         strength.printStrengths();
-        System.out.println("    ---- Action Discount ----      ");
-        discount.printAssets();
+        if (discount != null){
+            System.out.println("    ---- Action Discount ----      ");
+            discount.printAssets();
+        }
+
 
     }
 

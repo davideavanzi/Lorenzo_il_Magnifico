@@ -11,7 +11,7 @@ public class Player {
     /**
      * Creating an empty player with a nickname.
      */
-    public Player(String nickname) {
+    public Player(String nickname, String color) {
         //Creating objects
         this.nickname = nickname;
         this.resources = new Assets();
@@ -21,7 +21,7 @@ public class Player {
         this.pickDiscounts = new HashMap<>();
         this.defaultHarvestBonus = new Assets();
         this.defaultProductionBonus = new Assets();
-
+        this.color = color;
         getLog().info("New empty player "+nickname+" created.");
     }
 
@@ -111,7 +111,9 @@ public class Player {
 
     public void setColor(String color) { this.color = color; }
 
-
+    public FamilyMember pullFamilyMember(String color) {
+        return this.familyMembers.stream().filter(fm -> fm.getDiceColor().equals(color)).findFirst().orElse(null);
+    }
 
 
 

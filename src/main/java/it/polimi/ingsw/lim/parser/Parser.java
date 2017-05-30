@@ -1,15 +1,17 @@
 package it.polimi.ingsw.lim.parser;
 
 import it.polimi.ingsw.lim.model.*;
+import it.polimi.ingsw.lim.exceptions.*;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
-
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import static it.polimi.ingsw.lim.Log.getLog;
 import static it.polimi.ingsw.lim.Settings.*;
 
 
@@ -17,6 +19,10 @@ import static it.polimi.ingsw.lim.Settings.*;
  * Created by FabCars.
  */
 public class Parser {
+
+    public static final String MARKET = "MARKET";
+    public static final String FAITH_TRACK = "FAITH";
+    public static final String COUNCIL_FAVOUR = "FAVOUR";
 
     private ArrayList<HashMap<String, ArrayList<Card>>> cards = new ArrayList<>();
     private HashMap<String, Assets[]> boardAssetsBonuses = new HashMap<>();
@@ -71,15 +77,15 @@ public class Parser {
     }
 
     public Assets[] getMarketBonuses() {
-        return this.boardAssetsBonuses.get("MARKET");
+        return this.boardAssetsBonuses.get(MARKET);
     }
 
     public Assets[] getFaithTrackbonuses() {
-        return this.boardAssetsBonuses.get("FAITH");
+        return this.boardAssetsBonuses.get(FAITH_TRACK);
     }
 
     public Assets[] getCouncilFavourBonuses(){
-        return this.boardAssetsBonuses.get("FAVOUR");
+        return this.boardAssetsBonuses.get(COUNCIL_FAVOUR);
     }
 
     public int getCouncilFavors() {
@@ -123,8 +129,8 @@ public class Parser {
      * @param arrayAssetsNode is the node "link" to the array in JsonFile
      * @return an array of Assets
      */
-    public static Assets[] parseArrayAssets(JsonNode arrayAssetsNode) {
-        Assets[] assets = new Assets[4]; //TODO: rendere configurabile il numero di piani (e quindi di assets presenti nell'array)
+    public static Assets[] parseArrayAssets(JsonNode arrayAssetsNode, int assetsNum) {
+        Assets[] assets = new Assets[assetsNum]; //TODO: rendere configurabile il numero di piani (e quindi di assets presenti nell'array)
         Iterator<JsonNode> arrayAssetsIterator = arrayAssetsNode.getElements();
         int i = 0;
         while (arrayAssetsIterator.hasNext()) {
@@ -154,29 +160,26 @@ public class Parser {
         return tmpParseStrengths;
     }
 
-    public static HashMap<String, Assets[]> boardAssetsParser(String PathToConfiguratorBonusesAssetsFile) {
+    public static HashMap<String, Assets[]> boardAssetsParser(String PathToConfiguratorBonusesAssetsFile)
+            throws IOException{
         HashMap<String, Assets[]> bonuses = new HashMap<String, Assets[]>();
 
-        try {
-            //read JSon all file data
-            byte[] jsonData = Files.readAllBytes(Paths.get(PathToConfiguratorBonusesAssetsFile));
+        //read JSon all file data
+        byte[] jsonData = Files.readAllBytes(Paths.get(PathToConfiguratorBonusesAssetsFile));
 
-            //create ObjectMapper instance
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode rootNode = objectMapper.readTree(jsonData);
-            JsonNode bonusesNode = rootNode.path("bonuses");
-            bonuses.put("GREEN", parseArrayAssets(bonusesNode.path("towerBonus").path("greenTowerBonus")));
-            bonuses.put("BLUE", parseArrayAssets(bonusesNode.path("towerBonus").path("blueTowerBonus")));
-            bonuses.put("YELLOW", parseArrayAssets(bonusesNode.path("towerBonus").path("yellowTowerBonus")));
-            bonuses.put("PURPLE", parseArrayAssets(bonusesNode.path("towerBonus").path("purpleTowerBonus")));
-            bonuses.put("BLACK", parseArrayAssets(bonusesNode.path("towerBonus").path("blackTowerBonus")));
-            bonuses.put("MARKET", parseArrayAssets(bonusesNode.path("marketBonus")));
-            bonuses.put("FAITH", parseArrayAssets(bonusesNode.path("faithBonus")));
-            bonuses.put("FAVOUR", parseArrayAssets(bonusesNode.path("councilFavoursBonus")));
+        //create ObjectMapper instance
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(jsonData);
+        JsonNode bonusesNode = rootNode.path("bonuses");
+        bonuses.put(GREEN_COLOR, parseArrayAssets(bonusesNode.path("towerBonus").path("greenTowerBonus"), TOWER_HEIGHT));
+        bonuses.put(BLUE_COLOR, parseArrayAssets(bonusesNode.path("towerBonus").path("blueTowerBonus"), TOWER_HEIGHT));
+        bonuses.put(YELLOW_COLOR, parseArrayAssets(bonusesNode.path("towerBonus").path("yellowTowerBonus"), TOWER_HEIGHT));
+        bonuses.put(PURPLE_COLOR, parseArrayAssets(bonusesNode.path("towerBonus").path("purpleTowerBonus"), TOWER_HEIGHT));
+        bonuses.put(BLACK_COLOR, parseArrayAssets(bonusesNode.path("towerBonus").path("blackTowerBonus"), TOWER_HEIGHT));
+        bonuses.put(MARKET, parseArrayAssets(bonusesNode.path("marketBonus"), MARKET_MAX_SIZE));
+        bonuses.put(FAITH_TRACK, parseArrayAssets(bonusesNode.path("faithBonus"), FAITH_TRACK_LENGTH));
+        bonuses.put(COUNCIL_FAVOUR, parseArrayAssets(bonusesNode.path("councilFavoursBonus"), COUNCIL_FAVUORS_TYPES));
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         return bonuses;
     }
 
@@ -282,8 +285,8 @@ public class Parser {
      *                                   directory)
      * @return an HashMap of card containing all game's card
      */
-    //TODO: chi gestisce l'eccezione di cardAge o colorCard = null?
-    public static ArrayList<HashMap<String, ArrayList<Card>>> cardParser(String pathToConfiguratorCardFile) {
+    public static ArrayList<HashMap<String, ArrayList<Card>>> cardParser(String pathToConfiguratorCardFile)
+            throws IOException, InvalidCardException{
 
         //the ArrayList where store all the game's card
         ArrayList<HashMap<String, ArrayList<Card>>> cards = new ArrayList<>();
@@ -299,302 +302,298 @@ public class Parser {
             cards.add(i, tmpCards);
         }
 
-        try {
-            //read JSon all file data
-            byte[] jsonData = Files.readAllBytes(Paths.get(pathToConfiguratorCardFile));
+        //read JSon all file data
+        byte[] jsonData = Files.readAllBytes(Paths.get(pathToConfiguratorCardFile));
 
-            //create ObjectMapper instance
-            ObjectMapper objectMapper = new ObjectMapper();
+        //create ObjectMapper instance
+        ObjectMapper objectMapper = new ObjectMapper();
 
-            //create the cardNode and the cardIterator (used for iterating through the JSon's array of card)
-            JsonNode rootNode = objectMapper.readTree(jsonData);
-            JsonNode cardNode = rootNode.path("card");
-            Iterator<JsonNode> cardIterator = cardNode.getElements();
+        //create the cardNode and the cardIterator (used for iterating through the JSon's array of card)
+        JsonNode rootNode = objectMapper.readTree(jsonData);
+        JsonNode cardNode = rootNode.path("card");
+        Iterator<JsonNode> cardIterator = cardNode.getElements();
 
-            //start to parse one by one the card
-            while (cardIterator.hasNext()) {
+        //start to parse one by one the card
+        while (cardIterator.hasNext()) {
 
-                //get all info from file
-                cardNode = cardIterator.next();
-                //JsonNode cardId = cardNode.path("cardId");
-                JsonNode cardName = cardNode.path("cardName");
-                JsonNode cardAge = cardNode.path("cardAge");
-                JsonNode cardType = cardNode.path("cardType");
-
-                Assets tmpCardAssetsCost = null;
-                if (cardNode.path("cardAssetsCost").isContainerNode()) {
-                    JsonNode cardAssetsCost = cardNode.path("cardAssetsCost");
-                    tmpCardAssetsCost = parseAssets(cardAssetsCost);
-                }
-
-                ArrayList<ImmediateEffect> immediateEffects = null;
-                if (cardNode.path("cardImmediateEffect").isContainerNode()) {
-                    JsonNode cardImmediateEffect = cardNode.path("cardImmediateEffect");
-                    immediateEffects = parseImmediateEffect(cardImmediateEffect);
-                }
-                //select the constructor of card in base of the cardType (green,blue,yellow,purple,black)
-                switch (cardType.asText()) {
-                    case "greenCard":
-                        Assets tmpGreenHarvestResult = null;
-                        if (cardNode.path("greenHarvestResult").isContainerNode()) {
-                            JsonNode greenHarvestResult = cardNode.path("greenHarvestResult");
-                            tmpGreenHarvestResult = parseAssets(greenHarvestResult);
-                        }
-
-                        Strengths tmpGreenActionStrengths = null;
-                        if (cardNode.path("greenActionStrengths").isContainerNode()) {
-                            JsonNode greenActionStrengths = cardNode.path("greenActionStrengths");
-                            tmpGreenActionStrengths = parseStrengths(greenActionStrengths);
-                        }
-
-                        GreenCard greenCard = new GreenCard(
-                                cardName.asText(),
-                                cardAge.asInt(),
-                                tmpCardAssetsCost,
-                                immediateEffects,
-                                tmpGreenHarvestResult,
-                                tmpGreenActionStrengths
-                        );
-                        cards.get(cardAge.asInt() - 1).get("GREEN").add(greenCard);
-                        break;
-                    case "yellowCard":
-                        ArrayList<Assets> tmpYellowProductionCostList = new ArrayList<Assets>();
-                        ArrayList<Assets> tmpYellowProductionResultList = new ArrayList<Assets>();
-                        JsonNode yellowProductionNode = cardNode.path("yellowProduction");
-                        Iterator<JsonNode> yellowProductionEffectIterator = yellowProductionNode.getElements();
-
-                        while (yellowProductionEffectIterator.hasNext()) {
-                            yellowProductionNode = yellowProductionEffectIterator.next();
-
-                            if (yellowProductionNode.path("yellowProductionCost").isContainerNode()) {
-                                JsonNode yellowProductionCost = yellowProductionNode.path("yellowProductionCost");
-                                Assets tmpYellowProductionCost = parseAssets(yellowProductionCost);
-                                tmpYellowProductionCostList.add(tmpYellowProductionCost);
-                            }
-
-                            if (yellowProductionNode.path("yellowProductionResult").isContainerNode()) {
-                                JsonNode yellowProductionResult = yellowProductionNode.path("yellowProductionResult");
-                                Assets tmpYellowProductionResult = parseAssets(yellowProductionResult);
-                                tmpYellowProductionCostList.add(tmpYellowProductionResult);
-                            }
-                        }
-
-                        Strengths tmpYellowActionStrengths = null;
-                        if (cardNode.path("yellowActionStrengths").isContainerNode()) {
-                            JsonNode yellowActionStrengths = cardNode.path("yellowActionStrengths");
-                            tmpYellowActionStrengths = parseStrengths(yellowActionStrengths);
-                        }
-
-                        String tmpYellowBonusMultiplier = null;
-                        if (cardNode.path("yellowBonusMultiplier").isTextual()) {//TODO check
-                            tmpYellowBonusMultiplier = cardNode.path("yellowBonusMultiplier").asText();
-                        }
-
-                        YellowCard yellowCard = new YellowCard(
-                                cardName.asText(),
-                                cardAge.asInt(),
-                                tmpCardAssetsCost,
-                                immediateEffects,
-                                tmpYellowProductionCostList,
-                                tmpYellowProductionResultList,
-                                tmpYellowActionStrengths,
-                                tmpYellowBonusMultiplier
-                        );
-                        cards.get(cardAge.asInt() - 1).get(YELLOW_COLOR).add(yellowCard);
-                        break;
-                    case "blueCard":
-                        Strengths tmpBluePermanentBonus = null;
-                        if (cardNode.path("bluePermanentBonus").isContainerNode()) {
-                            JsonNode bluePermanentBonus = cardNode.path("bluePermanentBonus");
-                            tmpBluePermanentBonus = parseStrengths(bluePermanentBonus);
-                        }
-
-                        Assets tmpBlueGreenDiscount = null;
-                        if (cardNode.path("blueGreenDiscount").isContainerNode()) {
-                            JsonNode blueGreenDiscount = cardNode.path("blueGreenDiscount");
-                            tmpBlueGreenDiscount = parseAssets(blueGreenDiscount);
-                        }
-
-                        Assets tmpBlueBlueDiscount = null;
-                        if (cardNode.path("blueBlueDiscount").isContainerNode()) {
-                            JsonNode blueBlueDiscount = cardNode.path("blueBlueDiscount");
-                            tmpBlueBlueDiscount = parseAssets(blueBlueDiscount);
-                        }
-
-                        Assets tmpBlueYellowDiscount = null;
-                        if (cardNode.path("blueYellowDiscount").isContainerNode()) {
-                            JsonNode blueYellowDiscount = cardNode.path("blueYellowDiscount");
-                            tmpBlueYellowDiscount = parseAssets(blueYellowDiscount);
-                        }
-
-                        Assets tmpBluePurpleDiscount = null;
-                        if (cardNode.path("bluePurpleDiscount").isContainerNode()) {
-                            JsonNode bluePurpleDiscount = cardNode.path("bluePurpleDiscount");
-                            tmpBluePurpleDiscount = parseAssets(bluePurpleDiscount);
-                        }
-
-                        Assets tmpBlueBlackDiscount = null;
-                        if (cardNode.path("blueBlackDiscount").isContainerNode()) {
-                            JsonNode blueBlackDiscount = cardNode.path("blueBlackDiscount");
-                            tmpBlueBlackDiscount = parseAssets(blueBlackDiscount);
-                        }
-
-                        boolean tmpBlueTowerBonusAllowed = true;
-                        if (cardNode.path("blueTowerBonusAllowed").isBoolean()) { //TODO check
-                            tmpBlueTowerBonusAllowed = cardNode.path("blueTowerBonusAllowed").asBoolean();
-                        }
-
-                        BlueCard blueCard = new BlueCard(
-                                cardName.asText(),
-                                cardAge.asInt(),
-                                tmpCardAssetsCost,
-                                immediateEffects,
-                                tmpBluePermanentBonus,
-                                tmpBlueGreenDiscount,
-                                tmpBlueBlueDiscount,
-                                tmpBlueYellowDiscount,
-                                tmpBluePurpleDiscount,
-                                tmpBlueBlackDiscount,
-                                tmpBlueTowerBonusAllowed
-                        );
-                        cards.get(cardAge.asInt() - 1).get(BLUE_COLOR).add(blueCard);
-                        break;
-                    case "purpleCard":
-                        JsonNode purpleEndGameBonus = cardNode.path("purpleEndGameBonus");
-                        Assets tmpPurpleEndGameBonus = parseAssets(purpleEndGameBonus);
-
-                        int tmpPurpleOptionalBattlePointsRequirement = 0;
-                        if (cardNode.path("purpleOptionalBattlePointsRequirement").isInt()) {
-                            tmpPurpleOptionalBattlePointsRequirement = cardNode.path("purpleOptionalBattlePointsRequirement").asInt();
-                        }
-
-                        int tmpPurpleOptionalBattlePointsCost = 0;
-                        if (cardNode.path("purpleOptionalBattlePointsCost").isInt()) {
-                            tmpPurpleOptionalBattlePointsCost = cardNode.path("purpleOptionalBattlePointsCost").asInt();
-                        }
-
-                        PurpleCard purpleCard = new PurpleCard(
-                                cardName.asText(),
-                                cardAge.asInt(),
-                                tmpCardAssetsCost,
-                                immediateEffects,
-                                tmpPurpleEndGameBonus,
-                                tmpPurpleOptionalBattlePointsRequirement,
-                                tmpPurpleOptionalBattlePointsCost
-                        );
-                        cards.get(cardAge.asInt() - 1).get(PURPLE_COLOR).add(purpleCard);
-                        break;
-
-                    case "blackCard":
-                        BlackCard blackCard = new BlackCard(
-                                cardName.asText(),
-                                cardAge.asInt(),
-                                tmpCardAssetsCost,
-                                immediateEffects
-                        );
-                        cards.get(cardAge.asInt() - 1).get(BLACK_COLOR).add(blackCard);
-                        break;
-
-                    default:
-                        //TODO: define notExistingCardTypeException exception
-                        break;
-                }
+            //get all info from file
+            cardNode = cardIterator.next();
+            //JsonNode cardId = cardNode.path("cardId");
+            if (!(cardNode.path("cardName").isTextual())) {
+                throw new InvalidCardException("Card Name is not nullable");
             }
-        } catch (Exception e) { //TODO:better use of exception
-            e.printStackTrace();
+            JsonNode cardName = cardNode.path("cardName");
+            if (!(cardNode.path("cardAge").isInt())) {
+                throw new InvalidCardException("Card Age is not nullable");
+            }
+            JsonNode cardAge = cardNode.path("cardAge");
+            JsonNode cardType = cardNode.path("cardType");
+            if (!(cardNode.path("cardType").isTextual())) {
+                throw new InvalidCardException("Card Type is not nullable");
+            }
+            Assets tmpCardAssetsCost = null;
+            if (cardNode.path("cardAssetsCost").isContainerNode()) {
+                JsonNode cardAssetsCost = cardNode.path("cardAssetsCost");
+                tmpCardAssetsCost = parseAssets(cardAssetsCost);
+            }
+
+            ArrayList<ImmediateEffect> immediateEffects = null;
+            if (cardNode.path("cardImmediateEffect").isContainerNode()) {
+                JsonNode cardImmediateEffect = cardNode.path("cardImmediateEffect");
+                immediateEffects = parseImmediateEffect(cardImmediateEffect);
+            }
+            //select the constructor of card in base of the cardType (green,blue,yellow,purple,black)
+            switch (cardType.asText()) {
+                case "greenCard":
+                    Assets tmpGreenHarvestResult = null;
+                    if (cardNode.path("greenHarvestResult").isContainerNode()) {
+                        JsonNode greenHarvestResult = cardNode.path("greenHarvestResult");
+                        tmpGreenHarvestResult = parseAssets(greenHarvestResult);
+                    }
+
+                    Strengths tmpGreenActionStrengths = null;
+                    if (cardNode.path("greenActionStrengths").isContainerNode()) {
+                        JsonNode greenActionStrengths = cardNode.path("greenActionStrengths");
+                        tmpGreenActionStrengths = parseStrengths(greenActionStrengths);
+                    }
+
+                    GreenCard greenCard = new GreenCard(
+                            cardName.asText(),
+                            cardAge.asInt(),
+                            tmpCardAssetsCost,
+                            immediateEffects,
+                            tmpGreenHarvestResult,
+                            tmpGreenActionStrengths
+                    );
+                    cards.get(cardAge.asInt() - 1).get(GREEN_COLOR).add(greenCard);
+                    break;
+                case "yellowCard":
+                    ArrayList<Assets> tmpYellowProductionCostList = new ArrayList<Assets>();
+                    ArrayList<Assets> tmpYellowProductionResultList = new ArrayList<Assets>();
+                    JsonNode yellowProductionNode = cardNode.path("yellowProduction");
+                    Iterator<JsonNode> yellowProductionEffectIterator = yellowProductionNode.getElements();
+
+                    while (yellowProductionEffectIterator.hasNext()) {
+                        yellowProductionNode = yellowProductionEffectIterator.next();
+
+                        if (yellowProductionNode.path("yellowProductionCost").isContainerNode()) {
+                            JsonNode yellowProductionCost = yellowProductionNode.path("yellowProductionCost");
+                            Assets tmpYellowProductionCost = parseAssets(yellowProductionCost);
+                            tmpYellowProductionCostList.add(tmpYellowProductionCost);
+                        }
+
+                        if (yellowProductionNode.path("yellowProductionResult").isContainerNode()) {
+                            JsonNode yellowProductionResult = yellowProductionNode.path("yellowProductionResult");
+                            Assets tmpYellowProductionResult = parseAssets(yellowProductionResult);
+                            tmpYellowProductionCostList.add(tmpYellowProductionResult);
+                        }
+                    }
+
+                    Strengths tmpYellowActionStrengths = null;
+                    if (cardNode.path("yellowActionStrengths").isContainerNode()) {
+                        JsonNode yellowActionStrengths = cardNode.path("yellowActionStrengths");
+                        tmpYellowActionStrengths = parseStrengths(yellowActionStrengths);
+                    }
+
+                    String tmpYellowBonusMultiplier = null;
+                    if (cardNode.path("yellowBonusMultiplier").isTextual()) {//TODO check
+                        tmpYellowBonusMultiplier = cardNode.path("yellowBonusMultiplier").asText();
+                    }
+
+                    YellowCard yellowCard = new YellowCard(
+                            cardName.asText(),
+                            cardAge.asInt(),
+                            tmpCardAssetsCost,
+                            immediateEffects,
+                            tmpYellowProductionCostList,
+                            tmpYellowProductionResultList,
+                            tmpYellowActionStrengths,
+                            tmpYellowBonusMultiplier
+                    );
+                    cards.get(cardAge.asInt() - 1).get(YELLOW_COLOR).add(yellowCard);
+                    break;
+                case "blueCard":
+                    Strengths tmpBluePermanentBonus = null;
+                    if (cardNode.path("bluePermanentBonus").isContainerNode()) {
+                        JsonNode bluePermanentBonus = cardNode.path("bluePermanentBonus");
+                        tmpBluePermanentBonus = parseStrengths(bluePermanentBonus);
+                    }
+
+                    Assets tmpBlueGreenDiscount = null;
+                    if (cardNode.path("blueGreenDiscount").isContainerNode()) {
+                        JsonNode blueGreenDiscount = cardNode.path("blueGreenDiscount");
+                        tmpBlueGreenDiscount = parseAssets(blueGreenDiscount);
+                    }
+
+                    Assets tmpBlueBlueDiscount = null;
+                    if (cardNode.path("blueBlueDiscount").isContainerNode()) {
+                        JsonNode blueBlueDiscount = cardNode.path("blueBlueDiscount");
+                        tmpBlueBlueDiscount = parseAssets(blueBlueDiscount);
+                    }
+
+                    Assets tmpBlueYellowDiscount = null;
+                    if (cardNode.path("blueYellowDiscount").isContainerNode()) {
+                        JsonNode blueYellowDiscount = cardNode.path("blueYellowDiscount");
+                        tmpBlueYellowDiscount = parseAssets(blueYellowDiscount);
+                    }
+
+                    Assets tmpBluePurpleDiscount = null;
+                    if (cardNode.path("bluePurpleDiscount").isContainerNode()) {
+                        JsonNode bluePurpleDiscount = cardNode.path("bluePurpleDiscount");
+                        tmpBluePurpleDiscount = parseAssets(bluePurpleDiscount);
+                    }
+
+                    Assets tmpBlueBlackDiscount = null;
+                    if (cardNode.path("blueBlackDiscount").isContainerNode()) {
+                        JsonNode blueBlackDiscount = cardNode.path("blueBlackDiscount");
+                        tmpBlueBlackDiscount = parseAssets(blueBlackDiscount);
+                    }
+
+                    boolean tmpBlueTowerBonusAllowed = true;
+                    if (cardNode.path("blueTowerBonusAllowed").isBoolean()) { //TODO check
+                        tmpBlueTowerBonusAllowed = cardNode.path("blueTowerBonusAllowed").asBoolean();
+                    }
+
+                    BlueCard blueCard = new BlueCard(
+                            cardName.asText(),
+                            cardAge.asInt(),
+                            tmpCardAssetsCost,
+                            immediateEffects,
+                            tmpBluePermanentBonus,
+                            tmpBlueGreenDiscount,
+                            tmpBlueBlueDiscount,
+                            tmpBlueYellowDiscount,
+                            tmpBluePurpleDiscount,
+                            tmpBlueBlackDiscount,
+                            tmpBlueTowerBonusAllowed
+                    );
+                    cards.get(cardAge.asInt() - 1).get(BLUE_COLOR).add(blueCard);
+                    break;
+                case "purpleCard":
+                    JsonNode purpleEndGameBonus = cardNode.path("purpleEndGameBonus");
+                    Assets tmpPurpleEndGameBonus = parseAssets(purpleEndGameBonus);
+
+                    int tmpPurpleOptionalBattlePointsRequirement = 0;
+                    if (cardNode.path("purpleOptionalBattlePointsRequirement").isInt()) {
+                        tmpPurpleOptionalBattlePointsRequirement = cardNode.path("purpleOptionalBattlePointsRequirement").asInt();
+                    }
+
+                    int tmpPurpleOptionalBattlePointsCost = 0;
+                    if (cardNode.path("purpleOptionalBattlePointsCost").isInt()) {
+                        tmpPurpleOptionalBattlePointsCost = cardNode.path("purpleOptionalBattlePointsCost").asInt();
+                    }
+
+                    PurpleCard purpleCard = new PurpleCard(
+                            cardName.asText(),
+                            cardAge.asInt(),
+                            tmpCardAssetsCost,
+                            immediateEffects,
+                            tmpPurpleEndGameBonus,
+                            tmpPurpleOptionalBattlePointsRequirement,
+                            tmpPurpleOptionalBattlePointsCost
+                    );
+                    cards.get(cardAge.asInt() - 1).get(PURPLE_COLOR).add(purpleCard);
+                    break;
+
+                case "blackCard":
+                    BlackCard blackCard = new BlackCard(
+                            cardName.asText(),
+                            cardAge.asInt(),
+                            tmpCardAssetsCost,
+                            immediateEffects
+                    );
+                    cards.get(cardAge.asInt() - 1).get(BLACK_COLOR).add(blackCard);
+                    break;
+
+                default:
+                    throw new InvalidCardException("Card Type is not recognized");
+             }
         }
+
         return cards;
     }
 
-    public static Assets parseCouncilBonus(String pathToConfiguratorBonusAssetsFile) {
+    public static Assets parseCouncilBonus(String pathToConfiguratorBonusAssetsFile)
+            throws IOException{
         Assets councilBonus = null;
-        try {
-            //read JSon all file data
-            byte[] jsonData = Files.readAllBytes(Paths.get(pathToConfiguratorBonusAssetsFile));
+        //read JSon all file data
+        byte[] jsonData = Files.readAllBytes(Paths.get(pathToConfiguratorBonusAssetsFile));
 
-            //create ObjectMapper instance
-            ObjectMapper objectMapper = new ObjectMapper();
+        //create ObjectMapper instance
+        ObjectMapper objectMapper = new ObjectMapper();
 
-            //create the cardNode and the cardIterator (used for iterating through the JSon's array of card)
-            JsonNode rootNode = objectMapper.readTree(jsonData);
-            JsonNode bonusesNode = rootNode.path("bonuses");
-            councilBonus = parseAssets(bonusesNode.path("councilBonus"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        //create the cardNode and the cardIterator (used for iterating through the JSon's array of card)
+        JsonNode rootNode = objectMapper.readTree(jsonData);
+        JsonNode bonusesNode = rootNode.path("bonuses");
+        councilBonus = parseAssets(bonusesNode.path("councilBonus"));
         return councilBonus;
     }
 
-    public static int parseCouncilFavours(String pathToConfiguratorBonusAssetsFile) {
+    public static int parseCouncilFavours(String pathToConfiguratorBonusAssetsFile)
+            throws IOException{
         int councilFavours = 0;
-        try {
-            //read JSon all file data
-            byte[] jsonData = Files.readAllBytes(Paths.get(pathToConfiguratorBonusAssetsFile));
 
-            //create ObjectMapper instance
-            ObjectMapper objectMapper = new ObjectMapper();
+        //read JSon all file data
+        byte[] jsonData = Files.readAllBytes(Paths.get(pathToConfiguratorBonusAssetsFile));
 
-            //create the cardNode and the cardIterator (used for iterating through the JSon's array of card)
-            JsonNode rootNode = objectMapper.readTree(jsonData);
-            JsonNode bonusesNode = rootNode.path("bonuses");
-            councilFavours = bonusesNode.path("councilFavours").asInt();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        //create ObjectMapper instance
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        //create the cardNode and the cardIterator (used for iterating through the JSon's array of card)
+        JsonNode rootNode = objectMapper.readTree(jsonData);
+        JsonNode bonusesNode = rootNode.path("bonuses");
+        councilFavours = bonusesNode.path("councilFavours").asInt();
+
         return councilFavours;
     }
 
-    public static Assets parseStartingGameBonus (String pathToConfiguratorBonusAssetsFile){
+    public static Assets parseStartingGameBonus (String pathToConfiguratorBonusAssetsFile)
+            throws IOException{
         Assets startingGameBonus = null;
-        try {
-            //read JSon all file data
-            byte[] jsonData = Files.readAllBytes(Paths.get(pathToConfiguratorBonusAssetsFile));
 
-            //create ObjectMapper instance
-            ObjectMapper objectMapper = new ObjectMapper();
+        //read JSon all file data
+        byte[] jsonData = Files.readAllBytes(Paths.get(pathToConfiguratorBonusAssetsFile));
 
-            //create the cardNode and the cardIterator (used for iterating through the JSon's array of card)
-            JsonNode rootNode = objectMapper.readTree(jsonData);
-            JsonNode bonusesNode = rootNode.path("bonuses");
-            startingGameBonus = parseAssets(bonusesNode.path("startingGameBonus"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        //create ObjectMapper instance
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        //create the cardNode and the cardIterator (used for iterating through the JSon's array of card)
+        JsonNode rootNode = objectMapper.readTree(jsonData);
+        JsonNode bonusesNode = rootNode.path("bonuses");
+        startingGameBonus = parseAssets(bonusesNode.path("startingGameBonus"));
         return startingGameBonus;
     }
 
-    public static Excommunication parseSingleExcommunication (JsonNode excommunicationNode){
+    public static Excommunication parseSingleExcommunication (JsonNode excommunicationNode)
+            throws InvalidExcommunicationException{
+        if(!(excommunicationNode.path("excommunicationType").isTextual())){
+            throw new InvalidExcommunicationException("Excommunication Type is not nullable");
+        }
         switch (excommunicationNode.path("excommunicationType").asText()){
             case "assetsMalusExcommunicationType":
                 Assets tmpAssetsMalus = parseAssets(excommunicationNode.path("excommunicationType").path("assetsMalusExcommunicationType"));
-                AssetsExcommunication tmpExcommunicationAssetsMalus = new AssetsExcommunication(tmpAssetsMalus);
-                return tmpExcommunicationAssetsMalus;
+                return new AssetsExcommunication(tmpAssetsMalus);
             case "strengthMalusExcommunication":
                 Strengths tmpStrengthMalus = parseStrengths(excommunicationNode.path("excommunicationType").path("strengthMalusExcommunication"));
-                StrengthsExcommunication tmpExcommunicationStrengthMalus = new StrengthsExcommunication(tmpStrengthMalus);
-                return tmpExcommunicationStrengthMalus;
+                return new StrengthsExcommunication(tmpStrengthMalus);
             case "marketExcommunication":
-                MarketExcommunication tmpExcommunicationMarket = new MarketExcommunication();
-                return tmpExcommunicationMarket;
+                return new MarketExcommunication();
             case "servantsExcommunication":
-                ServantsExcommunication tmpExcommunicationServants = new ServantsExcommunication();
-                return tmpExcommunicationServants;
+                return new ServantsExcommunication();
             case "turnExcommunication":
-                TurnExcommunication tmpExcommunicationTurn = new TurnExcommunication();
-                return tmpExcommunicationTurn;
+                return new TurnExcommunication();
             case "endGameExcommunication":
                 String tmpBlockedCardColor = excommunicationNode.path("excommunicationType").path("endGameExcommunication").asText();
                 Assets tmpProductionCardCostMalus = parseAssets(excommunicationNode.path("excommunicationType").path("productionCardCostMalus"));
-                Assets[] tmpOnAssetsMalus = parseArrayAssets(excommunicationNode.path("excommunicationType").path("onAssetsMalus"));
-                EndGameExcommunication tmpExcommunicationEndGame = new EndGameExcommunication(tmpBlockedCardColor, tmpProductionCardCostMalus, tmpOnAssetsMalus);
-                return tmpExcommunicationEndGame;
+                Assets[] tmpOnAssetsMalus = parseArrayAssets(excommunicationNode.path("excommunicationType").path("onAssetsMalus"),1);//TODO modificare il numero di slot dell'array
+                return new EndGameExcommunication(tmpBlockedCardColor, tmpProductionCardCostMalus, tmpOnAssetsMalus);
             default:
-                Excommunication tmpExcommunication = null;
-                return tmpExcommunication;
+                throw new InvalidExcommunicationException("Excommunication Type is not recognized");
         }
     }
 
-    public static ArrayList<Excommunication> parseArrayExcommunication (JsonNode arrayExcommunicationNode){
+    public static ArrayList<Excommunication> parseArrayExcommunication (JsonNode arrayExcommunicationNode)
+            throws InvalidExcommunicationException {
         ArrayList<Excommunication> tmpArrayExcommunication = new ArrayList<Excommunication>();
         Iterator<JsonNode> arrayExcommunicationIterator = arrayExcommunicationNode.getElements();
         while(arrayExcommunicationIterator.hasNext()){
@@ -605,32 +604,28 @@ public class Parser {
         return tmpArrayExcommunication;
     }
 
-    public static HashMap<Integer, ArrayList<Excommunication>> parseExcommunications (String pathToExcommunicationsConfiguratorFile){
+    public static HashMap<Integer, ArrayList<Excommunication>> parseExcommunications (String pathToExcommunicationsConfiguratorFile)
+            throws IOException, InvalidExcommunicationException {
         HashMap<Integer, ArrayList<Excommunication>> tmpExcommunications = new HashMap<>();
-        try {
-            //read JSon all file data
-            byte[] jsonData = Files.readAllBytes(Paths.get(pathToExcommunicationsConfiguratorFile));
+        //read JSon all file data
+        byte[] jsonData = Files.readAllBytes(Paths.get(pathToExcommunicationsConfiguratorFile));
 
-            //create ObjectMapper instance
-            ObjectMapper objectMapper = new ObjectMapper();
+        //create ObjectMapper instance
+        ObjectMapper objectMapper = new ObjectMapper();
 
-            //create the cardNode and the cardIterator (used for iterating through the JSon's array of card)
-            JsonNode rootNode = objectMapper.readTree(jsonData);
-            JsonNode excommunicationNode = rootNode.path("excommunications");
-            Iterator<JsonNode> excommunicationIterator = excommunicationNode.getElements();
+        //create the cardNode and the cardIterator (used for iterating through the JSon's array of card)
+        JsonNode rootNode = objectMapper.readTree(jsonData);
+        JsonNode excommunicationNode = rootNode.path("excommunications");
+        Iterator<JsonNode> excommunicationIterator = excommunicationNode.getElements();
 
-            //start to parse one by one the card
-            int i = 0;
-            while (excommunicationIterator.hasNext()) {
-                //get all info from file
-                excommunicationNode = excommunicationIterator.next();
-                ArrayList<Excommunication> tmpExcommunicationAge = parseArrayExcommunication (excommunicationNode);
-                i++;
-                tmpExcommunications.put(i, tmpExcommunicationAge);
-            }
-        }
-        catch (Exception e){
-            e.printStackTrace();
+        //start to parse one by one the card
+        int i = 0;
+        while (excommunicationIterator.hasNext()) {
+            //get all info from file
+            excommunicationNode = excommunicationIterator.next();
+            ArrayList<Excommunication> tmpExcommunicationAge = parseArrayExcommunication (excommunicationNode);
+            i++;
+            tmpExcommunications.put(i, tmpExcommunicationAge);
         }
         return tmpExcommunications;
     }
@@ -638,29 +633,21 @@ public class Parser {
     /**
      * TODO:see params and return
      */
-    public static Parser parser(String pathToDirectory) {
+    public static Parser parser(String pathToDirectory)
+            throws IOException, InvalidCardException, InvalidExcommunicationException{
         Parser parser = new Parser();
-
-        try {
-            parser.setCards(cardParser(pathToDirectory + "configuratorCardFile.json"));
-            parser.setBoardAssetsBonuses(boardAssetsParser(pathToDirectory + "configuratorBonusesAssetsFile.json"));
-            parser.setCouncilBonus(parseCouncilBonus(pathToDirectory + "configuratorBonusesAssetsFile.json"));
-            parser.setCouncilFavors(parseCouncilFavours(pathToDirectory + "configuratorBonusesAssetsFile.json"));
-            parser.setStartingGameBonus(parseStartingGameBonus((pathToDirectory + "configuratorBonusesAssetsFile.json")));
-            parser.setExcommunications(parseExcommunications(pathToDirectory + "configuratorExcommunicationsFile.json"));
-        } catch (Exception e) {
-            e.printStackTrace();
-            //TODO: catch all the exception
-        }
-
-        /*ArrayList<Excommunication> excommunications = new ArrayList<>();
-        try {
-            excommunications = excommunicationParser(pathToDirectory + "configuratorExcomunicationFile.txt");
-        }
-        catch (){
-            //TODO: catch all the exception
-        }*/
+        getLog().info("Try to parse Cards from file: " + pathToDirectory + "configuratorCardFile.json");
+        parser.setCards(cardParser(pathToDirectory + "configuratorCardFile.json"));
+        getLog().info("Cards parsed.");
+        getLog().info("Try to parse Assets Bonuses from file: " + pathToDirectory + "configuratorBonusesAssetsFile.json");
+        parser.setBoardAssetsBonuses(boardAssetsParser(pathToDirectory + "configuratorBonusesAssetsFile.json"));
+        parser.setCouncilBonus(parseCouncilBonus(pathToDirectory + "configuratorBonusesAssetsFile.json"));
+        parser.setCouncilFavors(parseCouncilFavours(pathToDirectory + "configuratorBonusesAssetsFile.json"));
+        parser.setStartingGameBonus(parseStartingGameBonus((pathToDirectory + "configuratorBonusesAssetsFile.json")));
+        getLog().info("Assets Bonuses parsed.");
+        getLog().info("Try to parse Excommunication from file: " + pathToDirectory + "configuratorExcommunicationsFile.json");
+        parser.setExcommunications(parseExcommunications(pathToDirectory + "configuratorExcommunicationsFile.json"));
+        getLog().info("Excommunications parsed.");
         return parser;
     }
-
 }
