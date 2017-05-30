@@ -12,7 +12,8 @@ public class Settings {
     public static final int MAX_USERS_NUMBER = 5;
     public static final int FAITH_TRACK_LENGTH = 30;
     public static final int TOWER_HEIGHT = 4;
-
+    public static final int COUNCIL_FAVUORS_TYPES = 5;
+    public static final int MARKET_MAX_SIZE = 5;
     //faith points corresponding to the first excommunication.
     //Following excommunications will be at +1 fp from their previosu
     public static final int FIRST_EXCOMM_FP = 3;
