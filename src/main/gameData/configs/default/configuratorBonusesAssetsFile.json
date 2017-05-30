@@ -5,10 +5,10 @@
       "blueTowerBonus": [ {}, {}, { "stone": 1 }, { "stone": 2 } ],
       "yellowTowerBonus": [ {}, {}, { "battlePoints": 1 }, { "battlePoints": 2 } ],
       "purpleTowerBonus": [ {}, {}, { "coin": 1 }, { "coin": 2 } ],
-      "blackTowerBonus": [ {}, {}, { "wood": 1 }, { "wood": 2 }]
+      "blackTowerBonus": [ {}, {}, { "faithPoints": 1 }, { "faithPoints": 2 }]
     },
     "marketBonus": [
-      {"coin": 5}, {"servants": 5}, {"coin": 2, "battlePoints": 3}, {}
+      {"coin": 5}, {"servants": 5}, {"coin": 2, "battlePoints": 3}, {}, {"faithPoints": 5}
     ],
     "faithBonus": [
       {}, {"victoryPoints": 1}, {"victoryPoints": 2}, {"victoryPoints": 3}, {"victoryPoints": 4},
