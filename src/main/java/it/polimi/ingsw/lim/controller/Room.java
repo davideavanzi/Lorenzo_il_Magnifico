@@ -14,4 +14,8 @@ public class Room {
 
     private GameController gameController;
 
+    private ArrayList<String> playOrder;
+
+
+
 }
