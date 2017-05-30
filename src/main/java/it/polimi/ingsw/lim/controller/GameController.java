@@ -53,6 +53,7 @@ public class GameController {
         game.setUpTurn();
         game.getTower("GREEN").getFloor(1).getCard().printCard();
         game.getCouncil().addFamilyMember(game.getPlayer("HELLONE").pullFamilyMember(ORANGE_COLOR));
+        game.getCouncil().addFamilyMember(game.getPlayer("HOLAONE").pullFamilyMember(ORANGE_COLOR));
         game.getNewPlayerOrder().forEach(pl -> System.out.println(pl));
     }
 
