@@ -2,6 +2,8 @@ package it.polimi.ingsw.lim.network.client.RMI;
 
 import it.polimi.ingsw.lim.network.server.RMI.RMIServerInterf;
 
+import java.net.MalformedURLException;
+import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -12,8 +14,7 @@ import java.rmi.server.UnicastRemoteObject;
  * Created by nico.
  */
 public class RMIClient extends UnicastRemoteObject implements ClientInterf {
-
-    private RMIServerInterf rmiServer;
+    RMIServerInterf rmiServer;
 
     public RMIClient() throws RemoteException {
         super();
@@ -22,11 +23,14 @@ public class RMIClient extends UnicastRemoteObject implements ClientInterf {
     public void connectRMI(String address, int port) throws RemoteException {
         try {
             Registry registry = LocateRegistry.getRegistry(address, port);
-            rmiServer = (RMIServerInterf)registry.lookup("RMIServerInt");
-        } catch (NotBoundException nbe) {
+            rmiServer = (RMIServerInterf)Naming.lookup("rmi://" + address + "/lim");
+            System.out.println("You have been connected in RMI mode.");
+        } catch(NotBoundException nbe) {
             System.out.println("The element is not bound to the registry");
-        } catch (RemoteException re) {
+        } catch(RemoteException re) {
             System.out.println("Could not connect to RMI server");
+        } catch(MalformedURLException mue) {
+            System.out.println("URL unreachable");
         }
     }
 }

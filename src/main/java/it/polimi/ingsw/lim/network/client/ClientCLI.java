@@ -1,21 +1,20 @@
 package it.polimi.ingsw.lim.network.client;
 
+import it.polimi.ingsw.lim.Log;
 import it.polimi.ingsw.lim.network.client.RMI.RMIClient;
 import it.polimi.ingsw.lim.network.client.socket.SocketClient;
 
 import java.rmi.RemoteException;
 import java.util.Scanner;
-import java.util.logging.Level;
-
-import static it.polimi.ingsw.lim.Log.getLog;
 
 /**
  * Created by nico.
+ * This is the client command line interface
  */
 public class ClientCLI {
-    private static String address = "localhost";
+    private static String address = "127.0.0.1";
     private static int socketPort = 8989;
-    private static int RMIPort = 9090;
+    private static int RMIPort = 1099;
 
     private static boolean isClientConnected = false;
 
@@ -59,20 +58,25 @@ public class ClientCLI {
             System.out.println("Please select the connection: [socket / rmi]");
             System.out.print("$ ");
             protocol = userInput.nextLine();
-        } while(!protocol.equalsIgnoreCase("socket") || !protocol.equalsIgnoreCase("rmi"));
+        } while(!(protocol.equalsIgnoreCase("socket") || protocol.equalsIgnoreCase("rmi")));
 
         if (protocol.equalsIgnoreCase("socket")) {
-            System.out.println("Connection to " + address + " port " + socketPort);
-
+            System.out.println("Connecting to " + address + " port " + socketPort + "...");
             SocketClient socketClient = new SocketClient();
             socketClient.connectSocket(address, socketPort);
         } else {
-            System.out.println("Connection to " + address + " port " + RMIPort);
-            // TODO: handle exception
-            //RMIClient rmiClient = new RMIClient();
-            //rmiClient.connectRMI(address, RMIPort);
+            System.out.println("Connecting to " + address + " port " + RMIPort + "...");
+            try {
+                RMIClient rmiClient = new RMIClient();
+                rmiClient.connectRMI(address, RMIPort);
+            } catch (RemoteException e) {
+                //TODO: SISTEMARE
+                Log.getLog().severe("mlmlmlmlmlml");
+                System.out.println(e.getMessage()+e.getStackTrace());
+            }
         }
     }
+
 
     /**
      * Start a cli for client configuration
@@ -80,13 +84,6 @@ public class ClientCLI {
     private void startCLI() {
 
         System.out.println("Welcome to Lorenzo Il Magnifico!");
-        System.out.println();
-        System.out.println("Enter you username: ");
-        System.out.print("$ ");
-        username = userInput.nextLine();
-
-        // TODO: Handle login??
-
         System.out.println();
         System.out.println("Command:");
         System.out.println("set-address <server address>, default localhost");
@@ -105,11 +102,14 @@ public class ClientCLI {
                     break;
                 case "connect":
                     connect();
+                    isClientConnected = true;
                     break;
                 default:
                     System.out.println("Command not found: "+command[0]);
             }
         }
+
+
     }
 
     public static void main (String[] args) {

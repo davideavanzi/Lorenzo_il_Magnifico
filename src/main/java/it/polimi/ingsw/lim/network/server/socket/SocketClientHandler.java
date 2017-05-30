@@ -1,5 +1,7 @@
 package it.polimi.ingsw.lim.network.server.socket;
 
+import it.polimi.ingsw.lim.controller.User;
+
 import static it.polimi.ingsw.lim.Log.*;
 
 import java.io.*;
@@ -10,18 +12,23 @@ import java.util.logging.Level;
  * Created by Nico.
  * This class handles the connection to a socket client.
  */
-public class ClientHandler extends Thread {
-    private Socket socketClient = null;
+public class SocketClientHandler extends Thread {
+
+    private Socket socketClient;
+    private User user;
     private boolean isThreadRunning = true;
+
     private ObjectOutputStream objFromServer;
     private ObjectInputStream objToServer;
 
-    public ClientHandler(Socket socketClient) {
+    SocketClientHandler(Socket socketClient) {
         this.socketClient = socketClient;
+        user = new User();
+
     }
 
     /**
-     *
+     * Simple client handler
      */
     public void run() {
         String commandReceived;
@@ -33,6 +40,7 @@ public class ClientHandler extends Thread {
         } catch (IOException ioe) {
             getLog().log(Level.SEVERE,"Could not open I/O stream", ioe);
         }
+
         while (isThreadRunning) {
             try {
                 // Read incoming command from the client
@@ -81,9 +89,9 @@ public class ClientHandler extends Thread {
         try {
             objToServer.close();
             objFromServer.close();
-            System.out.println("The input and output stream are closed");
+            getLog().log(Level.INFO, "The input and output stream are closed");
             socketClient.close();
-            System.out.println("The server socket is closed");
+            getLog().log(Level.INFO, "The server socket is closed");
         } catch (IOException ioe) {
             getLog().log(Level.SEVERE,"Could not close stream or socket", ioe);
         }
