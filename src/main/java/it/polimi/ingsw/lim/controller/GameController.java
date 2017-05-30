@@ -4,6 +4,9 @@ import it.polimi.ingsw.lim.exceptions.GameSetupException;
 import it.polimi.ingsw.lim.model.Game;
 import it.polimi.ingsw.lim.parser.Parser;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
 import static it.polimi.ingsw.lim.Log.*;
 import static it.polimi.ingsw.lim.Settings.*;
 
@@ -14,6 +17,7 @@ import static it.polimi.ingsw.lim.Settings.*;
 public class GameController {
     private Game game;
 
+
     public static void main(String[] args){
 
         createLogFile();
@@ -22,7 +26,14 @@ public class GameController {
         String defaultPath = "default/";
         getLog().info("Parsing game data from path: "+CONFIGS_PATH+defaultPath);
 
-        Parser parsedGame = Parser.parser(CONFIGS_PATH+defaultPath);
+        //TODO: handle exception in a proper place
+        Parser parsedGame = new Parser();
+        try {
+            parsedGame = Parser.parser(CONFIGS_PATH+defaultPath);
+        } catch (Exception e) {
+            getLog().severe("PARSER ERROR:\n"+e.getMessage());
+        }
+
         getLog().info("Validating game data with current settings.");
         //TODO: how to call validating method?
 
@@ -30,9 +41,9 @@ public class GameController {
         //building game
         getLog().info("Setting up game with parsed data");
         //TODO: add players before setting up the game!;
-        game.addPlayer("CIAONE");
-        game.addPlayer("HELLONE");
-        game.addPlayer("HOLAONE");
+        game.addPlayer("CIAONE", GREEN_COLOR);
+        game.addPlayer("HELLONE", YELLOW_COLOR);
+        game.addPlayer("HOLAONE", BLUE_COLOR);
         try {
             game.setUpGame(parsedGame);
         } catch (GameSetupException e) {
@@ -41,7 +52,8 @@ public class GameController {
         }
         game.setUpTurn();
         game.getTower("GREEN").getFloor(1).getCard().printCard();
-
+        game.getCouncil().addFamilyMember(game.getPlayer("HELLONE").pullFamilyMember(ORANGE_COLOR));
+        game.getNewPlayerOrder().forEach(pl -> System.out.println(pl));
     }
 
     /**
@@ -60,5 +72,11 @@ public class GameController {
         //TODO: implement here
         return true;
     }
+
+    public ArrayList<String> getPlayOrder() {
+        return  game.getNewPlayerOrder();
+    }
+
+
 
 }

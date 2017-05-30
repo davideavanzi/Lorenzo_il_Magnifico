@@ -41,10 +41,16 @@ public class Council {
         return this.favorsAmount;
     }
 
+    public ArrayList<FamilyMember> getFamilyMembers() { return this.slots; }
+
     public Assets getCouncilBonus(){
         return this.councilBonus;
     }
 
+    /**
+     * Add a new family member to the council
+     * @param fm
+     */
     public void addFamilyMember(FamilyMember fm){
         this.slots.add(fm);
     }

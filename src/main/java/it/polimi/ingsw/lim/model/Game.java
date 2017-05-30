@@ -218,8 +218,8 @@ public class Game {
 
 
 
-    public void addPlayer(String nickname) {
-        this.players.add(new Player(nickname));
+    public void addPlayer(String nickname, String color) {
+        this.players.add(new Player(nickname, color));
     }
 
     /**
@@ -246,12 +246,41 @@ public class Game {
         if(towers.get(towerColor).getFloor(floorNumber).isOccupied())
             return false;
         for (int i = 1; i <= TOWER_HEIGHT; i++)
-            if (towers.get(towerColor).getFloor(i).getFamilyMember().getOwnerColor() == fm.getOwnerColor())
+            if (towers.get(towerColor).getFloor(i).getFamilyMember().getOwnerColor() == fm.getOwnerColor() && fm.getDiceColor() != NEUTRAL_COLOR)
                 return false;
         return true;
     }
 
+    /**
+     * This method checks if any player has entered a specified tower
+     * @param towerColor
+     * @return
+     */
+    public boolean isTowerOccupied(String towerColor) {
+        for (int i = 1; i <= TOWER_HEIGHT; i++)
+            if (towers.get(towerColor).getFloor(i).isOccupied())
+                return true;
+        return false;
+    }
+
     public Tower getTower(String color){
         return this.towers.get(color);
+    }
+
+    public ArrayList<String> getNewPlayerOrder() {
+        ArrayList<FamilyMember> fms = council.getFamilyMembers();
+        ArrayList<String> councilPlayers = new ArrayList<>();
+        for (FamilyMember fm : fms) {
+            councilPlayers.add(players.stream().filter(pl -> pl.getColor().equals(fm.getOwnerColor())).findFirst().orElse(null).getNickname());
+        }
+        for (Player pl : this.players) {
+            if (!councilPlayers.contains(pl.getNickname()))
+                councilPlayers.add(pl.getNickname());
+        }
+        return councilPlayers;
+    }
+
+    public Council getCouncil() {
+        return council;
     }
 }
