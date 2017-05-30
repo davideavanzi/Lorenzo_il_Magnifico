@@ -1,7 +1,10 @@
 package it.polimi.ingsw.lim.exceptions;
 
 /**
- * Created by ava on 24/05/17.
+ * Created by FabCars.
  */
 public class InvalidCardException extends Exception {
+    public InvalidCardException (String errorMessage){
+        super(errorMessage);
+    }
 }
