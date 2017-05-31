@@ -174,7 +174,7 @@ public class Parser {
         bonuses.put(BLACK_COLOR, parseArrayAssets(bonusesNode.path(TOWER_BONUS).path(BLACK_TOWER_BONUS), TOWER_HEIGHT));
         bonuses.put(MARKET, parseArrayAssets(bonusesNode.path(MARKET_BONUS), MARKET_MAX_SIZE));
         bonuses.put(FAITH_TRACK, parseArrayAssets(bonusesNode.path(FAITH_BONUS), FAITH_TRACK_LENGTH));
-        bonuses.put(COUNCIL_FAVOUR, parseArrayAssets(bonusesNode.path(COUNCIL_FAVOUT_BONUS), COUNCIL_FAVUORS_TYPES));
+        bonuses.put(COUNCIL_FAVOUR, parseArrayAssets(bonusesNode.path(COUNCIL_FAVOUR_BONUS), COUNCIL_FAVUORS_TYPES));
 
         return bonuses;
     }
@@ -482,24 +482,24 @@ public class Parser {
             if (!(cardNode.path(CARD_NAME).isTextual())) {
                 throw new InvalidCardException("Card Name is not nullable");
             }
-            JsonNode cardName = cardNode.path("cardName");
+            JsonNode cardName = cardNode.path(CARD_NAME);
             if (!(cardNode.path(CARD_AGE).isInt())) {
                 throw new InvalidCardException("Card Age is not nullable");
             }
-            JsonNode cardAge = cardNode.path("cardAge");
-            JsonNode cardType = cardNode.path("cardType");
+            JsonNode cardAge = cardNode.path(CARD_AGE);
+            JsonNode cardType = cardNode.path(CARD_TYPE);
             if (!(cardNode.path(CARD_TYPE).isTextual())) {
                 throw new InvalidCardException("Card Type is not nullable");
             }
             Assets tmpCardAssetsCost = null;
             if (cardNode.path(CARD_ASSETS_COST).isContainerNode()) {
-                JsonNode cardAssetsCost = cardNode.path("cardAssetsCost");
+                JsonNode cardAssetsCost = cardNode.path(CARD_ASSETS_COST);
                 tmpCardAssetsCost = parseAssets(cardAssetsCost);
             }
 
             ArrayList<ImmediateEffect> immediateEffects = null;
             if (cardNode.path(CARD_IMMEDIATE_EFFECT).isContainerNode()) {
-                JsonNode cardImmediateEffect = cardNode.path("cardImmediateEffect");
+                JsonNode cardImmediateEffect = cardNode.path(CARD_IMMEDIATE_EFFECT);
                 immediateEffects = parseImmediateEffect(cardImmediateEffect);
             }
             //select the constructor of card in base of the cardType (green,blue,yellow,purple,black)
@@ -596,10 +596,10 @@ public class Parser {
         }
         switch (excommunicationNode.path(EXCOMMUNICATION_TYPE).asText()){
             case ASSETS_MALUS_EXCOMMUNICATION_TYPE:
-                Assets tmpAssetsMalus = parseAssets(excommunicationNode.path(EXCOMMUNICATION_TYPE).path("assetsMalusExcommunicationType"));
+                Assets tmpAssetsMalus = parseAssets(excommunicationNode.path(EXCOMMUNICATION_TYPE).path(ASSETS_MALUS_EXCOMMUNICATION_TYPE));
                 return new AssetsExcommunication(tmpAssetsMalus);
             case STRENGTH_MALUS_EXCOMMUNICATION:
-                Strengths tmpStrengthMalus = parseStrengths(excommunicationNode.path(EXCOMMUNICATION_TYPE).path("strengthMalusExcommunication"));
+                Strengths tmpStrengthMalus = parseStrengths(excommunicationNode.path(EXCOMMUNICATION_TYPE).path(STRENGTH_MALUS_EXCOMMUNICATION));
                 return new StrengthsExcommunication(tmpStrengthMalus);
             case MARKET_EXCOMMUNICATION:
                 return new MarketExcommunication();
@@ -608,7 +608,7 @@ public class Parser {
             case TURN_EXCOMMUNICATION:
                 return new TurnExcommunication();
             case END_GAME_EXCOMMUNICATION:
-                String tmpBlockedCardColor = excommunicationNode.path(EXCOMMUNICATION_TYPE).path("endGameExcommunication").asText();
+                String tmpBlockedCardColor = excommunicationNode.path(EXCOMMUNICATION_TYPE).path(END_GAME_EXCOMMUNICATION).asText();
                 Assets tmpProductionCardCostMalus = parseAssets
                         (excommunicationNode.path(EXCOMMUNICATION_TYPE).path(PRODUCTION_CARD_COST_MALUS));
                 Assets[] tmpOnAssetsMalus = parseArrayAssets
@@ -663,18 +663,18 @@ public class Parser {
      */
     public Parser parser(String pathToDirectory)
             throws IOException, InvalidCardException, InvalidExcommunicationException{
-        getLog().info("Try to parse Cards from file: " + pathToDirectory + CONFIGURATOR_CARD_FILE_NAME);
-        this.setCards(cardParser(pathToDirectory + CONFIGURATOR_CARD_FILE_NAME));
-        getLog().info("Cards parsed.");
-        getLog().info("Try to parse Assets Bonuses from file: " + pathToDirectory + CONFIGURATOR_BONUS_ASSETS_FILE_NAME);
-        this.setBoardAssetsBonuses(boardAssetsParser(pathToDirectory + CONFIGURATOR_BONUS_ASSETS_FILE_NAME));
-        this.setCouncilBonus(parseCouncilBonus(pathToDirectory + CONFIGURATOR_BONUS_ASSETS_FILE_NAME));
-        this.setCouncilFavors(parseCouncilFavours(pathToDirectory + CONFIGURATOR_BONUS_ASSETS_FILE_NAME));
-        this.setStartingGameBonus(parseStartingGameBonus((pathToDirectory + CONFIGURATOR_BONUS_ASSETS_FILE_NAME)));
-        getLog().info("Assets Bonuses parsed.");
-        getLog().info("Try to parse Excommunication from file: " + pathToDirectory + CONFIGURATOR_EXCOMMUNICATION_FILE_NAME);
-        this.setExcommunications(parseExcommunications(pathToDirectory + CONFIGURATOR_EXCOMMUNICATION_FILE_NAME));
-        getLog().info("Excommunications parsed.");
+        //getLog().info("Try to parse Cards from file: ".concat(pathToDirectory).concat(CONFIGURATOR_CARD_FILE_NAME));
+        this.setCards(cardParser(pathToDirectory.concat(CONFIGURATOR_CARD_FILE_NAME)));
+        //getLog().info("Cards parsed.");
+        //getLog().info("Try to parse Assets Bonuses from file: ".concat(pathToDirectory).concat(CONFIGURATOR_BONUS_ASSETS_FILE_NAME));
+        this.setBoardAssetsBonuses(boardAssetsParser(pathToDirectory.concat(CONFIGURATOR_BONUS_ASSETS_FILE_NAME)));
+        this.setCouncilBonus(parseCouncilBonus(pathToDirectory.concat(CONFIGURATOR_BONUS_ASSETS_FILE_NAME)));
+        this.setCouncilFavors(parseCouncilFavours(pathToDirectory.concat(CONFIGURATOR_BONUS_ASSETS_FILE_NAME)));
+        this.setStartingGameBonus(parseStartingGameBonus(pathToDirectory.concat(CONFIGURATOR_BONUS_ASSETS_FILE_NAME)));
+        //getLog().info("Assets Bonuses parsed.");
+        //getLog().info("Try to parse Excommunication from file: ".concat(pathToDirectory).concat(CONFIGURATOR_EXCOMMUNICATION_FILE_NAME));
+        this.setExcommunications(parseExcommunications(pathToDirectory.concat(CONFIGURATOR_EXCOMMUNICATION_FILE_NAME)));
+        //getLog().info("Excommunications parsed.");
         return this;
     }
 }

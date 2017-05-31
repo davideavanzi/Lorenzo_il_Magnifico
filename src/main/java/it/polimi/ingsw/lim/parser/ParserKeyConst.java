@@ -35,7 +35,7 @@ public class ParserKeyConst {
     public static final String BLACK_TOWER_BONUS = "blackTowerBonus";
     public static final String MARKET_BONUS = "marketBonus";
     public static final String FAITH_BONUS = "faithBonus";
-    public static final String COUNCIL_FAVOUT_BONUS = "councilFavoursBonus";
+    public static final String COUNCIL_FAVOUR_BONUS = "councilFavoursBonus";
 
     public static final String ACTION_EFFECT = "actionEffect";
     public static final String ACTION_EFFECT_STRENGTH = "actionEffectStrength";
