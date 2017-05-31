@@ -2,7 +2,6 @@ package it.polimi.ingsw.lim.network.server;
 
 import static it.polimi.ingsw.lim.Log.*;
 
-import com.sun.org.apache.regexp.internal.RE;
 import it.polimi.ingsw.lim.network.server.RMI.RMIServer;
 import it.polimi.ingsw.lim.network.server.socket.SocketServer;
 import java.io.IOException;
@@ -18,7 +17,7 @@ class ServerCLI {
     private static boolean isServerStarted = false;
 
     private static int socketPort = 8989;
-    private static int RMIPort = 9090;
+    private static int RMIPort = 1099;
 
     private static boolean socketEnable = true;
     private static boolean RMIEnable = true;

@@ -2,6 +2,8 @@ package it.polimi.ingsw.lim.network.server.RMI;
 
 import it.polimi.ingsw.lim.Log;
 
+import java.net.MalformedURLException;
+import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -15,15 +17,8 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
 
     public RMIServer() throws RemoteException {}
 
-    /**
-     * Start RMI Server.
-     * @param port number of RMI server
-     * @throws RemoteException
-     */
-    public void RMIServerStart(int port) throws RemoteException {
-        Registry registry = createRegistry(port);
-        RMIServerInterf rmiInt = this;
-        registry.rebind("RMIServInt", rmiInt);
+    public void login(String name) {
+        Log.getLog().info("CLIENT CONNECTED TO SERVER WITH NAME: "+name);
     }
 
     /**
@@ -43,5 +38,22 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
             System.out.println("RMI Registry loaded");
         }
         return reg;
+    }
+
+    /**
+     * Start RMI Server
+     * @param port number of RMI server
+     * @throws RemoteException
+     */
+    public void RMIServerStart(int port) throws RemoteException {
+        try {
+            Registry registry = createRegistry(port);
+            RMIServerInterf rmiInt = this;
+            Naming.rebind("lim", rmiInt);
+        } catch(RemoteException re) {
+            Log.getLog().log(Level.SEVERE, "Could not deploy RMI server", re);
+        } catch(MalformedURLException mue) {
+            Log.getLog().log(Level.SEVERE, "URL unreachable", mue);
+        }
     }
 }

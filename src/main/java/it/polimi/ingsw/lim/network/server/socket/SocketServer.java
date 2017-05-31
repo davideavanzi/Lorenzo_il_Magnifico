@@ -48,9 +48,9 @@ public class SocketServer implements Runnable {
     public void run() {
         while(isServerRunning) {
             try {
-                System.out.println("Waiting for a client...");
+                System.out.println("[SOCKET]: Waiting for a client...");
                 Socket clientSck = serverSck.accept();
-                ClientHandler clientSckThread = new ClientHandler(clientSck);
+                SocketClientHandler clientSckThread = new SocketClientHandler(clientSck);
                 clientSckThread.start();
             } catch (IOException ioe) {
                 getLog().log(Level.SEVERE,"Could not create a new thread", ioe);

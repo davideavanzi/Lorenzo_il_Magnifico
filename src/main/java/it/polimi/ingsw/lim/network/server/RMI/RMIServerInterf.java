@@ -7,6 +7,6 @@ import java.rmi.*;
  */
 public interface RMIServerInterf extends Remote {
 
-    // List of declaration of method
+    public void login(String name) throws RemoteException;
 
 }
