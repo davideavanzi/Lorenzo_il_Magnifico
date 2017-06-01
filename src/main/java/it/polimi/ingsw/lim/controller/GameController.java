@@ -29,7 +29,7 @@ public class GameController {
         //TODO: handle exception in a proper place
         Parser parsedGame = new Parser();
         try {
-            parsedGame = Parser.parser(CONFIGS_PATH+defaultPath);
+            parsedGame.parser(CONFIGS_PATH+defaultPath);
         } catch (Exception e) {
             getLog().severe("PARSER ERROR:\n"+e.getMessage());
         }
