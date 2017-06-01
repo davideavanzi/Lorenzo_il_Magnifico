@@ -1,7 +1,6 @@
 package it.polimi.ingsw.lim.network.server.socket;
 
 import it.polimi.ingsw.lim.controller.User;
-import it.polimi.ingsw.lim.network.server.AbstractServer;
 
 import static it.polimi.ingsw.lim.Log.*;
 
@@ -24,7 +23,7 @@ public class SocketClientHandler extends AbstractServer implements Runnable{
 
     SocketClientHandler(Socket socketClient) {
         this.socketClient = socketClient;
-        //user = new User();
+
 
     }
 

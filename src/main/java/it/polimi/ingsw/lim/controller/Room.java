@@ -12,18 +12,18 @@ import java.util.ArrayList;
  */
 public class Room extends UnicastRemoteObject {
 
-    private int roomIndex;
-    private ArrayList<User> users;
+    private String roomName;
     private GameController gameController;
     private boolean roomStatus = true; // room open
+    private static ArrayList<User> usersList;
 
-    public Room(int index) throws RemoteException {
-        roomIndex = index;
-        users = new ArrayList<>();
+    public Room(String name) throws RemoteException {
+        roomName = name;
+        usersList = new ArrayList<>();
     }
 
     public void addUser(User user) {
-        this.users.add(user);
+        this.usersList.add(user);
         Log.getLog().info("Adding user "+user.toString()+" to room");
     }
 
@@ -31,4 +31,7 @@ public class Room extends UnicastRemoteObject {
 
 
 
+    public static ArrayList<User> getUsersList() {
+        return usersList;
+    }
 }
