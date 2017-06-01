@@ -23,7 +23,7 @@ public class SocketClientHandler extends Thread {
 
     SocketClientHandler(Socket socketClient) {
         this.socketClient = socketClient;
-        user = new User();
+        //user = new User();
 
     }
 
