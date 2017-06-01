@@ -1,5 +1,6 @@
 package it.polimi.ingsw.lim.network.client.RMI;
 
+import it.polimi.ingsw.lim.network.client.MainClientInterface;
 import it.polimi.ingsw.lim.network.server.RMI.RMIServerInterf;
 
 import java.net.MalformedURLException;
@@ -13,11 +14,19 @@ import java.rmi.server.UnicastRemoteObject;
 /**
  * Created by nico.
  */
-public class RMIClient extends UnicastRemoteObject implements ClientInterf {
+public class RMIClient extends UnicastRemoteObject implements MainClientInterface, RMIClientInterf {
     RMIServerInterf rmiServer;
 
     public RMIClient() throws RemoteException {
         super();
+    }
+
+    public void createLobby(String roomName) throws RemoteException {
+        rmiServer.createRoom(roomName, this);
+    }
+
+    public void joinFirstRoom() {
+
     }
 
     public void connectRMI(String address, int port) throws RemoteException {

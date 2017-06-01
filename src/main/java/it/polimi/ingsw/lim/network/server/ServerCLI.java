@@ -2,10 +2,12 @@ package it.polimi.ingsw.lim.network.server;
 
 import static it.polimi.ingsw.lim.Log.*;
 
+import it.polimi.ingsw.lim.controller.Room;
 import it.polimi.ingsw.lim.network.server.RMI.RMIServer;
 import it.polimi.ingsw.lim.network.server.socket.SocketServer;
 import java.io.IOException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.Level;
 
@@ -13,18 +15,65 @@ import java.util.logging.Level;
  * Created by nico.
  * This is the server command line interface
  */
-class ServerCLI {
-    private static boolean isServerStarted = false;
+public class ServerCLI {
+    private int socketPort = 8989;
+    private int RMIPort = 1099;
+    private boolean isServerStarted = false;
+    private boolean socketEnable = true;
+    private boolean RMIEnable = true;
+    private static ArrayList<Room> roomList;
 
-    private static int socketPort = 8989;
-    private static int RMIPort = 1099;
-
-    private static boolean socketEnable = true;
-    private static boolean RMIEnable = true;
-
-    public ServerCLI() {
+    private ServerCLI() {
         createLogFile();
+        roomList = new ArrayList<>();
+
         //TODO: Load configuration
+    }
+
+    /**
+     * @return the roomList's ArrayList
+     */
+    public static ArrayList<Room> getRoomList() {
+        return roomList;
+    }
+
+    /**
+     * Start a cli for server configuration
+     */
+    private void startCLI() {
+        Scanner input = new Scanner(System.in);
+        String[] command;
+
+        System.out.println("Welcome to the Lorenzo's Server CLI!");
+        System.out.println();
+        System.out.println("Command:");
+        System.out.println("set-port <protocol> <port>");
+        System.out.println("enable   <protocol>");
+        System.out.println("disable  <protocol>");
+        System.out.println("start");
+        System.out.println();
+
+        while(!isServerStarted) {
+            System.out.print("$ ");
+            command = input.nextLine().split(" ");
+            switch (command[0]) {
+                case "set-port":
+                    setPort(command[1], command[2]);
+                    break;
+                case "enable":
+                    enableProtocol(command[1]);
+                    break;
+                case "disable":
+                    disableProtocol(command[1]);
+                    break;
+                case "start":
+                    startServer();
+                    isServerStarted = true;
+                    break;
+                default:
+                    System.out.println("Command not found: "+command[0]);
+            }
+        }
     }
 
     /**
@@ -97,45 +146,6 @@ class ServerCLI {
                 rmiServer.RMIServerStart(RMIPort);
             } catch (RemoteException re) {
                 getLog().log(Level.SEVERE, "Could not deploy RMI server", re);
-            }
-        }
-    }
-
-    /**
-     * Start a cli for server configuration
-     */
-    private void startCLI() {
-        Scanner input = new Scanner(System.in);
-        String[] command;
-
-        System.out.println("Welcome to the Lorenzo's Server CLI!");
-        System.out.println();
-        System.out.println("Command:");
-        System.out.println("set-port <protocol> <port>");
-        System.out.println("enable   <protocol>");
-        System.out.println("disable  <protocol>");
-        System.out.println("start");
-        System.out.println();
-
-        while(!isServerStarted) {
-            System.out.print("$ ");
-            command = input.nextLine().split(" ");
-            switch (command[0]) {
-                case "set-port":
-                    setPort(command[1], command[2]);
-                    break;
-                case "enable":
-                    enableProtocol(command[1]);
-                    break;
-                case "disable":
-                    disableProtocol(command[1]);
-                    break;
-                case "start":
-                    startServer();
-                    isServerStarted = true;
-                    break;
-                default:
-                    System.out.println("Command not found: "+command[0]);
             }
         }
     }

@@ -53,7 +53,7 @@ public class ClientCLI {
      * Choose the connection protocol and connect to the server
      */
     private void connect() {
-        String protocol;
+        String protocol, message = "Stanza_1";
         do {
             System.out.println("Please select the connection: [socket / rmi]");
             System.out.print("$ ");
@@ -69,6 +69,8 @@ public class ClientCLI {
             try {
                 RMIClient rmiClient = new RMIClient();
                 rmiClient.connectRMI(address, RMIPort);
+                System.out.println("Connesso con rmi");
+                rmiClient.createLobby(message);
             } catch (RemoteException e) {
                 //TODO: SISTEMARE
                 Log.getLog().severe("mlmlmlmlmlml");
