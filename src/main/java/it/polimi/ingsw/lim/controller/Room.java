@@ -1,8 +1,7 @@
 package it.polimi.ingsw.lim.controller;
 
-import it.polimi.ingsw.lim.network.client.RMI.ClientInterf;
-import it.polimi.ingsw.lim.network.server.socket.SocketClientHandler;
 
+import it.polimi.ingsw.lim.Log;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -21,6 +20,11 @@ public class Room extends UnicastRemoteObject {
     public Room(int index) throws RemoteException {
         roomIndex = index;
         users = new ArrayList<>();
+    }
+
+    public void addUser(User user) {
+        this.users.add(user);
+        Log.getLog().info("Adding user "+user.toString()+" to room");
     }
 
     private ArrayList<String> playOrder;

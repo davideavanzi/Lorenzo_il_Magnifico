@@ -4,7 +4,7 @@ import it.polimi.ingsw.lim.exceptions.GameSetupException;
 import it.polimi.ingsw.lim.model.Game;
 import it.polimi.ingsw.lim.parser.Parser;
 
-import java.io.IOException;
+
 import java.util.ArrayList;
 
 import static it.polimi.ingsw.lim.Log.*;
