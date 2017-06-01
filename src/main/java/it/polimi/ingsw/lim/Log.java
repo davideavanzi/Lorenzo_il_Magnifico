@@ -14,11 +14,10 @@ import static it.polimi.ingsw.lim.Settings.LOG_PATH;
  */
 
 public class Log {
-    private static final Logger log = Logger.getLogger(Log.class.getName());
+    private static Logger log = Logger.getLogger(Log.class.getName());
 
     /**
      * Create log file.
-     *
      * @throws IOException
      */
     public static void createLogFile() {
@@ -36,7 +35,6 @@ public class Log {
 
     /**
      * Return the Logger object.
-     *
      * @return
      */
     public static Logger getLog() {

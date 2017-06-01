@@ -1,30 +1,25 @@
 package it.polimi.ingsw.lim.controller;
 
-import it.polimi.ingsw.lim.network.client.RMI.ClientInterf;
-import it.polimi.ingsw.lim.network.server.socket.SocketClientHandler;
-
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
-/**
- * Created by Davide on 26/05/2017.
+/** * Created by Davide on 26/05/2017.
  * This class represents a game room.
  */
 public class Room extends UnicastRemoteObject {
 
-    private int roomIndex;
-    private ArrayList<User> users;
+    private String roomName;
     private GameController gameController;
     private boolean roomStatus = true; // room open
+    private static ArrayList<User> usersList;
 
-    public Room(int index) throws RemoteException {
-        roomIndex = index;
-        users = new ArrayList<>();
+    public Room(String name) throws RemoteException {
+        roomName = name;
+        usersList = new ArrayList<>();
     }
 
-    private ArrayList<String> playOrder;
-
-
-
+    public static ArrayList<User> getUsersList() {
+        return usersList;
+    }
 }
