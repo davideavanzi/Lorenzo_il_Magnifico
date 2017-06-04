@@ -27,6 +27,20 @@ public class Assets {
     }
 
     /**
+     * Copy constructor. this constructor creates a new copy of the one given.
+     * @param copy the object to copy
+     */
+    public Assets(Assets copy) {
+        this(copy.getCoins(),
+                copy.getWood(),
+                copy.getStone(),
+                copy.getServants(),
+                copy.getFaithPoints(),
+                copy.getBattlePoints(),
+                copy.getVictoryPoints());
+    }
+
+    /**
      * This integer represents the amount of coins in the object
      */
     private int coins;
@@ -75,6 +89,39 @@ public class Assets {
         sum.battlePoints = this.battlePoints + operand.getBattlePoints();
         sum.victoryPoints = this.victoryPoints + operand.getVictoryPoints();
         return sum;
+    }
+
+    public Assets subtract(Assets operand) {
+        Assets diff = new Assets();
+        diff.coins = this.coins - operand.getCoins();
+        diff.wood = this.wood - operand.getWood();
+        diff.stone = this.stone - operand.getStone();
+        diff.servants = this.servants - operand.getServants();
+        diff.faithPoints = this.faithPoints - operand.getFaithPoints();
+        diff.battlePoints = this.battlePoints - operand.getBattlePoints();
+        diff.victoryPoints = this.victoryPoints - operand.getVictoryPoints();
+        return diff;
+    }
+
+    public boolean isGreaterOrEqual(Assets operand) {
+        return (this.coins >= operand.getCoins() &&
+                this.wood >= operand.getWood() &&
+                this.stone >= operand.getStone() &&
+                this.servants >= operand.getServants() &&
+                this.faithPoints >= operand.getFaithPoints() &&
+                this.battlePoints >= operand.getFaithPoints() &&
+                this.victoryPoints >= operand.getVictoryPoints()
+        );
+    }
+
+    public boolean isNegative() {
+        return (this.coins < 0 &&
+                this.wood < 0 &&
+                this.stone < 0 &&
+                this.servants < 0 &&
+                this.faithPoints < 0 &&
+                this.battlePoints < 0 &&
+                this.victoryPoints < 0);
     }
 
     /**

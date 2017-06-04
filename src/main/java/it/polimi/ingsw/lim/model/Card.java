@@ -65,4 +65,6 @@ public abstract class Card {
             }
     }
 
+    public Assets getCost () { return this.cost; }
+
 }

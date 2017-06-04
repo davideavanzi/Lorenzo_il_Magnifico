@@ -1,6 +1,7 @@
 package it.polimi.ingsw.lim.controller;
 
 import it.polimi.ingsw.lim.exceptions.GameSetupException;
+import it.polimi.ingsw.lim.model.FamilyMember;
 import it.polimi.ingsw.lim.model.Game;
 import it.polimi.ingsw.lim.parser.Parser;
 
@@ -74,6 +75,20 @@ public class GameController {
 
     public ArrayList<String> getPlayOrder() {
         return  game.getNewPlayerOrder();
+    }
+
+    /**
+     * This methods moves a family member in a tower, checking if the action is legal.
+     * @param fm
+     * @param towerColor
+     * @param floor
+     * TODO: do we have to split the checkings from the actual move?
+     */
+    public void moveInTower (FamilyMember fm, String towerColor, int floor) {
+        /* TODO: implement
+        if(this.game.isTowerMoveAllowed(towerColor, floor, fm)){
+            if(this.game.isTowerMoveAffordable(towerColor, floor, fm))
+        } */
     }
 
 

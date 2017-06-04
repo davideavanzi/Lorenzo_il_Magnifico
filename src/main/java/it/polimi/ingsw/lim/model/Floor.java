@@ -28,9 +28,11 @@ public class Floor {
     private FamilyMember familyMemberSlot;
 
     /**
-     * The strength required to perform this action (enter this floor)
+     * The strength required to perform this action (enter this floor).
+     * This is not a "Strength" type because the tower corresponding to this specified action is implicit
+     * as the floor is part of that tower.
      */
-    private Strengths actionCost;
+    private int actionCost;
 
     /**
      * @return
@@ -63,5 +65,7 @@ public class Floor {
     public Card getCard(){
         return this.cardSlot;
     }
+
+    public int getActionCost() { return this.actionCost; }
 
 }

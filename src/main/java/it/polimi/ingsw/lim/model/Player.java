@@ -5,6 +5,7 @@ import static it.polimi.ingsw.lim.Log.getLog;
 
 /**
  * Player are indexed by nickname, which corresponds to he user that is playing, and that username is unique
+ * TODO: map family members with an hashmap?
  */
 public class Player {
 
@@ -113,6 +114,10 @@ public class Player {
 
     public FamilyMember pullFamilyMember(String color) {
         return this.familyMembers.stream().filter(fm -> fm.getDiceColor().equals(color)).findFirst().orElse(null);
+    }
+
+    public boolean isTowerBonusAllowed() {
+        return this.towerBonusAllowed;
     }
 
 
