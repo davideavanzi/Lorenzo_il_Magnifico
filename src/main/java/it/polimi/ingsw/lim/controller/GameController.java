@@ -4,7 +4,6 @@ import it.polimi.ingsw.lim.exceptions.GameSetupException;
 import it.polimi.ingsw.lim.model.Game;
 import it.polimi.ingsw.lim.parser.Parser;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import static it.polimi.ingsw.lim.Log.*;
@@ -48,13 +47,12 @@ public class GameController {
             game.setUpGame(parsedGame);
         } catch (GameSetupException e) {
             getLog().severe(e.getMessage());
-            e.printStackTrace();
         }
         game.setUpTurn();
         game.getTower("GREEN").getFloor(1).getCard().printCard();
         game.getCouncil().addFamilyMember(game.getPlayer("HELLONE").pullFamilyMember(ORANGE_COLOR));
         game.getCouncil().addFamilyMember(game.getPlayer("HOLAONE").pullFamilyMember(ORANGE_COLOR));
-        game.getNewPlayerOrder().forEach(pl -> System.out.println(pl));
+        //game.getNewPlayerOrder().forEach(pl -> System.out.println(pl));
     }
 
     /**
