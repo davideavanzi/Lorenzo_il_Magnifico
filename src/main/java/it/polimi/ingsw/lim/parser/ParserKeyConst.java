@@ -40,7 +40,6 @@ public class ParserKeyConst {
     public static final String ACTION_EFFECT = "actionEffect";
     public static final String ACTION_EFFECT_STRENGTH = "actionEffectStrength";
     public static final String ACTION_EFFECT_ASSETS = "actionEffectAssets";
-    public static final String ACTION_EFFECT_BONUS = "assetsEffectBonus";
     public static final String ASSETS_EFFECT = "assetsEffect";
     public static final String ASSETS_EFFECT_BONUS = "assetsEffectBonus";
     public static final String COUNCIL_FAVOURS_EFFECT_AMOUNT = "councilFavorsEffectAmount";

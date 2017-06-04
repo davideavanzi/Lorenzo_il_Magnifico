@@ -1,9 +1,7 @@
 package it.polimi.ingsw.lim.controller;
 
-import it.polimi.ingsw.lim.network.client.RMI.ClientInterf;
+import it.polimi.ingsw.lim.network.client.RMI.RMIClientInterf;
 import it.polimi.ingsw.lim.network.server.socket.SocketClientHandler;
-
-import java.rmi.server.UnicastRemoteObject;
 
 /**
  * Created by Davide on 26/05/2017.
@@ -15,7 +13,7 @@ public class User {
     private String username;
     private String password;
     private SocketClientHandler sch;
-    private ClientInterf ci;
+    private RMIClientInterf rci;
 
     /**
      * Socket user constructor
@@ -27,9 +25,16 @@ public class User {
 
     /**
      * RMI user constructor
-     * @param ci
+     * @param rci
      */
-    public User(ClientInterf ci) {
-        this.ci = ci;
+    public User(RMIClientInterf rci) {
+        this.rci = rci;
+    }
+
+    /**
+     * @return the username
+     */
+    public String getUsername() {
+        return username;
     }
 }

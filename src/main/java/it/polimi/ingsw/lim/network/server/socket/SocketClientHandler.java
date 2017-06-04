@@ -1,6 +1,7 @@
 package it.polimi.ingsw.lim.network.server.socket;
 
 import it.polimi.ingsw.lim.controller.User;
+import it.polimi.ingsw.lim.network.server.AbstractServer;
 
 import static it.polimi.ingsw.lim.Log.*;
 
@@ -12,7 +13,7 @@ import java.util.logging.Level;
  * Created by Nico.
  * This class handles the connection to a socket client.
  */
-public class SocketClientHandler extends Thread {
+public class SocketClientHandler extends AbstractServer implements Runnable{
 
     private Socket socketClient;
     private User user;
@@ -23,7 +24,7 @@ public class SocketClientHandler extends Thread {
 
     SocketClientHandler(Socket socketClient) {
         this.socketClient = socketClient;
-        //user = new User();
+
 
     }
 
@@ -96,4 +97,15 @@ public class SocketClientHandler extends Thread {
             getLog().log(Level.SEVERE,"Could not close stream or socket", ioe);
         }
     }
+
+    public void tellToClient(String message) {
+        try {
+            objFromServer.writeObject(message);
+        } catch (Exception e) {
+            //TODO: DAJE COSTE EXCEPTION
+            e.printStackTrace();
+        }
+
+    }
+
 }
