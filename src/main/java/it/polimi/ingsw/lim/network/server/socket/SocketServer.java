@@ -50,8 +50,11 @@ public class SocketServer implements Runnable {
             try {
                 System.out.println("[SOCKET]: Waiting for a client...");
                 Socket clientSck = serverSck.accept();
-                SocketClientHandler clientSckThread = new SocketClientHandler(clientSck);
-                clientSckThread.start();
+                //SocketClientHandler clientSckThread = new SocketClientHandler(clientSck);
+                //clientSckThread.start();
+
+                new  Thread(new SocketClientHandler(clientSck)).start();
+
             } catch (IOException ioe) {
                 getLog().log(Level.SEVERE,"Could not create a new thread", ioe);
             }

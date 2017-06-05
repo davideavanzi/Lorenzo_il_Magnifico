@@ -17,6 +17,7 @@ public class Settings {
     //faith points corresponding to the first excommunication.
     //Following excommunications will be at +1 fp from their previosu
     public static final int FIRST_EXCOMM_FP = 3;
+    public static final int COINS_TO_ENTER_OCCUPIED_TOWER = 3;
 
     //We can add more cards and decide how long will the game be
     public static final int TURNS_PER_AGE = 2;

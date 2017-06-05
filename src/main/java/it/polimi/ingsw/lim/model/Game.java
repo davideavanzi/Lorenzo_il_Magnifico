@@ -1,6 +1,7 @@
 package it.polimi.ingsw.lim.model;
 import it.polimi.ingsw.lim.exceptions.GameSetupException;
 import it.polimi.ingsw.lim.parser.Parser;
+import org.codehaus.jackson.annotate.JsonTypeInfo;
 
 import java.util.*;
 import static it.polimi.ingsw.lim.Settings.*;
@@ -210,10 +211,14 @@ public class Game {
     public int getTurn() { return  this.turn; }
     public ArrayList<Player> getPlayers(){ return this.players; }
 
-    //TODO: This seems not to work
+
     public Player getPlayer(String nickname) {
         getLog().info("Getting player "+nickname+" from "+players.size()+" Players.");
         return players.stream().filter(pl -> pl.getNickname().equals(nickname)).findFirst().orElse(null);
+    }
+
+    public Player getPlayerFromColor(String color) {
+        return players.stream().filter(pl -> pl.getColor().equals(color)).findFirst().orElse(null);
     }
 
 
@@ -239,16 +244,45 @@ public class Game {
 
     /**
      * This method checks if a player is able to put a family member in a tower on a specified floor.
+     * it checks if that floor is occupied, if there are others family members of that player in the tower and
+     * if the player has enough strength to perform the action
      * @param towerColor
      * @param floorNumber
+     * @param fm the family member performing the action
+     * @param strength all the bonuses and maluses except the family member
      */
-    public boolean isTowerMoveAllowed(String towerColor, int floorNumber, FamilyMember fm) {
+    public boolean isTowerMoveAllowed(String towerColor, int floorNumber, FamilyMember fm, Strengths strength) {
         if(towers.get(towerColor).getFloor(floorNumber).isOccupied())
             return false;
         for (int i = 1; i <= TOWER_HEIGHT; i++)
             if (towers.get(towerColor).getFloor(i).getFamilyMember().getOwnerColor() == fm.getOwnerColor() && fm.getDiceColor() != NEUTRAL_COLOR)
                 return false;
+        if(towers.get(towerColor).getFloor(floorNumber).getActionCost() > this.dice.get(fm.getDiceColor() + strength.getTowerStrength(towerColor)))
+            return false;
         return true;
+    }
+
+    /**
+     * This method checks if a specified move into a tower is affordable by the player performing the move.
+     * TODO: add malus count while entering tower from excomm.
+     * @param towerColor
+     * @param floorNumber
+     * @param fm
+     * @return
+     */
+    public boolean isTowerMoveAffordable(String towerColor, int floorNumber, FamilyMember fm) {
+        Floor destination = this.getTower(towerColor).getFloor(floorNumber);
+        Assets cardCost = destination.getCard().getCost();
+        Assets additionalCost = new Assets();
+        Assets playerAssets = new Assets(this.getPlayerFromColor(fm.getOwnerColor()).getResources());
+        additionalCost.addCoins(COINS_TO_ENTER_OCCUPIED_TOWER);
+        if (this.isTowerOccupied(towerColor) && playerAssets.subtract(additionalCost).isNegative())
+            return false;
+        if (this.getPlayerFromColor(fm.getOwnerColor()).isTowerBonusAllowed())
+            playerAssets.add(destination.getInstantBonus());
+        if (playerAssets.isGreaterOrEqual(cardCost))
+            return true;
+        return false;
     }
 
     /**
@@ -263,9 +297,11 @@ public class Game {
         return false;
     }
 
+
     public Tower getTower(String color){
         return this.towers.get(color);
     }
+
 
     public ArrayList<String> getNewPlayerOrder() {
         ArrayList<FamilyMember> fms = council.getFamilyMembers();
