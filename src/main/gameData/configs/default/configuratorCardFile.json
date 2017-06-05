@@ -586,6 +586,132 @@
         "purpleEndGameBonus": {
           "victoryPoints": 4
         }
+      },
+      {
+        "cardName": "incendiare l'accampamento nemico",
+        "cardAge": 1,
+        "cardType": "blackCard",
+        "cardAssetsCost":{
+          "wood": 1,
+          "faithPoints": 1
+        },
+        "cardImmediateEffect": {
+          "assetsEffect":{
+            "servants": 1,
+            "battlePoints": 2,
+            "victoryPoints": 1
+          }
+        }
+      },
+      {
+        "cardName": "Sacco della cappella",
+        "cardAge": 1,
+        "cardType": "blackCard",
+        "cardAssetsCost":{
+          "faithPoints": 1
+        },
+        "cardImmediateEffect": {
+          "assetsEffect":{
+            "stone": 2,
+            "wood": 2
+          }
+        }
+      },
+      {
+        "cardName": "Assecondare il generale",
+        "cardAge": 1,
+        "cardType": "blackCard",
+        "cardAssetsCost":{
+          "battlePoints": 1,
+          "faithPoints": 1
+        },
+        "cardImmediateEffect": {
+          "actionEffect":{
+            "actionEffectStrength": {
+              "greenBonus": 2,
+              "blueBonus": 2,
+              "yellowBonus": 2,
+              "purpleBonus": 2,
+              "blackBonus": 2
+            }
+          },
+          "councilFavoursEffectAmount": 1
+        }
+      },
+      {
+        "cardName": "Vendere gli schiavi",
+        "cardAge": 1,
+        "cardType": "blackCard",
+        "cardAssetsCost":{
+          "servants": 1,
+          "faithPoints": 1
+        },
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "coin": 7
+          }
+        }
+      },
+      {
+        "cardName": "Comprare gli schiavi",
+        "cardAge": 1,
+        "cardType": "blackCard",
+        "cardAssetsCost":{
+          "coin": 1,
+          "faithPoints": 1
+
+        },
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "servants": 7
+          }
+        }
+      },
+      {
+        "cardName": "Rapire la Nipote dell'Imperatore",
+        "cardAge": 1,
+        "cardType": "blackCard",
+        "cardAssetsCost":{
+          "battlePoints": 2,
+          "faithPoints": 1
+        },
+        "cardImmediateEffect": {
+          "councilFavoursEffectAmount": 2
+        }
+      },
+      {
+        "cardName": "Tradire il Sacerdote",
+        "cardAge": 1,
+        "cardType": "blackCard",
+        "cardAssetsCost": {
+          "faithPoints": 1
+        },
+        "cardImmediateEffect": {
+          "actionEffect": {
+            "actionEffectStrength": {
+              "greenBonus": 3,
+              "blueBonus": 3,
+              "yellowBonus": 3,
+              "purpleBonus": 3,
+              "blackBonus": 3
+            }
+          }
+        }
+      },
+      {
+        "cardName": "Corrompere il Messo Papale",
+        "cardAge": 1,
+        "cardType": "blackCard",
+        "cardAssetsCost":{
+          "coin":1,
+          "faithPoints": 1
+        },
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "wood": 3,
+            "stone":3
+          }
+        }
       }
     ]
 }
