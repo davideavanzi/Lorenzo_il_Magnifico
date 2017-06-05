@@ -12,22 +12,19 @@ import java.util.ArrayList;
  */
 public class Room extends UnicastRemoteObject {
 
-    private String roomName;
-    private GameController gameController;
+    private transient GameController gameController;
     private boolean roomStatus = true; // room open
     private static ArrayList<User> usersList;
+    private ArrayList<String> playOrder;
 
     public Room(String name) throws RemoteException {
-        roomName = name;
         usersList = new ArrayList<>();
     }
 
     public void addUser(User user) {
         this.usersList.add(user);
-        Log.getLog().info("Adding user "+user.toString()+" to room");
+        Log.getLog().info("Adding user "+user+" to room");
     }
-
-    private ArrayList<String> playOrder;
 
 
 
