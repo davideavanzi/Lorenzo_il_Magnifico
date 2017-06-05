@@ -681,7 +681,6 @@ public class Parser {
                 return new AssetsExcommunication(tmpAssetsMalus);
             case STRENGTH_MALUS_EXCOMMUNICATION:
                 Strengths tmpStrengthMalus = parseStrengths(excommunicationNode.path(STRENGTH_MALUS_EXCOMMUNICATION));
-                tmpStrengthMalus.printStrengths();
                 return new StrengthsExcommunication(tmpStrengthMalus);
             case MARKET_EXCOMMUNICATION:
                 return new MarketExcommunication();
