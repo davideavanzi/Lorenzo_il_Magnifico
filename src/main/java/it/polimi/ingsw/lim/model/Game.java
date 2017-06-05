@@ -4,6 +4,8 @@ import it.polimi.ingsw.lim.parser.Parser;
 import org.codehaus.jackson.annotate.JsonTypeInfo;
 
 import java.util.*;
+import java.util.logging.Level;
+
 import static it.polimi.ingsw.lim.Settings.*;
 import static it.polimi.ingsw.lim.Log.*;
 
@@ -29,6 +31,7 @@ public class Game {
         this.harvest = new ArrayList<>();
         this.faithTrack = new Assets[FAITH_TRACK_LENGTH];
         this.cardsDeck = new CardsDeck();
+        this.availablePlayerColors = new ArrayList<>(PLAYER_COLORS);
     }
 
     /**
@@ -93,6 +96,11 @@ public class Game {
      */
     private HashMap<String, Integer> dice;
 
+    /**
+     *
+     */
+    private List<String> availablePlayerColors;
+
     // ############################################################# METHODS AHEAD
 
     /**
@@ -120,19 +128,15 @@ public class Game {
         if (playersNumber < 2 || playersNumber > 5)
             throw new GameSetupException("Wrong player number on game setup");
 
-        //Creating towers with respective bonus.
         getLog().info("Creating towers with bonuses");
         DEFAULT_TOWERS_COLORS.forEach(color ->
                 this.towers.put(color, new Tower(parsedGame.getTowerbonuses(color))));
-        //Adding one more tower if there are 5 players
         if (playersNumber == 5){
             getLog().info("Creating fifth tower.");
             this.towers.put(BLACK_COLOR, new Tower(parsedGame.getTowerbonuses(BLACK_COLOR)));
         }
-        //Create market
         getLog().info("Creating market with bonuses");
         this.market = new Market(playersNumber, parsedGame.getMarketBonuses());
-        //Create council
         getLog().info("Creating council with bonuses");
         this.council = new Council(parsedGame.getCouncilFavors(), parsedGame.getCouncilBonus());
         getLog().info("Adding bonuses to faith track");
@@ -148,7 +152,7 @@ public class Game {
          * the following will have a coin more than the player before them.
          * TODO: where we decide the player order? at the beginning we consider their order of creation in the list.
          */
-        getLog().info("Giving initial resources to " +playersNumber+" players");
+        getLog().log(Level.INFO, "Giving initial resources to %s players", playersNumber);
         int moreCoin = 0;
         for (Player pl : players) {
             pl.setResources(pl.getResources().add(parsedGame.getStartingGameBonus()).addCoins(moreCoin));
@@ -169,7 +173,7 @@ public class Game {
      * Deciding when to advance in ages and turn is a task of the main game controller.
      */
     public void setUpTurn(){
-        getLog().info("[NEW_TURN_SETUP] - Setting up turn number: " + this.turn);
+        getLog().log(Level.INFO, "[NEW_TURN_SETUP] - Setting up turn number: %s", this.turn);
         clearHarvest();
         clearProduction();
         council.clear();
@@ -179,7 +183,7 @@ public class Game {
             {
                 getLog().info("Clearing "+color+" tower");
                 towers.get(color).clear();
-                getLog().info("Adding cards to "+color+" tower");
+                getLog().log(Level.INFO,"Adding cards to %s tower", color);
                 towers.get(color).addCards(cardsDeck.getCardsForTower(color, age));
             });
         getLog().info("Allotting family members to players");
@@ -213,7 +217,7 @@ public class Game {
 
 
     public Player getPlayer(String nickname) {
-        getLog().info("Getting player "+nickname+" from "+players.size()+" Players.");
+        getLog().log(Level.INFO, "Getting player %s Players.", nickname+" from "+players.size());
         return players.stream().filter(pl -> pl.getNickname().equals(nickname)).findFirst().orElse(null);
     }
 
@@ -222,8 +226,12 @@ public class Game {
     }
 
 
-
-    public void addPlayer(String nickname, String color) {
+    /**
+     * This method picks an available color and adds it to the new created player
+     * @param nickname
+     */
+    public void addPlayer(String nickname) {
+        String color = this.availablePlayerColors.remove(0);
         this.players.add(new Player(nickname, color));
     }
 
@@ -235,10 +243,10 @@ public class Game {
         if(this.turn >= TURNS_PER_AGE){
             this.turn = 1;
             this.age++;
-            getLog().info("Advancing into new age, number:" +this.age);
+            getLog().log(Level.INFO, "Advancing into new age, number: %s", this.age);
         } else {
             this.turn++;
-            getLog().info("Advancing into new turn, number:" + this.turn);
+            getLog().log(Level.INFO, "Advancing into new turn, number: $s", this.turn);
         }
     }
 

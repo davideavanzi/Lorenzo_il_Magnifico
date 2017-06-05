@@ -1,5 +1,6 @@
 package it.polimi.ingsw.lim.model;
 import java.util.*;
+import java.util.logging.Level;
 
 import static it.polimi.ingsw.lim.Log.getLog;
 
@@ -23,7 +24,7 @@ public class Player {
         this.defaultHarvestBonus = new Assets();
         this.defaultProductionBonus = new Assets();
         this.color = color;
-        getLog().info("New empty player "+nickname+" created.");
+        getLog().log(Level.INFO, "New empty player %s created.", nickname);
     }
 
     /**

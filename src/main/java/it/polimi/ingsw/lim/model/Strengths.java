@@ -25,6 +25,7 @@ public class Strengths {
      * @param black - strength to access the green tower
      */
     public Strengths(int harvest, int production, int green, int yellow, int blue, int purple, int black){
+        this.towerStrenghts = new HashMap<>();
         this.harvestBonus = harvest;
         this.productionBonus = production;
         this.towerStrenghts.put(GREEN_COLOR, green);

@@ -17,11 +17,11 @@ public class Tower {
     public Tower(Assets[] slotsBonuses) {
         //Creating floors
         this.floors = new Floor[TOWER_HEIGHT];
-        //Adding bonuses to each floor, ordere
+        //Adding bonuses to each floor, ordered
         for(int i = 0; i < TOWER_HEIGHT; i++){
             Floor fl = new Floor();
-            floors[i] = fl;
             fl.setInstantBonus(slotsBonuses[i]);
+            floors[i] = fl;
         }
     }
 

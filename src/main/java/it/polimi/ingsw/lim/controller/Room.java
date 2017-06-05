@@ -5,6 +5,8 @@ import it.polimi.ingsw.lim.Log;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
 
 /**
  * Created by Davide on 26/05/2017.
@@ -22,13 +24,11 @@ public class Room extends UnicastRemoteObject {
     }
 
     public void addUser(User user) {
-        this.usersList.add(user);
-        Log.getLog().info("Adding user "+user+" to room");
+        usersList.add(user);
+        Log.getLog().log(Level.INFO, "Adding user %s to room", user);
     }
 
-
-
-    public static ArrayList<User> getUsersList() {
+    public static List<User> getUsersList() {
         return usersList;
     }
 }
