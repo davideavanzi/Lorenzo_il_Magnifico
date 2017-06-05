@@ -185,8 +185,6 @@ public class Parser {
         bonuses.put(MARKET, parseArrayAssets(bonusesNode.path(MARKET_BONUS), MARKET_MAX_SIZE));
         bonuses.put(FAITH_TRACK, parseArrayAssets(bonusesNode.path(FAITH_BONUS), FAITH_TRACK_LENGTH));
         bonuses.put(COUNCIL_FAVOUR, parseArrayAssets(bonusesNode.path(COUNCIL_FAVOUR_BONUS), COUNCIL_FAVUORS_TYPES));
-        parseArrayAssets(bonusesNode.path(TOWER_BONUS).path(GREEN_TOWER_BONUS), TOWER_HEIGHT)[0].printAssets();
-
         return bonuses;
     }
 
