@@ -203,12 +203,12 @@ public class Game {
 
     private void clearHarvest(){
         getLog().info("Clearing Harvest space");
-        //TODO: implement
+        this.harvest = new ArrayList<>();
     }
 
     private void clearProduction(){
         getLog().info("Clearing Production space");
-        //TODO: implement
+        this.harvest = new ArrayList<>();
     }
 
     public int getAge() { return  this.age; }
@@ -243,10 +243,10 @@ public class Game {
         if(this.turn >= TURNS_PER_AGE){
             this.turn = 1;
             this.age++;
-            getLog().log(Level.INFO, "Advancing into new age, number: %s", this.age);
+            getLog().log(Level.INFO, () -> "Advancing into new age, number: " + this.age);
         } else {
             this.turn++;
-            getLog().log(Level.INFO, "Advancing into new turn, number: $s", this.turn);
+            getLog().log(Level.INFO, () -> "Advancing into new turn, number: %d" + this.turn);
         }
     }
 
@@ -305,6 +305,9 @@ public class Game {
         return false;
     }
 
+    public boolean isHarvestMoveAllowed(FamilyMember fm) {
+        return false;
+    }
 
     public Tower getTower(String color){
         return this.towers.get(color);
