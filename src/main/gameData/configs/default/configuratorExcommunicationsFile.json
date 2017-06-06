@@ -1,3 +1,25 @@
 {
+  "excommunications":[
+    [
+      {
+        "excommunicationType":"assetsMalusExcommunication",
+        "assetsMalusExcommunicationType":{"coin":1}
+      },
+      {
+        "excommunicationType": "strengthMalusExcommunication",
+        "strengthMalusExcommunication":{"blueBonus":4}
+      }
+    ],
+    [
+      {
+        "excommunicationType":"assetsMalusExcommunication",
+        "assetsMalusExcommunicationType":{"coin":1, "wood":2}
+      }
+    ],
+    [
+      {
 
+      }
+    ]
+  ]
 }
