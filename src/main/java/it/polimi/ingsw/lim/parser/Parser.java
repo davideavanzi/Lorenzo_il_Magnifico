@@ -25,6 +25,8 @@ public class Parser {
     private ArrayList<HashMap<String, ArrayList<Card>>> cards = new ArrayList<>();
     private HashMap<String, Assets[]> boardAssetsBonuses = new HashMap<>();
     private HashMap<Integer, ArrayList<Excommunication>> excommunications = new HashMap<>();
+    private ArrayList<Assets> boardPlayersProductionBonus = new ArrayList<>();
+    private ArrayList<Assets> boardPlayersHarvestBonus = new ArrayList<>();
     private int councilFavors;
     private Assets councilBonus;
     private Assets startingGameBonus;
@@ -56,13 +58,21 @@ public class Parser {
     public void setExcommunications(HashMap<Integer, ArrayList<Excommunication>> excommunications){
         this.excommunications = excommunications;
     }
+    
+    public void setBoardPlayersProductionBonus (ArrayList<Assets> boardPlayersProductionBonus){
+        this.boardPlayersProductionBonus = boardPlayersProductionBonus;
+    }
+
+    public void setBoardPlayersHarvestBonus (ArrayList<Assets> boardPlayersHarvestBonus){
+        this.boardPlayersHarvestBonus = boardPlayersHarvestBonus;
+    }
 
     public ArrayList<HashMap<String, ArrayList<Card>>> getCards() {
         return this.cards;
     }
 
     public ArrayList<Card> getCard(int age, String key) {
-        return this.cards.get(age - 1).get(key);
+        return this.cards.get(age - 1).get(key); //age-1 because the first age cards are in the 0th element of the ArrayList
     }
 
     public HashMap<String, ArrayList<Card>> getCard(int age) {
@@ -99,7 +109,17 @@ public class Parser {
 
     public HashMap<Integer, ArrayList<Excommunication>> getExcommunications(){
         return this.excommunications;
-    } //TODO controlla se serve davvero il this nei get
+    }
+
+    public ArrayList<Assets> getBoardPlayersProductionBonus (){
+        return this.boardPlayersProductionBonus;
+    }
+    
+    public ArrayList<Assets> getBoardPlayersHarvestBonus(){
+        return  this.boardPlayersHarvestBonus;
+    }
+    
+    //TODO controlla se serve davvero il this nei get
 
     /**
      * this method parse an Assets' type from Json file
@@ -120,7 +140,23 @@ public class Parser {
     }
 
     /**
-     * this method parse an array of assets
+     * this method parse an array of assets (into an ArrayList<>)
+     * @param arrayAssetsNode is the node "link" to the array in JsonFile
+     * @return an ArrayList of Assets
+     */
+    private static ArrayList<Assets> parseArrayAssets (JsonNode arrayAssetsNode){
+        ArrayList<Assets> assets = new ArrayList<>();
+        JsonNode tmpArrayAssetsNode = arrayAssetsNode;
+        Iterator<JsonNode> arrayAssetsIterator = tmpArrayAssetsNode.getElements();
+        while (arrayAssetsIterator.hasNext()) {
+            tmpArrayAssetsNode = arrayAssetsIterator.next();
+            assets.add(parseAssets(tmpArrayAssetsNode));
+        }
+        return assets;
+    }
+
+    /**
+     * this method parse an array of assets (into an array)
      *
      * @param arrayAssetsNode is the node "link" to the array in JsonFile
      * @param assetsNum is the dimension of the array of Assets
@@ -128,7 +164,7 @@ public class Parser {
      */
     private static Assets[] parseArrayAssets(JsonNode arrayAssetsNode, int assetsNum) {
         JsonNode tmpArrayAssetsNode = arrayAssetsNode;
-        Assets[] assets = new Assets[assetsNum]; //TODO: rendere configurabile il numero di piani (e quindi di assets presenti nell'array)
+        Assets[] assets = new Assets[assetsNum];
         Iterator<JsonNode> arrayAssetsIterator = tmpArrayAssetsNode.getElements();
         int i = 0;
         while (arrayAssetsIterator.hasNext()) {
@@ -756,6 +792,35 @@ public class Parser {
         return tmpExcommunications;
     }
 
+    private static ArrayList<Assets> parseBoardPlayerProductionBonus (String pathToConfiguratorBonusAssetsFile)
+            throws IOException{
+        //read JSon all file data
+        byte[] jsonData = Files.readAllBytes(Paths.get(pathToConfiguratorBonusAssetsFile));
+
+        //create ObjectMapper instance
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        JsonNode rootNode = objectMapper.readTree(jsonData);
+        JsonNode bonusesNode = rootNode.path(BONUSES);
+
+        return parseArrayAssets(bonusesNode.path(BOARD_PLAYER_PRODUCTION_BONUS));
+    }
+
+    private static ArrayList<Assets> parseBoardPlayerHarvestBonus (String pathToConfiguratorBonusAssetsFile)
+            throws IOException{
+        //read JSon all file data
+        byte[] jsonData = Files.readAllBytes(Paths.get(pathToConfiguratorBonusAssetsFile));
+
+        //create ObjectMapper instance
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        JsonNode rootNode = objectMapper.readTree(jsonData);
+        JsonNode bonusesNode = rootNode.path(BONUSES);
+
+        return parseArrayAssets(bonusesNode.path(BOARD_PLAYER_HARVEST_BONUS));
+    }
+    
+    
     /**
      *
      * @param pathToDirectory
@@ -774,6 +839,8 @@ public class Parser {
         this.setCouncilBonus(parseCouncilBonus(pathToDirectory.concat(CONFIGURATOR_BONUS_ASSETS_FILE_NAME)));
         this.setCouncilFavors(parseCouncilFavours(pathToDirectory.concat(CONFIGURATOR_BONUS_ASSETS_FILE_NAME)));
         this.setStartingGameBonus(parseStartingGameBonus(pathToDirectory.concat(CONFIGURATOR_BONUS_ASSETS_FILE_NAME)));
+        this.setBoardPlayersProductionBonus(parseBoardPlayerProductionBonus(pathToDirectory.concat(CONFIGURATOR_BONUS_ASSETS_FILE_NAME)));
+        this.setBoardPlayersHarvestBonus(parseBoardPlayerHarvestBonus(pathToDirectory.concat(CONFIGURATOR_BONUS_ASSETS_FILE_NAME)));
         getLog().info("Assets Bonuses parsed.");
         getLog().info("Try to parse Excommunication from file: ".concat(pathToDirectory).concat(CONFIGURATOR_EXCOMMUNICATION_FILE_NAME));
         this.setExcommunications(parseExcommunications(pathToDirectory.concat(CONFIGURATOR_EXCOMMUNICATION_FILE_NAME)));
