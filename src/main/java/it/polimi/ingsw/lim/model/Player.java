@@ -3,7 +3,6 @@ import java.util.*;
 import java.util.logging.Level;
 
 import static it.polimi.ingsw.lim.Log.getLog;
-import static it.polimi.ingsw.lim.Settings.DEFAULT_TOWERS_COLORS;
 
 /**
  * Player are indexed by nickname, which corresponds to he user that is playing, and that username is unique

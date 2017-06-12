@@ -64,6 +64,14 @@ public class Strengths {
         return this.towerStrenghts.get(color);
     }
 
+    public int getHarvestBonus() {
+        return harvestBonus;
+    }
+
+    public int getProductionBonus() {
+        return productionBonus;
+    }
+
     public void printStrengths(){
         System.out.println("[STRENGHTS PRINT]");
         System.out.println("    - Harvest:          "+harvestBonus);

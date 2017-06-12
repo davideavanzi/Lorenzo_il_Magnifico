@@ -1,7 +1,6 @@
 package it.polimi.ingsw.lim.controller;
 
 import it.polimi.ingsw.lim.exceptions.GameSetupException;
-import it.polimi.ingsw.lim.model.Assets;
 import it.polimi.ingsw.lim.model.FamilyMember;
 import it.polimi.ingsw.lim.model.Game;
 import it.polimi.ingsw.lim.model.Strengths;
@@ -60,15 +59,6 @@ public class GameController {
         game.getCouncil().addFamilyMember(game.getPlayer("HOLAONE").pullFamilyMember(ORANGE_COLOR));
         //game.getNewPlayerOrder().forEach(pl -> System.out.println(pl));
 
-        Assets asset1 = new Assets(1,0,1,0,0,0,9);
-        Assets asset2 = new Assets(3,0,1,0,0,0,9);
-        Assets asset3 = new Assets(1,0,1,0,0,0,9);
-
-        System.out.println("TEST ASSETS EQUALS");
-        if (asset1.equals(asset2))
-            System.out.println("UNO = DUE");
-        if (asset1.equals(asset3))
-            System.out.println("UNO = TRE");
     }
 
     /**
@@ -112,7 +102,7 @@ public class GameController {
                 if (this.game.servantsForTowerAction(fm, towerColor, floor) > 0);
                     //ask player!
             }
-
+            //perform action
         }
     }
 

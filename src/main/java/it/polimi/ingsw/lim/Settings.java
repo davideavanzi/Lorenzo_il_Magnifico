@@ -24,8 +24,10 @@ public class Settings {
     public static final int TURNS_PER_AGE = 2;
     public static final int AGES_NUMBER = 3;
 
-    public static final int FIRST_HARVEST_ACTION_STR = 1;
+    public static final int HARVEST_DEFAULT_STR = 1;
     public static final int HARVEST_STR_MALUS = 3;
+    public static final int HARVEST_DEFAULTSPACE_SIZE = 1;
+
     public static final int FIRST_PRODUCTION_ACTION_STR = 1;
     public static final int PRODUCTION_STR_MALUS = 3;
 
