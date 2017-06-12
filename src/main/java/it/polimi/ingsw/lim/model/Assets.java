@@ -1,6 +1,4 @@
 package it.polimi.ingsw.lim.model;
-import java.util.*;
-
 /**
  * This class acts as a container for every kind of resource that a player can have. Also all kind of bonuses and costs
  * in terms of resources are represented with objects of this class.
@@ -173,5 +171,17 @@ public class Assets {
      * @return the object itself (used in game setup)
      */
     public Assets addCoins(int amount) { this.coins += amount; return this; }
+
+    @Override
+    public boolean equals (Object assets){
+        return (this.coins == ((Assets)assets).getCoins() &&
+                this.wood == ((Assets)assets).getWood() &&
+                this.stone == ((Assets)assets).getStone() &&
+                this.servants == ((Assets)assets).getServants() &&
+                this.faithPoints == ((Assets)assets).getFaithPoints() &&
+                this.battlePoints == ((Assets)assets).getFaithPoints() &&
+                this.victoryPoints == ((Assets)assets).getVictoryPoints()
+        );
+    }
 
 }

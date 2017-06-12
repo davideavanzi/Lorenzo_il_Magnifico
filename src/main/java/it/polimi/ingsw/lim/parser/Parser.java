@@ -819,6 +819,7 @@ public class Parser {
 
         return parseArrayAssets(bonusesNode.path(BOARD_PLAYER_HARVEST_BONUS));
     }
+    //TODO: controlla se e' utile avere due metodi diversi oppure se farne uno singolo in cui viene passata un'altra stringa che contiene la chiave nel json file
     
     
     /**
