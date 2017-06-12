@@ -17,12 +17,13 @@ public class Player {
         //Creating objects
         this.nickname = nickname;
         this.resources = new Assets();
-        this.strength = new Strengths();
+        this.strengths = new Strengths();
         this.leaderCards = new ArrayList<>();
         this.familyMembers = new ArrayList<>();
         this.pickDiscounts = new HashMap<>();
         this.defaultHarvestBonus = new Assets();
         this.defaultProductionBonus = new Assets();
+        this.towerBonusAllowed = true;
         this.color = color;
         getLog().log(Level.INFO, "New empty player %s created.", nickname);
     }
@@ -43,9 +44,9 @@ public class Player {
     private Assets resources;
 
     /**
-     * 
+     * These are the strengths of the player. Elements inside it could be both positive and negative.
      */
-    private Strengths strength;
+    private Strengths strengths;
 
     /**
      * 
@@ -119,6 +120,10 @@ public class Player {
 
     public boolean isTowerBonusAllowed() {
         return this.towerBonusAllowed;
+    }
+
+    public Strengths getStrengths() {
+        return this.strengths;
     }
 
 

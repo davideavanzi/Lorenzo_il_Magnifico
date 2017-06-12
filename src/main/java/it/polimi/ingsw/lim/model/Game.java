@@ -203,12 +203,12 @@ public class Game {
 
     private void clearHarvest(){
         getLog().info("Clearing Harvest space");
-        //TODO: implement
+        this.harvest = new ArrayList<>();
     }
 
     private void clearProduction(){
         getLog().info("Clearing Production space");
-        //TODO: implement
+        this.harvest = new ArrayList<>();
     }
 
     public int getAge() { return  this.age; }
@@ -243,10 +243,10 @@ public class Game {
         if(this.turn >= TURNS_PER_AGE){
             this.turn = 1;
             this.age++;
-            getLog().log(Level.INFO, "Advancing into new age, number: %s", this.age);
+            getLog().log(Level.INFO, () -> "Advancing into new age, number: " + this.age);
         } else {
             this.turn++;
-            getLog().log(Level.INFO, "Advancing into new turn, number: $s", this.turn);
+            getLog().log(Level.INFO, () -> "Advancing into new turn, number: %d" + this.turn);
         }
     }
 
@@ -280,11 +280,14 @@ public class Game {
      */
     public boolean isTowerMoveAffordable(String towerColor, int floorNumber, FamilyMember fm) {
         Floor destination = this.getTower(towerColor).getFloor(floorNumber);
+        //Checking Costs
         Assets cardCost = destination.getCard().getCost();
         Assets additionalCost = new Assets();
         Assets playerAssets = new Assets(this.getPlayerFromColor(fm.getOwnerColor()).getResources());
         additionalCost.addCoins(COINS_TO_ENTER_OCCUPIED_TOWER);
         if (this.isTowerOccupied(towerColor) && playerAssets.subtract(additionalCost).isNegative())
+            return false;
+        if (this.servantsForTowerAction(fm, towerColor, floorNumber) > playerAssets.getServants())
             return false;
         if (this.getPlayerFromColor(fm.getOwnerColor()).isTowerBonusAllowed())
             playerAssets.add(destination.getInstantBonus());
@@ -295,8 +298,8 @@ public class Game {
 
     /**
      * This method checks if any player has entered a specified tower
-     * @param towerColor
-     * @return
+     * @param towerColor the color of the tower
+     * @return boolean
      */
     public boolean isTowerOccupied(String towerColor) {
         for (int i = 1; i <= TOWER_HEIGHT; i++)
@@ -305,6 +308,32 @@ public class Game {
         return false;
     }
 
+    public boolean isHarvestMoveAllowed(FamilyMember fm) {
+        if(this.players.size() == 2 && !harvest.isEmpty())
+            return false;
+        for (FamilyMember f : harvest)
+            if (f.getOwnerColor().equals(fm.getOwnerColor()) && ((f.getDiceColor().equals(NEUTRAL_COLOR)) == (fm.getDiceColor().equals(NEUTRAL_COLOR))))
+                return false;
+        return true;
+    }
+
+
+    public boolean isProductionMoveAllowed(FamilyMember fm) {
+        if(this.players.size() == 2 && !production.isEmpty())
+            return false;
+        for (FamilyMember f : production)
+            if (f.getOwnerColor().equals(fm.getOwnerColor()) && ((f.getDiceColor().equals(NEUTRAL_COLOR)) == (fm.getDiceColor().equals(NEUTRAL_COLOR))))
+                return false;
+        return true;
+    }
+
+    public void addToHarvest(FamilyMember fm) {
+        this.harvest.add(fm);
+    }
+
+    public void addToProduction(FamilyMember fm) {
+        this.production.add(fm);
+    }
 
     public Tower getTower(String color){
         return this.towers.get(color);
@@ -326,5 +355,32 @@ public class Game {
 
     public Council getCouncil() {
         return council;
+    }
+
+    /**
+     * This method calculates the amount of servants that a player needs to perform a tower action
+     * @param fm
+     * @param towerColor
+     * @param floor
+     * @return
+     */
+    public int servantsForTowerAction(FamilyMember fm,String towerColor, int floor) {
+        int actionStr = dice.get(fm.getDiceColor())
+                + this.getPlayerFromColor(fm.getOwnerColor()).getStrengths().getTowerStrength(towerColor);
+        int actionCost = towers.get(towerColor).getFloor(floor).getActionCost();
+        int servants = actionCost - actionStr;
+        if (servants < 0)
+            return 0;
+        return servants;
+    }
+
+    /**
+     * FOLLOWING METHODS ARE USED ONLY FOR TESTING PURPOSES
+     */
+    public ArrayList<FamilyMember> getHarvest() {
+        return this.harvest;
+    }
+    public ArrayList<FamilyMember> getProduction() {
+        return this.production;
     }
 }

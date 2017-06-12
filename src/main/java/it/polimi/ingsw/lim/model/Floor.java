@@ -1,5 +1,5 @@
 package it.polimi.ingsw.lim.model;
-import java.util.*;
+import static it.polimi.ingsw.lim.Settings.FLOORS_ACTION_COSTS;
 
 /**
  * This class represents a single floor of a tower
@@ -7,9 +7,11 @@ import java.util.*;
 public class Floor {
 
     /**
-     * Default constructor
+     * Constructor. it takes the integer corresponding to it's position in the tower
+     * and picks it's action cost from the settings
      */
-    public Floor() {
+    public Floor(int floorPosition) {
+        this.actionCost = FLOORS_ACTION_COSTS[floorPosition];
     }
 
     /**

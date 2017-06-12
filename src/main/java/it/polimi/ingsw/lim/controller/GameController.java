@@ -25,7 +25,7 @@ public class GameController {
         getLog().info("Creating new game instance.");
         Game game = new Game();
         String defaultPath = "default/";
-        getLog().log(Level.INFO, "Parsing game data from path: $s", CONFIGS_PATH+defaultPath);
+        getLog().log(Level.INFO, () -> "Parsing game data from path: " + CONFIGS_PATH+defaultPath);
 
         //TODO: handle exception in a proper place
         Parser parsedGame = new Parser();

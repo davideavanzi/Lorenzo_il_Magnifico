@@ -19,7 +19,7 @@ public class Tower {
         this.floors = new Floor[TOWER_HEIGHT];
         //Adding bonuses to each floor, ordered
         for(int i = 0; i < TOWER_HEIGHT; i++){
-            Floor fl = new Floor();
+            Floor fl = new Floor(i);
             fl.setInstantBonus(slotsBonuses[i]);
             floors[i] = fl;
         }
