@@ -3,6 +3,7 @@ import java.util.*;
 import java.util.logging.Level;
 
 import static it.polimi.ingsw.lim.Log.getLog;
+import static it.polimi.ingsw.lim.Settings.DEFAULT_TOWERS_COLORS;
 
 /**
  * Player are indexed by nickname, which corresponds to he user that is playing, and that username is unique
@@ -25,6 +26,7 @@ public class Player {
         this.defaultProductionBonus = new Assets();
         this.towerBonusAllowed = true;
         this.color = color;
+        this.cards = new HashMap<>();
         getLog().log(Level.INFO, "New empty player %s created.", nickname);
     }
 
@@ -69,9 +71,10 @@ public class Player {
     private Boolean towerBonusAllowed;
 
     /**
-     * 
+     * This is a container for all development cards.
+     * Arraylists of this hashmap are instantiated in setupGame() method.
      */
-    private Card cards;
+    private HashMap<String, ArrayList<Card>> cards;
 
     /**
      * TODO: Is it better to store them with an hashmap?
@@ -105,6 +108,16 @@ public class Player {
     public Assets getResources() { return this.resources; }
 
     public String getNickname() { return  this.nickname; }
+
+    public Assets getPickDiscount(String color) {
+        return this.pickDiscounts.get(color);
+    }
+
+    public HashMap getCards() { return this.cards; }
+
+    public void addCard(Card card, String color) {
+        this.cards.get(color).add(card);
+    }
 
     public void setNickname(String nickname) { this.nickname = nickname; }
 

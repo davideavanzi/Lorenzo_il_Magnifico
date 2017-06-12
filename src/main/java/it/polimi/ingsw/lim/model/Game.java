@@ -1,7 +1,6 @@
 package it.polimi.ingsw.lim.model;
 import it.polimi.ingsw.lim.exceptions.GameSetupException;
 import it.polimi.ingsw.lim.parser.Parser;
-import org.codehaus.jackson.annotate.JsonTypeInfo;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -128,12 +127,14 @@ public class Game {
         if (playersNumber < 2 || playersNumber > 5)
             throw new GameSetupException("Wrong player number on game setup");
 
-        getLog().info("Creating towers with bonuses");
-        DEFAULT_TOWERS_COLORS.forEach(color ->
-                this.towers.put(color, new Tower(parsedGame.getTowerbonuses(color))));
+        getLog().info("Creating towers with bonuses and players card slots");
+        DEFAULT_TOWERS_COLORS.forEach(color -> {
+                this.towers.put(color, new Tower(parsedGame.getTowerbonuses(color)));
+                this.players.forEach(player -> player.getCards().put(color, new ArrayList<Card>()));});
         if (playersNumber == 5){
-            getLog().info("Creating fifth tower.");
+            getLog().info("Creating fifth tower and black card slots.");
             this.towers.put(BLACK_COLOR, new Tower(parsedGame.getTowerbonuses(BLACK_COLOR)));
+            this.players.forEach(player -> player.getCards().put(BLACK_COLOR, new ArrayList<Card>()));
         }
         getLog().info("Creating market with bonuses");
         this.market = new Market(playersNumber, parsedGame.getMarketBonuses());
@@ -281,7 +282,8 @@ public class Game {
     public boolean isTowerMoveAffordable(String towerColor, int floorNumber, FamilyMember fm) {
         Floor destination = this.getTower(towerColor).getFloor(floorNumber);
         //Checking Costs
-        Assets cardCost = destination.getCard().getCost();
+        Assets cardCost = destination.getCard().getCost()
+                .subtractToZero(this.getPlayerFromColor(fm.getOwnerColor()).getPickDiscount(towerColor));
         Assets additionalCost = new Assets();
         Assets playerAssets = new Assets(this.getPlayerFromColor(fm.getOwnerColor()).getResources());
         additionalCost.addCoins(COINS_TO_ENTER_OCCUPIED_TOWER);
@@ -294,6 +296,24 @@ public class Game {
         if (playerAssets.isGreaterOrEqual(cardCost))
             return true;
         return false;
+    }
+
+    /**
+     * This method makes the actual tower move
+     * @param towerColor
+     * @param floorNumber
+     * @param fm
+     */
+    public void towerMove(String towerColor, int floorNumber, FamilyMember fm) {
+        Player actor = this.getPlayerFromColor(fm.getOwnerColor());
+        Card card = this.towers.get(towerColor).getFloor(floorNumber).pullCard();
+        Assets actionCost = new Assets(card.getCost());
+        if(this.isTowerOccupied(towerColor))
+            actionCost.addCoins(COINS_TO_ENTER_OCCUPIED_TOWER);
+        actionCost.subtractToZero(actor.getPickDiscount(towerColor));
+        actor.getResources().subtract(actionCost);
+        actor.addCard(card, towerColor);
+        //TODO: activate immediateEffect and long term effect for blue cards!
     }
 
     /**

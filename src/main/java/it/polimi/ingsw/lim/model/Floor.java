@@ -68,6 +68,16 @@ public class Floor {
         return this.cardSlot;
     }
 
+    /**
+     * Get the card and set the slot to null
+     * @return
+     */
+    public Card pullCard() {
+        Card card = this.cardSlot;
+        this.cardSlot = null;
+        return card;
+    }
+
     public int getActionCost() { return this.actionCost; }
 
 }
