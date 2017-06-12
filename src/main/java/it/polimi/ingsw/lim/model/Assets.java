@@ -179,7 +179,7 @@ public class Assets {
     public int getCoins(){ return this.coins; }
     public int getWood(){ return this.wood; }
     public int getStone(){ return this.stone; }
-    public int getServants(){ return this.stone; }
+    public int getServants(){ return this.servants; }
     public int getFaithPoints(){ return this.faithPoints; }
     public int getBattlePoints(){ return this.battlePoints; }
     public int getVictoryPoints(){ return this.victoryPoints; }
@@ -191,5 +191,22 @@ public class Assets {
      */
     public Assets addCoins(int amount) { this.coins += amount; return this; }
 
-    public Assets subtractCoins(int amount) { this.coins -= amount; return this;}
+    public Assets subtractCoins(int amount) { this.coins -= amount; return this; }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) return false;
+        if (other == this) return true;
+        if (!(other instanceof Assets))return false;
+        Assets otherAssets = (Assets)other;
+
+        return (this.coins == otherAssets.getCoins() &&
+                this.wood == otherAssets.getWood() &&
+                this.stone == otherAssets.getStone() &&
+                this.servants == otherAssets.getServants() &&
+                this.faithPoints == otherAssets.getFaithPoints() &&
+                this.battlePoints == otherAssets.getBattlePoints() &&
+                this.victoryPoints == otherAssets.getVictoryPoints()
+        );
+    }
 }
