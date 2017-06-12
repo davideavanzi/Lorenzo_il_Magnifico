@@ -3,6 +3,7 @@ package it.polimi.ingsw.lim.controller;
 import it.polimi.ingsw.lim.exceptions.GameSetupException;
 import it.polimi.ingsw.lim.model.FamilyMember;
 import it.polimi.ingsw.lim.model.Game;
+import it.polimi.ingsw.lim.model.Strengths;
 import it.polimi.ingsw.lim.parser.Parser;
 
 import java.util.ArrayList;
@@ -93,10 +94,15 @@ public class GameController {
      * TODO: do we have to split the checkings from the actual move?
      */
     public void moveInTower (FamilyMember fm, String towerColor, int floor) {
-        /* TODO: implement
-        if(this.game.isTowerMoveAllowed(towerColor, floor, fm)){
-            if(this.game.isTowerMoveAffordable(towerColor, floor, fm))
-        } */
+        Strengths strength = new Strengths();
+        if(this.game.isTowerMoveAllowed(towerColor, floor, fm, strength)){
+            if(this.game.isTowerMoveAffordable(towerColor, floor, fm)){
+                //move is affordable, ask the client in case more servants are needed
+                if (this.game.servantsForTowerAction(fm, towerColor, floor) > 0);
+                    //ask player!
+            }
+
+        }
     }
 
 

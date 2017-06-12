@@ -1,4 +1,6 @@
 package it.polimi.ingsw.lim.model;
+import java.util.*;
+
 /**
  * This class acts as a container for every kind of resource that a player can have. Also all kind of bonuses and costs
  * in terms of resources are represented with objects of this class.
@@ -123,6 +125,23 @@ public class Assets {
     }
 
     /**
+     * This method subtracts two Assets without going below zero.
+     * @param operand the Asset to subtract
+     * @return the result
+     */
+    public Assets subtractToZero(Assets operand) {
+        Assets diff = new Assets();
+        diff.coins = (this.coins - operand.getCoins() >= 0) ? this.coins - operand.getCoins() : 0;
+        diff.wood = (this.wood - operand.getWood() >= 0) ? this.wood - operand.getWood() : 0;
+        diff.stone = (this.stone - operand.getStone() >= 0) ? this.stone - operand.getStone() : 0;
+        diff.servants = (this.servants - operand.getServants() >= 0) ? this.servants - operand.getServants() : 0;
+        diff.faithPoints = (this.faithPoints - operand.getFaithPoints() >= 0) ? this.faithPoints - operand.getFaithPoints() : 0;
+        diff.battlePoints = (this.battlePoints - operand.getBattlePoints() >= 0) ? this.battlePoints - operand.getBattlePoints() : 0;
+        diff.victoryPoints = (this.victoryPoints - operand.getVictoryPoints() >= 0) ? this.victoryPoints - operand.getVictoryPoints() : 0;
+        return diff;
+    }
+
+    /**
      * This method multiplies two objects of this class.
      * @param operand is the second operand.
      * Every value of the first object is multiplied by the corresponding value of the second operand.
@@ -172,15 +191,5 @@ public class Assets {
      */
     public Assets addCoins(int amount) { this.coins += amount; return this; }
 
-    @Override
-    public boolean equals (Object assets){
-        return (this.coins == ((Assets)assets).getCoins() &&
-                this.wood == ((Assets)assets).getWood() &&
-                this.stone == ((Assets)assets).getStone() &&
-                this.servants == ((Assets)assets).getServants() &&
-                this.faithPoints == ((Assets)assets).getFaithPoints() &&
-                this.battlePoints == ((Assets)assets).getFaithPoints() &&
-                this.victoryPoints == ((Assets)assets).getVictoryPoints()
-        );
-    }
+    public Assets subtractCoins(int amount) { this.coins -= amount; return this;}
 }
