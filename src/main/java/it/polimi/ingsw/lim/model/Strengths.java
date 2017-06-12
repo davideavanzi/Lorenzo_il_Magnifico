@@ -1,6 +1,8 @@
 package it.polimi.ingsw.lim.model;
 import java.util.*;
 
+import static it.polimi.ingsw.lim.Settings.*;
+
 /**
  * This class holds values for strengths that affect the player while performing an action.
  */
@@ -23,13 +25,14 @@ public class Strengths {
      * @param black - strength to access the green tower
      */
     public Strengths(int harvest, int production, int green, int yellow, int blue, int purple, int black){
+        this.towerStrenghts = new HashMap<>();
         this.harvestBonus = harvest;
         this.productionBonus = production;
-        this.greenBonus = green;
-        this.yellowBonus = yellow;
-        this.blackBonus = blue;
-        this.purpleBonus = purple;
-        this.blackBonus = black;
+        this.towerStrenghts.put(GREEN_COLOR, green);
+        this.towerStrenghts.put(YELLOW_COLOR, yellow);
+        this.towerStrenghts.put(BLUE_COLOR, blue);
+        this.towerStrenghts.put(PURPLE_COLOR, purple);
+        this.towerStrenghts.put(BLACK_COLOR, black);
     }
 
     /**
@@ -42,30 +45,8 @@ public class Strengths {
      */
     private int productionBonus;
 
-    /**
-     * 
-     */
-    private int greenBonus;
 
-    /**
-     * 
-     */
-    private int blueBonus;
-
-    /**
-     * 
-     */
-    private int yellowBonus;
-
-    /**
-     * 
-     */
-    private int blackBonus;
-
-    /**
-     * 
-     */
-    private int purpleBonus;
+    private HashMap<String, Integer> towerStrenghts;
 
     /**
      * 
@@ -79,15 +60,19 @@ public class Strengths {
         // TODO implement here
     }
 
+    public int getTowerStrength(String color) {
+        return this.towerStrenghts.get(color);
+    }
+
     public void printStrengths(){
         System.out.println("[STRENGHTS PRINT]");
         System.out.println("    - Harvest:          "+harvestBonus);
         System.out.println("    - Production:       "+productionBonus);
-        System.out.println("    - Green Bonus:      "+greenBonus);
-        System.out.println("    - Blue Bonus:       "+blueBonus);
-        System.out.println("    - Yellow Bonus:     "+yellowBonus);
-        System.out.println("    - Purple Bonus:     "+purpleBonus);
-        System.out.println("    - Black Bonus:      "+blackBonus);
+        System.out.println("    - Green Bonus:      "+towerStrenghts.get(GREEN_COLOR));
+        System.out.println("    - Blue Bonus:       "+towerStrenghts.get(BLUE_COLOR));
+        System.out.println("    - Yellow Bonus:     "+towerStrenghts.get(YELLOW_COLOR));
+        System.out.println("    - Purple Bonus:     "+towerStrenghts.get(PURPLE_COLOR));
+        System.out.println("    - Black Bonus:      "+towerStrenghts.get(BLACK_COLOR));
         //TODO: print dices bonuses
         System.out.println("[END STRENGHTS PRINT]");
     }

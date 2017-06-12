@@ -1,10 +1,13 @@
 package it.polimi.ingsw.lim.model;
 import java.util.*;
+import java.util.logging.Level;
 
 import static it.polimi.ingsw.lim.Log.getLog;
+import static it.polimi.ingsw.lim.Settings.DEFAULT_TOWERS_COLORS;
 
 /**
  * Player are indexed by nickname, which corresponds to he user that is playing, and that username is unique
+ * TODO: map family members with an hashmap?
  */
 public class Player {
 
@@ -15,14 +18,16 @@ public class Player {
         //Creating objects
         this.nickname = nickname;
         this.resources = new Assets();
-        this.strength = new Strengths();
+        this.strengths = new Strengths();
         this.leaderCards = new ArrayList<>();
         this.familyMembers = new ArrayList<>();
         this.pickDiscounts = new HashMap<>();
         this.defaultHarvestBonus = new Assets();
         this.defaultProductionBonus = new Assets();
+        this.towerBonusAllowed = true;
         this.color = color;
-        getLog().info("New empty player "+nickname+" created.");
+        this.cards = new HashMap<>();
+        getLog().log(Level.INFO, "New empty player %s created.", nickname);
     }
 
     /**
@@ -41,9 +46,9 @@ public class Player {
     private Assets resources;
 
     /**
-     * 
+     * These are the strengths of the player. Elements inside it could be both positive and negative.
      */
-    private Strengths strength;
+    private Strengths strengths;
 
     /**
      * 
@@ -66,9 +71,10 @@ public class Player {
     private Boolean towerBonusAllowed;
 
     /**
-     * 
+     * This is a container for all development cards.
+     * Arraylists of this hashmap are instantiated in setupGame() method.
      */
-    private Card cards;
+    private HashMap<String, ArrayList<Card>> cards;
 
     /**
      * TODO: Is it better to store them with an hashmap?
@@ -103,6 +109,16 @@ public class Player {
 
     public String getNickname() { return  this.nickname; }
 
+    public Assets getPickDiscount(String color) {
+        return this.pickDiscounts.get(color);
+    }
+
+    public HashMap getCards() { return this.cards; }
+
+    public void addCard(Card card, String color) {
+        this.cards.get(color).add(card);
+    }
+
     public void setNickname(String nickname) { this.nickname = nickname; }
 
     public void setResources(Assets resources){
@@ -113,6 +129,14 @@ public class Player {
 
     public FamilyMember pullFamilyMember(String color) {
         return this.familyMembers.stream().filter(fm -> fm.getDiceColor().equals(color)).findFirst().orElse(null);
+    }
+
+    public boolean isTowerBonusAllowed() {
+        return this.towerBonusAllowed;
+    }
+
+    public Strengths getStrengths() {
+        return this.strengths;
     }
 
 

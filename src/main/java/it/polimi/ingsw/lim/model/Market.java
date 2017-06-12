@@ -34,13 +34,13 @@ public class Market {
 
     public void addFamilyMember(FamilyMember fm, int position){
         //Position are 1 to 5, in the array are 0 to 4
-        position--;
-        this.slots[position] = fm;
+        int marketPos = position - 1;
+        this.slots[marketPos] = fm;
     }
 
     public Assets getBonus(int position){
-        position--;
-        return this.bonuses[position];
+        int marketPos = position - 1;
+        return this.bonuses[marketPos];
     }
 
     public boolean isPositionOccupied(int position){

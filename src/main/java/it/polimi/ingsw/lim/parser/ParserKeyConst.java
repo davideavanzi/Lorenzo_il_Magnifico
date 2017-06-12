@@ -53,7 +53,7 @@ public class ParserKeyConst {
     public static final String GREEN_HARVEST_RESULT = "greenHarvestResult";
     public static final String GREEN_ACTION_STRENGTHS = "greenActionStrengths";
 
-    public static final String BLUE_PERMANET_BONUS = "bluePermanentBonus";
+    public static final String BLUE_PERMANENT_BONUS = "bluePermanentBonus";
     public static final String BLUE_GREEN_DISCOUNT = "blueGreenDiscount";
     public static final String BLUE_BLUE_DISCOUNT = "blueBlueDiscount";
     public static final String BLUE_YELLOW_DISCOUNT = "blueYellowDiscount";
@@ -88,7 +88,7 @@ public class ParserKeyConst {
     public static final String STARTING_GAME_BONUS = "startingGameBonus";
 
     public static final String EXCOMMUNICATION_TYPE = "excommunicationType";
-    public static final String ASSETS_MALUS_EXCOMMUNICATION_TYPE = "assetsMalusExcommunicationType";
+    public static final String ASSETS_MALUS_EXCOMMUNICATION = "assetsMalusExcommunication";
     public static final String STRENGTH_MALUS_EXCOMMUNICATION = "strengthMalusExcommunication";
     public static final String MARKET_EXCOMMUNICATION = "marketExcommunication";
     public static final String SERVANTS_EXCOMMUNICATION = "servantsExcommunication";
@@ -102,4 +102,7 @@ public class ParserKeyConst {
     public static final String CONFIGURATOR_CARD_FILE_NAME = "configuratorCardFile.json";
     public static final String CONFIGURATOR_BONUS_ASSETS_FILE_NAME = "configuratorBonusesAssetsFile.json";
     public static final String CONFIGURATOR_EXCOMMUNICATION_FILE_NAME = "configuratorExcommunicationsFile.json";
+
+    public static final String BOARD_PLAYER_PRODUCTION_BONUS = "boardPlayerProductionBonus";
+    public static final String BOARD_PLAYER_HARVEST_BONUS = "boardPlayerHarvestBonus";
 }

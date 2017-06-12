@@ -3,6 +3,8 @@ import it.polimi.ingsw.lim.exceptions.GameSetupException;
 import it.polimi.ingsw.lim.parser.Parser;
 
 import java.util.*;
+import java.util.logging.Level;
+
 import static it.polimi.ingsw.lim.Settings.*;
 import static it.polimi.ingsw.lim.Log.*;
 
@@ -28,6 +30,7 @@ public class Game {
         this.harvest = new ArrayList<>();
         this.faithTrack = new Assets[FAITH_TRACK_LENGTH];
         this.cardsDeck = new CardsDeck();
+        this.availablePlayerColors = new ArrayList<>(PLAYER_COLORS);
     }
 
     /**
@@ -92,6 +95,11 @@ public class Game {
      */
     private HashMap<String, Integer> dice;
 
+    /**
+     *
+     */
+    private List<String> availablePlayerColors;
+
     // ############################################################# METHODS AHEAD
 
     /**
@@ -119,19 +127,17 @@ public class Game {
         if (playersNumber < 2 || playersNumber > 5)
             throw new GameSetupException("Wrong player number on game setup");
 
-        //Creating towers with respective bonus.
-        getLog().info("Creating towers with bonuses");
-        DEFAULT_TOWERS_COLORS.forEach(color ->
-                this.towers.put(color, new Tower(parsedGame.getTowerbonuses(color))));
-        //Adding one more tower if there are 5 players
+        getLog().info("Creating towers with bonuses and players card slots");
+        DEFAULT_TOWERS_COLORS.forEach(color -> {
+                this.towers.put(color, new Tower(parsedGame.getTowerbonuses(color)));
+                this.players.forEach(player -> player.getCards().put(color, new ArrayList<Card>()));});
         if (playersNumber == 5){
-            getLog().info("Creating fifth tower.");
+            getLog().info("Creating fifth tower and black card slots.");
             this.towers.put(BLACK_COLOR, new Tower(parsedGame.getTowerbonuses(BLACK_COLOR)));
+            this.players.forEach(player -> player.getCards().put(BLACK_COLOR, new ArrayList<Card>()));
         }
-        //Create market
         getLog().info("Creating market with bonuses");
         this.market = new Market(playersNumber, parsedGame.getMarketBonuses());
-        //Create council
         getLog().info("Creating council with bonuses");
         this.council = new Council(parsedGame.getCouncilFavors(), parsedGame.getCouncilBonus());
         getLog().info("Adding bonuses to faith track");
@@ -147,7 +153,7 @@ public class Game {
          * the following will have a coin more than the player before them.
          * TODO: where we decide the player order? at the beginning we consider their order of creation in the list.
          */
-        getLog().info("Giving initial resources to " +playersNumber+" players");
+        getLog().log(Level.INFO, "Giving initial resources to %s players", playersNumber);
         int moreCoin = 0;
         for (Player pl : players) {
             pl.setResources(pl.getResources().add(parsedGame.getStartingGameBonus()).addCoins(moreCoin));
@@ -168,7 +174,7 @@ public class Game {
      * Deciding when to advance in ages and turn is a task of the main game controller.
      */
     public void setUpTurn(){
-        getLog().info("[NEW_TURN_SETUP] - Setting up turn number: " + this.turn);
+        getLog().log(Level.INFO, "[NEW_TURN_SETUP] - Setting up turn number: %s", this.turn);
         clearHarvest();
         clearProduction();
         council.clear();
@@ -178,7 +184,7 @@ public class Game {
             {
                 getLog().info("Clearing "+color+" tower");
                 towers.get(color).clear();
-                getLog().info("Adding cards to "+color+" tower");
+                getLog().log(Level.INFO,"Adding cards to %s tower", color);
                 towers.get(color).addCards(cardsDeck.getCardsForTower(color, age));
             });
         getLog().info("Allotting family members to players");
@@ -198,27 +204,35 @@ public class Game {
 
     private void clearHarvest(){
         getLog().info("Clearing Harvest space");
-        //TODO: implement
+        this.harvest = new ArrayList<>();
     }
 
     private void clearProduction(){
         getLog().info("Clearing Production space");
-        //TODO: implement
+        this.harvest = new ArrayList<>();
     }
 
     public int getAge() { return  this.age; }
     public int getTurn() { return  this.turn; }
     public ArrayList<Player> getPlayers(){ return this.players; }
 
-    //TODO: This seems not to work
+
     public Player getPlayer(String nickname) {
-        getLog().info("Getting player "+nickname+" from "+players.size()+" Players.");
+        getLog().log(Level.INFO, "Getting player %s Players.", nickname+" from "+players.size());
         return players.stream().filter(pl -> pl.getNickname().equals(nickname)).findFirst().orElse(null);
     }
 
+    public Player getPlayerFromColor(String color) {
+        return players.stream().filter(pl -> pl.getColor().equals(color)).findFirst().orElse(null);
+    }
 
 
-    public void addPlayer(String nickname, String color) {
+    /**
+     * This method picks an available color and adds it to the new created player
+     * @param nickname
+     */
+    public void addPlayer(String nickname) {
+        String color = this.availablePlayerColors.remove(0);
         this.players.add(new Player(nickname, color));
     }
 
@@ -230,31 +244,82 @@ public class Game {
         if(this.turn >= TURNS_PER_AGE){
             this.turn = 1;
             this.age++;
-            getLog().info("Advancing into new age, number:" +this.age);
+            getLog().log(Level.INFO, () -> "Advancing into new age, number: " + this.age);
         } else {
             this.turn++;
-            getLog().info("Advancing into new turn, number:" + this.turn);
+            getLog().log(Level.INFO, () -> "Advancing into new turn, number: %d" + this.turn);
         }
     }
 
     /**
      * This method checks if a player is able to put a family member in a tower on a specified floor.
+     * it checks if that floor is occupied, if there are others family members of that player in the tower and
+     * if the player has enough strength to perform the action
      * @param towerColor
      * @param floorNumber
+     * @param fm the family member performing the action
+     * @param strength all the bonuses and maluses except the family member
      */
-    public boolean isTowerMoveAllowed(String towerColor, int floorNumber, FamilyMember fm) {
+    public boolean isTowerMoveAllowed(String towerColor, int floorNumber, FamilyMember fm, Strengths strength) {
         if(towers.get(towerColor).getFloor(floorNumber).isOccupied())
             return false;
         for (int i = 1; i <= TOWER_HEIGHT; i++)
             if (towers.get(towerColor).getFloor(i).getFamilyMember().getOwnerColor() == fm.getOwnerColor() && fm.getDiceColor() != NEUTRAL_COLOR)
                 return false;
+        if(towers.get(towerColor).getFloor(floorNumber).getActionCost() > this.dice.get(fm.getDiceColor() + strength.getTowerStrength(towerColor)))
+            return false;
         return true;
     }
 
     /**
-     * This method checks if any player has entered a specified tower
+     * This method checks if a specified move into a tower is affordable by the player performing the move.
+     * TODO: add malus count while entering tower from excomm.
      * @param towerColor
+     * @param floorNumber
+     * @param fm
      * @return
+     */
+    public boolean isTowerMoveAffordable(String towerColor, int floorNumber, FamilyMember fm) {
+        Floor destination = this.getTower(towerColor).getFloor(floorNumber);
+        //Checking Costs
+        Assets cardCost = destination.getCard().getCost()
+                .subtractToZero(this.getPlayerFromColor(fm.getOwnerColor()).getPickDiscount(towerColor));
+        Assets additionalCost = new Assets();
+        Assets playerAssets = new Assets(this.getPlayerFromColor(fm.getOwnerColor()).getResources());
+        additionalCost.addCoins(COINS_TO_ENTER_OCCUPIED_TOWER);
+        if (this.isTowerOccupied(towerColor) && playerAssets.subtract(additionalCost).isNegative())
+            return false;
+        if (this.servantsForTowerAction(fm, towerColor, floorNumber) > playerAssets.getServants())
+            return false;
+        if (this.getPlayerFromColor(fm.getOwnerColor()).isTowerBonusAllowed())
+            playerAssets.add(destination.getInstantBonus());
+        if (playerAssets.isGreaterOrEqual(cardCost))
+            return true;
+        return false;
+    }
+
+    /**
+     * This method makes the actual tower move
+     * @param towerColor
+     * @param floorNumber
+     * @param fm
+     */
+    public void towerMove(String towerColor, int floorNumber, FamilyMember fm) {
+        Player actor = this.getPlayerFromColor(fm.getOwnerColor());
+        Card card = this.towers.get(towerColor).getFloor(floorNumber).pullCard();
+        Assets actionCost = new Assets(card.getCost());
+        if(this.isTowerOccupied(towerColor))
+            actionCost.addCoins(COINS_TO_ENTER_OCCUPIED_TOWER);
+        actionCost.subtractToZero(actor.getPickDiscount(towerColor));
+        actor.getResources().subtract(actionCost);
+        actor.addCard(card, towerColor);
+        //TODO: activate immediateEffect and long term effect for blue cards!
+    }
+
+    /**
+     * This method checks if any player has entered a specified tower
+     * @param towerColor the color of the tower
+     * @return boolean
      */
     public boolean isTowerOccupied(String towerColor) {
         for (int i = 1; i <= TOWER_HEIGHT; i++)
@@ -263,9 +328,37 @@ public class Game {
         return false;
     }
 
+    public boolean isHarvestMoveAllowed(FamilyMember fm) {
+        if(this.players.size() == 2 && !harvest.isEmpty())
+            return false;
+        for (FamilyMember f : harvest)
+            if (f.getOwnerColor().equals(fm.getOwnerColor()) && ((f.getDiceColor().equals(NEUTRAL_COLOR)) == (fm.getDiceColor().equals(NEUTRAL_COLOR))))
+                return false;
+        return true;
+    }
+
+
+    public boolean isProductionMoveAllowed(FamilyMember fm) {
+        if(this.players.size() == 2 && !production.isEmpty())
+            return false;
+        for (FamilyMember f : production)
+            if (f.getOwnerColor().equals(fm.getOwnerColor()) && ((f.getDiceColor().equals(NEUTRAL_COLOR)) == (fm.getDiceColor().equals(NEUTRAL_COLOR))))
+                return false;
+        return true;
+    }
+
+    public void addToHarvest(FamilyMember fm) {
+        this.harvest.add(fm);
+    }
+
+    public void addToProduction(FamilyMember fm) {
+        this.production.add(fm);
+    }
+
     public Tower getTower(String color){
         return this.towers.get(color);
     }
+
 
     public ArrayList<String> getNewPlayerOrder() {
         ArrayList<FamilyMember> fms = council.getFamilyMembers();
@@ -282,5 +375,32 @@ public class Game {
 
     public Council getCouncil() {
         return council;
+    }
+
+    /**
+     * This method calculates the amount of servants that a player needs to perform a tower action
+     * @param fm
+     * @param towerColor
+     * @param floor
+     * @return
+     */
+    public int servantsForTowerAction(FamilyMember fm,String towerColor, int floor) {
+        int actionStr = dice.get(fm.getDiceColor())
+                + this.getPlayerFromColor(fm.getOwnerColor()).getStrengths().getTowerStrength(towerColor);
+        int actionCost = towers.get(towerColor).getFloor(floor).getActionCost();
+        int servants = actionCost - actionStr;
+        if (servants < 0)
+            return 0;
+        return servants;
+    }
+
+    /**
+     * FOLLOWING METHODS ARE USED ONLY FOR TESTING PURPOSES
+     */
+    public ArrayList<FamilyMember> getHarvest() {
+        return this.harvest;
+    }
+    public ArrayList<FamilyMember> getProduction() {
+        return this.production;
     }
 }
