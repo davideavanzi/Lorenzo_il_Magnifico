@@ -183,5 +183,4 @@ public class Assets {
                 this.victoryPoints == ((Assets)assets).getVictoryPoints()
         );
     }
-
 }
