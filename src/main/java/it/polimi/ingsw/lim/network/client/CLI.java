@@ -1,11 +1,6 @@
 package it.polimi.ingsw.lim.network.client;
 
-import it.polimi.ingsw.lim.Log;
-import it.polimi.ingsw.lim.network.client.RMI.RMIClient;
-import it.polimi.ingsw.lim.network.client.socket.SocketClient;
 import it.polimi.ingsw.lim.network.ui.AbsUI;
-
-import java.rmi.RemoteException;
 import java.util.Scanner;
 
 /**
