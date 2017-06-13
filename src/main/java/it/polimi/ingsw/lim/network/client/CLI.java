@@ -1,6 +1,11 @@
 package it.polimi.ingsw.lim.network.client;
 
+import it.polimi.ingsw.lim.network.client.RMI.RMIClient;
+import it.polimi.ingsw.lim.network.client.socket.SocketClient;
 import it.polimi.ingsw.lim.network.ui.AbsUI;
+
+import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.Scanner;
 
 /**
@@ -8,9 +13,56 @@ import java.util.Scanner;
  * This is the client command line interface
  */
 public class CLI extends AbsUI {
-    private Scanner userInput = new Scanner(System.in);
+    private AbsClient clientProtocol;
+    Scanner userInput = new Scanner(System.in);
+    String input;
+    boolean exitNow = false;
 
+    /**
+     * Choose the connection protocol and connect to the server
+     */
+    public void setNetworkSettings() throws RemoteException {
+        System.out.print("Please select the network protocol: (socket/rmi) ");
+        while (!exitNow) {
+            input = userInput.nextLine().toLowerCase();
+            switch (input) {
+                case "socket":
+                case "s":
+                    clientProtocol = new SocketClient();
+                    exitNow = true;
+                    break;
+                case "rmi":
+                case"r":
+                    clientProtocol = new RMIClient();
+                    exitNow = true;
+                    break;
+                default:
+                    System.out.println("Not a valid choice!");
+            }
+        }
 
+         /*do {
+
+         } while (!(protocol.equalsIgnoreCase("socket") || protocol.equalsIgnoreCase("rmi")));
+
+         if (protocol.equalsIgnoreCase("socket")) {
+             System.out.println("Connecting to " + address + " port " + socketPort + "...");
+             SocketClient socketClient = new SocketClient();
+             socketClient.connectSocket(address, socketPort);
+         } else {
+             System.out.println("Connecting to " + address + " port " + RMIPort + "...");
+             try {
+                 RMIClient rmiClient = new RMIClient();
+                 rmiClient.connectRMI(address, RMIPort);
+                 System.out.println("Connesso con rmi");
+                 rmiClient.createLobby(message);
+             } catch (RemoteException e) {
+                 //TODO: SISTEMARE
+                 Log.getLog().severe("mlmlmlmlmlml");
+                 System.out.println(e.getMessage() + e.getStackTrace());
+             }
+         }*/
+    }
 }
 
 /*

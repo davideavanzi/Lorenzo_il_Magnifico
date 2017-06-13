@@ -12,6 +12,9 @@ import java.util.Scanner;
 public class SocketClient extends AbsClient {
     private boolean isClientRunning = true;
 
+    public SocketClient() {
+        super();
+    }
     public SocketClient(String address, int port) {
         super(address, port);
     }
