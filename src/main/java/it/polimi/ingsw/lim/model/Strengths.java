@@ -107,8 +107,8 @@ public class Strengths {
         Strengths strengths = (Strengths) other;
         return (this.harvestBonus == strengths.getHarvestBonus() &&
                 this.productionBonus == strengths.getProductionBonus() &&
-                this.towerstrengths.equals(strengths.getTowerStrength()) &&
-                this.diceBonus.equals(strengths.getDiceBonus())
+                this.towerstrengths.equals(strengths.getTowerStrength())
+                //this.diceBonus.equals(strengths.getDiceBonus())
         );
     }
     //TODO: check if equals method work between to hashmap

@@ -28,7 +28,11 @@ public class MainClient {
      *  If the player want to config the network settings
      */
     private void manageGeneralSettings() {
-        uiType.setNetworkSettings();
+        try {
+            uiType.setNetworkSettings();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     /**

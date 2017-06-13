@@ -1,4 +1,6 @@
 package it.polimi.ingsw.lim.model;
+import it.polimi.ingsw.lim.Log;
+
 import java.util.*;
 
 /**
@@ -199,9 +201,11 @@ public class Assets {
             return true;
         }
         if (other == null){
+            Log.getLog().info("***ASSETS***\nother == null");
             return false;
         }
         if(!(other instanceof Assets)){
+            Log.getLog().info("***ASSETS***\nother not Assets");
             return false;
         }
         Assets assets = (Assets) other;

@@ -1,4 +1,6 @@
 package it.polimi.ingsw.lim.model;
+import it.polimi.ingsw.lim.Log;
+
 import java.util.*;
 
 /**
@@ -36,9 +38,11 @@ public class AssetsEffect extends ImmediateEffect {
             return true;
         }
         if (other == null){
+            Log.getLog().info("***ASSETS EFFECT***\nother is null");
             return false;
         }
-        if(!(other instanceof ActionEffect)){
+        if(!(other instanceof AssetsEffect)){
+            Log.getLog().info("***ASSETS EFFECT***\nother is not AssetsEffect");
             return false;
         }
         AssetsEffect assetsEffect = (AssetsEffect) other;
