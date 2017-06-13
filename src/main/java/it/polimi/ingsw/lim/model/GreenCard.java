@@ -28,4 +28,40 @@ public class GreenCard extends Card {
      */
     private Strengths actionStrength;
 
+    public Assets getHarvestResult(){
+        return this.harvestResult;
+    }
+
+    public Strengths getActionStrength(){
+        return this.actionStrength;
+    }
+
+    @Override
+    public boolean equals (Object other){
+        if(other == this){
+            return true;
+        }
+        if (other == null){
+            return false;
+        }
+        if(!(other instanceof GreenCard)){
+            return false;
+        }
+        GreenCard greenCard = (GreenCard) other;
+
+        //starting to compare the immediate effects
+        if(!(this.getImmediateEffects().size() == greenCard.getImmediateEffects().size())){
+            return false;
+        }
+        for(int i = 0; i < this.getImmediateEffects().size(); i++){
+            if (!(this.getImmediateEffects().get(i).equals(greenCard.getImmediateEffects().get(i)))){
+                return false;
+            }
+        }
+        return (this.getName().equals(greenCard.getName()) &&
+                this.getCost().equals(greenCard.getCost()) &&
+                this.getAge() == greenCard.getAge() &&
+                this.actionStrength.equals(greenCard.getActionStrength()) &&
+                this.harvestResult.equals(greenCard.getHarvestResult()));
+    }
 }

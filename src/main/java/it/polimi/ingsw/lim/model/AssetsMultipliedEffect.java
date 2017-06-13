@@ -52,7 +52,7 @@ public class AssetsMultipliedEffect extends ImmediateEffect {
         if (other == null){
             return false;
         }
-        if(!(other instanceof ActionEffect)){
+        if(!(other instanceof AssetsMultipliedEffect)){
             return false;
         }
         AssetsMultipliedEffect assetsMultipliedEffect = (AssetsMultipliedEffect) other;

@@ -27,6 +27,18 @@ public abstract class Card {
      */
     private ArrayList<ImmediateEffect> immediateEffects;
 
+    public String getName(){
+        return this.name;
+    }
+
+    public int getAge(){
+        return this.age;
+    }
+
+    public ArrayList<ImmediateEffect> getImmediateEffects(){
+        return this.immediateEffects;
+    }
+
     /**
      * Contructor
      * @param name

@@ -25,6 +25,14 @@ public class CardMultipliedEffect extends ImmediateEffect {
      */
     private String multiplierColor;
 
+    public Assets getBonus(){
+        return this.bonus;
+    }
+
+    public String getMultiplierColor(){
+        return this.multiplierColor;
+    }
+
     public void printEffect(){
         System.out.println("[IMMEDIATE EFFECT PRINT]");
         System.out.println("      ---- Effect type ----      ");
@@ -35,5 +43,19 @@ public class CardMultipliedEffect extends ImmediateEffect {
         System.out.println(multiplierColor);
     }
 
-
+    @Override
+    public boolean equals (Object other){
+        if(other == this){
+            return true;
+        }
+        if (other == null){
+            return false;
+        }
+        if(!(other instanceof CardMultipliedEffect)){
+            return false;
+        }
+        CardMultipliedEffect cardMultipliedEffect = (CardMultipliedEffect) other;
+        return (this.bonus.equals(cardMultipliedEffect.getBonus()) &&
+                this.multiplierColor.equals(cardMultipliedEffect.getMultiplierColor()));
+    }
 }
