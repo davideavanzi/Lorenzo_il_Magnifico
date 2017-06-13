@@ -29,6 +29,14 @@ public class ActionEffect extends ImmediateEffect {
      */
     private Assets discount;
 
+    public Strengths getStrength(){
+        return this.strength;
+    }
+
+    public Assets getDiscount(){
+        return this.discount;
+    }
+
     public void printEffect(){
         System.out.println("[IMMEDIATE EFFECT PRINT]");
         System.out.println("      ---- Effect type ----      ");
@@ -39,8 +47,21 @@ public class ActionEffect extends ImmediateEffect {
             System.out.println("    ---- Action Discount ----      ");
             discount.printAssets();
         }
-
-
     }
 
+    @Override
+    public boolean equals (Object other){
+        if(other == this){
+            return true;
+        }
+        if (other == null){
+            return false;
+        }
+        if(!(other instanceof ActionEffect)){
+            return false;
+        }
+        ActionEffect actionEffect = (ActionEffect) other;
+        return (this.strength.equals(actionEffect.getStrength()) &&
+                this.discount.equals(actionEffect.getDiscount()));
+    }
 }
