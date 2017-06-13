@@ -52,11 +52,6 @@ public class Player {
     /**
      * 
      */
-    private int cardCount;
-
-    /**
-     * 
-     */
     private ArrayList<LeaderCard> leaderCards;
 
     /**
@@ -136,6 +131,10 @@ public class Player {
 
     public Strengths getStrengths() {
         return this.strengths;
+    }
+
+    public int getCardsAmount(String color) {
+        return this.cards.get(color).size();
     }
 
 

@@ -294,6 +294,11 @@ public class Game {
         return false;
     }
 
+    /**
+     * This method tells if the player can enter the harvest site with the provided family member
+     * @param fm
+     * @return boolean
+     */
     public boolean isHarvestMoveAllowed(FamilyMember fm) {
         if(this.players.size() == 2 && !this.board.getHarvest().isEmpty())
             return false;
@@ -319,7 +324,23 @@ public class Game {
      * Action cost - Dice strength + Player bonus(or malus if negative)
      * @param fm
      * @return
-     * TODO: add excomm malus
+     * TODO: add excomm malus ? is it already in the player?
+     */
+    public int servantsForProductionAction(FamilyMember fm) {
+        int actionCost = (this.board.getHarvest().size() <= PRODUCTION_DEFAULTSPACE_SIZE)
+                ? PRODUCTION_DEFAULT_STR : PRODUCTION_STR_MALUS;
+        int actionStr = this.dice.get(fm.getDiceColor()) +
+                getPlayerFromColor(fm.getOwnerColor()).getStrengths().getHarvestBonus();
+        int servants = actionCost - actionStr;
+        return (servants > 0) ? -servants : 0;
+    }
+
+    /**
+     * returns the amount of servants required to perform an harvest action:
+     * Action cost - Dice strength + Player bonus(or malus if negative)
+     * @param fm
+     * @return
+     * TODO: add excomm malus ? is it already in the player?
      */
     public int servantsForHarvestAction(FamilyMember fm) {
         int actionCost = (this.board.getHarvest().size() <= HARVEST_DEFAULTSPACE_SIZE)
@@ -330,14 +351,14 @@ public class Game {
         return (servants > 0) ? -servants : 0;
     }
 
-
-
     public boolean isProductionMoveAllowed(FamilyMember fm) {
         if(this.players.size() == 2 && !this.board.getProduction().isEmpty())
             return false;
         for (FamilyMember f : this.board.getProduction())
             if (f.getOwnerColor().equals(fm.getOwnerColor()) && ((f.getDiceColor().equals(NEUTRAL_COLOR)) == (fm.getDiceColor().equals(NEUTRAL_COLOR))))
                 return false;
+        if (servantsForProductionAction(fm) < getPlayerFromColor(fm.getOwnerColor()).getResources().getServants())
+            return false;
         return true;
     }
 

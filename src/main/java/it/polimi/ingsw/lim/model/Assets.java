@@ -156,8 +156,16 @@ public class Assets {
      * This method multiplies all values of the object by the integer given.
      * @param operand is the integer used in the operation.
      */
-    public void multiply(int operand) {
-        // TODO implement here
+    public Assets multiply(int operand) {
+        Assets product = new Assets();
+        product.coins = (this.coins * operand);
+        product.wood = (this.wood * operand);
+        product.stone = (this.stone * operand);
+        product.servants = (this.servants * operand);
+        product.faithPoints = (this.faithPoints * operand);
+        product.battlePoints = (this.battlePoints * operand);
+        product.victoryPoints = (this.victoryPoints * operand);
+        return product;
     }
 
     /**
