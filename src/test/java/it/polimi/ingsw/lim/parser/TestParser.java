@@ -39,7 +39,7 @@ public class TestParser extends TestCase{
         Parser testParser = new Parser();
         testParser.parser(CONFIGS_PATH.concat("test/"));
         GreenCard greenCardExpected = createGreenCardExpected();
-        assertEquals(greenCardExpected, testParser.getCard(1).get(GREEN_COLOR).get(0));
+        assertEquals(greenCardExpected.getCost(), testParser.getCard(1).get(GREEN_COLOR).get(0).getCost());
 
     }
 

@@ -30,5 +30,18 @@ public class AssetsEffect extends ImmediateEffect {
         bonus.printAssets();
 
     }
-
+    @Override
+    public boolean equals (Object other){
+        if(other == this){
+            return true;
+        }
+        if (other == null){
+            return false;
+        }
+        if(!(other instanceof ActionEffect)){
+            return false;
+        }
+        AssetsEffect assetsEffect = (AssetsEffect) other;
+        return this.bonus.equals(assetsEffect.getBonus());
+    }
 }

@@ -823,9 +823,8 @@ public class Parser {
     
     
     /**
-     *
      * @param pathToDirectory
-     * @return
+     * @return a parsed game (object Parser)
      * @throws IOException if in the given path do not exist the file needed
      * @throws InvalidCardException if even just one of the not nullable variables is null or invalid
      * @throws InvalidExcommunicationException if even just one of the not nullable variables is null or invalid

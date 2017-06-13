@@ -25,14 +25,14 @@ public class Strengths {
      * @param black - strength to access the green tower
      */
     public Strengths(int harvest, int production, int green, int yellow, int blue, int purple, int black){
-        this.towerStrenghts = new HashMap<>();
+        this.towerstrengths = new HashMap<>();
         this.harvestBonus = harvest;
         this.productionBonus = production;
-        this.towerStrenghts.put(GREEN_COLOR, green);
-        this.towerStrenghts.put(YELLOW_COLOR, yellow);
-        this.towerStrenghts.put(BLUE_COLOR, blue);
-        this.towerStrenghts.put(PURPLE_COLOR, purple);
-        this.towerStrenghts.put(BLACK_COLOR, black);
+        this.towerstrengths.put(GREEN_COLOR, green);
+        this.towerstrengths.put(YELLOW_COLOR, yellow);
+        this.towerstrengths.put(BLUE_COLOR, blue);
+        this.towerstrengths.put(PURPLE_COLOR, purple);
+        this.towerstrengths.put(BLACK_COLOR, black);
     }
 
     /**
@@ -46,7 +46,7 @@ public class Strengths {
     private int productionBonus;
 
 
-    private HashMap<String, Integer> towerStrenghts;
+    private HashMap<String, Integer> towerstrengths;
 
     /**
      * 
@@ -61,20 +61,56 @@ public class Strengths {
     }
 
     public int getTowerStrength(String color) {
-        return this.towerStrenghts.get(color);
+        return this.towerstrengths.get(color);
+    }
+
+    public HashMap<String, Integer> getDiceBonus() {
+        return diceBonus;
+    }
+
+    public HashMap<String, Integer> getTowerStrength() {
+        return towerstrengths;
+    }
+
+    public int getHarvestBonus() {
+        return harvestBonus;
+    }
+
+    public int getProductionBonus() {
+        return productionBonus;
     }
 
     public void printStrengths(){
-        System.out.println("[STRENGHTS PRINT]");
+        System.out.println("[strengths PRINT]");
         System.out.println("    - Harvest:          "+harvestBonus);
         System.out.println("    - Production:       "+productionBonus);
-        System.out.println("    - Green Bonus:      "+towerStrenghts.get(GREEN_COLOR));
-        System.out.println("    - Blue Bonus:       "+towerStrenghts.get(BLUE_COLOR));
-        System.out.println("    - Yellow Bonus:     "+towerStrenghts.get(YELLOW_COLOR));
-        System.out.println("    - Purple Bonus:     "+towerStrenghts.get(PURPLE_COLOR));
-        System.out.println("    - Black Bonus:      "+towerStrenghts.get(BLACK_COLOR));
+        System.out.println("    - Green Bonus:      "+towerstrengths.get(GREEN_COLOR));
+        System.out.println("    - Blue Bonus:       "+towerstrengths.get(BLUE_COLOR));
+        System.out.println("    - Yellow Bonus:     "+towerstrengths.get(YELLOW_COLOR));
+        System.out.println("    - Purple Bonus:     "+towerstrengths.get(PURPLE_COLOR));
+        System.out.println("    - Black Bonus:      "+towerstrengths.get(BLACK_COLOR));
         //TODO: print dices bonuses
-        System.out.println("[END STRENGHTS PRINT]");
+        System.out.println("[END strengths PRINT]");
     }
+
+    @Override
+    public boolean equals (Object other){
+        if(other == this){
+            return true;
+        }
+        if (other == null){
+            return false;
+        }
+        if(!(other instanceof Strengths)){
+            return false;
+        }
+        Strengths strengths = (Strengths) other;
+        return (this.harvestBonus == strengths.getHarvestBonus() &&
+                this.productionBonus == strengths.getProductionBonus() &&
+                this.towerstrengths.equals(strengths.getTowerStrength()) &&
+                this.diceBonus.equals(strengths.getDiceBonus())
+        );
+    }
+    //TODO: check if equals method work between to hashmap
 
 }

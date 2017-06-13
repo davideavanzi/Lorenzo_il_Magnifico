@@ -192,4 +192,26 @@ public class Assets {
     public Assets addCoins(int amount) { this.coins += amount; return this; }
 
     public Assets subtractCoins(int amount) { this.coins -= amount; return this;}
+
+    @Override
+    public boolean equals (Object other){
+        if(other == this){
+            return true;
+        }
+        if (other == null){
+            return false;
+        }
+        if(!(other instanceof Assets)){
+            return false;
+        }
+        Assets assets = (Assets) other;
+        return (this.coins == assets.getCoins() &&
+                this.wood == assets.getWood() &&
+                this.stone == assets.getStone() &&
+                this.servants == assets.getServants() &&
+                this.faithPoints == assets.getFaithPoints() &&
+                this.battlePoints == assets.getFaithPoints() &&
+                this.victoryPoints == assets.getVictoryPoints()
+        );
+    }
 }

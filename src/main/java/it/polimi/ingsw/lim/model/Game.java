@@ -25,18 +25,20 @@ public class Game {
         this.age = 1;
         this.turn = 1;
         this.players = new ArrayList<>();
-        this.towers = new HashMap<>();
-        this.production = new ArrayList<>();
-        this.harvest = new ArrayList<>();
-        this.faithTrack = new Assets[FAITH_TRACK_LENGTH];
         this.cardsDeck = new CardsDeck();
         this.availablePlayerColors = new ArrayList<>(PLAYER_COLORS);
+        this.board = new Board();
     }
 
     /**
      * The age in which the game is.
      */
     private int age;
+
+    /**
+     * The board, contains links to the structures
+     */
+    private Board board;
 
     /**
      * The turn in which the game is.
@@ -48,42 +50,6 @@ public class Game {
      * List of all the players
      */
     private ArrayList<Player> players;
-
-    /**
-     * This maps the three excommunication with an int representing it's age
-     */
-    private HashMap<Integer, Excommunication> Excommunications;
-
-    /**
-     * This list holds slots for the production site.
-     */
-    private ArrayList<FamilyMember> production;
-
-    /**
-     * This list holds slots for the harvest site
-     */
-    private ArrayList<FamilyMember> harvest;
-
-    /**
-     * This is the council.
-     */
-    private Council council;
-
-    /**
-     * The towers, mapped by color with a string
-     * GREEN, YELLOW, BLUE, PURPLE, BLACK
-     */
-    private HashMap<String, Tower> towers;
-
-    /**
-     * The faith track is an array of 30 bonuses, specified with the Assets type
-     */
-    private Assets[] faithTrack;
-
-    /**
-     * Link to the market
-     */
-    private Market market;
 
     /**
      * Link to the cards container
@@ -106,7 +72,7 @@ public class Game {
      * @return an excommunication based on the game's age
      */
     public Excommunication GetExcommunication(){
-        return this.Excommunications.get(this.age);
+        return this.board.getExcommunications().get(this.age);
     }
 
     /**
@@ -129,22 +95,22 @@ public class Game {
 
         getLog().info("Creating towers with bonuses and players card slots");
         DEFAULT_TOWERS_COLORS.forEach(color -> {
-                this.towers.put(color, new Tower(parsedGame.getTowerbonuses(color)));
+                this.board.getTowers().put(color, new Tower(parsedGame.getTowerbonuses(color)));
                 this.players.forEach(player -> player.getCards().put(color, new ArrayList<Card>()));});
         if (playersNumber == 5){
             getLog().info("Creating fifth tower and black card slots.");
-            this.towers.put(BLACK_COLOR, new Tower(parsedGame.getTowerbonuses(BLACK_COLOR)));
+            this.board.getTowers().put(BLACK_COLOR, new Tower(parsedGame.getTowerbonuses(BLACK_COLOR)));
             this.players.forEach(player -> player.getCards().put(BLACK_COLOR, new ArrayList<Card>()));
         }
         getLog().info("Creating market with bonuses");
-        this.market = new Market(playersNumber, parsedGame.getMarketBonuses());
+        this.board.setMarket(new Market(playersNumber, parsedGame.getMarketBonuses()));
         getLog().info("Creating council with bonuses");
-        this.council = new Council(parsedGame.getCouncilFavors(), parsedGame.getCouncilBonus());
+        this.board.setCouncil(new Council(parsedGame.getCouncilFavors(), parsedGame.getCouncilBonus()));
         getLog().info("Adding bonuses to faith track");
         //TODO: maybe better with a standard for cycle?
         int i = 0;
         for (Assets bonus : parsedGame.getFaithTrackbonuses())
-            this.faithTrack[i] = bonus;
+            this.board.getFaithTrack()[i] = bonus;
 
         //TODO: Get a random excommunication for every age
         //TODO: When we allot leadercards?
@@ -153,7 +119,7 @@ public class Game {
          * the following will have a coin more than the player before them.
          * TODO: where we decide the player order? at the beginning we consider their order of creation in the list.
          */
-        getLog().log(Level.INFO, "Giving initial resources to %s players", playersNumber);
+        getLog().log(Level.INFO, () -> "Giving initial resources to"+playersNumber+"players");
         int moreCoin = 0;
         for (Player pl : players) {
             pl.setResources(pl.getResources().add(parsedGame.getStartingGameBonus()).addCoins(moreCoin));
@@ -177,15 +143,15 @@ public class Game {
         getLog().log(Level.INFO, "[NEW_TURN_SETUP] - Setting up turn number: %s", this.turn);
         clearHarvest();
         clearProduction();
-        council.clear();
-        market.clear();
+        this.board.getCouncil().clear();
+        this.board.getMarket().clear();
         players.forEach(pl -> pl.clearFamilyMembers());
-        towers.keySet().forEach(color ->
+        this.board.getTowers().keySet().forEach(color ->
             {
                 getLog().info("Clearing "+color+" tower");
-                towers.get(color).clear();
+                this.board.getTowers().get(color).clear();
                 getLog().log(Level.INFO,"Adding cards to %s tower", color);
-                towers.get(color).addCards(cardsDeck.getCardsForTower(color, age));
+                this.board.getTowers().get(color).addCards(cardsDeck.getCardsForTower(color, age));
             });
         getLog().info("Allotting family members to players");
         this.players.forEach(player ->
@@ -204,12 +170,12 @@ public class Game {
 
     private void clearHarvest(){
         getLog().info("Clearing Harvest space");
-        this.harvest = new ArrayList<>();
+        this.board.setHarvest(new ArrayList<>());
     }
 
     private void clearProduction(){
         getLog().info("Clearing Production space");
-        this.harvest = new ArrayList<>();
+        this.board.setProduction(new ArrayList<>());
     }
 
     public int getAge() { return  this.age; }
@@ -261,12 +227,12 @@ public class Game {
      * @param strength all the bonuses and maluses except the family member
      */
     public boolean isTowerMoveAllowed(String towerColor, int floorNumber, FamilyMember fm, Strengths strength) {
-        if(towers.get(towerColor).getFloor(floorNumber).isOccupied())
+        if(this.board.getTowers().get(towerColor).getFloor(floorNumber).isOccupied())
             return false;
         for (int i = 1; i <= TOWER_HEIGHT; i++)
-            if (towers.get(towerColor).getFloor(i).getFamilyMember().getOwnerColor() == fm.getOwnerColor() && fm.getDiceColor() != NEUTRAL_COLOR)
+            if (this.board.getTowers().get(towerColor).getFloor(i).getFamilyMember().getOwnerColor() == fm.getOwnerColor() && fm.getDiceColor() != NEUTRAL_COLOR)
                 return false;
-        if(towers.get(towerColor).getFloor(floorNumber).getActionCost() > this.dice.get(fm.getDiceColor() + strength.getTowerStrength(towerColor)))
+        if(this.board.getTowers().get(towerColor).getFloor(floorNumber).getActionCost() > this.dice.get(fm.getDiceColor() + strength.getTowerStrength(towerColor)))
             return false;
         return true;
     }
@@ -306,7 +272,7 @@ public class Game {
      */
     public void towerMove(String towerColor, int floorNumber, FamilyMember fm) {
         Player actor = this.getPlayerFromColor(fm.getOwnerColor());
-        Card card = this.towers.get(towerColor).getFloor(floorNumber).pullCard();
+        Card card = this.board.getTowers().get(towerColor).getFloor(floorNumber).pullCard();
         Assets actionCost = new Assets(card.getCost());
         if(this.isTowerOccupied(towerColor))
             actionCost.addCoins(COINS_TO_ENTER_OCCUPIED_TOWER);
@@ -323,45 +289,73 @@ public class Game {
      */
     public boolean isTowerOccupied(String towerColor) {
         for (int i = 1; i <= TOWER_HEIGHT; i++)
-            if (towers.get(towerColor).getFloor(i).isOccupied())
+            if (this.board.getTowers().get(towerColor).getFloor(i).isOccupied())
                 return true;
         return false;
     }
 
     public boolean isHarvestMoveAllowed(FamilyMember fm) {
-        if(this.players.size() == 2 && !harvest.isEmpty())
+        if(this.players.size() == 2 && !this.board.getHarvest().isEmpty())
             return false;
-        for (FamilyMember f : harvest)
+        for (FamilyMember f : this.board.getHarvest())
             if (f.getOwnerColor().equals(fm.getOwnerColor()) && ((f.getDiceColor().equals(NEUTRAL_COLOR)) == (fm.getDiceColor().equals(NEUTRAL_COLOR))))
                 return false;
+        if (servantsForHarvestAction(fm) < getPlayerFromColor(fm.getOwnerColor()).getResources().getServants())
+            return false;
         return true;
     }
 
+    /**
+     * Performs a move to the harvest site.
+     * @param fm the family member used in this action
+     */
+    public void harvestMove(FamilyMember fm) {
+        this.board.getHarvest().add(fm);
+        getPlayerFromColor(fm.getOwnerColor()).pullFamilyMember(fm.getDiceColor());
+    }
+
+    /**
+     * returns the amount of servants required to perform an harvest action:
+     * Action cost - Dice strength + Player bonus(or malus if negative)
+     * @param fm
+     * @return
+     * TODO: add excomm malus
+     */
+    public int servantsForHarvestAction(FamilyMember fm) {
+        int actionCost = (this.board.getHarvest().size() <= HARVEST_DEFAULTSPACE_SIZE)
+                ? HARVEST_DEFAULT_STR : HARVEST_STR_MALUS;
+        int actionStr = this.dice.get(fm.getDiceColor()) +
+                getPlayerFromColor(fm.getOwnerColor()).getStrengths().getHarvestBonus();
+        int servants = actionCost - actionStr;
+        return (servants > 0) ? -servants : 0;
+    }
+
+
 
     public boolean isProductionMoveAllowed(FamilyMember fm) {
-        if(this.players.size() == 2 && !production.isEmpty())
+        if(this.players.size() == 2 && !this.board.getProduction().isEmpty())
             return false;
-        for (FamilyMember f : production)
+        for (FamilyMember f : this.board.getProduction())
             if (f.getOwnerColor().equals(fm.getOwnerColor()) && ((f.getDiceColor().equals(NEUTRAL_COLOR)) == (fm.getDiceColor().equals(NEUTRAL_COLOR))))
                 return false;
         return true;
     }
 
     public void addToHarvest(FamilyMember fm) {
-        this.harvest.add(fm);
+        this.board.getHarvest().add(fm);
     }
 
     public void addToProduction(FamilyMember fm) {
-        this.production.add(fm);
+        this.board.getProduction().add(fm);
     }
 
     public Tower getTower(String color){
-        return this.towers.get(color);
+        return this.board.getTowers().get(color);
     }
 
 
     public ArrayList<String> getNewPlayerOrder() {
-        ArrayList<FamilyMember> fms = council.getFamilyMembers();
+        ArrayList<FamilyMember> fms = this.board.getCouncil().getFamilyMembers();
         ArrayList<String> councilPlayers = new ArrayList<>();
         for (FamilyMember fm : fms) {
             councilPlayers.add(players.stream().filter(pl -> pl.getColor().equals(fm.getOwnerColor())).findFirst().orElse(null).getNickname());
@@ -374,11 +368,12 @@ public class Game {
     }
 
     public Council getCouncil() {
-        return council;
+        return this.board.getCouncil();
     }
 
     /**
      * This method calculates the amount of servants that a player needs to perform a tower action
+     * TODO: CHECK CORRECT RESULT
      * @param fm
      * @param towerColor
      * @param floor
@@ -387,20 +382,18 @@ public class Game {
     public int servantsForTowerAction(FamilyMember fm,String towerColor, int floor) {
         int actionStr = dice.get(fm.getDiceColor())
                 + this.getPlayerFromColor(fm.getOwnerColor()).getStrengths().getTowerStrength(towerColor);
-        int actionCost = towers.get(towerColor).getFloor(floor).getActionCost();
+        int actionCost = this.board.getTowers().get(towerColor).getFloor(floor).getActionCost();
         int servants = actionCost - actionStr;
-        if (servants < 0)
-            return 0;
-        return servants;
+        return (servants > 0) ? -servants : 0;
     }
 
     /**
      * FOLLOWING METHODS ARE USED ONLY FOR TESTING PURPOSES
      */
     public ArrayList<FamilyMember> getHarvest() {
-        return this.harvest;
+        return this.board.getHarvest();
     }
     public ArrayList<FamilyMember> getProduction() {
-        return this.production;
+        return this.board.getProduction();
     }
 }
