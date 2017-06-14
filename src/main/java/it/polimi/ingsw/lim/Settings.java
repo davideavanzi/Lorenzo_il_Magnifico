@@ -28,8 +28,9 @@ public class Settings {
     public static final int HARVEST_STR_MALUS = 3;
     public static final int HARVEST_DEFAULTSPACE_SIZE = 1;
 
-    public static final int FIRST_PRODUCTION_ACTION_STR = 1;
+    public static final int PRODUCTION_DEFAULT_STR = 1;
     public static final int PRODUCTION_STR_MALUS = 3;
+    public static final int PRODUCTION_DEFAULTSPACE_SIZE = 1;
 
 
     //Color strings used in the code.

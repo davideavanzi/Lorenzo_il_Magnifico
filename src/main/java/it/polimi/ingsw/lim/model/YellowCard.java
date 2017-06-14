@@ -1,5 +1,7 @@
 package it.polimi.ingsw.lim.model;
 
+import org.codehaus.jackson.annotate.JsonTypeInfo;
+
 import java.util.*;
 
 /**
@@ -50,4 +52,44 @@ public class YellowCard extends Card {
      */
     private String cardMultiplier;
 
+    public String getCardMultiplier() {
+        return cardMultiplier;
+    }
+
+    public ArrayList<Assets> getProductionCosts() {
+        return productionCosts;
+    }
+
+    public ArrayList<Assets> getProductionResults() {
+        return productionResults;
+    }
+
+
+    /*
+    private class ProductionOption {
+        private Assets cost;
+        private Assets result;
+
+        public ProductionOption(Assets cost, Assets result) {
+            this.cost = cost;
+            this.result = result;
+        }
+
+        public Assets getCost() {
+            return cost;
+        }
+
+        public Assets getResult() {
+            return result;
+        }
+
+        public void setCost(Assets cost) {
+            this.cost = cost;
+        }
+
+        public void setResult(Assets result) {
+            this.result = result;
+        }
+    }
+    */
 }
