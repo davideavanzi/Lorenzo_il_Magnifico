@@ -1,4 +1,6 @@
 package it.polimi.ingsw.lim.model;
+import it.polimi.ingsw.lim.Log;
+
 import java.util.*;
 
 /**
@@ -62,5 +64,26 @@ public class BlueCard extends Card {
      * 
      */
     private boolean towerBonusAllowed;
+
+    /**
+     * the task of this method is to compare if two assets are equal and return true if they are
+     * equals false otherwise.
+     * @param other is one of the two BlueCard to be compared
+     * @return true if the BlueCard are equal, false otherwise
+     */
+    @Override
+    public boolean equals (Object other){
+        if(!(other instanceof BlueCard)){
+            Log.getLog().info("other not BlueCard");
+            return false;
+        }
+        Card card = (Card) other;
+        if (!(this.equals(card))){
+            Log.getLog().info("***BLUE CARD***");
+            return false;
+        }
+        //TODO:implementare equals della blue card
+        return true;
+    }
 
 }

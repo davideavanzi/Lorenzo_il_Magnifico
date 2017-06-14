@@ -1,4 +1,6 @@
 package it.polimi.ingsw.lim.model;
+import it.polimi.ingsw.lim.Log;
+
 import java.util.*;
 
 /**
@@ -78,5 +80,49 @@ public abstract class Card {
     }
 
     public Assets getCost () { return this.cost; }
+
+    /**
+     * the task of this method is to compare name, age, cost, immediateEffect of two card and return true if they are
+     * equals false otherwise
+     * N.B.->This method does not override equals in Object because this is a method that is only called by equals
+     * method in Green/Blue/Yellow/Purple/Black-Card
+     * @param other is one of the two card to be compared
+     * @return true if the card are equal, false otherwise
+     */
+    public boolean equals (Card other){
+        if(other == this){
+            return true;
+        }
+        if (other == null){
+            Log.getLog().info("other = null");
+            return false;
+        }
+        Card card = (Card) other;
+        Boolean equals = true;
+        if(!(this.getName().equals(card.getName()))){
+            Log.getLog().info("name different");
+            equals = false;
+        }
+        if(!(this.getAge() == (card.getAge()))){
+            Log.getLog().info("age different");
+            equals = false;
+        }
+        if(!(this.getCost().equals(card.getCost()))){
+            Log.getLog().info("cost different");
+            equals = false;
+        }
+        //starting to compare the immediate effects
+        if(!(this.getImmediateEffects().size() == card.getImmediateEffects().size())){
+            Log.getLog().info("immediate effect size different");
+            equals = false;
+        }
+        for(int i = 0; i < this.getImmediateEffects().size(); i++){
+            if (!(this.getImmediateEffects().get(i).equals(card.getImmediateEffects().get(i)))){
+                Log.getLog().info("immediate effect " + i + " different");
+                equals = false;
+            }
+        }
+        return equals;
+    }
 
 }

@@ -93,6 +93,12 @@ public class Strengths {
         System.out.println("[END strengths PRINT]");
     }
 
+    /**
+     * the task of this method is to compare if two Strengths are equal and return true if they are
+     * equals false otherwise.
+     * @param other is one of the two Strengths to be compared
+     * @return true if the Strengths are equal, false otherwise
+     */
     @Override
     public boolean equals (Object other){
         if(other == this){

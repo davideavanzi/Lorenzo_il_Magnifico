@@ -181,7 +181,7 @@ public class Assets {
     public int getCoins(){ return this.coins; }
     public int getWood(){ return this.wood; }
     public int getStone(){ return this.stone; }
-    public int getServants(){ return this.stone; }
+    public int getServants(){ return this.servants; }
     public int getFaithPoints(){ return this.faithPoints; }
     public int getBattlePoints(){ return this.battlePoints; }
     public int getVictoryPoints(){ return this.victoryPoints; }
@@ -195,6 +195,12 @@ public class Assets {
 
     public Assets subtractCoins(int amount) { this.coins -= amount; return this;}
 
+    /**
+     * the task of this method is to compare if two assets are equal and return true if they are
+     * equals false otherwise.
+     * @param other is one of the two assets to be compared
+     * @return true if the assets are equal, false otherwise
+     */
     @Override
     public boolean equals (Object other){
         if(other == this){
