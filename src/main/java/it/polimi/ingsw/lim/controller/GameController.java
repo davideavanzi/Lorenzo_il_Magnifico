@@ -1,11 +1,13 @@
 package it.polimi.ingsw.lim.controller;
 
 import it.polimi.ingsw.lim.exceptions.GameSetupException;
+import it.polimi.ingsw.lim.model.FamilyMember;
 import it.polimi.ingsw.lim.model.Game;
+import it.polimi.ingsw.lim.model.Strengths;
 import it.polimi.ingsw.lim.parser.Parser;
 
-
 import java.util.ArrayList;
+import java.util.logging.Level;
 
 import static it.polimi.ingsw.lim.Log.*;
 import static it.polimi.ingsw.lim.Settings.*;
@@ -24,7 +26,7 @@ public class GameController {
         getLog().info("Creating new game instance.");
         Game game = new Game();
         String defaultPath = "default/";
-        getLog().info("Parsing game data from path: "+CONFIGS_PATH+defaultPath);
+        getLog().log(Level.INFO, () -> "Parsing game data from path: " + CONFIGS_PATH+defaultPath);
 
         //TODO: handle exception in a proper place
         Parser parsedGame = new Parser();
@@ -36,25 +38,32 @@ public class GameController {
 
         getLog().info("Validating game data with current settings.");
         //TODO: how to call validating method?
+        if(validateParsedData(parsedGame))
+            getLog().severe("[ERROR] - parsed data are incorrect");
 
 
         //building game
         getLog().info("Setting up game with parsed data");
         //TODO: add players before setting up the game!;
-        game.addPlayer("CIAONE", GREEN_COLOR);
-        game.addPlayer("HELLONE", YELLOW_COLOR);
-        game.addPlayer("HOLAONE", BLUE_COLOR);
+        game.addPlayer("CIAONE");
+        game.addPlayer("HELLONE");
+        game.addPlayer("HOLAONE");
         try {
             game.setUpGame(parsedGame);
         } catch (GameSetupException e) {
             getLog().severe(e.getMessage());
-            e.printStackTrace();
         }
         game.setUpTurn();
         game.getTower("GREEN").getFloor(1).getCard().printCard();
-        game.getCouncil().addFamilyMember(game.getPlayer("HELLONE").pullFamilyMember(ORANGE_COLOR));
-        game.getCouncil().addFamilyMember(game.getPlayer("HOLAONE").pullFamilyMember(ORANGE_COLOR));
-        game.getNewPlayerOrder().forEach(pl -> System.out.println(pl));
+
+        game.moveInTower(game.getPlayer("CIAONE").pullFamilyMember(BLACK_COLOR), GREEN_COLOR,1);
+
+        System.out.println("Carte verdi in ciaone: "+game.getPlayer("CIAONE").getCardsOfColor(GREEN_COLOR).size());
+
+        System.out.println("La torre verde al piano uno ha la carta? "+game.getTower(GREEN_COLOR).getFloor(1).hasCard());
+        System.out.println("DICE COLORS:");
+        DICE_COLORS.forEach(color -> System.out.println(color+": "+game.getDice().get(color)));
+
     }
 
     /**
@@ -66,18 +75,21 @@ public class GameController {
      * - Council bonuses consistent.
      * - More controls?
      * - Faith track bonuses corresponding to faith track length
-     * do we have to check if every card is valid?
+     * TODO: do we have to check if every card is valid?
      */
 
-    private static boolean validateParsedData(){
-        //TODO: implement here
+    private static boolean validateParsedData (Parser parsedGame){
+        for (int age = 1; age <= AGES_NUMBER; age++)
+            for (String color : DEFAULT_TOWERS_COLORS)
+                return !(parsedGame.getCard(age, color).size() == TURNS_PER_AGE * TOWER_HEIGHT);
+        for (String color : DEFAULT_TOWERS_COLORS)
+            return !(parsedGame.getTowerbonuses(color).length == TOWER_HEIGHT);
+        //TODO: implement
         return true;
     }
 
     public ArrayList<String> getPlayOrder() {
         return  game.getNewPlayerOrder();
     }
-
-
 
 }

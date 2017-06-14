@@ -1,5 +1,7 @@
 package it.polimi.ingsw.lim.network.client.socket;
 
+import it.polimi.ingsw.lim.network.client.AbsClient;
+
 import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
@@ -7,11 +9,14 @@ import java.util.Scanner;
 /**
  * Created by nico.
  */
-public class SocketClient {
+public class SocketClient extends AbsClient {
     private boolean isClientRunning = true;
 
     public SocketClient() {
-
+        super();
+    }
+    public SocketClient(String address, int port) {
+        super(address, port);
     }
 
     public void connectSocket(String address, int port) {

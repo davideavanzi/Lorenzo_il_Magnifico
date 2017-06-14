@@ -26,6 +26,14 @@ public class AssetsMultipliedEffect extends ImmediateEffect {
      */
     private Assets multiplier;
 
+    public Assets getBonus(){
+        return this.bonus;
+    }
+
+    public Assets getMultiplier(){
+        return this.multiplier;
+    }
+
     public void printEffect(){
         System.out.println("[IMMEDIATE EFFECT PRINT]");
         System.out.println("      ---- Effect type ----      ");
@@ -34,6 +42,27 @@ public class AssetsMultipliedEffect extends ImmediateEffect {
         bonus.printAssets();
         System.out.println("   ---- Bonus Multiplier ----      ");
         multiplier.printAssets();
+    }
 
+    /**
+     * the task of this method is to compare if two AssetsMultipliedEffect are equal and return true if they are
+     * equals false otherwise.
+     * @param other is one of the two AssetsMultipliedEffect to be compared
+     * @return true if the AssetsMultipliedEffect are equal, false otherwise
+     */
+    @Override
+    public boolean equals (Object other){
+        if(other == this){
+            return true;
+        }
+        if (other == null){
+            return false;
+        }
+        if(!(other instanceof AssetsMultipliedEffect)){
+            return false;
+        }
+        AssetsMultipliedEffect assetsMultipliedEffect = (AssetsMultipliedEffect) other;
+        return (this.bonus.equals(assetsMultipliedEffect.getBonus()) &&
+                this.multiplier.equals(assetsMultipliedEffect.getMultiplier()));
     }
 }

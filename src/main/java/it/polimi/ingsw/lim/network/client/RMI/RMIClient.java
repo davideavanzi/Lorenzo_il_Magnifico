@@ -1,6 +1,6 @@
 package it.polimi.ingsw.lim.network.client.RMI;
 
-import it.polimi.ingsw.lim.network.client.MainClientInterface;
+import it.polimi.ingsw.lim.network.client.AbsClient;
 import it.polimi.ingsw.lim.network.server.RMI.RMIServerInterf;
 
 import java.net.MalformedURLException;
@@ -14,11 +14,15 @@ import java.rmi.server.UnicastRemoteObject;
 /**
  * Created by nico.
  */
-public class RMIClient extends UnicastRemoteObject implements MainClientInterface, RMIClientInterf {
+public class RMIClient extends AbsClient implements RMIClientInterf {
     RMIServerInterf rmiServer;
 
     public RMIClient() throws RemoteException {
         super();
+    }
+
+    public RMIClient(String address, int port) throws RemoteException {
+        super(address, port);
     }
 
     public void createLobby(String roomName) throws RemoteException {
@@ -33,6 +37,7 @@ public class RMIClient extends UnicastRemoteObject implements MainClientInterfac
         try {
             Registry registry = LocateRegistry.getRegistry(address, port);
             rmiServer = (RMIServerInterf)Naming.lookup("rmi://" + address + "/lim");
+            //UnicastRemoteObject.exportObject(this, 0);
             System.out.println("You have been connected in RMI mode.");
         } catch(NotBoundException nbe) {
             System.out.println("The element is not bound to the registry");

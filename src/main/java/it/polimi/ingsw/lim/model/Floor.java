@@ -1,5 +1,5 @@
 package it.polimi.ingsw.lim.model;
-import java.util.*;
+import static it.polimi.ingsw.lim.Settings.FLOORS_ACTION_COSTS;
 
 /**
  * This class represents a single floor of a tower
@@ -7,9 +7,11 @@ import java.util.*;
 public class Floor {
 
     /**
-     * Default constructor
+     * Constructor. it takes the integer corresponding to it's position in the tower
+     * and picks it's action cost from the settings
      */
-    public Floor() {
+    public Floor(int floorPosition) {
+        this.actionCost = FLOORS_ACTION_COSTS[floorPosition];
     }
 
     /**
@@ -28,9 +30,11 @@ public class Floor {
     private FamilyMember familyMemberSlot;
 
     /**
-     * The strength required to perform this action (enter this floor)
+     * The strength required to perform this action (enter this floor).
+     * This is not a "Strength" type because the tower corresponding to this specified action is implicit
+     * as the floor is part of that tower.
      */
-    private Strengths actionCost;
+    private int actionCost;
 
     /**
      * @return
@@ -63,5 +67,18 @@ public class Floor {
     public Card getCard(){
         return this.cardSlot;
     }
+
+    public boolean hasCard() { return (this.cardSlot != null); }
+    /**
+     * Get the card and set the slot to null
+     * @return
+     */
+    public Card pullCard() {
+        Card card = this.cardSlot;
+        this.cardSlot = null;
+        return card;
+    }
+
+    public int getActionCost() { return this.actionCost; }
 
 }

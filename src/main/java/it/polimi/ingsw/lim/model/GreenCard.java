@@ -1,4 +1,6 @@
 package it.polimi.ingsw.lim.model;
+import it.polimi.ingsw.lim.Log;
+
 import java.util.*;
 
 /**
@@ -28,4 +30,41 @@ public class GreenCard extends Card {
      */
     private Strengths actionStrength;
 
+    public Assets getHarvestResult(){
+        return this.harvestResult;
+    }
+
+    public Strengths getActionStrength(){
+        return this.actionStrength;
+    }
+
+    /**
+     * the task of this method is to compare if two GreenCard are equal and return true if they are
+     * equals false otherwise.
+     * @param other is one of the two GreenCard to be compared
+     * @return true if the GreenCard are equal, false otherwise
+     */
+    @Override
+    public boolean equals (Object other){
+        if(!(other instanceof GreenCard)){
+            Log.getLog().info("other not GreenCard");
+            return false;
+        }
+        Log.getLog().info("***GREEN CARD Testing Equals***");
+        Card card = (Card) other;
+        if (!(this.equals(card))){
+            return false;
+        }
+        GreenCard greenCard = (GreenCard) other;
+        boolean equals = true;
+        if(!(this.actionStrength.equals(greenCard.getActionStrength()))){
+            Log.getLog().info("action strength different");
+            equals = false;
+        }
+        if(!(this.harvestResult.equals(greenCard.getHarvestResult()))){
+            Log.getLog().info("harvest result different");
+            equals = false;
+        }
+        return equals;
+    }
 }

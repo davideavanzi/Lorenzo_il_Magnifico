@@ -5,6 +5,8 @@ import it.polimi.ingsw.lim.Log;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
 
 /**
  * Created by Davide on 26/05/2017.
@@ -12,26 +14,21 @@ import java.util.ArrayList;
  */
 public class Room extends UnicastRemoteObject {
 
-    private String roomName;
-    private GameController gameController;
+    private transient GameController gameController;
     private boolean roomStatus = true; // room open
     private static ArrayList<User> usersList;
+    private ArrayList<String> playOrder;
 
     public Room(String name) throws RemoteException {
-        roomName = name;
         usersList = new ArrayList<>();
     }
 
     public void addUser(User user) {
-        this.usersList.add(user);
-        Log.getLog().info("Adding user "+user.toString()+" to room");
+        usersList.add(user);
+        Log.getLog().log(Level.INFO, "Adding user %s to room", user);
     }
 
-    private ArrayList<String> playOrder;
-
-
-
-    public static ArrayList<User> getUsersList() {
+    public static List<User> getUsersList() {
         return usersList;
     }
 }

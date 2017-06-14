@@ -1,4 +1,6 @@
 package it.polimi.ingsw.lim.model;
+import it.polimi.ingsw.lim.Log;
+
 import java.util.*;
 
 /**
@@ -24,6 +26,20 @@ public class Assets {
         this.faithPoints = faithPoints;
         this.battlePoints = battlePoints;
         this.victoryPoints = victoryPoints;
+    }
+
+    /**
+     * Copy constructor. this constructor creates a new copy of the one given.
+     * @param copy the object to copy
+     */
+    public Assets(Assets copy) {
+        this(copy.getCoins(),
+                copy.getWood(),
+                copy.getStone(),
+                copy.getServants(),
+                copy.getFaithPoints(),
+                copy.getBattlePoints(),
+                copy.getVictoryPoints());
     }
 
     /**
@@ -77,6 +93,56 @@ public class Assets {
         return sum;
     }
 
+    public Assets subtract(Assets operand) {
+        Assets diff = new Assets();
+        diff.coins = this.coins - operand.getCoins();
+        diff.wood = this.wood - operand.getWood();
+        diff.stone = this.stone - operand.getStone();
+        diff.servants = this.servants - operand.getServants();
+        diff.faithPoints = this.faithPoints - operand.getFaithPoints();
+        diff.battlePoints = this.battlePoints - operand.getBattlePoints();
+        diff.victoryPoints = this.victoryPoints - operand.getVictoryPoints();
+        return diff;
+    }
+
+    public boolean isGreaterOrEqual(Assets operand) {
+        return (this.coins >= operand.getCoins() &&
+                this.wood >= operand.getWood() &&
+                this.stone >= operand.getStone() &&
+                this.servants >= operand.getServants() &&
+                this.faithPoints >= operand.getFaithPoints() &&
+                this.battlePoints >= operand.getFaithPoints() &&
+                this.victoryPoints >= operand.getVictoryPoints()
+        );
+    }
+
+    public boolean isNegative() {
+        return (this.coins < 0 &&
+                this.wood < 0 &&
+                this.stone < 0 &&
+                this.servants < 0 &&
+                this.faithPoints < 0 &&
+                this.battlePoints < 0 &&
+                this.victoryPoints < 0);
+    }
+
+    /**
+     * This method subtracts two Assets without going below zero.
+     * @param operand the Asset to subtract
+     * @return the result
+     */
+    public Assets subtractToZero(Assets operand) {
+        Assets diff = new Assets();
+        diff.coins = (this.coins - operand.getCoins() >= 0) ? this.coins - operand.getCoins() : 0;
+        diff.wood = (this.wood - operand.getWood() >= 0) ? this.wood - operand.getWood() : 0;
+        diff.stone = (this.stone - operand.getStone() >= 0) ? this.stone - operand.getStone() : 0;
+        diff.servants = (this.servants - operand.getServants() >= 0) ? this.servants - operand.getServants() : 0;
+        diff.faithPoints = (this.faithPoints - operand.getFaithPoints() >= 0) ? this.faithPoints - operand.getFaithPoints() : 0;
+        diff.battlePoints = (this.battlePoints - operand.getBattlePoints() >= 0) ? this.battlePoints - operand.getBattlePoints() : 0;
+        diff.victoryPoints = (this.victoryPoints - operand.getVictoryPoints() >= 0) ? this.victoryPoints - operand.getVictoryPoints() : 0;
+        return diff;
+    }
+
     /**
      * This method multiplies two objects of this class.
      * @param operand is the second operand.
@@ -90,8 +156,16 @@ public class Assets {
      * This method multiplies all values of the object by the integer given.
      * @param operand is the integer used in the operation.
      */
-    public void multiply(int operand) {
-        // TODO implement here
+    public Assets multiply(int operand) {
+        Assets product = new Assets();
+        product.coins = (this.coins * operand);
+        product.wood = (this.wood * operand);
+        product.stone = (this.stone * operand);
+        product.servants = (this.servants * operand);
+        product.faithPoints = (this.faithPoints * operand);
+        product.battlePoints = (this.battlePoints * operand);
+        product.victoryPoints = (this.victoryPoints * operand);
+        return product;
     }
 
     /**
@@ -115,7 +189,7 @@ public class Assets {
     public int getCoins(){ return this.coins; }
     public int getWood(){ return this.wood; }
     public int getStone(){ return this.stone; }
-    public int getServants(){ return this.stone; }
+    public int getServants(){ return this.servants; }
     public int getFaithPoints(){ return this.faithPoints; }
     public int getBattlePoints(){ return this.battlePoints; }
     public int getVictoryPoints(){ return this.victoryPoints; }
@@ -127,4 +201,35 @@ public class Assets {
      */
     public Assets addCoins(int amount) { this.coins += amount; return this; }
 
+    public Assets subtractCoins(int amount) { this.coins -= amount; return this;}
+
+    /**
+     * the task of this method is to compare if two assets are equal and return true if they are
+     * equals false otherwise.
+     * @param other is one of the two assets to be compared
+     * @return true if the assets are equal, false otherwise
+     */
+    @Override
+    public boolean equals (Object other){
+        if(other == this){
+            return true;
+        }
+        if (other == null){
+            Log.getLog().info("***ASSETS***\nother == null");
+            return false;
+        }
+        if(!(other instanceof Assets)){
+            Log.getLog().info("***ASSETS***\nother not Assets");
+            return false;
+        }
+        Assets assets = (Assets) other;
+        return (this.coins == assets.getCoins() &&
+                this.wood == assets.getWood() &&
+                this.stone == assets.getStone() &&
+                this.servants == assets.getServants() &&
+                this.faithPoints == assets.getFaithPoints() &&
+                this.battlePoints == assets.getFaithPoints() &&
+                this.victoryPoints == assets.getVictoryPoints()
+        );
+    }
 }

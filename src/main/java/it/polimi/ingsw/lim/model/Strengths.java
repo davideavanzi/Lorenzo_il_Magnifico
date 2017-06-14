@@ -1,6 +1,8 @@
 package it.polimi.ingsw.lim.model;
 import java.util.*;
 
+import static it.polimi.ingsw.lim.Settings.*;
+
 /**
  * This class holds values for strengths that affect the player while performing an action.
  */
@@ -10,6 +12,14 @@ public class Strengths {
      * Default constructor, all values are put to 0.
      */
     public Strengths() {
+        this.towerstrengths = new HashMap<>();
+        this.harvestBonus = 0;
+        this.productionBonus = 0;
+        this.towerstrengths.put(GREEN_COLOR, 0);
+        this.towerstrengths.put(YELLOW_COLOR, 0);
+        this.towerstrengths.put(BLUE_COLOR, 0);
+        this.towerstrengths.put(PURPLE_COLOR, 0);
+        this.towerstrengths.put(BLACK_COLOR, 0);
     }
 
     /**
@@ -23,13 +33,14 @@ public class Strengths {
      * @param black - strength to access the green tower
      */
     public Strengths(int harvest, int production, int green, int yellow, int blue, int purple, int black){
+        this.towerstrengths = new HashMap<>();
         this.harvestBonus = harvest;
         this.productionBonus = production;
-        this.greenBonus = green;
-        this.yellowBonus = yellow;
-        this.blackBonus = blue;
-        this.purpleBonus = purple;
-        this.blackBonus = black;
+        this.towerstrengths.put(GREEN_COLOR, green);
+        this.towerstrengths.put(YELLOW_COLOR, yellow);
+        this.towerstrengths.put(BLUE_COLOR, blue);
+        this.towerstrengths.put(PURPLE_COLOR, purple);
+        this.towerstrengths.put(BLACK_COLOR, black);
     }
 
     /**
@@ -42,30 +53,8 @@ public class Strengths {
      */
     private int productionBonus;
 
-    /**
-     * 
-     */
-    private int greenBonus;
 
-    /**
-     * 
-     */
-    private int blueBonus;
-
-    /**
-     * 
-     */
-    private int yellowBonus;
-
-    /**
-     * 
-     */
-    private int blackBonus;
-
-    /**
-     * 
-     */
-    private int purpleBonus;
+    private HashMap<String, Integer> towerstrengths;
 
     /**
      * 
@@ -73,23 +62,80 @@ public class Strengths {
     private HashMap<String, Integer> diceBonus;
 
     /**
+     * This method adds two strengths. it adds only tower bonus if they are specified in the hashmap.
+     * TODO: HashMap has empty values or default zeros?
      * @param operand
      */
-    public void add(Strengths operand) {
-        // TODO implement here
+    public Strengths add(Strengths operand) {
+        Strengths sum = new Strengths();
+        sum.harvestBonus = this.harvestBonus + operand.getHarvestBonus();
+        sum.productionBonus = this.productionBonus + operand.getProductionBonus();
+        operand.getTowerStrength().keySet().forEach(color ->
+                sum.setTowerStrength(color,this.getTowerStrength(color) + operand.getTowerStrength(color)));
+        return sum;
+    }
+
+    public int getTowerStrength(String color) {
+        return this.towerstrengths.get(color);
+    }
+
+    public HashMap<String, Integer> getDiceBonus() {
+        return diceBonus;
+    }
+
+    public HashMap<String, Integer> getTowerStrength() {
+        return towerstrengths;
+    }
+
+    public int getHarvestBonus() {
+        return harvestBonus;
+    }
+
+    public int getProductionBonus() {
+        return productionBonus;
     }
 
     public void printStrengths(){
-        System.out.println("[STRENGHTS PRINT]");
+        System.out.println("[strengths PRINT]");
         System.out.println("    - Harvest:          "+harvestBonus);
         System.out.println("    - Production:       "+productionBonus);
-        System.out.println("    - Green Bonus:      "+greenBonus);
-        System.out.println("    - Blue Bonus:       "+blueBonus);
-        System.out.println("    - Yellow Bonus:     "+yellowBonus);
-        System.out.println("    - Purple Bonus:     "+purpleBonus);
-        System.out.println("    - Black Bonus:      "+blackBonus);
+        System.out.println("    - Green Bonus:      "+towerstrengths.get(GREEN_COLOR));
+        System.out.println("    - Blue Bonus:       "+towerstrengths.get(BLUE_COLOR));
+        System.out.println("    - Yellow Bonus:     "+towerstrengths.get(YELLOW_COLOR));
+        System.out.println("    - Purple Bonus:     "+towerstrengths.get(PURPLE_COLOR));
+        System.out.println("    - Black Bonus:      "+towerstrengths.get(BLACK_COLOR));
         //TODO: print dices bonuses
-        System.out.println("[END STRENGHTS PRINT]");
+        System.out.println("[END strengths PRINT]");
     }
+
+    public void setTowerStrength(String color, int value) {
+        this.towerstrengths.replace(color, value);
+    }
+
+    /**
+     * the task of this method is to compare if two Strengths are equal and return true if they are
+     * equals false otherwise.
+     * @param other is one of the two Strengths to be compared
+     * @return true if the Strengths are equal, false otherwise
+     */
+    @Override
+    public boolean equals (Object other){
+        if(other == this){
+            return true;
+        }
+        if (other == null){
+            return false;
+        }
+        if(!(other instanceof Strengths)){
+            return false;
+        }
+        Strengths strengths = (Strengths) other;
+        return (this.harvestBonus == strengths.getHarvestBonus() &&
+                this.productionBonus == strengths.getProductionBonus() &&
+                this.towerstrengths.equals(strengths.getTowerStrength())
+                //this.diceBonus.equals(strengths.getDiceBonus())
+        );
+    }
+    //TODO: check if equals method work between to hashmap
 
 }

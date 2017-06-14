@@ -1,4 +1,6 @@
 package it.polimi.ingsw.lim.model;
+import it.polimi.ingsw.lim.Log;
+
 import java.util.*;
 
 /**
@@ -31,4 +33,26 @@ public class AssetsEffect extends ImmediateEffect {
 
     }
 
+    /**
+     * the task of this method is to compare if two AssetsEffect are equal and return true if they are
+     * equals false otherwise.
+     * @param other is one of the two AssetsEffect to be compared
+     * @return true if the AssetsEffect are equal, false otherwise
+     */
+    @Override
+    public boolean equals (Object other){
+        if(other == this){
+            return true;
+        }
+        if (other == null){
+            Log.getLog().info("***ASSETS EFFECT***\nother is null");
+            return false;
+        }
+        if(!(other instanceof AssetsEffect)){
+            Log.getLog().info("***ASSETS EFFECT***\nother is not AssetsEffect");
+            return false;
+        }
+        AssetsEffect assetsEffect = (AssetsEffect) other;
+        return this.bonus.equals(assetsEffect.getBonus());
+    }
 }
