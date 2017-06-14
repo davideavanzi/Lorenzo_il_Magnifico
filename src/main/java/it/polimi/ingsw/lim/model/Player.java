@@ -1,10 +1,10 @@
 package it.polimi.ingsw.lim.model;
-import org.codehaus.jackson.annotate.JsonTypeInfo;
 
 import java.util.*;
 import java.util.logging.Level;
 
 import static it.polimi.ingsw.lim.Log.getLog;
+import static it.polimi.ingsw.lim.Settings.*;
 
 /**
  * Player are indexed by nickname, which corresponds to he user that is playing, and that username is unique
@@ -28,6 +28,8 @@ public class Player {
         this.towerBonusAllowed = true;
         this.color = color;
         this.cards = new HashMap<>();
+        DEFAULT_TOWERS_COLORS.forEach(towerColor -> this.pickDiscounts.put(towerColor, new Assets()));
+        pickDiscounts.put(BLACK_COLOR, new Assets());
         getLog().log(Level.INFO, "New empty player %s created.", nickname);
     }
 

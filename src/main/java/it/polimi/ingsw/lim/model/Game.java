@@ -1,4 +1,5 @@
 package it.polimi.ingsw.lim.model;
+import it.polimi.ingsw.lim.Log;
 import it.polimi.ingsw.lim.controller.CardController;
 import it.polimi.ingsw.lim.exceptions.GameSetupException;
 import it.polimi.ingsw.lim.parser.Parser;
@@ -29,6 +30,8 @@ public class Game {
         this.cardsDeck = new CardsDeck();
         this.availablePlayerColors = new ArrayList<>(PLAYER_COLORS);
         this.board = new Board();
+        this.dice = new HashMap<>();
+        dice.put(NEUTRAL_COLOR, NEUTRAL_FM_STRENGTH);
     }
 
     /**
@@ -82,7 +85,7 @@ public class Game {
     public void rollDices(){
         //For every dice, generates a random number between 1 and 6.
         Random randomGenerator = new Random();
-        DICE_COLORS.forEach(color -> this.dice.put(color, randomGenerator.nextInt(5)+1));
+        DICE_COLORS.forEach(color -> this.dice.replace(color, randomGenerator.nextInt(6)+1));
     }
 
     /**
@@ -90,6 +93,7 @@ public class Game {
      */
     public void setUpGame(Parser parsedGame) throws GameSetupException {
         getLog().info("[GAME SETUP BEGIN]");
+        DICE_COLORS.forEach(color -> this.dice.put(color, 0));
         int playersNumber = this.players.size();
         if (playersNumber < 2 || playersNumber > 5)
             throw new GameSetupException("Wrong player number on game setup");
@@ -158,6 +162,7 @@ public class Game {
         this.players.forEach(player ->
                 DICE_COLORS.forEach(color ->
                         player.addFamilyMember((new FamilyMember(color, player.getColor())))));
+        this.rollDices();
         getLog().info("[NEW_TURN_SETUP_END]");
     }
 
@@ -185,7 +190,7 @@ public class Game {
 
 
     public Player getPlayer(String nickname) {
-        getLog().log(Level.INFO, "Getting player %s Players.", nickname+" from "+players.size());
+        getLog().log(Level.INFO, () -> "Getting player "+nickname+" from "+players.size()+" Players");
         return players.stream().filter(pl -> pl.getNickname().equals(nickname)).findFirst().orElse(null);
     }
 
@@ -228,13 +233,18 @@ public class Game {
      * @param strength all the bonuses and maluses except the family member
      */
     public boolean isTowerMoveAllowed(String towerColor, int floorNumber, FamilyMember fm, Strengths strength) {
-        if(this.board.getTowers().get(towerColor).getFloor(floorNumber).isOccupied())
-            return false;
-        for (int i = 1; i <= TOWER_HEIGHT; i++, fm = this.board.getTowers().get(towerColor).getFloor(i).getFamilyMember())
-            if (fm != null && fm.getOwnerColor() ==
+        Floor destination = this.board.getTowers().get(towerColor).getFloor(floorNumber);
+        if(destination.isOccupied()) return false;
+        if (!destination.hasCard()) return false;
+        FamilyMember slot = null;
+        for (int i = 0; i < TOWER_HEIGHT; i++, slot = this.board.getTowers().get(towerColor).getFloor(i).getFamilyMember()) {
+            if (slot != null && fm.getOwnerColor() ==
                     fm.getOwnerColor() && fm.getDiceColor() != NEUTRAL_COLOR)
                 return false;
-        if(this.board.getTowers().get(towerColor).getFloor(floorNumber).getActionCost() > this.dice.get(fm.getDiceColor() + strength.getTowerStrength(towerColor)))
+        }
+        if(destination.getActionCost() >
+                this.dice.get(fm.getDiceColor()) +
+                        strength.getTowerStrength(towerColor))
             return false;
         return true;
     }
@@ -250,8 +260,8 @@ public class Game {
     public boolean isTowerMoveAffordable(String towerColor, int floorNumber, FamilyMember fm) {
         Floor destination = this.getTower(towerColor).getFloor(floorNumber);
         //Checking Costs
-        Assets cardCost = destination.getCard().getCost()
-                .subtractToZero(this.getPlayerFromColor(fm.getOwnerColor()).getPickDiscount(towerColor));
+        Assets cardCost = destination.getCard().getCost().subtractToZero
+                        (this.getPlayerFromColor(fm.getOwnerColor()).getPickDiscount(towerColor));
         Assets additionalCost = new Assets();
         Assets playerAssets = new Assets(this.getPlayerFromColor(fm.getOwnerColor()).getResources());
         additionalCost.addCoins(COINS_TO_ENTER_OCCUPIED_TOWER);
@@ -419,10 +429,15 @@ public class Game {
      * @param fm
      * @param towerColor
      * @param floor
-     * TODO: do we have to split the checkings from the actual move?
+     * TODO: do we have to split the legality checks from the actual move?
+     * TODO: handle max card number and battle points requirements for green card
      */
     public void moveInTower (FamilyMember fm, String towerColor, int floor) {
         Strengths strength = new Strengths();
+        getLog().log(Level.INFO, "Player "+getPlayerFromColor(fm.getOwnerColor()).getNickname()+
+                " is trying to enter "+towerColor+" tower at floor number "+floor+" with the "
+                +fm.getDiceColor()+" family member of value "+dice.get(fm.getDiceColor()));
+
         if(this.isTowerMoveAllowed(towerColor, floor, fm, strength)){
             if(this.isTowerMoveAffordable(towerColor, floor, fm)){
                 //move is affordable, ask the client in case more servants are needed
@@ -431,10 +446,10 @@ public class Game {
                 towerMove(towerColor, floor, fm);
                 //perform action
             } else {
-                System.out.println("TOWER MOVE NOT AFFORDABLE");
+                //System.out.println("TOWER MOVE NOT AFFORDABLE");
             }
         } else {
-            System.out.println("TOWER MOVE NOT ALLOWED");
+            //System.out.println("TOWER MOVE NOT ALLOWED");
         }
     }
 
@@ -464,6 +479,7 @@ public class Game {
         return this.board.getProduction();
     }
 
-
-
+    public HashMap<String, Integer> getDice() {
+        return dice;
+    }
 }

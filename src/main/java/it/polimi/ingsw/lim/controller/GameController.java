@@ -57,7 +57,13 @@ public class GameController {
         game.getTower("GREEN").getFloor(1).getCard().printCard();
 
         game.moveInTower(game.getPlayer("CIAONE").pullFamilyMember(BLACK_COLOR), GREEN_COLOR,1);
+
         System.out.println("Carte verdi in ciaone: "+game.getPlayer("CIAONE").getCardsOfColor(GREEN_COLOR).size());
+
+        System.out.println("La torre verde al piano uno ha la carta? "+game.getTower(GREEN_COLOR).getFloor(1).hasCard());
+        System.out.println("DICE COLORS:");
+        DICE_COLORS.forEach(color -> System.out.println(color+": "+game.getDice().get(color)));
+
     }
 
     /**

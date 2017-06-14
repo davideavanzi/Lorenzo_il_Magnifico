@@ -12,6 +12,14 @@ public class Strengths {
      * Default constructor, all values are put to 0.
      */
     public Strengths() {
+        this.towerstrengths = new HashMap<>();
+        this.harvestBonus = 0;
+        this.productionBonus = 0;
+        this.towerstrengths.put(GREEN_COLOR, 0);
+        this.towerstrengths.put(YELLOW_COLOR, 0);
+        this.towerstrengths.put(BLUE_COLOR, 0);
+        this.towerstrengths.put(PURPLE_COLOR, 0);
+        this.towerstrengths.put(BLACK_COLOR, 0);
     }
 
     /**

@@ -51,7 +51,7 @@ public abstract class Card {
     public Card(String name, int age, Assets cost, ArrayList<ImmediateEffect> iEffects){
         //TODO: a card must have a name and an age, otherwise throws exception
         this.name = name;
-        this.cost = cost;
+        this.cost = (cost == null) ? new Assets() : cost;
         this.age = age;
         this.immediateEffects = iEffects;
     }

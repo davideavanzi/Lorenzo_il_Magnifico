@@ -15,6 +15,7 @@ public class Settings {
     public static final int[] FLOORS_ACTION_COSTS = {1, 3, 5, 7};
     public static final int COUNCIL_FAVUORS_TYPES = 5;
     public static final int MARKET_MAX_SIZE = 5;
+    public static final int NEUTRAL_FM_STRENGTH = 0;
     //faith points corresponding to the first excommunication.
     //Following excommunications will be at +1 fp from their previous
     public static final int FIRST_EXCOMM_FP = 3;
