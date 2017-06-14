@@ -32,6 +32,13 @@ public class AssetsEffect extends ImmediateEffect {
         bonus.printAssets();
 
     }
+
+    /**
+     * the task of this method is to compare if two AssetsEffect are equal and return true if they are
+     * equals false otherwise.
+     * @param other is one of the two AssetsEffect to be compared
+     * @return true if the AssetsEffect are equal, false otherwise
+     */
     @Override
     public boolean equals (Object other){
         if(other == this){

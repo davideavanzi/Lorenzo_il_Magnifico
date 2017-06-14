@@ -12,7 +12,7 @@ import static it.polimi.ingsw.lim.Settings.CONFIGS_PATH;
 import static it.polimi.ingsw.lim.Settings.GREEN_COLOR;
 import static it.polimi.ingsw.lim.Log.getLog;
 /**
- * Created by fabri on 12/06/17.
+ * Created by FabCars. The task of this test class is to test if card parser work as expected
  */
 public class TestParser extends TestCase{
 

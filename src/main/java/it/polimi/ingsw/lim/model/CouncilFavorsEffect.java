@@ -30,6 +30,12 @@ public class CouncilFavorsEffect extends ImmediateEffect {
         System.out.println(amount);
     }
 
+    /**
+     * the task of this method is to compare if two CouncilFavoursEffect are equal and return true if they are
+     * equals false otherwise.
+     * @param other is one of the two CouncilFavoursEffect to be compared
+     * @return true if the CouncilFavoursEffect are equal, false otherwise
+     */
     @Override
     public boolean equals (Object other){
         if(other == this){
