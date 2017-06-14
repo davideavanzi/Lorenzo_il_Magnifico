@@ -98,7 +98,7 @@ public abstract class Card {
             return false;
         }
         Card card = (Card) other;
-        Boolean equals = true;
+        boolean equals = true;
         if(!(this.getName().equals(card.getName()))){
             Log.getLog().info("name different");
             equals = false;
@@ -111,6 +111,7 @@ public abstract class Card {
             Log.getLog().info("cost different");
             equals = false;
         }
+        equals = this.getImmediateEffects().equals(card.getImmediateEffects());
         //starting to compare the immediate effects
         if(!(this.getImmediateEffects().size() == card.getImmediateEffects().size())){
             Log.getLog().info("immediate effect size different");

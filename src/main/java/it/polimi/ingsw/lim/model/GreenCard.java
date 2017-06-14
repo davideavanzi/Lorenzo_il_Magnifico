@@ -56,14 +56,15 @@ public class GreenCard extends Card {
             return false;
         }
         GreenCard greenCard = (GreenCard) other;
+        boolean equals = true;
         if(!(this.actionStrength.equals(greenCard.getActionStrength()))){
             Log.getLog().info("action strength different");
-            return false;
+            equals = false;
         }
         if(!(this.harvestResult.equals(greenCard.getHarvestResult()))){
             Log.getLog().info("harvest result different");
-            return false;
+            equals = false;
         }
-        return true;
+        return equals;
     }
 }
