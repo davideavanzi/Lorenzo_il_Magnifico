@@ -54,10 +54,17 @@ public class Strengths {
     private HashMap<String, Integer> diceBonus;
 
     /**
+     * This method adds two strengths. it adds only tower bonus if they are specified in the hashmap.
+     * TODO: HashMap has empty values or default zeros?
      * @param operand
      */
-    public void add(Strengths operand) {
-        // TODO implement here
+    public Strengths add(Strengths operand) {
+        Strengths sum = new Strengths();
+        sum.harvestBonus = this.harvestBonus + operand.getHarvestBonus();
+        sum.productionBonus = this.productionBonus + operand.getProductionBonus();
+        operand.getTowerStrength().keySet().forEach(color ->
+                sum.setTowerStrength(color,this.getTowerStrength(color) + operand.getTowerStrength(color)));
+        return sum;
     }
 
     public int getTowerStrength(String color) {
@@ -91,6 +98,10 @@ public class Strengths {
         System.out.println("    - Black Bonus:      "+towerstrengths.get(BLACK_COLOR));
         //TODO: print dices bonuses
         System.out.println("[END strengths PRINT]");
+    }
+
+    public void setTowerStrength(String color, int value) {
+        this.towerstrengths.replace(color, value);
     }
 
     @Override

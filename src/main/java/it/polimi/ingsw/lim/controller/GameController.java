@@ -55,10 +55,9 @@ public class GameController {
         }
         game.setUpTurn();
         game.getTower("GREEN").getFloor(1).getCard().printCard();
-        game.getCouncil().addFamilyMember(game.getPlayer("HELLONE").pullFamilyMember(ORANGE_COLOR));
-        game.getCouncil().addFamilyMember(game.getPlayer("HOLAONE").pullFamilyMember(ORANGE_COLOR));
-        //game.getNewPlayerOrder().forEach(pl -> System.out.println(pl));
 
+        game.moveInTower(game.getPlayer("CIAONE").pullFamilyMember(BLACK_COLOR), GREEN_COLOR,1);
+        System.out.println("Carte verdi in ciaone: "+game.getPlayer("CIAONE").getCardsOfColor(GREEN_COLOR).size());
     }
 
     /**
@@ -86,26 +85,5 @@ public class GameController {
     public ArrayList<String> getPlayOrder() {
         return  game.getNewPlayerOrder();
     }
-
-    /**
-     * This methods moves a family member in a tower, checking if the action is legal.
-     * @param fm
-     * @param towerColor
-     * @param floor
-     * TODO: do we have to split the checkings from the actual move?
-     */
-    public void moveInTower (FamilyMember fm, String towerColor, int floor) {
-        Strengths strength = new Strengths();
-        if(this.game.isTowerMoveAllowed(towerColor, floor, fm, strength)){
-            if(this.game.isTowerMoveAffordable(towerColor, floor, fm)){
-                //move is affordable, ask the client in case more servants are needed
-                if (this.game.servantsForTowerAction(fm, towerColor, floor) > 0);
-                    //ask player!
-            }
-            //perform action
-        }
-    }
-
-
 
 }

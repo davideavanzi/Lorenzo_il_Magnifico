@@ -1,4 +1,6 @@
 package it.polimi.ingsw.lim.model;
+import org.codehaus.jackson.annotate.JsonTypeInfo;
+
 import java.util.*;
 import java.util.logging.Level;
 
@@ -109,6 +111,8 @@ public class Player {
 
     public HashMap getCards() { return this.cards; }
 
+    public ArrayList<Card> getCardsOfColor(String color) { return this.cards.get(color); }
+
     public void addCard(Card card, String color) {
         this.cards.get(color).add(card);
     }
@@ -129,8 +133,19 @@ public class Player {
         return this.towerBonusAllowed;
     }
 
+    public void notTowerBonusAllowed() {
+        this.towerBonusAllowed = false;
+    }
+
     public Strengths getStrengths() {
         return this.strengths;
+    }
+
+    public void setStrengths(Strengths strengths) {
+        this.strengths = strengths;
+    }
+    public void setPickDiscount(String color, Assets value) {
+        this.pickDiscounts.replace(color, value);
     }
 
     public int getCardsAmount(String color) {

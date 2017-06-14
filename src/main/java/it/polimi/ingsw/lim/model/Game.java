@@ -1,4 +1,5 @@
 package it.polimi.ingsw.lim.model;
+import it.polimi.ingsw.lim.controller.CardController;
 import it.polimi.ingsw.lim.exceptions.GameSetupException;
 import it.polimi.ingsw.lim.parser.Parser;
 
@@ -229,8 +230,9 @@ public class Game {
     public boolean isTowerMoveAllowed(String towerColor, int floorNumber, FamilyMember fm, Strengths strength) {
         if(this.board.getTowers().get(towerColor).getFloor(floorNumber).isOccupied())
             return false;
-        for (int i = 1; i <= TOWER_HEIGHT; i++)
-            if (this.board.getTowers().get(towerColor).getFloor(i).getFamilyMember().getOwnerColor() == fm.getOwnerColor() && fm.getDiceColor() != NEUTRAL_COLOR)
+        for (int i = 1; i <= TOWER_HEIGHT; i++, fm = this.board.getTowers().get(towerColor).getFloor(i).getFamilyMember())
+            if (fm != null && fm.getOwnerColor() ==
+                    fm.getOwnerColor() && fm.getDiceColor() != NEUTRAL_COLOR)
                 return false;
         if(this.board.getTowers().get(towerColor).getFloor(floorNumber).getActionCost() > this.dice.get(fm.getDiceColor() + strength.getTowerStrength(towerColor)))
             return false;
@@ -280,6 +282,7 @@ public class Game {
         actor.getResources().subtract(actionCost);
         actor.addCard(card, towerColor);
         //TODO: activate immediateEffect and long term effect for blue cards!
+        if (card instanceof BlueCard) CardController.activateBlueCard((BlueCard)card, actor);
     }
 
     /**
@@ -408,6 +411,49 @@ public class Game {
         return (servants > 0) ? -servants : 0;
     }
 
+    /*
+    TODO: MOVE IT IN GAMECONTROLLER?
+     */
+    /**
+     * This methods moves a family member in a tower, checking if the action is legal.
+     * @param fm
+     * @param towerColor
+     * @param floor
+     * TODO: do we have to split the checkings from the actual move?
+     */
+    public void moveInTower (FamilyMember fm, String towerColor, int floor) {
+        Strengths strength = new Strengths();
+        if(this.isTowerMoveAllowed(towerColor, floor, fm, strength)){
+            if(this.isTowerMoveAffordable(towerColor, floor, fm)){
+                //move is affordable, ask the client in case more servants are needed
+                if (this.servantsForTowerAction(fm, towerColor, floor) > 0);
+                //ask player!
+                towerMove(towerColor, floor, fm);
+                //perform action
+            } else {
+                System.out.println("TOWER MOVE NOT AFFORDABLE");
+            }
+        } else {
+            System.out.println("TOWER MOVE NOT ALLOWED");
+        }
+    }
+
+    public void moveInHarvest (FamilyMember fm, String towerColor, int floor) {
+        Strengths strength = new Strengths();
+        if(this.isHarvestMoveAllowed(fm)){
+            if(this.isTowerMoveAffordable(towerColor, floor, fm)){
+                //move is affordable, ask the client in case more servants are needed
+                if (this.servantsForHarvestAction(fm) > 0)
+                //at least that amount of servants!
+                    ;
+                harvestMove(fm);
+                for (Card card: getPlayerFromColor(fm.getOwnerColor()).getCardsOfColor(GREEN_COLOR))
+                    CardController.activateGreenCard((GreenCard)card, getPlayerFromColor(fm.getOwnerColor()));
+            }
+            //perform action
+        }
+    }
+
     /**
      * FOLLOWING METHODS ARE USED ONLY FOR TESTING PURPOSES
      */
@@ -417,4 +463,7 @@ public class Game {
     public ArrayList<FamilyMember> getProduction() {
         return this.board.getProduction();
     }
+
+
+
 }
