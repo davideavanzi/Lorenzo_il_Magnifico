@@ -1,10 +1,12 @@
 package it.polimi.ingsw.lim.network.client;
 
+import static it.polimi.ingsw.lim.network.client.MainClient.*;
+
+import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
 import it.polimi.ingsw.lim.network.client.RMI.RMIClient;
 import it.polimi.ingsw.lim.network.client.socket.SocketClient;
 import it.polimi.ingsw.lim.network.ui.AbsUI;
 
-import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.Scanner;
 
@@ -13,7 +15,6 @@ import java.util.Scanner;
  * This is the client command line interface
  */
 public class CLI extends AbsUI {
-    private AbsClient clientProtocol;
     Scanner userInput = new Scanner(System.in);
     String input;
     boolean exitNow = false;
@@ -21,21 +22,19 @@ public class CLI extends AbsUI {
     /**
      * Choose the connection protocol and connect to the server
      */
-    public void setNetworkSettings() throws RemoteException {
+    public void setNetworkSettings() throws ClientNetworkException {
         System.out.print("Please select the network protocol: (socket/rmi) ");
-        while (!exitNow) {
+        while (true) {
             input = userInput.nextLine().toLowerCase();
             switch (input) {
                 case "socket":
                 case "s":
                     clientProtocol = new SocketClient();
-                    exitNow = true;
-                    break;
+                    return;
                 case "rmi":
                 case"r":
                     clientProtocol = new RMIClient();
-                    exitNow = true;
-                    break;
+                    return;
                 default:
                     System.out.println("Not a valid choice!");
             }
@@ -48,7 +47,7 @@ public class CLI extends AbsUI {
          if (protocol.equalsIgnoreCase("socket")) {
              System.out.println("Connecting to " + address + " port " + socketPort + "...");
              SocketClient socketClient = new SocketClient();
-             socketClient.connectSocket(address, socketPort);
+             socketClient.connect(address, socketPort);
          } else {
              System.out.println("Connecting to " + address + " port " + RMIPort + "...");
              try {
@@ -108,7 +107,7 @@ private void setPort(String protocol, String newPort) {
         if (protocol.equalsIgnoreCase("socket")) {
             System.out.println("Connecting to " + address + " port " + socketPort + "...");
             SocketClient socketClient = new SocketClient();
-            socketClient.connectSocket(address, socketPort);
+            socketClient.connect(address, socketPort);
         } else {
             System.out.println("Connecting to " + address + " port " + RMIPort + "...");
             try {

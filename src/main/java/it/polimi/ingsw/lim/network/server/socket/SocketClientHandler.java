@@ -13,7 +13,7 @@ import java.util.logging.Level;
  * Created by Nico.
  * This class handles the connection to a socket client.
  */
-public class SocketClientHandler extends AbstractServer implements Runnable{
+public class SocketClientHandler extends AbstractServer implements Runnable {
 
     private Socket socketClient;
     private User user;

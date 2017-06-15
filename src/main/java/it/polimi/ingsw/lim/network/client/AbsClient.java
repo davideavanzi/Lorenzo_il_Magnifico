@@ -1,5 +1,9 @@
 package it.polimi.ingsw.lim.network.client;
 
+import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
+
+import java.rmi.RemoteException;
+
 /**
  * Created by nico.
  */
@@ -26,6 +30,12 @@ public abstract class AbsClient {
     }
 
     /**
+     * Calling this method the client will try to connect to the server
+     * @throws RemoteException
+     */
+    public abstract void connect() throws ClientNetworkException;
+
+    /**
      * Return the server's ip
      * @return
      */
@@ -37,13 +47,7 @@ public abstract class AbsClient {
      * Set the server's ip
      * @return
      */
-    protected int getPort() {
+    public int getPort() {
         return port;
     }
-
-    /**
-     *
-     */
-    //protected abstract void connect();
-
 }

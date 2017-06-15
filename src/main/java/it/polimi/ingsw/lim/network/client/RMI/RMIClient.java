@@ -1,5 +1,6 @@
 package it.polimi.ingsw.lim.network.client.RMI;
 
+import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
 import it.polimi.ingsw.lim.network.client.AbsClient;
 import it.polimi.ingsw.lim.network.server.RMI.RMIServerInterf;
 
@@ -17,14 +18,31 @@ import java.rmi.server.UnicastRemoteObject;
 public class RMIClient extends AbsClient implements RMIClientInterf {
     RMIServerInterf rmiServer;
 
-    public RMIClient() throws RemoteException {
+    /**
+     * RMI client constructor
+     * @throws RemoteException
+     */
+    public RMIClient() {
         super();
     }
 
-    public RMIClient(String address, int port) throws RemoteException {
+    public RMIClient(String address, int port) {
         super(address, port);
     }
 
+    public void connect() throws ClientNetworkException{
+        try {
+            Registry registry = LocateRegistry.getRegistry(getAddress(), getPort());
+            rmiServer = (RMIServerInterf)Naming.lookup("rmi://" + getAddress() + "/lim");
+            UnicastRemoteObject.exportObject(this, 0);
+            System.out.println("You have been connected in RMI mode.");
+        } catch(NotBoundException | RemoteException | MalformedURLException e) {
+            throw new ClientNetworkException(e);
+        }
+    }
+}
+
+/*
     public void createLobby(String roomName) throws RemoteException {
         rmiServer.createRoom(roomName, this);
     }
@@ -32,19 +50,4 @@ public class RMIClient extends AbsClient implements RMIClientInterf {
     public void joinFirstRoom() {
 
     }
-
-    public void connectRMI(String address, int port) throws RemoteException {
-        try {
-            Registry registry = LocateRegistry.getRegistry(address, port);
-            rmiServer = (RMIServerInterf)Naming.lookup("rmi://" + address + "/lim");
-            //UnicastRemoteObject.exportObject(this, 0);
-            System.out.println("You have been connected in RMI mode.");
-        } catch(NotBoundException nbe) {
-            System.out.println("The element is not bound to the registry");
-        } catch(RemoteException re) {
-            System.out.println("Could not connect to RMI server");
-        } catch(MalformedURLException mue) {
-            System.out.println("URL unreachable");
-        }
-    }
-}
+ */

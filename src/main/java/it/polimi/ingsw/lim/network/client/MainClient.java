@@ -1,14 +1,17 @@
 package it.polimi.ingsw.lim.network.client;
 
+import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
 import it.polimi.ingsw.lim.network.ui.AbsUI;
 
+import java.rmi.RemoteException;
 import java.util.Scanner;
 
 /**
  * Created by nico.
  */
 public class MainClient {
-    private static AbsUI uiType;
+    private static AbsUI clientUI;
+    public static AbsClient clientProtocol;
     private static Scanner userInput = new Scanner(System.in);
 
     /**
@@ -18,9 +21,9 @@ public class MainClient {
      */
     private MainClient(boolean gui) {
         if(gui) {
-            //uiType = new GUI();
+            //clientUI = new GUI();
         } else {
-            uiType = new CLI();
+            clientUI = new CLI();
         }
     }
 
@@ -28,7 +31,11 @@ public class MainClient {
      *  If the player want to config the network settings
      */
     private void manageGeneralSettings() {
-        uiType.setNetworkSettings();
+        try {
+            clientUI.setNetworkSettings();
+        } catch (ClientNetworkException re) {
+            //TODO:handle exception
+        }
     }
 
     /**
@@ -58,5 +65,6 @@ public class MainClient {
         System.out.println();
         MainClient client = new MainClient(setUI());
         client.manageGeneralSettings();
+        clientProtocol.connect();
     }
 }
