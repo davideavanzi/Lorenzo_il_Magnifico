@@ -12,6 +12,14 @@ public class Strengths {
      * Default constructor, all values are put to 0.
      */
     public Strengths() {
+        this.towerstrengths = new HashMap<>();
+        this.harvestBonus = 0;
+        this.productionBonus = 0;
+        this.towerstrengths.put(GREEN_COLOR, 0);
+        this.towerstrengths.put(YELLOW_COLOR, 0);
+        this.towerstrengths.put(BLUE_COLOR, 0);
+        this.towerstrengths.put(PURPLE_COLOR, 0);
+        this.towerstrengths.put(BLACK_COLOR, 0);
     }
 
     /**
@@ -54,10 +62,17 @@ public class Strengths {
     private HashMap<String, Integer> diceBonus;
 
     /**
+     * This method adds two strengths. it adds only tower bonus if they are specified in the hashmap.
+     * TODO: HashMap has empty values or default zeros?
      * @param operand
      */
-    public void add(Strengths operand) {
-        // TODO implement here
+    public Strengths add(Strengths operand) {
+        Strengths sum = new Strengths();
+        sum.harvestBonus = this.harvestBonus + operand.getHarvestBonus();
+        sum.productionBonus = this.productionBonus + operand.getProductionBonus();
+        operand.getTowerStrength().keySet().forEach(color ->
+                sum.setTowerStrength(color,this.getTowerStrength(color) + operand.getTowerStrength(color)));
+        return sum;
     }
 
     public int getTowerStrength(String color) {
@@ -93,6 +108,16 @@ public class Strengths {
         System.out.println("[END strengths PRINT]");
     }
 
+    public void setTowerStrength(String color, int value) {
+        this.towerstrengths.replace(color, value);
+    }
+
+    /**
+     * the task of this method is to compare if two Strengths are equal and return true if they are
+     * equals false otherwise.
+     * @param other is one of the two Strengths to be compared
+     * @return true if the Strengths are equal, false otherwise
+     */
     @Override
     public boolean equals (Object other){
         if(other == this){
@@ -107,8 +132,8 @@ public class Strengths {
         Strengths strengths = (Strengths) other;
         return (this.harvestBonus == strengths.getHarvestBonus() &&
                 this.productionBonus == strengths.getProductionBonus() &&
-                this.towerstrengths.equals(strengths.getTowerStrength()) &&
-                this.diceBonus.equals(strengths.getDiceBonus())
+                this.towerstrengths.equals(strengths.getTowerStrength())
+                //this.diceBonus.equals(strengths.getDiceBonus())
         );
     }
     //TODO: check if equals method work between to hashmap

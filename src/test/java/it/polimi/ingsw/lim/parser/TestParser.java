@@ -12,7 +12,7 @@ import static it.polimi.ingsw.lim.Settings.CONFIGS_PATH;
 import static it.polimi.ingsw.lim.Settings.GREEN_COLOR;
 import static it.polimi.ingsw.lim.Log.getLog;
 /**
- * Created by fabri on 12/06/17.
+ * Created by FabCars. The task of this test class is to test if card parser work as expected
  */
 public class TestParser extends TestCase{
 
@@ -39,8 +39,7 @@ public class TestParser extends TestCase{
         Parser testParser = new Parser();
         testParser.parser(CONFIGS_PATH.concat("test/"));
         GreenCard greenCardExpected = createGreenCardExpected();
-        assertEquals(greenCardExpected.getCost(), testParser.getCard(1).get(GREEN_COLOR).get(0).getCost());
-
+        assertEquals(greenCardExpected, testParser.getCard(1).get(GREEN_COLOR).get(0));
     }
 
     public static void main(String args[]){

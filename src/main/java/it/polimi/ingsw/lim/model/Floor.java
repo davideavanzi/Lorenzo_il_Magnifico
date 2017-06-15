@@ -68,6 +68,7 @@ public class Floor {
         return this.cardSlot;
     }
 
+    public boolean hasCard() { return (this.cardSlot != null); }
     /**
      * Get the card and set the slot to null
      * @return

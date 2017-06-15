@@ -1,8 +1,10 @@
 package it.polimi.ingsw.lim.model;
+
 import java.util.*;
 import java.util.logging.Level;
 
 import static it.polimi.ingsw.lim.Log.getLog;
+import static it.polimi.ingsw.lim.Settings.*;
 
 /**
  * Player are indexed by nickname, which corresponds to he user that is playing, and that username is unique
@@ -26,6 +28,8 @@ public class Player {
         this.towerBonusAllowed = true;
         this.color = color;
         this.cards = new HashMap<>();
+        DEFAULT_TOWERS_COLORS.forEach(towerColor -> this.pickDiscounts.put(towerColor, new Assets()));
+        pickDiscounts.put(BLACK_COLOR, new Assets());
         getLog().log(Level.INFO, "New empty player %s created.", nickname);
     }
 
@@ -48,11 +52,6 @@ public class Player {
      * These are the strengths of the player. Elements inside it could be both positive and negative.
      */
     private Strengths strengths;
-
-    /**
-     * 
-     */
-    private int cardCount;
 
     /**
      * 
@@ -114,6 +113,8 @@ public class Player {
 
     public HashMap getCards() { return this.cards; }
 
+    public ArrayList<Card> getCardsOfColor(String color) { return this.cards.get(color); }
+
     public void addCard(Card card, String color) {
         this.cards.get(color).add(card);
     }
@@ -134,8 +135,23 @@ public class Player {
         return this.towerBonusAllowed;
     }
 
+    public void notTowerBonusAllowed() {
+        this.towerBonusAllowed = false;
+    }
+
     public Strengths getStrengths() {
         return this.strengths;
+    }
+
+    public void setStrengths(Strengths strengths) {
+        this.strengths = strengths;
+    }
+    public void setPickDiscount(String color, Assets value) {
+        this.pickDiscounts.replace(color, value);
+    }
+
+    public int getCardsAmount(String color) {
+        return this.cards.get(color).size();
     }
 
 

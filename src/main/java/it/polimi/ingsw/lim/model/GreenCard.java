@@ -1,4 +1,6 @@
 package it.polimi.ingsw.lim.model;
+import it.polimi.ingsw.lim.Log;
+
 import java.util.*;
 
 /**
@@ -36,32 +38,33 @@ public class GreenCard extends Card {
         return this.actionStrength;
     }
 
+    /**
+     * the task of this method is to compare if two GreenCard are equal and return true if they are
+     * equals false otherwise.
+     * @param other is one of the two GreenCard to be compared
+     * @return true if the GreenCard are equal, false otherwise
+     */
     @Override
     public boolean equals (Object other){
-        if(other == this){
-            return true;
-        }
-        if (other == null){
+        if(!(other instanceof GreenCard)){
+            Log.getLog().info("other not GreenCard");
             return false;
         }
-        if(!(other instanceof GreenCard)){
+        Log.getLog().info("***GREEN CARD Testing Equals***");
+        Card card = (Card) other;
+        if (!(this.equals(card))){
             return false;
         }
         GreenCard greenCard = (GreenCard) other;
-
-        //starting to compare the immediate effects
-        if(!(this.getImmediateEffects().size() == greenCard.getImmediateEffects().size())){
-            return false;
+        boolean equals = true;
+        if(!(this.actionStrength.equals(greenCard.getActionStrength()))){
+            Log.getLog().info("action strength different");
+            equals = false;
         }
-        for(int i = 0; i < this.getImmediateEffects().size(); i++){
-            if (!(this.getImmediateEffects().get(i).equals(greenCard.getImmediateEffects().get(i)))){
-                return false;
-            }
+        if(!(this.harvestResult.equals(greenCard.getHarvestResult()))){
+            Log.getLog().info("harvest result different");
+            equals = false;
         }
-        return (this.getName().equals(greenCard.getName()) &&
-                this.getCost().equals(greenCard.getCost()) &&
-                this.getAge() == greenCard.getAge() &&
-                this.actionStrength.equals(greenCard.getActionStrength()) &&
-                this.harvestResult.equals(greenCard.getHarvestResult()));
+        return equals;
     }
 }

@@ -1,4 +1,6 @@
 package it.polimi.ingsw.lim.model;
+import it.polimi.ingsw.lim.Log;
+
 import java.util.*;
 
 /**
@@ -154,8 +156,16 @@ public class Assets {
      * This method multiplies all values of the object by the integer given.
      * @param operand is the integer used in the operation.
      */
-    public void multiply(int operand) {
-        // TODO implement here
+    public Assets multiply(int operand) {
+        Assets product = new Assets();
+        product.coins = (this.coins * operand);
+        product.wood = (this.wood * operand);
+        product.stone = (this.stone * operand);
+        product.servants = (this.servants * operand);
+        product.faithPoints = (this.faithPoints * operand);
+        product.battlePoints = (this.battlePoints * operand);
+        product.victoryPoints = (this.victoryPoints * operand);
+        return product;
     }
 
     /**
@@ -179,7 +189,7 @@ public class Assets {
     public int getCoins(){ return this.coins; }
     public int getWood(){ return this.wood; }
     public int getStone(){ return this.stone; }
-    public int getServants(){ return this.stone; }
+    public int getServants(){ return this.servants; }
     public int getFaithPoints(){ return this.faithPoints; }
     public int getBattlePoints(){ return this.battlePoints; }
     public int getVictoryPoints(){ return this.victoryPoints; }
@@ -193,15 +203,23 @@ public class Assets {
 
     public Assets subtractCoins(int amount) { this.coins -= amount; return this;}
 
+    /**
+     * the task of this method is to compare if two assets are equal and return true if they are
+     * equals false otherwise.
+     * @param other is one of the two assets to be compared
+     * @return true if the assets are equal, false otherwise
+     */
     @Override
     public boolean equals (Object other){
         if(other == this){
             return true;
         }
         if (other == null){
+            Log.getLog().info("***ASSETS***\nother == null");
             return false;
         }
         if(!(other instanceof Assets)){
+            Log.getLog().info("***ASSETS***\nother not Assets");
             return false;
         }
         Assets assets = (Assets) other;

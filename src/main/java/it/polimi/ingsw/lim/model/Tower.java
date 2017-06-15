@@ -48,7 +48,7 @@ public class Tower {
     }
 
     public Floor getFloor(int number) {
-        return this.floors[number];
+        return this.floors[number-1];
     }
 
 }

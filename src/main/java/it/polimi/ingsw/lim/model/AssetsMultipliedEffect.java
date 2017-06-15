@@ -44,6 +44,12 @@ public class AssetsMultipliedEffect extends ImmediateEffect {
         multiplier.printAssets();
     }
 
+    /**
+     * the task of this method is to compare if two AssetsMultipliedEffect are equal and return true if they are
+     * equals false otherwise.
+     * @param other is one of the two AssetsMultipliedEffect to be compared
+     * @return true if the AssetsMultipliedEffect are equal, false otherwise
+     */
     @Override
     public boolean equals (Object other){
         if(other == this){

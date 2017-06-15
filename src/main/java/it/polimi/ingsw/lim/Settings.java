@@ -15,6 +15,7 @@ public class Settings {
     public static final int[] FLOORS_ACTION_COSTS = {1, 3, 5, 7};
     public static final int COUNCIL_FAVUORS_TYPES = 5;
     public static final int MARKET_MAX_SIZE = 5;
+    public static final int NEUTRAL_FM_STRENGTH = 0;
     //faith points corresponding to the first excommunication.
     //Following excommunications will be at +1 fp from their previous
     public static final int FIRST_EXCOMM_FP = 3;
@@ -28,8 +29,9 @@ public class Settings {
     public static final int HARVEST_STR_MALUS = 3;
     public static final int HARVEST_DEFAULTSPACE_SIZE = 1;
 
-    public static final int FIRST_PRODUCTION_ACTION_STR = 1;
+    public static final int PRODUCTION_DEFAULT_STR = 1;
     public static final int PRODUCTION_STR_MALUS = 3;
+    public static final int PRODUCTION_DEFAULTSPACE_SIZE = 1;
 
 
     //Color strings used in the code.

@@ -43,6 +43,12 @@ public class CardMultipliedEffect extends ImmediateEffect {
         System.out.println(multiplierColor);
     }
 
+    /**
+     * the task of this method is to compare if two CardMultipliedEffect are equal and return true if they are
+     * equals false otherwise.
+     * @param other is one of the two CardMultipliedEffect to be compared
+     * @return true if the CardMultipliedEffect are equal, false otherwise
+     */
     @Override
     public boolean equals (Object other){
         if(other == this){
