@@ -1,8 +1,7 @@
 package it.polimi.ingsw.lim.network.server.RMI;
 
-import static it.polimi.ingsw.lim.network.server.ServerCLI.*;
+import static it.polimi.ingsw.lim.network.server.MainServer.*;
 import static it.polimi.ingsw.lim.controller.Room.*;
-import static it.polimi.ingsw.lim.Log.*;
 
 import it.polimi.ingsw.lim.Log;
 import it.polimi.ingsw.lim.controller.Room;
@@ -19,9 +18,9 @@ import java.util.logging.Level;
 /**
  * Created by Nico.
  */
-public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
+public class RMIServer implements RMIServerInterf {
 
-    public RMIServer() throws RemoteException {}
+    public RMIServer() {}
 
     public void createRoom(String roomName, RMIClientInterf rci) throws RemoteException {
         Room newRoom = new Room(roomName);
@@ -37,17 +36,15 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
      * @return the registry just created
      * @throws RemoteException
      */
-    private Registry createRegistry(int port) throws RemoteException {
-        Registry reg;
+    private void createRegistry(int port) throws RemoteException {
         try {
-            reg = LocateRegistry.createRegistry(port);
+            LocateRegistry.createRegistry(port);
             System.out.println("RMI Registry created");
         } catch (RemoteException re) {
             Log.getLog().log(Level.SEVERE, "RMI Registry already created", re);
-            reg = LocateRegistry.getRegistry(port);
+            LocateRegistry.getRegistry(port);
             System.out.println("RMI Registry loaded");
         }
-        return reg;
     }
 
     /**
@@ -55,11 +52,12 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
      * @param port number of RMI server
      * @throws RemoteException
      */
-    public void RMIServerStart(int port) throws RemoteException {
+    public void startServer(int port) {
         try {
-            Registry registry = createRegistry(port);
+            createRegistry(port);
             RMIServerInterf rmiSerInt = this;
             Naming.rebind("lim", rmiSerInt);
+            UnicastRemoteObject.exportObject(this, port);
         } catch(RemoteException re) {
             Log.getLog().log(Level.SEVERE, "Could not deploy RMI server", re);
         } catch(MalformedURLException mue) {

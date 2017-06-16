@@ -24,8 +24,6 @@ public class SocketClientHandler extends AbstractServer implements Runnable {
 
     SocketClientHandler(Socket socketClient) {
         this.socketClient = socketClient;
-
-
     }
 
     /**
@@ -62,14 +60,6 @@ public class SocketClientHandler extends AbstractServer implements Runnable {
                         isThreadRunning = false;
                         getLog().log(Level.INFO,"Quitting from thread");
                         objFromServer.writeObject("Quitting...");
-                        break;
-
-                    case "stop":
-                        isThreadRunning = false;
-                        // TODO: Only the host can stop the server
-                        SocketServer.setIsServerRunning(false);
-                        getLog().log(Level.INFO,"The server has stopped");
-                        objFromServer.writeObject("The server has stopped");
                         break;
 
                     case "help":

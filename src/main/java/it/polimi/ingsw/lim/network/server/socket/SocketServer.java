@@ -11,11 +11,12 @@ import java.util.logging.Level;
  * Created by Nico.
  */
 
-public class SocketServer implements Runnable {
-    private ServerSocket serverSck = null;
+public class SocketServer {
+    private ServerSocket serverSck;
     private static Boolean isServerRunning = true;
 
-    public SocketServer() {}
+    public SocketServer() {
+    }
 
     /**
      * @return the state of the socket server
@@ -26,6 +27,7 @@ public class SocketServer implements Runnable {
 
     /**
      * Set the state of the socket server
+     *
      * @param state
      */
     public static void setIsServerRunning(boolean state) {
@@ -34,35 +36,40 @@ public class SocketServer implements Runnable {
 
     /**
      * This method is use for starting the socket server
+     *
      * @throws IOException
      */
-    public void SocketServerStart(int port) throws IOException {
-        serverSck = new ServerSocket(port);
-        System.out.println("The server is starting...");
+    public void startServer(int port) {
+        try {
+            serverSck = new ServerSocket(port);
+            new clientConnectionRequestHandler().start();
+        } catch (IOException e) {
+            getLog().log(Level.SEVERE, "Could not deploy socket server", e);
+        }
     }
 
-    /**
-     * The server waits for a connection with the client, after a thread for the client will be created.
-     * Eventually when the server will be stopped the socket gets closed.
-     */
-    public void run() {
-        while(isServerRunning) {
-            try {
-                System.out.println("[SOCKET]: Waiting for a client...");
-                Socket clientSck = serverSck.accept();
-                //SocketClientHandler clientSckThread = new SocketClientHandler(clientSck);
-                //clientSckThread.start();
+    private class clientConnectionRequestHandler extends Thread {
 
-                new  Thread(new SocketClientHandler(clientSck)).start();
-
-            } catch (IOException ioe) {
-                getLog().log(Level.SEVERE,"Could not create a new thread", ioe);
+        /**
+         * The server waits for a connection with the client, after a thread for the client will be created.
+         * Eventually when the server will be stopped the socket gets closed.
+         */
+        public void run() {
+            while (isServerRunning) {
+                try {
+                    System.out.println("[SOCKET]: Waiting for a client...");
+                    Socket clientSck = serverSck.accept();
+                    new Thread(new SocketClientHandler(clientSck)).start();
+                } catch (IOException ioe) {
+                    getLog().log(Level.SEVERE, "Could not create a new thread", ioe);
+                }
             }
-        }
-        try {
-            serverSck.close();
-        } catch (IOException ioe) {
-            getLog().log(Level.SEVERE,"Could not close socket", ioe);
+
+            try {
+                serverSck.close();
+            } catch (IOException ioe) {
+                getLog().log(Level.SEVERE, "Could not close socket", ioe);
+            }
         }
     }
 }

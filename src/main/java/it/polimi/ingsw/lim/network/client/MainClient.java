@@ -3,7 +3,6 @@ package it.polimi.ingsw.lim.network.client;
 import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
 import it.polimi.ingsw.lim.network.ui.AbsUI;
 
-import java.rmi.RemoteException;
 import java.util.Scanner;
 
 /**
@@ -32,15 +31,10 @@ public class MainClient {
      */
     private void manageGeneralSettings() {
         try {
-<<<<<<< HEAD
             clientUI.setNetworkSettings();
+            clientProtocol.connect();
         } catch (ClientNetworkException re) {
             //TODO:handle exception
-=======
-            uiType.setNetworkSettings();
-        } catch (Exception e){
-            e.printStackTrace();
->>>>>>> 2507b57123d8788b02a570a86ca75b0ba3db467f
         }
     }
 
@@ -71,6 +65,5 @@ public class MainClient {
         System.out.println();
         MainClient client = new MainClient(setUI());
         client.manageGeneralSettings();
-        clientProtocol.connect();
     }
 }
