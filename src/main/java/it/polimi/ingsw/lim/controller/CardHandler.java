@@ -12,7 +12,7 @@ import java.util.logging.Level;
  * Created by ava on 13/06/17.
  * This class manages cards activations.
  */
-public class CardController {
+public class CardHandler {
 
     public static void activateGreenCard (GreenCard card, Player pl) {
         pl.getResources().add(card.getHarvestResult());

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.lim.model;
-import it.polimi.ingsw.lim.Log;
-import it.polimi.ingsw.lim.controller.CardController;
+import it.polimi.ingsw.lim.controller.CardHandler;
 import it.polimi.ingsw.lim.exceptions.GameSetupException;
 import it.polimi.ingsw.lim.parser.Parser;
 
@@ -292,7 +291,7 @@ public class Game {
         actor.getResources().subtract(actionCost);
         actor.addCard(card, towerColor);
         //TODO: activate immediateEffect and long term effect for blue cards!
-        if (card instanceof BlueCard) CardController.activateBlueCard((BlueCard)card, actor);
+        if (card instanceof BlueCard) CardHandler.activateBlueCard((BlueCard)card, actor);
     }
 
     /**
@@ -463,7 +462,7 @@ public class Game {
                     ;
                 harvestMove(fm);
                 for (Card card: getPlayerFromColor(fm.getOwnerColor()).getCardsOfColor(GREEN_COLOR))
-                    CardController.activateGreenCard((GreenCard)card, getPlayerFromColor(fm.getOwnerColor()));
+                    CardHandler.activateGreenCard((GreenCard)card, getPlayerFromColor(fm.getOwnerColor()));
             }
             //perform action
         }

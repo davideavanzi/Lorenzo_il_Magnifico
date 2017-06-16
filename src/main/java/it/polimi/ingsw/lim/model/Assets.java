@@ -1,5 +1,6 @@
 package it.polimi.ingsw.lim.model;
 import it.polimi.ingsw.lim.Log;
+import static it.polimi.ingsw.lim.Utils.*;
 
 import java.util.*;
 
@@ -127,7 +128,7 @@ public class Assets {
     }
 
     /**
-     * This method subtracts two Assets without going below zero.
+     * This method subtracts two Assets without going below zero. (brrr)
      * @param operand the Asset to subtract
      * @return the result
      */
@@ -148,8 +149,16 @@ public class Assets {
      * @param operand is the second operand.
      * Every value of the first object is multiplied by the corresponding value of the second operand.
      */
-    public void multiply(Assets operand) {
-        // TODO implement here
+    public Assets multiply(Assets operand) {
+        Assets product = new Assets();
+        product.coins = (this.coins * operand.getCoins());
+        product.wood = (this.wood * operand.getWood());
+        product.stone = (this.stone * operand.getStone());
+        product.servants = (this.servants * operand.getServants());
+        product.faithPoints = (this.faithPoints * operand.getFaithPoints());
+        product.battlePoints = (this.battlePoints * operand.getBattlePoints());
+        product.victoryPoints = (this.victoryPoints * operand.getVictoryPoints());
+        return product;
     }
 
     /**
@@ -166,6 +175,26 @@ public class Assets {
         product.battlePoints = (this.battlePoints * operand);
         product.victoryPoints = (this.victoryPoints * operand);
         return product;
+    }
+
+    public int divide(Assets operand) {
+        List<Integer> values = new ArrayList<>();
+        if (operand.getCoins() != 0 && this.coins/operand.getCoins() > 0)
+            values.add(this.coins/operand.getCoins());
+        if (operand.getWood() != 0 && this.wood/operand.getWood() > 0)
+            values.add(this.wood/operand.getWood());
+        if (operand.getStone() != 0 && this.stone/operand.getStone() > 0)
+            values.add(this.stone/operand.getStone());
+        if (operand.getServants() != 0 && this.servants/operand.getServants() > 0)
+            values.add(this.servants/operand.getServants());
+        if (operand.getFaithPoints() != 0 && this.faithPoints/operand.getFaithPoints() > 0)
+            values.add(this.faithPoints/operand.getFaithPoints());
+        if (operand.getBattlePoints() != 0 && this.battlePoints/operand.getBattlePoints() > 0)
+            values.add(this.battlePoints/operand.getBattlePoints());
+        if (operand.getVictoryPoints() != 0 && this.victoryPoints/operand.getVictoryPoints() > 0)
+            values.add(this.victoryPoints/operand.getVictoryPoints());
+        Integer min = min(values.toArray(new Integer[values.size()]));
+        return (min != null && min != 0) ? min : 0;
     }
 
     /**
