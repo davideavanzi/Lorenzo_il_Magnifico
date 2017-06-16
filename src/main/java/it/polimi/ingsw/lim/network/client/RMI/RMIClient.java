@@ -34,8 +34,9 @@ public class RMIClient extends AbsClient implements RMIClientInterf {
         try {
             Registry registry = LocateRegistry.getRegistry(getAddress(), getPort());
             rmiServer = (RMIServerInterf)Naming.lookup("rmi://" + getAddress() + "/lim");
-            UnicastRemoteObject.exportObject(this, 0);
+            UnicastRemoteObject.exportObject(rmiServer, 0);
             System.out.println("You have been connected in RMI mode.");
+            rmiServer.tellToServer("CIAONE FROM CLIENT");
         } catch(NotBoundException | RemoteException | MalformedURLException e) {
             throw new ClientNetworkException(e);
         }

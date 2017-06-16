@@ -32,15 +32,9 @@ public class MainClient {
      */
     private void manageGeneralSettings() {
         try {
-<<<<<<< HEAD
             clientUI.setNetworkSettings();
         } catch (ClientNetworkException re) {
             //TODO:handle exception
-=======
-            uiType.setNetworkSettings();
-        } catch (Exception e){
-            e.printStackTrace();
->>>>>>> 2507b57123d8788b02a570a86ca75b0ba3db467f
         }
     }
 
@@ -71,6 +65,10 @@ public class MainClient {
         System.out.println();
         MainClient client = new MainClient(setUI());
         client.manageGeneralSettings();
-        clientProtocol.connect();
+        try {
+            clientProtocol.connect();
+        } catch (ClientNetworkException e) {
+            //TODO: FAMMOCC'
+        }
     }
 }

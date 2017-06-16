@@ -1,5 +1,6 @@
 package it.polimi.ingsw.lim.network.server.RMI;
 
+import it.polimi.ingsw.lim.network.ClientInterface;
 import it.polimi.ingsw.lim.network.client.RMI.RMIClientInterf;
 
 import java.rmi.*;
@@ -9,6 +10,8 @@ import java.rmi.*;
  */
 public interface RMIServerInterf extends Remote {
 
-    public void createRoom(String roomName, RMIClientInterf rci) throws RemoteException;
+    //public void createRoom(String roomName, RMIClientInterf rci) throws RemoteException;
+
+    void tellToServer (String message) throws RemoteException;
 
 }
