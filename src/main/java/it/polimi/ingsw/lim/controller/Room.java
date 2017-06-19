@@ -21,7 +21,7 @@ public class Room {
     private static ArrayList<User> usersList;
     private ArrayList<String> playOrder;
 
-    public Room(User user) throws RemoteException {
+    public Room(User user) {
         usersList = new ArrayList<>();
         gameController = new GameController();
         usersList.add(user);
