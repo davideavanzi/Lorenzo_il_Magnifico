@@ -7,6 +7,7 @@ import it.polimi.ingsw.lim.Log;
 import it.polimi.ingsw.lim.controller.Room;
 import it.polimi.ingsw.lim.controller.User;
 import it.polimi.ingsw.lim.network.client.RMI.RMIClientInterf;
+import it.polimi.ingsw.lim.network.server.ClientInterface;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -18,7 +19,7 @@ import java.util.logging.Level;
 /**
  * Created by Nico.
  */
-public class RMIServer implements RMIServerInterf {
+public class RMIServer implements RMIServerInterf, ClientInterface {
 
     public RMIServer() {}
 
@@ -63,5 +64,9 @@ public class RMIServer implements RMIServerInterf {
         } catch(MalformedURLException mue) {
             Log.getLog().log(Level.SEVERE, "URL unreachable", mue);
         }
+    }
+
+    @Override
+    public void tellToClient(String message) {
     }
 }

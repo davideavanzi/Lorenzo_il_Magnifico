@@ -1,7 +1,8 @@
 package it.polimi.ingsw.lim.network.server.socket;
 
 import it.polimi.ingsw.lim.controller.User;
-import it.polimi.ingsw.lim.network.server.AbstractServer;
+import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
+import it.polimi.ingsw.lim.network.server.ClientInterface;
 
 import static it.polimi.ingsw.lim.Log.*;
 
@@ -13,7 +14,7 @@ import java.util.logging.Level;
  * Created by Nico.
  * This class handles the connection to a socket client.
  */
-public class SocketClientHandler extends AbstractServer implements Runnable {
+public class SocketClientHandler implements Runnable, ClientInterface {
 
     private Socket socketClient;
     private User user;
