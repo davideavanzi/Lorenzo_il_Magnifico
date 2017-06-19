@@ -5,6 +5,6 @@ package it.polimi.ingsw.lim.network.client.RMI;
  */
 public interface RMIClientInterf {
 
-    // Declaration of method that I'll use for socket client and rmi client
+    // Declaration of method that I'll use for rmi client
 
 }

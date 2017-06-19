@@ -21,25 +21,33 @@ public class CLI extends AbsUI {
     /**
      * Choose the connection protocol and connect to the server
      */
-    public void setNetworkSettings() throws ClientNetworkException {
+    public String setNetworkSettings() throws ClientNetworkException {
         System.out.print("Please select the network protocol: (socket/rmi) ");
         while (true) {
             input = userInput.nextLine().toLowerCase();
             switch (input) {
                 case "socket":
                 case "s":
-                    clientProtocol = new SocketClient();
-                    return;
+                    return "socket";
                 case "rmi":
                 case "r":
-                    clientProtocol = new RMIClient();
-                    return;
+                    return "rmi";
                 default:
                     printMessage("Not a valid choice!");
             }
         }
     }
 
+    public String loginForm() {
+        printMessage("Enter a username:");
+        input = userInput.nextLine().toLowerCase();
+        return input;
+    }
+
+    /**
+     * Print on stdout a message
+     * @param message
+     */
     public void printMessage(String message) {
         System.out.println(message);
     }

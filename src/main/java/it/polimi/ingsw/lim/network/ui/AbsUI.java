@@ -14,7 +14,10 @@ public abstract class AbsUI {
     /**
      * This method is used for set the network protocol from the selected ui
      */
-    public abstract void setNetworkSettings() throws ClientNetworkException;
+    public abstract String setNetworkSettings() throws ClientNetworkException;
+
+
+    public abstract String loginForm();
 
     /**
      * It's called when the client has a message for the player

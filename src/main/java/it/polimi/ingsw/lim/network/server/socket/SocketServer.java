@@ -17,6 +17,7 @@ public class SocketServer {
     private static Boolean isServerRunning = true;
 
     public SocketServer() {
+
     }
 
     /**
@@ -58,7 +59,6 @@ public class SocketServer {
         public void run() {
             while (isServerRunning) {
                 try {
-
                     Socket clientSck = serverSck.accept();
                     new Thread(new SocketClientHandler(clientSck)).start();
                 } catch (IOException ioe) {

@@ -5,6 +5,6 @@ package it.polimi.ingsw.lim.network.server;
  */
 public interface ClientInterface {
 
-    public abstract void tellToClient(String message);
+    public void tellToClient(String message);
 
 }

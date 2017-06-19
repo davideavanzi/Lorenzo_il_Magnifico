@@ -1,6 +1,8 @@
 package it.polimi.ingsw.lim.network.client;
 
 import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
+import it.polimi.ingsw.lim.network.client.RMI.RMIClient;
+import it.polimi.ingsw.lim.network.client.socket.SocketClient;
 import it.polimi.ingsw.lim.network.ui.AbsUI;
 
 import java.util.Scanner;
@@ -10,7 +12,7 @@ import java.util.Scanner;
  */
 public class MainClient {
     private static AbsUI clientUI;
-    public static AbsClient clientProtocol;
+    public static ServerInteface clientProtocol;
     private static Scanner userInput = new Scanner(System.in);
 
     /**
@@ -26,12 +28,22 @@ public class MainClient {
         }
     }
 
+    private void login() {
+        String username = clientUI.loginForm();
+        clientProtocol.sendLogin(username);
+    }
+
     /**
      *  If the player want to config the network settings
      */
     private void initializeGame() {
         try {
-            clientUI.setNetworkSettings();
+            String protocol = clientUI.setNetworkSettings();
+            if (protocol.equals("socket")) {
+                clientProtocol = new SocketClient();
+            } else if (protocol.equals("rmi")) {
+                clientProtocol = new RMIClient();
+            }
             clientProtocol.connect();
         } catch (ClientNetworkException re) {
             //TODO:handle exception
@@ -55,7 +67,6 @@ public class MainClient {
                     return true;
                 default:
                     System.out.println("Not a valid choice, enter yes/y if you want to use a GUI, no/n for a CLI");
-                    System.out.print("$");
             }
         }
     }
