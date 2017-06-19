@@ -11,6 +11,7 @@ import it.polimi.ingsw.lim.network.server.ClientInterface;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.*;
 import java.rmi.server.*;
@@ -19,9 +20,9 @@ import java.util.logging.Level;
 /**
  * Created by Nico.
  */
-public class RMIServer implements RMIServerInterf, ClientInterface {
+public class RMIServer extends UnicastRemoteObject implements RMIServerInterf, ClientInterface {
 
-    public RMIServer() {}
+    public RMIServer()  throws RemoteException {}
 
     public void createRoom(String roomName, RMIClientInterf rci) throws RemoteException {
         Room newRoom = new Room(roomName);
@@ -58,7 +59,7 @@ public class RMIServer implements RMIServerInterf, ClientInterface {
             createRegistry(port);
             RMIServerInterf rmiSerInt = this;
             Naming.rebind("lim", rmiSerInt);
-            UnicastRemoteObject.exportObject(this, port);
+            //UnicastRemoteObject.exportObject(rmiSerInt, port);
         } catch(RemoteException re) {
             Log.getLog().log(Level.SEVERE, "Could not deploy RMI server", re);
         } catch(MalformedURLException mue) {

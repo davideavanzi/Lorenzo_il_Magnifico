@@ -72,9 +72,10 @@ public class SocketClientHandler implements Runnable, ClientInterface {
 
         while (isClientConnected) {
             try {
+                tellToClient("EXECUTE LOGIN:");
                 // Read incoming command from the client
                 commandReceived = (String)objToServer.readObject();
-                System.out.println("The incoming command is: "+commandReceived);
+                System.out.println("Login from user with name: "+commandReceived);
 
                 // Check if server is still running
                 if (!(SocketServer.getIsServerRunning())) {

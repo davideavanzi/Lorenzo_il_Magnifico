@@ -1,4 +1,5 @@
 package it.polimi.ingsw.lim.controller;
+import static it.polimi.ingsw.lim.Settings.*;
 
 
 import it.polimi.ingsw.lim.Log;
@@ -13,16 +14,17 @@ import java.util.logging.Level;
  * This class represents a game room. It runs on a dedicated thread.
  * The room is created with the first user
  */
-public class Room extends UnicastRemoteObject implements Runnable {
+public class Room {
 
     private transient GameController gameController;
     private boolean roomOpen = true; // room open
     private static ArrayList<User> usersList;
     private ArrayList<String> playOrder;
 
-    public Room(String name) throws RemoteException {
+    public Room(User user) throws RemoteException {
         usersList = new ArrayList<>();
         gameController = new GameController();
+        usersList.add(user);
     }
 
     public void addUser(User user) {
@@ -34,8 +36,9 @@ public class Room extends UnicastRemoteObject implements Runnable {
         return usersList;
     }
 
-    @Override
-    public void run() {
-
+    public boolean isFull() {
+        return (this.usersList.size() >= MAX_USERS_PER_ROOM);
     }
+
+    public boolean isOpen() { return roomOpen; }
 }

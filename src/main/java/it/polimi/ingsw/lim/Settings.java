@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class Settings {
     //misc settings
-    public static final int MAX_USERS_NUMBER = 5;
+    public static final int MAX_USERS_PER_ROOM = 5;
     public static final int FAITH_TRACK_LENGTH = 30;
     public static final int TOWER_HEIGHT = 4;
     public static final int[] FLOORS_ACTION_COSTS = {1, 3, 5, 7};

@@ -6,7 +6,9 @@ import it.polimi.ingsw.lim.controller.Room;
 import it.polimi.ingsw.lim.network.server.RMI.RMIServer;
 import it.polimi.ingsw.lim.network.server.socket.SocketServer;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.logging.Level;
 
 /**
  * Created by nico.
@@ -22,7 +24,11 @@ public class MainServer {
     private MainServer() {
         createLogFile();
         socketServer = new SocketServer();
-        rmiServer = new RMIServer();
+        try {
+            rmiServer = new RMIServer();
+        } catch (RemoteException e) {
+            getLog().log(Level.SEVERE, e.getMessage());
+        }
         roomList = new ArrayList<>();
     }
 
