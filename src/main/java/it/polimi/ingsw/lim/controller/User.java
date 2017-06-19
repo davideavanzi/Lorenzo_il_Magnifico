@@ -1,6 +1,8 @@
 package it.polimi.ingsw.lim.controller;
 
+import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
 import it.polimi.ingsw.lim.network.client.RMI.RMIClientInterf;
+import it.polimi.ingsw.lim.network.server.ClientInterface;
 import it.polimi.ingsw.lim.network.server.socket.SocketClientHandler;
 
 /**
@@ -11,24 +13,17 @@ import it.polimi.ingsw.lim.network.server.socket.SocketClientHandler;
 public class User {
 
     private String username;
-    private String password;
-    private SocketClientHandler sch;
-    private RMIClientInterf rci;
+    private ClientInterface clientInterf;
+
 
     /**
-     * Socket user constructor
-     * @param sch
+     * User constructor
+     * @param username of the player
+     * @param clientInterf the reference to the player
      */
-    public User(SocketClientHandler sch) {
-        this.sch = sch;
-    }
-
-    /**
-     * RMI user constructor
-     * @param rci
-     */
-    public User(RMIClientInterf rci) {
-        this.rci = rci;
+    public User(String username, ClientInterface clientInterf) {
+        this.username = username;
+        this.clientInterf = clientInterf;
     }
 
     /**

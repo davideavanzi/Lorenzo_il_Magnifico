@@ -25,11 +25,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf, C
     public RMIServer()  throws RemoteException {}
 
     public void createRoom(String roomName, RMIClientInterf rci) throws RemoteException {
-        Room newRoom = new Room(roomName);
-        getRoomList().add(newRoom);
-        User user = new User(rci); // Add the room's admin
-        getUsersList().add(user);
-        System.out.println("Stanza creata: "+roomName);
+
     }
 
     /**

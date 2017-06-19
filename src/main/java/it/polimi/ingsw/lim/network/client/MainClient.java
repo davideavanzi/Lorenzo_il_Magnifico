@@ -3,6 +3,7 @@ package it.polimi.ingsw.lim.network.client;
 import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
 import it.polimi.ingsw.lim.network.client.RMI.RMIClient;
 import it.polimi.ingsw.lim.network.client.socket.SocketClient;
+import it.polimi.ingsw.lim.network.server.ClientInterface;
 import it.polimi.ingsw.lim.network.ui.AbsUI;
 
 import java.util.Scanner;
@@ -30,7 +31,11 @@ public class MainClient {
 
     private void login() {
         String username = clientUI.loginForm();
-        clientProtocol.sendLogin(username);
+        try {
+            clientProtocol.sendLogin(username);
+        } catch (ClientNetworkException e) {
+            clientUI.printMessage(e.getMessage());
+        }
     }
 
     /**
@@ -45,7 +50,7 @@ public class MainClient {
                 clientProtocol = new RMIClient();
             }
             clientProtocol.connect();
-        } catch (ClientNetworkException re) {
+        } catch (ClientNetworkException e) {
             //TODO:handle exception
         }
     }
@@ -76,5 +81,6 @@ public class MainClient {
         System.out.println();
         MainClient client = new MainClient(setUI());
         client.initializeGame();
+        client.login();
     }
 }

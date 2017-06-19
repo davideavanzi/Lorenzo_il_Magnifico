@@ -1,10 +1,8 @@
 package it.polimi.ingsw.lim.controller;
+
+import static it.polimi.ingsw.lim.Log.getLog;
 import static it.polimi.ingsw.lim.Settings.*;
 
-
-import it.polimi.ingsw.lim.Log;
-import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -29,7 +27,7 @@ public class Room {
 
     public void addUser(User user) {
         usersList.add(user);
-        Log.getLog().log(Level.INFO, "Adding user %s to room", user);
+        getLog().log(Level.INFO, "Adding user %s to room", user);
     }
 
     public static List<User> getUsersList() {

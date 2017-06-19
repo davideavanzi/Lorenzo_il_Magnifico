@@ -1,12 +1,15 @@
 package it.polimi.ingsw.lim.network.server.socket;
 
+import it.polimi.ingsw.lim.controller.Room;
 import it.polimi.ingsw.lim.controller.User;
 import it.polimi.ingsw.lim.network.server.ClientInterface;
+import it.polimi.ingsw.lim.network.server.MainServer;
 
 import static it.polimi.ingsw.lim.Log.*;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.logging.Level;
 
 /**
@@ -25,26 +28,54 @@ public class SocketClientHandler implements Runnable, ClientInterface {
         this.socketClient = socketClient;
     }
 
+    /**
+     * If the login failed more than 3 times the thread is killed
+     */
     public void run() {
         int count = 0;
-        int maxTries = 2;
+        int maxTries = 3;
+
+        try {
+            // Input and output stream
+            objFromServer = new ObjectOutputStream(socketClient.getOutputStream());
+            objToServer = new ObjectInputStream(socketClient.getInputStream());
+        } catch (IOException e) {
+            getLog().log(Level.SEVERE, "Could not create I/O stream", e);
+        }
 
         while (user == null) {
             try {
-                tryLogin();
+                manageLogin();
             } catch (IOException | ClassNotFoundException e) {
-                if(++count == maxTries)
+                if(++count == maxTries) {
                     getLog().log(Level.SEVERE, "Could not perform login", e);
                     return;
+                }
             }
         }
     }
 
-    public void tryLogin() throws IOException, ClassNotFoundException {
+    /**
+     * The authenticated user is added in the first available room
+     * @param user is the authenticated user
+     */
+    private void addToRoom(User user) {
+        ArrayList<Room> rooms = MainServer.getRoomList();
+        if(rooms.isEmpty()) {
+          rooms.add(new Room(user));
+        } else {
+            rooms.get(rooms.size()-1).addUser(user);
+        }
+    }
+
+    private void manageLogin() throws IOException, ClassNotFoundException {
         String username = (String)objToServer.readObject();
         //TODO: sistema di autenticazione (salvare utenti in un file/db, se utente esistente se vuole caricare stat.)
         // abbiamo gia chiesto la password all'utente
 
+        user = new User(username, this);
+        addToRoom(user);
+        System.out.println("added to room");
     }
 
     public void tellToClient(String message) {

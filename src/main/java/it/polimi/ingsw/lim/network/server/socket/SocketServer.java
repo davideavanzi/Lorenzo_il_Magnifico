@@ -46,7 +46,7 @@ public class SocketServer {
             serverSck = new ServerSocket(port);
             new clientConnectionRequestHandler().start();
         } catch (IOException e) {
-            getLog().log(Level.SEVERE, "Could not deploy socket server", e);
+            getLog().log(Level.SEVERE, "[SOCKET]: Could not deploy socket server", e);
         }
     }
 
@@ -59,17 +59,19 @@ public class SocketServer {
         public void run() {
             while (isServerRunning) {
                 try {
+                    getLog().log(Level.INFO, "[SOCKET]: Waiting for clients");
                     Socket clientSck = serverSck.accept();
+                    getLog().log(Level.INFO, "[SOCKET]: New client connected");
                     new Thread(new SocketClientHandler(clientSck)).start();
                 } catch (IOException ioe) {
-                    getLog().log(Level.SEVERE, "Could not create a new thread", ioe);
+                    getLog().log(Level.SEVERE, "[SOCKET]: Could not create a new thread", ioe);
                 }
             }
 
             try {
                 serverSck.close();
             } catch (IOException ioe) {
-                getLog().log(Level.SEVERE, "Could not close socket", ioe);
+                getLog().log(Level.SEVERE, "[SOCKET]: Could not close socket", ioe);
             }
         }
     }

@@ -36,6 +36,8 @@ public class SocketClient implements ServerInteface {
     public void sendLogin(String username) throws ClientNetworkException {
         try {
             objFromClient.writeObject(username);
+            objFromClient.flush();
+            System.out.println("mandato user");
         } catch (IOException e) {
             throw new ClientNetworkException("Could not send login information to server", e);
         }
