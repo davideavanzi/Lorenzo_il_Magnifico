@@ -39,9 +39,9 @@ public class RMIServer implements RMIServerInterf {
     private void createRegistry(int port) throws RemoteException {
         try {
             LocateRegistry.createRegistry(port);
-            System.out.println("RMI Registry created");
+            Log.getLog().log(Level.INFO, "RMI Registry created");
         } catch (RemoteException re) {
-            Log.getLog().log(Level.SEVERE, "RMI Registry already created", re);
+            Log.getLog().log(Level.WARNING, "RMI Registry already created", re);
             LocateRegistry.getRegistry(port);
             System.out.println("RMI Registry loaded");
         }

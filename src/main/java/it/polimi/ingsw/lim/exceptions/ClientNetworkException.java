@@ -5,5 +5,5 @@ package it.polimi.ingsw.lim.exceptions;
  */
 
 public class ClientNetworkException extends Exception {
-    public ClientNetworkException (Throwable cause) { super(cause); }
+    public ClientNetworkException (String error, Throwable cause) { super(error, cause); }
 }

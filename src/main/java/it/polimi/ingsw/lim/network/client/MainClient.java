@@ -29,7 +29,7 @@ public class MainClient {
     /**
      *  If the player want to config the network settings
      */
-    private void manageGeneralSettings() {
+    private void initializeGame() {
         try {
             clientUI.setNetworkSettings();
             clientProtocol.connect();
@@ -64,6 +64,6 @@ public class MainClient {
         System.out.println("Welcome to Lorenzo Il Magnifico!");
         System.out.println();
         MainClient client = new MainClient(setUI());
-        client.manageGeneralSettings();
+        client.initializeGame();
     }
 }

@@ -33,7 +33,7 @@ public class SocketClient extends AbsClient {
             ObjectOutputStream objFromClient = new ObjectOutputStream(socketClient.getOutputStream());
             ObjectInputStream objToClient = new ObjectInputStream(socketClient.getInputStream());
         } catch(IOException e) {
-           throw new ClientNetworkException(e);
+           throw new ClientNetworkException("Could not create the I/O stream", e);
         }
     }
 }

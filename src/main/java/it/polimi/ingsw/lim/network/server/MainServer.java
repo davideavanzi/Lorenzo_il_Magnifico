@@ -15,7 +15,6 @@ import java.util.ArrayList;
 public class MainServer {
     private int socketPort = 8989;
     private int RMIPort = 1099;
-    private boolean isServerStarted = false;
     private static ArrayList<Room> roomList;
     private SocketServer socketServer;
     private RMIServer rmiServer;
@@ -25,8 +24,6 @@ public class MainServer {
         socketServer = new SocketServer();
         rmiServer = new RMIServer();
         roomList = new ArrayList<>();
-
-        //TODO: Load configuration
     }
 
     /**
@@ -37,7 +34,6 @@ public class MainServer {
     }
 
     /**
-     * Start the server
      * Deploy a socket server
      * Then deploy rmi server
      */
