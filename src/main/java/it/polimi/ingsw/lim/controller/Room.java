@@ -10,17 +10,19 @@ import java.util.logging.Level;
 
 /**
  * Created by Davide on 26/05/2017.
- * This class represents a game room.
+ * This class represents a game room. It runs on a dedicated thread.
+ * The room is created with the first user
  */
-public class Room extends UnicastRemoteObject {
+public class Room extends UnicastRemoteObject implements Runnable {
 
     private transient GameController gameController;
-    private boolean roomStatus = true; // room open
+    private boolean roomOpen = true; // room open
     private static ArrayList<User> usersList;
     private ArrayList<String> playOrder;
 
     public Room(String name) throws RemoteException {
         usersList = new ArrayList<>();
+        gameController = new GameController();
     }
 
     public void addUser(User user) {
@@ -30,5 +32,10 @@ public class Room extends UnicastRemoteObject {
 
     public static List<User> getUsersList() {
         return usersList;
+    }
+
+    @Override
+    public void run() {
+
     }
 }

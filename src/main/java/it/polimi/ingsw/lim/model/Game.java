@@ -445,10 +445,10 @@ public class Game {
                 towerMove(towerColor, floor, fm);
                 //perform action
             } else {
-                //System.out.println("TOWER MOVE NOT AFFORDABLE");
+                getLog().log(Level.INFO, "But the move is not affordable");
             }
         } else {
-            //System.out.println("TOWER MOVE NOT ALLOWED");
+            getLog().log(Level.INFO, "But the move is not allowed");
         }
     }
 
