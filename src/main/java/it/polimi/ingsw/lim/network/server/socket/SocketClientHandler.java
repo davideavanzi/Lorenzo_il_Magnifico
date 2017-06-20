@@ -67,19 +67,20 @@ public class SocketClientHandler implements Runnable, ClientInterface {
     private void login() throws IOException, ClassNotFoundException {
         String username = (String)objToServer.readObject();
         //TODO: sistema di autenticazione (salvare utenti in un file/db, se utente esistente se vuole caricare stat.)
-        addUserToRoom(new User(username, this));
+        user = new User(username, this);
+        addUserToRoom(user);
         System.out.println("added to room");
     }
 
     private void waitRequest() {
-        while(true) {
+        /*while(true) {
             try {
                 Object command = objToServer.readObject();
                 commandHandler.requestHandler(command);
-            }catch (IOException | ClassNotFoundException e) {
+            } catch (IOException | ClassNotFoundException e) {
                 getLog().log(Level.SEVERE, "[SOCKET]: Could not receive object from client", e);
             }
-        }
+        }*/
     }
 
     /**
@@ -90,9 +91,10 @@ public class SocketClientHandler implements Runnable, ClientInterface {
 
         createStream();
         // If the login failed more than 3 times the thread exit
-        while(user == null || loginFailed < 3) {
+        while(loginFailed < 3) {
             try {
                 login();
+                break;
             } catch (IOException | ClassNotFoundException e) {
                 loginFailed++;
                 getLog().log(Level.SEVERE, "[SOCKET]: Could not perform login", e);

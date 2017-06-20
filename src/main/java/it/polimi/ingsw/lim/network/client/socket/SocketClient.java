@@ -53,7 +53,7 @@ public class SocketClient implements ServerInteface {
             objFromClient = new ObjectOutputStream(socketClient.getOutputStream());
             objToClient = new ObjectInputStream(socketClient.getInputStream());
         } catch(IOException e) {
-           throw new ClientNetworkException("Could not create the I/O stream", e);
+           throw new ClientNetworkException("Could not create I/O stream", e);
         }
     }
 }
