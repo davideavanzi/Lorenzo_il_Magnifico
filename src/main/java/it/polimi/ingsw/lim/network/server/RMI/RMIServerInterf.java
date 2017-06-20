@@ -11,4 +11,7 @@ import java.rmi.*;
 public interface RMIServerInterf extends Remote {
 
     void login(String username) throws RemoteException;
+
+    void chatMessageFromUser(String message) throws RemoteException;
+
 }

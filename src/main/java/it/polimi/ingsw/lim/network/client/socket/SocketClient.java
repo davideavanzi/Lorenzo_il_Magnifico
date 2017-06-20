@@ -1,25 +1,29 @@
 package it.polimi.ingsw.lim.network.client.socket;
 
 import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
+import it.polimi.ingsw.lim.network.client.MainClient;
 import it.polimi.ingsw.lim.network.client.ServerInteface;
 
 import java.io.*;
 import java.net.Socket;
+import static it.polimi.ingsw.lim.network.SocketConstants.*;
+import static sun.management.snmp.jvminstr.JvmThreadInstanceEntryImpl.ThreadStateMap.Byte0.runnable;
 
 /**
  * Created by nico.
  */
-public class SocketClient implements ServerInteface {
+public class SocketClient implements Runnable, ServerInteface {
     private String address = "localhost";
     private int port = 8989;
     ObjectOutputStream objFromClient;
     ObjectInputStream objToClient;
-
+    ServerCommandHandler commandHandler;
     /**
      * Socket client constructor
      */
-    public SocketClient() {
-
+    public SocketClient(MainClient uiCallback) {
+        this.commandHandler = new ServerCommandHandler(this, uiCallback);
+        uiCallback.setClientProtocol(this);
     }
 
     /**
@@ -35,7 +39,7 @@ public class SocketClient implements ServerInteface {
 
     public void sendLogin(String username) throws ClientNetworkException {
         try {
-            objFromClient.writeObject(username);
+            objFromClient.writeObject(LOGIN+" "+username);
             objFromClient.flush();
         } catch (IOException e) {
             throw new ClientNetworkException("Could not send login information to server", e);
@@ -56,6 +60,37 @@ public class SocketClient implements ServerInteface {
            throw new ClientNetworkException("Could not create I/O stream", e);
         }
     }
+    public void sendChatMessage(String sender, String message) throws ClientNetworkException{
+        try {
+            objFromClient.writeObject("CHAT "+sender+" "+message);
+        } catch (IOException e) {
+            throw new ClientNetworkException("Could not send chat message to server", e);
+        }
+    }
+
+    private void waitFromServer() {
+        int tries = 0;
+        while(true) {
+            try {
+                Object command = objToClient.readObject();
+                commandHandler.requestHandler(command);
+            }catch (IOException | ClassNotFoundException e) {
+                //TODO: HANDLE
+                tries++;
+                if (tries == 3) return;
+            }
+        }
+    }
+
+    public void run() {
+        try {
+            connect();
+            waitFromServer();
+        } catch (ClientNetworkException e) {
+            //TODO: Handle
+        }
+    }
+
 }
 
 /*

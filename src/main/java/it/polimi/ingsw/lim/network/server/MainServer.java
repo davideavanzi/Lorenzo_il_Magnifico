@@ -62,13 +62,15 @@ public class MainServer {
     /**
      * The authenticated user is added to the first available room, if no room is available a new room is created.
      * @param user is the authenticated user.
+     * @return the room in which the user was added (the last of the list)
      */
-    public static void addUserToRoom(User user) {
+    public static Room addUserToRoom(User user) {
         if(roomList.isEmpty() || !roomList.get(roomList.size()-1).isOpen()) {
             roomList.add(new Room(user));
         } else {
             roomList.get(roomList.size()-1).addUser(user);
         }
+        return roomList.get(roomList.size()-1);
     }
 
     /**

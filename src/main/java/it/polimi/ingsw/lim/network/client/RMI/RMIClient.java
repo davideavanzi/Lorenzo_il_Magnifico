@@ -67,6 +67,14 @@ public class RMIClient implements RMIClientInterf, ServerInteface {
             throw new ClientNetworkException("[RMI]: Could not connect to RMI server", e);
         }
     }
+
+    public void chatMessage(String sender, String message) {
+
+    }
+
+    public void sendChatMessage(String sender, String message) {
+
+    }
 }
 
 /*

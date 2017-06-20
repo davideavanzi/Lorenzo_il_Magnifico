@@ -3,7 +3,9 @@ package it.polimi.ingsw.lim.network.client;
 import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
 import it.polimi.ingsw.lim.network.client.RMI.RMIClient;
 import it.polimi.ingsw.lim.network.client.socket.SocketClient;
-import it.polimi.ingsw.lim.network.ui.AbsUI;
+import it.polimi.ingsw.lim.network.server.socket.SocketClientHandler;
+import it.polimi.ingsw.lim.ui.AbsUI;
+import it.polimi.ingsw.lim.ui.CLI;
 
 import java.util.Scanner;
 
@@ -14,6 +16,8 @@ public class MainClient {
     private static AbsUI clientUI;
     private static ServerInteface clientProtocol;
     private static Scanner userInput = new Scanner(System.in);
+    //a copy of the user name is stored here
+    private String username;
 
     /**
      * The first thing to do is create a user interface, then the player must choose
@@ -30,6 +34,7 @@ public class MainClient {
 
     private void login() {
         String username = clientUI.loginForm();
+        this.username = username;
         try {
             clientProtocol.sendLogin(username);
         } catch (ClientNetworkException e) {
@@ -43,7 +48,8 @@ public class MainClient {
     private void initializeConnection() {
         String protocol = clientUI.setNetworkSettings();
         if (protocol.equals("socket")) {
-            clientProtocol = new SocketClient();
+            new Thread(new SocketClient(this)).start();
+            //clientProtocol = new SocketClient(this);
         } else if (protocol.equals("rmi")) {
             clientProtocol = new RMIClient();
         }
@@ -88,5 +94,24 @@ public class MainClient {
         MainClient client = new MainClient(setUI());
         client.initializeConnection();
         client.login();
+        client.testChat();
+
+    }
+
+
+    public void testChat() {
+        try {
+            clientProtocol.sendChatMessage(username, "CIAOOOOO");
+        }catch (ClientNetworkException e) {
+            clientUI.printMessageln(e.getMessage());
+        }
+    }
+
+    public static AbsUI getClientUI() {
+        return clientUI;
+    }
+
+    public static void setClientProtocol(ServerInteface clientProtocol) {
+        MainClient.clientProtocol = clientProtocol;
     }
 }
