@@ -67,4 +67,9 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf, C
     public void printToClient(String message) {
 
     }
+
+    @Override
+    public int askForServants(int minimum) {
+      return 0;
+    }
 }
