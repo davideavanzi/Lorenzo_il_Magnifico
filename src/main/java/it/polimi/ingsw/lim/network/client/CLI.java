@@ -1,10 +1,5 @@
 package it.polimi.ingsw.lim.network.client;
 
-import static it.polimi.ingsw.lim.network.client.MainClient.*;
-
-import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
-import it.polimi.ingsw.lim.network.client.RMI.RMIClient;
-import it.polimi.ingsw.lim.network.client.socket.SocketClient;
 import it.polimi.ingsw.lim.network.ui.AbsUI;
 
 import java.util.Scanner;
@@ -16,14 +11,14 @@ import java.util.Scanner;
 public class CLI extends AbsUI {
     Scanner userInput = new Scanner(System.in);
     String input;
-    boolean exitNow = false;
 
     /**
      * Choose the connection protocol and connect to the server
      */
-    public String setNetworkSettings() throws ClientNetworkException {
-        System.out.print("Please select the network protocol: (socket/rmi) ");
+    public String setNetworkSettings() {
+        printMessageln("Please select the network protocol: (socket/rmi) ");
         while (true) {
+            printMessage("$ ");
             input = userInput.nextLine().toLowerCase();
             switch (input) {
                 case "socket":
@@ -33,13 +28,14 @@ public class CLI extends AbsUI {
                 case "r":
                     return "rmi";
                 default:
-                    printMessage("Not a valid choice!");
+                    printMessageln("Not a valid choice!");
             }
         }
     }
 
     public String loginForm() {
-        printMessage("Enter a username:");
+        printMessageln("Enter a username:");
+        printMessage("$ ");
         input = userInput.nextLine().toLowerCase();
         return input;
     }
@@ -48,7 +44,15 @@ public class CLI extends AbsUI {
      * Print on stdout a message
      * @param message
      */
-    public void printMessage(String message) {
+    public void printMessageln(String message) {
         System.out.println(message);
+    }
+
+    /**
+     * Print on stdout a message
+     * @param message
+     */
+    public void printMessage(String message) {
+        System.out.print(message);
     }
 }

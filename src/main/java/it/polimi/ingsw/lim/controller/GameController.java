@@ -1,9 +1,7 @@
 package it.polimi.ingsw.lim.controller;
 
 import it.polimi.ingsw.lim.exceptions.GameSetupException;
-import it.polimi.ingsw.lim.model.FamilyMember;
-import it.polimi.ingsw.lim.model.Game;
-import it.polimi.ingsw.lim.model.Strengths;
+import it.polimi.ingsw.lim.model.*;
 import it.polimi.ingsw.lim.parser.Parser;
 
 import java.util.ArrayList;
@@ -18,6 +16,7 @@ import static it.polimi.ingsw.lim.Settings.*;
  */
 public class GameController {
     private Game game;
+    private PlayerTurn turn;
 
 
     public static void main(String[] args){
@@ -56,7 +55,7 @@ public class GameController {
         game.setUpTurn();
         game.getTower("GREEN").getFloor(1).getCard().printCard();
 
-        game.moveInTower(game.getPlayer("CIAONE").pullFamilyMember(BLACK_COLOR), GREEN_COLOR,1);
+        //moveInTower(game.getPlayer("CIAONE").pullFamilyMember(BLACK_COLOR), GREEN_COLOR,1);
 
         System.out.println("Carte verdi in ciaone: "+game.getPlayer("CIAONE").getCardsOfColor(GREEN_COLOR).size());
 
@@ -86,6 +85,70 @@ public class GameController {
             return !(parsedGame.getTowerbonuses(color).length == TOWER_HEIGHT);
         //TODO: implement
         return true;
+    }
+
+
+    /**
+     * This methods moves a family member in a tower, checking if the action is legal.
+     * @param fm
+     * @param towerColor
+     * @param floor
+     * TODO: do we have to split the legality checks from the actual move?
+     * TODO: handle max card number and battle points requirements for green card
+     */
+    public void moveInTower (FamilyMember fm, String towerColor, int floor) {
+        Strengths strength = new Strengths();
+        getLog().log(Level.INFO, "Player "+this.game.getPlayerFromColor(fm.getOwnerColor()).getNickname()+
+                " is trying to enter "+towerColor+" tower at floor number "+floor+" with the "
+                +fm.getDiceColor()+" family member of value "+this.game.getDice().get(fm.getDiceColor()));
+
+        if(this.game.isTowerMoveAllowed(towerColor, floor, fm, strength)){
+            if(this.game.isTowerMoveAffordable(towerColor, floor, fm)){
+                //move is affordable, ask the client in case more servants are needed
+                if (this.game.servantsForTowerAction(fm, towerColor, floor) > 0);
+                //ask player!
+                this.game.towerMove(towerColor, floor, fm);
+                //perform action
+            } else {
+                getLog().log(Level.INFO, "But the move is not affordable");
+            }
+        } else {
+            getLog().log(Level.INFO, "But the move is not allowed");
+        }
+    }
+
+    public void moveInHarvest (FamilyMember fm, String towerColor, int floor) {
+        Strengths strength = new Strengths();
+        if(this.game.isHarvestMoveAllowed(fm)){
+            //move is affordable, ask the client in case more servants are needed
+            if (this.game.servantsForHarvestAction(fm) > 0)
+                //at least that amount of servants!
+                ;
+            this.game.harvestMove(fm);
+            for (Card card: game.getPlayerFromColor(fm.getOwnerColor()).getCardsOfColor(GREEN_COLOR))
+                CardHandler.activateGreenCard((GreenCard)card, game.getPlayerFromColor(fm.getOwnerColor()));
+
+            //perform action ?
+
+        }
+    }
+
+    public void moveInProduction (FamilyMember fm, String towerColor, int floor) {
+        Strengths strength = new Strengths();
+        if(this.game.isProductionMoveAllowed(fm)){
+            //move is affordable, ask the client in case more servants are needed
+            if (this.game.servantsForProductionAction(fm) > 0)
+                //at least that amount of servants!
+                ;
+            this.game.harvestMove(fm);
+            for (Card card: game.getPlayerFromColor(fm.getOwnerColor()).getCardsOfColor(GREEN_COLOR))
+                CardHandler.activateGreenCard((GreenCard)card, game.getPlayerFromColor(fm.getOwnerColor()));
+            //perform action
+        }
+    }
+
+    public void setTurn(PlayerTurn turn) {
+        this.turn = turn;
     }
 
     public ArrayList<String> getPlayOrder() {

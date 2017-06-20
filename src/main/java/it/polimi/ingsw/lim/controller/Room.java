@@ -9,7 +9,7 @@ import java.util.logging.Level;
 
 /**
  * Created by Davide on 26/05/2017.
- * This class represents a game room. It runs on a dedicated thread.
+ * This class represents a game room.
  * The room is created with the first user
  */
 public class Room {
@@ -23,11 +23,12 @@ public class Room {
         usersList = new ArrayList<>();
         gameController = new GameController();
         usersList.add(user);
+        getLog().log(Level.INFO, () -> "Room created, adding "+ user.getUsername() +" to room");
     }
 
     public void addUser(User user) {
         usersList.add(user);
-        getLog().log(Level.INFO, "Adding user %s to room", user);
+        getLog().log(Level.INFO, () -> "Adding "+ user.getUsername() +" to room");
     }
 
     public static List<User> getUsersList() {

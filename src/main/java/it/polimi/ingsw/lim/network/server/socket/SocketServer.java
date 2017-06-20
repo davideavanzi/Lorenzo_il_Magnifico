@@ -12,13 +12,21 @@ import java.util.logging.Level;
  */
 
 public class SocketServer {
+
+    /**
+     * The server socket
+     */
     private ServerSocket serverSck;
 
+    /**
+     * This boolean set the server state
+     */
     private static Boolean isServerRunning = true;
 
-    public SocketServer() {
-
-    }
+    /**
+     * Empty constructor
+     */
+    public SocketServer() {}
 
     /**
      * @return the state of the socket server
@@ -38,10 +46,9 @@ public class SocketServer {
 
     /**
      * This method is use for starting the socket server
-     *
-     * @throws IOException
+     * @throws IOException if could not deploy the socket
      */
-    public void startServer(int port) {
+    public void deployServer(int port) {
         try {
             serverSck = new ServerSocket(port);
             new clientConnectionRequestHandler().start();
@@ -66,12 +73,6 @@ public class SocketServer {
                 } catch (IOException ioe) {
                     getLog().log(Level.SEVERE, "[SOCKET]: Could not create a new thread", ioe);
                 }
-            }
-
-            try {
-                serverSck.close();
-            } catch (IOException ioe) {
-                getLog().log(Level.SEVERE, "[SOCKET]: Could not close socket", ioe);
             }
         }
     }

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.lim.network.client.RMI;
 
+import java.rmi.Remote;
+
 /**
  * Created by Nico.
  */

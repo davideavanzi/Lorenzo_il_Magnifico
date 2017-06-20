@@ -10,6 +10,5 @@ import java.rmi.*;
  */
 public interface RMIServerInterf extends Remote {
 
-    void createRoom(String roomName, RMIClientInterf rci) throws RemoteException;
-
+    void login(String username) throws RemoteException;
 }

@@ -9,45 +9,62 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
 /**
  * Created by nico.
  */
 public class RMIClient implements RMIClientInterf, ServerInteface {
+    /**
+     * RMI server's ip address.
+     */
     private String address = "localhost";
+
+    /**
+     * RMI server's port number.
+     */
     private int port = 1099;
 
     /**
-     * RMI client constructor
+     * Instance of RMI server interface.
      */
-    public RMIClient() {
-
-    }
+    RMIServerInterf rmiServer;
 
     /**
-     * @return the server's address
+     * RMI client constructor.
+     */
+    public RMIClient() {}
+
+    /**
+     * @return the server's address.
      */
     public String getAddress() {return address;}
 
     /**
-     * @return the server's rmi port
+     * @return the server's rmi port.
      */
     public int getPort() {return port;}
 
-    public void sendLogin(String username) {
 
+    public void sendLogin(String username) throws ClientNetworkException {
+        try {
+            rmiServer.login(username);
+        } catch (RemoteException e) {
+            throw new ClientNetworkException("[RMI]: Login Failed", e);
+        }
     }
 
+    /**
+     * It's called to establish the connection between server and client.
+     * @throws ClientNetworkException
+     */
     public void connect() throws ClientNetworkException {
         try {
-            Registry registry = LocateRegistry.getRegistry(getAddress(), getPort());
-            RMIServerInterf rmiServer = (RMIServerInterf)Naming.lookup("rmi://" + getAddress() + "/lim");
+            LocateRegistry.getRegistry(getAddress(), getPort());
+            rmiServer = (RMIServerInterf)Naming.lookup("rmi://" + getAddress() + "/lim");
             UnicastRemoteObject.exportObject(rmiServer, 0);
-            System.out.println("You have been connected in RMI mode.");
         } catch(NotBoundException | RemoteException | MalformedURLException e) {
-            throw new ClientNetworkException("Could not connect to RMI server", e);
+            throw new ClientNetworkException("[RMI]: Could not connect to RMI server", e);
         }
     }
 }

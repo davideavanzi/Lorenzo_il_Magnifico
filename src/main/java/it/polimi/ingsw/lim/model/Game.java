@@ -420,54 +420,6 @@ public class Game {
         return (servants > 0) ? -servants : 0;
     }
 
-    /*
-    TODO: MOVE IT IN GAMECONTROLLER?
-     */
-    /**
-     * This methods moves a family member in a tower, checking if the action is legal.
-     * @param fm
-     * @param towerColor
-     * @param floor
-     * TODO: do we have to split the legality checks from the actual move?
-     * TODO: handle max card number and battle points requirements for green card
-     */
-    public void moveInTower (FamilyMember fm, String towerColor, int floor) {
-        Strengths strength = new Strengths();
-        getLog().log(Level.INFO, "Player "+getPlayerFromColor(fm.getOwnerColor()).getNickname()+
-                " is trying to enter "+towerColor+" tower at floor number "+floor+" with the "
-                +fm.getDiceColor()+" family member of value "+dice.get(fm.getDiceColor()));
-
-        if(this.isTowerMoveAllowed(towerColor, floor, fm, strength)){
-            if(this.isTowerMoveAffordable(towerColor, floor, fm)){
-                //move is affordable, ask the client in case more servants are needed
-                if (this.servantsForTowerAction(fm, towerColor, floor) > 0);
-                //ask player!
-                towerMove(towerColor, floor, fm);
-                //perform action
-            } else {
-                getLog().log(Level.INFO, "But the move is not affordable");
-            }
-        } else {
-            getLog().log(Level.INFO, "But the move is not allowed");
-        }
-    }
-
-    public void moveInHarvest (FamilyMember fm, String towerColor, int floor) {
-        Strengths strength = new Strengths();
-        if(this.isHarvestMoveAllowed(fm)){
-            if(this.isTowerMoveAffordable(towerColor, floor, fm)){
-                //move is affordable, ask the client in case more servants are needed
-                if (this.servantsForHarvestAction(fm) > 0)
-                //at least that amount of servants!
-                    ;
-                harvestMove(fm);
-                for (Card card: getPlayerFromColor(fm.getOwnerColor()).getCardsOfColor(GREEN_COLOR))
-                    CardHandler.activateGreenCard((GreenCard)card, getPlayerFromColor(fm.getOwnerColor()));
-            }
-            //perform action
-        }
-    }
-
     /**
      * FOLLOWING METHODS ARE USED ONLY FOR TESTING PURPOSES
      */
