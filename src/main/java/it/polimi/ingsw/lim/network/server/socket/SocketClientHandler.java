@@ -75,7 +75,7 @@ public class SocketClientHandler implements Runnable, ClientInterface {
         while(true) {
             try {
                 Object command = objToServer.readObject();
-
+                commandHandler.requestHandler(command);
             }catch (IOException | ClassNotFoundException e) {
                 getLog().log(Level.SEVERE, "[SOCKET]: Could not receive object from client", e);
             }
@@ -98,6 +98,7 @@ public class SocketClientHandler implements Runnable, ClientInterface {
                 getLog().log(Level.SEVERE, "[SOCKET]: Could not perform login", e);
             }
         }
+        waitRequest();
     }
 
     public void printToClient(String message) {
