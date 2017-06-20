@@ -9,7 +9,7 @@ import java.util.logging.Level;
 
 /**
  * Created by Davide on 26/05/2017.
- * This class represents a game room. It runs on a dedicated thread.
+ * This class represents a game room.
  * The room is created with the first user
  */
 public class Room {

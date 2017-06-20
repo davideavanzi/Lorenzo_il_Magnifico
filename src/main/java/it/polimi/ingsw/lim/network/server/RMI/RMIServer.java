@@ -60,4 +60,9 @@ public class RMIServer implements RMIServerInterf, ClientInterface {
     public void printToClient(String message) {
 
     }
+
+    @Override
+    public int askForServants(int minimum) {
+      return 0;
+    }
 }

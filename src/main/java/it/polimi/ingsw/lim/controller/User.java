@@ -9,6 +9,7 @@ import it.polimi.ingsw.lim.network.server.socket.SocketClientHandler;
  * Created by Davide on 26/05/2017.
  * This class represent the person playing the game. It has a unique username picked from the db upon login.
  * It has also a reference to the corresponding client.
+ * It will be used as a gateway between the room/game controller and the communication services
  */
 public class User {
 
@@ -32,4 +33,6 @@ public class User {
     public String getUsername() {
         return username;
     }
+
+    public int askForServants(int minimum) { return clientInterf.askForServants(minimum); }
 }

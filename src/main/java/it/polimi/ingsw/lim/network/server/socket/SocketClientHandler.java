@@ -115,6 +115,10 @@ public class SocketClientHandler implements Runnable, ClientInterface {
 
     }
 
+    public int askForServants(int minimum) {
+        return 0;
+    }
+
 }
 
 /*

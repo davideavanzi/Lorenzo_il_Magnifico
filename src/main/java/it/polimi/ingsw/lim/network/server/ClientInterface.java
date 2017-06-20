@@ -7,4 +7,6 @@ public interface ClientInterface {
 
     public void printToClient(String message);
 
+    int askForServants(int minimumAmount);
+
 }
