@@ -2,6 +2,7 @@ package it.polimi.ingsw.lim.parser;
 
 import it.polimi.ingsw.lim.model.*;
 import it.polimi.ingsw.lim.exceptions.*;
+import static it.polimi.ingsw.lim.parser.Writer.*;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import java.io.IOException;
@@ -13,7 +14,7 @@ import java.util.Iterator;
 
 import static it.polimi.ingsw.lim.Log.getLog;
 import static it.polimi.ingsw.lim.Settings.*;
-import static it.polimi.ingsw.lim.parser.ParserKeyConst.*;
+import static it.polimi.ingsw.lim.parser.KeyConst.*;
 
 
 /**
@@ -842,9 +843,10 @@ public class Parser {
         this.setBoardPlayersProductionBonus(parseBoardPlayerProductionBonus(pathToDirectory.concat(CONFIGURATOR_BONUS_ASSETS_FILE_NAME)));
         this.setBoardPlayersHarvestBonus(parseBoardPlayerHarvestBonus(pathToDirectory.concat(CONFIGURATOR_BONUS_ASSETS_FILE_NAME)));
         getLog().info("Assets Bonuses parsed.");
-        getLog().info("Try to parse Excommunication from file: ".concat(pathToDirectory).concat(CONFIGURATOR_EXCOMMUNICATION_FILE_NAME));
-        this.setExcommunications(parseExcommunications(pathToDirectory.concat(CONFIGURATOR_EXCOMMUNICATION_FILE_NAME)));
-        getLog().info("Excommunications parsed.");
+        //getLog().info("Try to parse Excommunication from file: ".concat(pathToDirectory).concat(CONFIGURATOR_EXCOMMUNICATION_FILE_NAME));
+        //this.setExcommunications(parseExcommunications(pathToDirectory.concat(CONFIGURATOR_EXCOMMUNICATION_FILE_NAME)));
+        //getLog().info("Excommunications parsed.");
         return this;
+
     }
 }

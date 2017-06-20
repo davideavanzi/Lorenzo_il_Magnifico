@@ -4,8 +4,8 @@ package it.polimi.ingsw.lim.parser;
  * Created by FabCars. This class contains all the key used in the Json file.
  * It is created due to increase scalability of the code (e.g. if the key of the Json file changes)
  */
-public class ParserKeyConst {
-
+public class KeyConst {
+    //parser
     public static final String MARKET = "MARKET";
     public static final String FAITH_TRACK = "FAITH";
     public static final String COUNCIL_FAVOUR = "FAVOUR";
@@ -105,4 +105,7 @@ public class ParserKeyConst {
 
     public static final String BOARD_PLAYER_PRODUCTION_BONUS = "boardPlayerProductionBonus";
     public static final String BOARD_PLAYER_HARVEST_BONUS = "boardPlayerHarvestBonus";
+
+    //writer
+    public static final String PATH_TO_WRITER_FILE = "src/test/writer.json";
 }
