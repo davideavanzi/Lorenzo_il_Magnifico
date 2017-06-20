@@ -1,16 +1,13 @@
 package it.polimi.ingsw.lim.network.server.socket;
 
-import it.polimi.ingsw.lim.controller.Room;
 import it.polimi.ingsw.lim.controller.User;
 import it.polimi.ingsw.lim.network.server.ClientInterface;
-import it.polimi.ingsw.lim.network.server.MainServer;
 
 import static it.polimi.ingsw.lim.Log.*;
 import static it.polimi.ingsw.lim.network.server.MainServer.addUserToRoom;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.logging.Level;
 
 /**
@@ -36,11 +33,17 @@ public class SocketClientHandler implements Runnable, ClientInterface {
     private ObjectInputStream objToServer;
 
     /**
+     * Socket client command handler.
+     */
+    private ClientCommandHandler commandHandler;
+
+    /**
      * Default constructor.
      * @param socketClient
      */
     SocketClientHandler(Socket socketClient) {
         this.socketClient = socketClient;
+        commandHandler = new ClientCommandHandler();
     }
 
     /**
@@ -68,6 +71,17 @@ public class SocketClientHandler implements Runnable, ClientInterface {
         System.out.println("added to room");
     }
 
+    private void waitRequest() {
+        while(true) {
+            try {
+                Object command = objToServer.readObject();
+
+            }catch (IOException | ClassNotFoundException e) {
+                getLog().log(Level.SEVERE, "[SOCKET]: Could not receive object from client", e);
+            }
+        }
+    }
+
     /**
      * Create the I/O socket stream, run until the login is successful then listen for a client command
      */
@@ -84,7 +98,6 @@ public class SocketClientHandler implements Runnable, ClientInterface {
                 getLog().log(Level.SEVERE, "[SOCKET]: Could not perform login", e);
             }
         }
-        //requestHandler();
     }
 
     public void printToClient(String message) {
