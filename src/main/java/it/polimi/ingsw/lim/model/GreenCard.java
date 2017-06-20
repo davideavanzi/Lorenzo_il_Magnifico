@@ -52,11 +52,11 @@ public class GreenCard extends Card {
         }
         Log.getLog().info("***GREEN CARD Testing Equals***");
         Card card = (Card) other;
+        boolean equals = true;
         if (!(this.equals(card))){
-            return false;
+            equals =  false;
         }
         GreenCard greenCard = (GreenCard) other;
-        boolean equals = true;
         if(!(this.actionStrength.equals(greenCard.getActionStrength()))){
             Log.getLog().info("action strength different");
             equals = false;
@@ -64,6 +64,9 @@ public class GreenCard extends Card {
         if(!(this.harvestResult.equals(greenCard.getHarvestResult()))){
             Log.getLog().info("harvest result different");
             equals = false;
+        }
+        if(equals){
+            Log.getLog().info("GreenCardEqual");
         }
         return equals;
     }

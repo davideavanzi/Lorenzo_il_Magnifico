@@ -60,13 +60,33 @@ public class BlueCard extends Card {
             Log.getLog().info("other not BlueCard");
             return false;
         }
+        Log.getLog().info("***BLUE CARD Testing Equals***");
         Card card = (Card) other;
+        boolean equals = true;
         if (!(this.equals(card))){
-            Log.getLog().info("***BLUE CARD***");
-            return false;
+            equals =  false;
         }
-        //TODO:implementare equals della blue card
-        return true;
+        BlueCard blueCard = (BlueCard) card;
+        if(!(this.permanentBonus.equals(blueCard.getPermanentBonus()))){
+            Log.getLog().info("permanent bonus different");
+            equals = false;
+        }
+        if(!(this.pickDiscounts.equals(blueCard.getPickDiscounts()))){
+            Log.getLog().info("pick discount different");
+            equals = false;
+        }
+        if(!(this.permanentBonus.equals(blueCard.getPermanentBonus()))){
+            Log.getLog().info("permanent bonus different");
+            equals = false;
+        }
+        if(!(this.towerBonusAllowed == blueCard.getTowerBonusAllowed())){
+            Log.getLog().info("permanent bonus different");
+            equals = false;
+        }
+        if(equals){
+            Log.getLog().info("BlueCardEqual");
+        }
+        return equals;
     }
 
     public Strengths getPermanentBonus() {

@@ -241,13 +241,13 @@ public class Parser {
         if (immediateEffectType.path(ACTION_EFFECT).isContainerNode()) {
             immediateEffectExist = true;
 
-            Strengths tmpActionStrengths = null;
+            Strengths tmpActionStrengths = new Strengths();
             if (immediateEffectType.path(ACTION_EFFECT).path(ACTION_EFFECT_STRENGTH).isContainerNode()) {
                 JsonNode actionEffectStrength = immediateEffectType.path(ACTION_EFFECT).path(ACTION_EFFECT_STRENGTH);
                 tmpActionStrengths = parseStrengths(actionEffectStrength);
             }
 
-            Assets tmpActionEffectDiscount = null;
+            Assets tmpActionEffectDiscount = new Assets();
             if (immediateEffectType.path(ACTION_EFFECT).path(ACTION_EFFECT_ASSETS).isContainerNode()) {
                 JsonNode actionEffectDiscount = immediateEffectType.path(ACTION_EFFECT).path(ACTION_EFFECT_ASSETS);
                 tmpActionEffectDiscount = parseAssets(actionEffectDiscount);
@@ -329,13 +329,13 @@ public class Parser {
      */
     private static GreenCard parseGreenCard
     (String cardName, int cardAge, Assets tmpCardAssetsCost, ArrayList<ImmediateEffect> immediateEffects, JsonNode cardNode){
-        Assets tmpGreenHarvestResult = null;
+        Assets tmpGreenHarvestResult = new Assets();
         if (cardNode.path(GREEN_HARVEST_RESULT).isContainerNode()) {
             JsonNode greenHarvestResult = cardNode.path(GREEN_HARVEST_RESULT);
             tmpGreenHarvestResult = parseAssets(greenHarvestResult);
         }
 
-        Strengths tmpGreenActionStrengths = null;
+        Strengths tmpGreenActionStrengths = new Strengths();
         if (cardNode.path(GREEN_ACTION_STRENGTHS).isContainerNode()) {
             JsonNode greenActionStrengths = cardNode.path(GREEN_ACTION_STRENGTHS);
             tmpGreenActionStrengths = parseStrengths(greenActionStrengths);
@@ -362,37 +362,37 @@ public class Parser {
      */
     private static BlueCard parseBlueCard
             (String cardName, int cardAge, Assets tmpCardAssetsCost, ArrayList<ImmediateEffect> immediateEffects, JsonNode cardNode) {
-        Strengths tmpBluePermanentBonus = null;
+        Strengths tmpBluePermanentBonus = new Strengths();//TODO modificato
         if (cardNode.path(BLUE_PERMANENT_BONUS).isContainerNode()) {
             JsonNode bluePermanentBonus = cardNode.path(BLUE_PERMANENT_BONUS);
             tmpBluePermanentBonus = parseStrengths(bluePermanentBonus);
         }
 
-        Assets tmpBlueGreenDiscount = null;
+        Assets tmpBlueGreenDiscount = new Assets();
         if (cardNode.path(BLUE_GREEN_DISCOUNT).isContainerNode()) {
             JsonNode blueGreenDiscount = cardNode.path(BLUE_GREEN_DISCOUNT);
             tmpBlueGreenDiscount = parseAssets(blueGreenDiscount);
         }
 
-        Assets tmpBlueBlueDiscount = null;
+        Assets tmpBlueBlueDiscount = new Assets();
         if (cardNode.path(BLUE_BLUE_DISCOUNT).isContainerNode()) {
             JsonNode blueBlueDiscount = cardNode.path(BLUE_BLUE_DISCOUNT);
             tmpBlueBlueDiscount = parseAssets(blueBlueDiscount);
         }
 
-        Assets tmpBlueYellowDiscount = null;
+        Assets tmpBlueYellowDiscount = new Assets();
         if (cardNode.path(BLUE_YELLOW_DISCOUNT).isContainerNode()) {
             JsonNode blueYellowDiscount = cardNode.path(BLUE_YELLOW_DISCOUNT);
             tmpBlueYellowDiscount = parseAssets(blueYellowDiscount);
         }
 
-        Assets tmpBluePurpleDiscount = null;
+        Assets tmpBluePurpleDiscount = new Assets();
         if (cardNode.path(BLUE_PURPLE_DISCOUNT).isContainerNode()) {
             JsonNode bluePurpleDiscount = cardNode.path(BLUE_PURPLE_DISCOUNT);
             tmpBluePurpleDiscount = parseAssets(bluePurpleDiscount);
         }
 
-        Assets tmpBlueBlackDiscount = null;
+        Assets tmpBlueBlackDiscount = new Assets();
         if (cardNode.path(BLUE_BLACK_DISCOUNT).isContainerNode()) {
             JsonNode blueBlackDiscount = cardNode.path(BLUE_BLACK_DISCOUNT);
             tmpBlueBlackDiscount = parseAssets(blueBlackDiscount);
@@ -450,7 +450,7 @@ public class Parser {
             }
         }
 
-        Strengths tmpYellowActionStrengths = null;
+        Strengths tmpYellowActionStrengths = new Strengths();
         if (cardNode.path(YELLOW_ACTION_STRENGTHS).isContainerNode()) {
             JsonNode yellowActionStrengths = cardNode.path(YELLOW_ACTION_STRENGTHS);
             tmpYellowActionStrengths = parseStrengths(yellowActionStrengths);
@@ -581,13 +581,13 @@ public class Parser {
             if (!(cardNode.path(CARD_TYPE).isTextual())) {
                 throw new InvalidCardException("Card Type is not nullable");
             }
-            Assets tmpCardAssetsCost = null;
+            Assets tmpCardAssetsCost = new Assets();
             if (cardNode.path(CARD_ASSETS_COST).isContainerNode()) {
                 JsonNode cardAssetsCost = cardNode.path(CARD_ASSETS_COST);
                 tmpCardAssetsCost = parseAssets(cardAssetsCost);
             }
 
-            ArrayList<ImmediateEffect> immediateEffects = null;
+            ArrayList<ImmediateEffect> immediateEffects = new ArrayList<>();
             if (cardNode.path(CARD_IMMEDIATE_EFFECT).isContainerNode()) {
                 JsonNode cardImmediateEffect = cardNode.path(CARD_IMMEDIATE_EFFECT);
                 immediateEffects = parseImmediateEffect(cardImmediateEffect);
@@ -601,14 +601,14 @@ public class Parser {
                     cards.get(cardAge.asInt() - 1).get(GREEN_COLOR).add(greenCard);
                     break;
                 case BLUE_CARD:
-                    YellowCard yellowCard = parseYellowCard
-                            (cardName.asText(), cardAge.asInt(), tmpCardAssetsCost, immediateEffects, cardNode);
-                    cards.get(cardAge.asInt() - 1).get(YELLOW_COLOR).add(yellowCard);
-                    break;
-                case YELLOW_CARD:
                     BlueCard blueCard = parseBlueCard
                             (cardName.asText(), cardAge.asInt(), tmpCardAssetsCost, immediateEffects, cardNode);
                     cards.get(cardAge.asInt() - 1).get(BLUE_COLOR).add(blueCard);
+                    break;
+                case YELLOW_CARD:
+                    YellowCard yellowCard = parseYellowCard
+                        (cardName.asText(), cardAge.asInt(), tmpCardAssetsCost, immediateEffects, cardNode);
+                    cards.get(cardAge.asInt() - 1).get(YELLOW_COLOR).add(yellowCard);
                     break;
                 case PURPLE_CARD:
                     PurpleCard purpleCard = parsePurpleCard

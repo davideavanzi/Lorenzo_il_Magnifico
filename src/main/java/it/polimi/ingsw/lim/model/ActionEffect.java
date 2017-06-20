@@ -1,5 +1,7 @@
 package it.polimi.ingsw.lim.model;
 
+import it.polimi.ingsw.lim.Log;
+
 /**
  * This class represents an immediate effect that gives the player the ability to make another action:
  * This action could be harvest, production or picking a card from a tower. The action is specified in the strength
@@ -54,13 +56,20 @@ public class ActionEffect extends ImmediateEffect {
         if(other == this){
             return true;
         }
-        if (other == null){
-            return false;
-        }
-        if(!(other instanceof ActionEffect)){
+        if (other == null || !(other instanceof ActionEffect)){
+            Log.getLog().info("other not BlueCard");
             return false;
         }
         ActionEffect actionEffect = (ActionEffect) other;
+        /*if ((this.strength == null && actionEffect.getStrength() == null) || (this.discount == null && actionEffect.getDiscount() == null)){
+            return true;
+        }
+        if (this.discount != null && actionEffect.getDiscount() == null ||
+                this.discount == null && actionEffect.getDiscount() != null ||
+                this.strength != null && actionEffect.getDiscount() == null ||
+                this.discount == null && actionEffect.getDiscount() != null){
+            return false;
+        }*/
         return (this.strength.equals(actionEffect.getStrength()) &&
                 this.discount.equals(actionEffect.getDiscount()));
     }
