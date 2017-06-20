@@ -6,6 +6,7 @@ import it.polimi.ingsw.lim.network.server.ClientInterface;
 import it.polimi.ingsw.lim.network.server.MainServer;
 
 import static it.polimi.ingsw.lim.Log.*;
+import static it.polimi.ingsw.lim.network.server.MainServer.addUserToRoom;
 
 import java.io.*;
 import java.net.Socket;
@@ -63,29 +64,9 @@ public class SocketClientHandler implements Runnable, ClientInterface {
     private void login() throws IOException, ClassNotFoundException {
         String username = (String)objToServer.readObject();
         //TODO: sistema di autenticazione (salvare utenti in un file/db, se utente esistente se vuole caricare stat.)
-        user = new User(username, this);
-        addUserToRoom(user);
+        addUserToRoom(new User(username, this));
         System.out.println("added to room");
     }
-
-    /**
-     * The authenticated user is added to the first available room, if no room is available a new room is created
-     * @param user is the authenticated user
-     */
-    private void addUserToRoom(User user) {
-        ArrayList<Room> rooms = MainServer.getRoomList();
-        if(rooms.isEmpty()) {
-          rooms.add(new Room(user));
-        } else {
-            rooms.get(rooms.size()-1).addUser(user);
-        }
-    }
-
-    /*public void requestHandler() {
-        while(true) {
-            objToServer.readObject();
-        }
-    }*/
 
     /**
      * Create the I/O socket stream, run until the login is successful then listen for a client command

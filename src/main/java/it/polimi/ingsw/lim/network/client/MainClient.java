@@ -66,7 +66,7 @@ public class MainClient {
      */
     private static boolean setUI() {
         System.out.println("Do you want to play with a GUI? (y/n)");
-        System.out.print("$");
+        System.out.print("$ ");
         while (true) {
             String gui = userInput.nextLine().toLowerCase();
             switch (gui) {

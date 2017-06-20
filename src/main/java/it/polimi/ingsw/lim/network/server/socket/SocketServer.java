@@ -45,18 +45,6 @@ public class SocketServer {
     }
 
     /**
-     * This method is called when a socket should close.
-     * @param serverSocket
-     */
-    private void closeSocket(ServerSocket serverSocket) {
-        try {
-            serverSck.close();
-        } catch (IOException ioe) {
-            getLog().log(Level.SEVERE, "[SOCKET]: Could not close socket", ioe);
-        }
-    }
-
-    /**
      * This method is use for starting the socket server
      * @throws IOException if could not deploy the socket
      */
@@ -66,8 +54,6 @@ public class SocketServer {
             new clientConnectionRequestHandler().start();
         } catch (IOException e) {
             getLog().log(Level.SEVERE, "[SOCKET]: Could not deploy socket server", e);
-        } finally {
-            closeSocket(serverSck);
         }
     }
 

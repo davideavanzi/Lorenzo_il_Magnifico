@@ -18,7 +18,7 @@ public class CLI extends AbsUI {
     public String setNetworkSettings() {
         printMessageln("Please select the network protocol: (socket/rmi) ");
         while (true) {
-            printMessage("$");
+            printMessage("$ ");
             input = userInput.nextLine().toLowerCase();
             switch (input) {
                 case "socket":
@@ -35,7 +35,7 @@ public class CLI extends AbsUI {
 
     public String loginForm() {
         printMessageln("Enter a username:");
-        printMessage("$");
+        printMessage("$ ");
         input = userInput.nextLine().toLowerCase();
         return input;
     }
