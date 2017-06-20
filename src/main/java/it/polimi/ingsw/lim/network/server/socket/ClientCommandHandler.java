@@ -31,7 +31,7 @@ class ClientCommandHandler {
      */
     private SocketClientHandler handlerCallback;
 
-    void requestHandler(Object obj) {
+    /*void requestHandler(Object obj) {
         if(obj instanceof String) {
             ArrayList<String> command = new ArrayList<String>(Arrays.asList(((String) obj).split(" ")));
             String commandIdentifier = command.get(0);
@@ -47,5 +47,5 @@ class ClientCommandHandler {
                 getLog().log(Level.INFO, () -> "[CHAT] message from "+command.get(1)+": "+command.get(2));
             }
         }
-    }
+    }*/
 }

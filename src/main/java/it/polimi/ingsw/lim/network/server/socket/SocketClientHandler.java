@@ -46,31 +46,40 @@ public class SocketClientHandler implements Runnable, ClientInterface {
         commandHandler = new ClientCommandHandler(this);
     }
 
+    /*private void waitRequest() {
+        while(true) {
+            try {
+                Object command = objToServer.readObject();
+                commandHandler.requestHandler(command);
+            } catch (IOException | ClassNotFoundException e) {
+                getLog().log(Level.SEVERE, "[SOCKET]: Could not receive object from client", e);
+            }
+        }
+    }*/
+
+    /**
+     * This is the login method.
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+    private void login() throws IOException, ClassNotFoundException {
+        String username = (String)objToServer.readObject();
+        //TODO: sistema di autenticazione (salvare utenti in un file/db, se utente esistente se vuole caricare stat.)
+        user = new User(username, this);
+        addUserToRoom(user);
+        System.out.println("added to room");
+    }
+
     /**
      * Create I/O stream for socket connection.
      */
     private void createStream() {
         try {
             // Input and output stream
-            this.objFromServer = new ObjectOutputStream(socketClient.getOutputStream());
-            this.objToServer = new ObjectInputStream(socketClient.getInputStream());
+            objFromServer = new ObjectOutputStream(socketClient.getOutputStream());
+            objToServer = new ObjectInputStream(socketClient.getInputStream());
         } catch (IOException e) {
             getLog().log(Level.SEVERE, "Could not create I/O stream", e);
-        }
-    }
-
-    private void waitRequest() {
-        int tries = 0;
-        while(true) {
-            try {
-                Object command = objToServer.readObject();
-                commandHandler.requestHandler(command);
-            }catch (IOException | ClassNotFoundException e) {
-                getLog().log(Level.SEVERE, "[SOCKET]: Could not receive object from client, " +
-                        "maybe client is offline?  \n", e);
-                tries++;
-                if (tries == 3) return;
-            }
         }
     }
 
@@ -79,6 +88,16 @@ public class SocketClientHandler implements Runnable, ClientInterface {
      */
     public void run() {
         createStream();
+        // If the login failed more than 3 times the thread exit
+        while(user == null && loginFailed < 3) {
+            try {
+                login();
+            } catch (IOException | ClassNotFoundException e) {
+                loginFailed++;
+                getLog().log(Level.SEVERE, "[SOCKET]: Could not perform login", e);
+            }
+        }
+        //commandHandler.requestHandler();
         waitRequest();
     }
 
