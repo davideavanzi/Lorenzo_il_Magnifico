@@ -12,13 +12,21 @@ import java.util.logging.Level;
  */
 
 public class SocketServer {
+
+    /**
+     * The server socket
+     */
     private ServerSocket serverSck;
 
+    /**
+     * This boolean set the server state
+     */
     private static Boolean isServerRunning = true;
 
-    public SocketServer() {
-
-    }
+    /**
+     * Empty constructor
+     */
+    public SocketServer() {}
 
     /**
      * @return the state of the socket server
@@ -37,16 +45,29 @@ public class SocketServer {
     }
 
     /**
-     * This method is use for starting the socket server
-     *
-     * @throws IOException
+     * This method is called when a socket should close.
+     * @param serverSocket
      */
-    public void startServer(int port) {
+    private void closeSocket(ServerSocket serverSocket) {
+        try {
+            serverSck.close();
+        } catch (IOException ioe) {
+            getLog().log(Level.SEVERE, "[SOCKET]: Could not close socket", ioe);
+        }
+    }
+
+    /**
+     * This method is use for starting the socket server
+     * @throws IOException if could not deploy the socket
+     */
+    public void deployServer(int port) {
         try {
             serverSck = new ServerSocket(port);
             new clientConnectionRequestHandler().start();
         } catch (IOException e) {
             getLog().log(Level.SEVERE, "[SOCKET]: Could not deploy socket server", e);
+        } finally {
+            closeSocket(serverSck);
         }
     }
 
@@ -66,12 +87,6 @@ public class SocketServer {
                 } catch (IOException ioe) {
                     getLog().log(Level.SEVERE, "[SOCKET]: Could not create a new thread", ioe);
                 }
-            }
-
-            try {
-                serverSck.close();
-            } catch (IOException ioe) {
-                getLog().log(Level.SEVERE, "[SOCKET]: Could not close socket", ioe);
             }
         }
     }

@@ -3,7 +3,6 @@ package it.polimi.ingsw.lim.network.client;
 import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
 import it.polimi.ingsw.lim.network.client.RMI.RMIClient;
 import it.polimi.ingsw.lim.network.client.socket.SocketClient;
-import it.polimi.ingsw.lim.network.server.ClientInterface;
 import it.polimi.ingsw.lim.network.ui.AbsUI;
 
 import java.util.Scanner;
@@ -13,7 +12,7 @@ import java.util.Scanner;
  */
 public class MainClient {
     private static AbsUI clientUI;
-    public static ServerInteface clientProtocol;
+    private static ServerInteface clientProtocol;
     private static Scanner userInput = new Scanner(System.in);
 
     /**
@@ -34,33 +33,40 @@ public class MainClient {
         try {
             clientProtocol.sendLogin(username);
         } catch (ClientNetworkException e) {
-            clientUI.printMessage(e.getMessage());
+            clientUI.printMessageln(e.getMessage());
         }
     }
 
     /**
-     *  If the player want to config the network settings
+     *  If the player want to config the network settings.
      */
-    private void initializeGame() {
-        try {
-            String protocol = clientUI.setNetworkSettings();
-            if (protocol.equals("socket")) {
-                clientProtocol = new SocketClient();
-            } else if (protocol.equals("rmi")) {
-                clientProtocol = new RMIClient();
+    private void initializeConnection() {
+        String protocol = clientUI.setNetworkSettings();
+        if (protocol.equals("socket")) {
+            clientProtocol = new SocketClient();
+        } else if (protocol.equals("rmi")) {
+            clientProtocol = new RMIClient();
+        }
+
+        int failedRetry = 0;
+        while(failedRetry < 3) {
+            try {
+                clientProtocol.connect();
+                break;
+            } catch (ClientNetworkException e) {
+                failedRetry++;
+                clientUI.printMessageln(e.getMessage());
             }
-            clientProtocol.connect();
-        } catch (ClientNetworkException e) {
-            //TODO:handle exception
         }
     }
 
     /**
-     * The player choose if he want to play with GUI or CLI
-     * @return true if you want to use a GUI, false if you want a CLI
+     * The player choose if he want to play with GUI or CLI.
+     * @return true if you want to use a GUI, false if you want a CLI.
      */
     private static boolean setUI() {
-        System.out.print("Do you want to play with a GUI? (y/n)");
+        System.out.println("Do you want to play with a GUI? (y/n)");
+        System.out.print("$");
         while (true) {
             String gui = userInput.nextLine().toLowerCase();
             switch (gui) {
@@ -80,7 +86,7 @@ public class MainClient {
         System.out.println("Welcome to Lorenzo Il Magnifico!");
         System.out.println();
         MainClient client = new MainClient(setUI());
-        client.initializeGame();
+        client.initializeConnection();
         client.login();
     }
 }

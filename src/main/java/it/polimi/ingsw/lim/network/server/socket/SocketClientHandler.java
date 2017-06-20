@@ -18,23 +18,34 @@ import java.util.logging.Level;
  */
 public class SocketClientHandler implements Runnable, ClientInterface {
 
+    /**
+     * Socket for communicate with client.
+     */
     private Socket socketClient;
+
+    /**
+     *
+     */
     private User user = null;
-    private boolean isClientConnected = true;
+
+    /**
+     * Input and output stream for the client-server communication.
+     */
     private ObjectOutputStream objFromServer;
     private ObjectInputStream objToServer;
 
+    /**
+     * Default constructor.
+     * @param socketClient
+     */
     SocketClientHandler(Socket socketClient) {
         this.socketClient = socketClient;
     }
 
     /**
-     * If the login failed more than 3 times the thread is killed
+     * Create I/O stream for socket connection.
      */
-    public void run() {
-        int count = 0;
-        int maxTries = 3;
-
+    private void createStream() {
         try {
             // Input and output stream
             objFromServer = new ObjectOutputStream(socketClient.getOutputStream());
@@ -42,24 +53,26 @@ public class SocketClientHandler implements Runnable, ClientInterface {
         } catch (IOException e) {
             getLog().log(Level.SEVERE, "Could not create I/O stream", e);
         }
-
-        while (user == null) {
-            try {
-                manageLogin();
-            } catch (IOException | ClassNotFoundException e) {
-                if(++count == maxTries) {
-                    getLog().log(Level.SEVERE, "Could not perform login", e);
-                    return;
-                }
-            }
-        }
     }
 
     /**
-     * The authenticated user is added in the first available room
+     * This is the login method.
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+    private void login() throws IOException, ClassNotFoundException {
+        String username = (String)objToServer.readObject();
+        //TODO: sistema di autenticazione (salvare utenti in un file/db, se utente esistente se vuole caricare stat.)
+        user = new User(username, this);
+        addUserToRoom(user);
+        System.out.println("added to room");
+    }
+
+    /**
+     * The authenticated user is added to the first available room, if no room is available a new room is created
      * @param user is the authenticated user
      */
-    private void addToRoom(User user) {
+    private void addUserToRoom(User user) {
         ArrayList<Room> rooms = MainServer.getRoomList();
         if(rooms.isEmpty()) {
           rooms.add(new Room(user));
@@ -68,22 +81,36 @@ public class SocketClientHandler implements Runnable, ClientInterface {
         }
     }
 
-    private void manageLogin() throws IOException, ClassNotFoundException {
-        String username = (String)objToServer.readObject();
-        //TODO: sistema di autenticazione (salvare utenti in un file/db, se utente esistente se vuole caricare stat.)
-        // abbiamo gia chiesto la password all'utente
+    /*public void requestHandler() {
+        while(true) {
+            objToServer.readObject();
+        }
+    }*/
 
-        user = new User(username, this);
-        addToRoom(user);
-        System.out.println("added to room");
+    /**
+     * Create the I/O socket stream, run until the login is successful then listen for a client command
+     */
+    public void run() {
+        int loginFailed = 0;
+
+        createStream();
+        // If the login failed more than 3 times the thread exit
+        while(user == null || loginFailed < 3) {
+            try {
+                login();
+            } catch (IOException | ClassNotFoundException e) {
+                loginFailed++;
+                getLog().log(Level.SEVERE, "[SOCKET]: Could not perform login", e);
+            }
+        }
+        //requestHandler();
     }
 
-    public void tellToClient(String message) {
+    public void printToClient(String message) {
         try {
             objFromServer.writeObject(message);
-        } catch (Exception e) {
-            //TODO: DAJE COSTE EXCEPTION
-            e.printStackTrace();
+        } catch (IOException e) {
+            getLog().log(Level.SEVERE, "[SOCKET]: Could not send String to client", e);
         }
 
     }
@@ -103,7 +130,7 @@ public class SocketClientHandler implements Runnable, ClientInterface {
 
         while (isClientConnected) {
             try {
-                tellToClient("EXECUTE LOGIN:");
+                printToClient("EXECUTE LOGIN:");
                 // Read incoming command from the client
                 commandReceived = (String)objToServer.readObject();
                 System.out.println("Login from user with name: "+commandReceived);

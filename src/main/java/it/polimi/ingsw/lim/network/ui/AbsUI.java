@@ -1,7 +1,5 @@
 package it.polimi.ingsw.lim.network.ui;
 
-import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
-
 /**
  * Created by nico.
  */
@@ -14,7 +12,7 @@ public abstract class AbsUI {
     /**
      * This method is used for set the network protocol from the selected ui
      */
-    public abstract String setNetworkSettings() throws ClientNetworkException;
+    public abstract String setNetworkSettings();
 
 
     public abstract String loginForm();
@@ -22,5 +20,6 @@ public abstract class AbsUI {
     /**
      * It's called when the client has a message for the player
      */
+    public abstract void printMessageln(String message);
     public abstract void printMessage(String message);
 }

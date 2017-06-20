@@ -9,7 +9,6 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
 /**
@@ -22,9 +21,7 @@ public class RMIClient implements RMIClientInterf, ServerInteface {
     /**
      * RMI client constructor
      */
-    public RMIClient() {
-
-    }
+    public RMIClient() {}
 
     /**
      * @return the server's address
@@ -37,15 +34,14 @@ public class RMIClient implements RMIClientInterf, ServerInteface {
     public int getPort() {return port;}
 
     public void sendLogin(String username) {
-
+        
     }
 
     public void connect() throws ClientNetworkException {
         try {
-            Registry registry = LocateRegistry.getRegistry(getAddress(), getPort());
+            LocateRegistry.getRegistry(getAddress(), getPort());
             RMIServerInterf rmiServer = (RMIServerInterf)Naming.lookup("rmi://" + getAddress() + "/lim");
             UnicastRemoteObject.exportObject(rmiServer, 0);
-            System.out.println("You have been connected in RMI mode.");
         } catch(NotBoundException | RemoteException | MalformedURLException e) {
             throw new ClientNetworkException("Could not connect to RMI server", e);
         }

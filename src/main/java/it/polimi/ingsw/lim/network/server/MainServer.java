@@ -6,29 +6,42 @@ import it.polimi.ingsw.lim.controller.Room;
 import it.polimi.ingsw.lim.network.server.RMI.RMIServer;
 import it.polimi.ingsw.lim.network.server.socket.SocketServer;
 
-import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.logging.Level;
 
 /**
  * Created by nico.
  * This is the server command line interface
  */
 public class MainServer {
+
+    /**
+     * Socket Server Port Number
+     */
     private int socketPort = 8989;
+
+    /**
+     * RMI Server Port Number
+     */
     private int RMIPort = 1099;
+
+    /**
+     * ArrayList of room
+     */
     private static ArrayList<Room> roomList;
+
+    /**
+     * Declaration of SocketServer and RMIServer class
+     */
     private SocketServer socketServer;
     private RMIServer rmiServer;
 
+    /**
+     * MainServer Constructor
+     */
     private MainServer() {
         createLogFile();
         socketServer = new SocketServer();
-        try {
-            rmiServer = new RMIServer();
-        } catch (RemoteException e) {
-            getLog().log(Level.SEVERE, e.getMessage());
-        }
+        rmiServer = new RMIServer();
         roomList = new ArrayList<>();
     }
 
@@ -40,14 +53,17 @@ public class MainServer {
     }
 
     /**
-     * Deploy a socket server
-     * Then deploy rmi server
+     * Deploy socket server and rmi server
      */
     private void startServer() {
-        socketServer.startServer(socketPort);
-        rmiServer.startServer(RMIPort);
+        socketServer.deployServer(socketPort);
+        rmiServer.deployServer(RMIPort);
     }
 
+    /**
+     * Server main method
+     * @param args
+     */
     public static void main(String[] args) {
         MainServer server = new MainServer();
         server.startServer();
