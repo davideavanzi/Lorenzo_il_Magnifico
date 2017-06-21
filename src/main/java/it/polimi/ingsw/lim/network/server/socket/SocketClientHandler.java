@@ -127,7 +127,9 @@ public class SocketClientHandler implements Runnable, ClientInterface {
      */
     public void chatMessage(String sender, String message) {
         try {
+            getLog().log(Level.INFO, () -> "Sending chat message to user ");
             objFromServer.writeObject("CHAT "+sender+" "+message);
+            objFromServer.flush();
         } catch (IOException e) {
             getLog().log(Level.SEVERE, () -> "[SOCKET] can't send chat message to client");
         }

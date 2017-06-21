@@ -1,6 +1,7 @@
 package it.polimi.ingsw.lim.network.server.RMI;
 
 import it.polimi.ingsw.lim.Log;
+import it.polimi.ingsw.lim.controller.Room;
 import it.polimi.ingsw.lim.controller.User;
 import it.polimi.ingsw.lim.network.server.ClientInterface;
 
@@ -24,9 +25,16 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf, C
      */
     public RMIServer() throws RemoteException {}
 
-    public void login(String username) throws RemoteException {
+    /**
+     * Room reference
+     * @param username
+     * @throws RemoteException
+     */
+    private Room room;
+
+    public void login(String username, ClientInterface interf) throws RemoteException {
         //TODO: sistema di autenticazione (salvare utenti in un file/db, se utente esistente se vuole caricare stat.)
-        addUserToRoom(new User(username, this));
+        this.room = addUserToRoom(new User(username, interf));
     }
 
     /**

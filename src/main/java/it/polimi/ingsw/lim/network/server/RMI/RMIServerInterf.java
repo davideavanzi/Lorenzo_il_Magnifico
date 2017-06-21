@@ -8,9 +8,9 @@ import java.rmi.*;
 /**
  * Created by nico.
  */
-public interface RMIServerInterf extends Remote {
+public interface RMIServerInterf extends ClientInterface {
 
-    void login(String username) throws RemoteException;
+    void login(String username, ClientInterface client) throws RemoteException;
 
     void chatMessageFromUser(String message) throws RemoteException;
 

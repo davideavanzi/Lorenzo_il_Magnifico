@@ -33,7 +33,7 @@ public class RMIClient implements RMIClientInterf, ServerInteface {
     /**
      * RMI client constructor.
      */
-    public RMIClient() {}
+    public RMIClient() throws RemoteException {}
 
     /**
      * @return the server's address.
@@ -48,8 +48,13 @@ public class RMIClient implements RMIClientInterf, ServerInteface {
 
     public void sendLogin(String username) throws ClientNetworkException {
         try {
-            rmiServer.login(username);
+            RMIClientInterf client = this;
+            UnicastRemoteObject.exportObject(client, 0);
+            System.out.print("Performing login with username: "+username);
+            rmiServer.login(username, client);
         } catch (RemoteException e) {
+            System.out.print(e.getMessage());
+            //e.printStackTrace();
             throw new ClientNetworkException("[RMI]: Login Failed", e);
         }
     }
@@ -60,10 +65,13 @@ public class RMIClient implements RMIClientInterf, ServerInteface {
      */
     public void connect() throws ClientNetworkException {
         try {
+            System.out.println("Sarting connection");
             LocateRegistry.getRegistry(getAddress(), getPort());
             rmiServer = (RMIServerInterf)Naming.lookup("rmi://" + getAddress() + "/lim");
             UnicastRemoteObject.exportObject(rmiServer, 0);
         } catch(NotBoundException | RemoteException | MalformedURLException e) {
+            System.out.print(e.getMessage());
+            System.out.println("Sarting connection");
             throw new ClientNetworkException("[RMI]: Could not connect to RMI server", e);
         }
     }
@@ -73,6 +81,16 @@ public class RMIClient implements RMIClientInterf, ServerInteface {
     }
 
     public void sendChatMessage(String sender, String message) {
+
+    }
+
+    @Override
+    public int askForServants(int minimumAmount) {
+        return 0;
+    }
+
+    @Override
+    public void printToClient(String message) {
 
     }
 }

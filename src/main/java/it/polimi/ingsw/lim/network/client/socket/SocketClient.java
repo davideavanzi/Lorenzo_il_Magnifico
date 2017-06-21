@@ -1,13 +1,12 @@
 package it.polimi.ingsw.lim.network.client.socket;
 
 import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
-import it.polimi.ingsw.lim.network.client.MainClient;
 import it.polimi.ingsw.lim.network.client.ServerInteface;
+import it.polimi.ingsw.lim.network.client.UIController;
 
 import java.io.*;
 import java.net.Socket;
 import static it.polimi.ingsw.lim.network.SocketConstants.*;
-import static sun.management.snmp.jvminstr.JvmThreadInstanceEntryImpl.ThreadStateMap.Byte0.runnable;
 
 /**
  * Created by nico.
@@ -21,7 +20,7 @@ public class SocketClient implements Runnable, ServerInteface {
     /**
      * Socket client constructor
      */
-    public SocketClient(MainClient uiCallback) {
+    public SocketClient(UIController uiCallback) {
         this.commandHandler = new ServerCommandHandler(this, uiCallback);
         uiCallback.setClientProtocol(this);
     }
@@ -71,6 +70,7 @@ public class SocketClient implements Runnable, ServerInteface {
     private void waitFromServer() {
         int tries = 0;
         while(true) {
+            System.out.println("IN DA LOOP");
             try {
                 Object command = objToClient.readObject();
                 commandHandler.requestHandler(command);
@@ -79,12 +79,14 @@ public class SocketClient implements Runnable, ServerInteface {
                 tries++;
                 if (tries == 3) return;
             }
+            System.out.println("END OF THE LOOP");
         }
     }
 
     public void run() {
         try {
             connect();
+            System.out.print("Connected, waiting from server.");
             waitFromServer();
         } catch (ClientNetworkException e) {
             //TODO: Handle

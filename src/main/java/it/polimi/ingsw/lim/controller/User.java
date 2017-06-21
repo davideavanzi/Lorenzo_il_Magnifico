@@ -5,6 +5,11 @@ import it.polimi.ingsw.lim.network.client.RMI.RMIClientInterf;
 import it.polimi.ingsw.lim.network.server.ClientInterface;
 import it.polimi.ingsw.lim.network.server.socket.SocketClientHandler;
 
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+
+import static it.polimi.ingsw.lim.Log.getLog;
+
 /**
  * Created by Davide on 26/05/2017.
  * This class represent the person playing the game. It has a unique username picked from the db upon login.
@@ -34,7 +39,21 @@ public class User {
         return username;
     }
 
-    public int askForServants(int minimum) { return clientInterf.askForServants(minimum); }
+    public int askForServants(int minimum) {
+        try {
+            return clientInterf.askForServants(minimum);
+        } catch (RemoteException e) {
+            getLog().log(Level.SEVERE, "[RMI] Connection error asking for servants");
+            return -1; //TODO: wut?
+        }
 
-    public void chatMessage(String sender, String message) { clientInterf.chatMessage(sender, message);}
+    }
+
+    public void chatMessage(String sender, String message) {
+        try {
+            clientInterf.chatMessage(sender, message);
+        } catch (RemoteException e) {
+            getLog().log(Level.SEVERE, "[RMI] Connection error Sending message to user");
+        }
+    }
 }

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.lim.ui;
+package it.polimi.ingsw.lim.network.client.ui;
 
 /**
  * Created by nico.

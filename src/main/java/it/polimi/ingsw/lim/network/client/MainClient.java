@@ -7,6 +7,8 @@ import it.polimi.ingsw.lim.network.ui.AbsUI;
 
 import java.util.Scanner;
 
+import static it.polimi.ingsw.lim.network.client.UIController.setUI;
+
 /**
  * Created by nico.
  */
@@ -16,26 +18,9 @@ public class MainClient {
         System.out.println("Welcome to Lorenzo Il Magnifico!");
         System.out.println();
         UIController client = new UIController(setUI());
-        client.setNetworkProtocol();
+        client.setNetworkProtocol(client);
         client.login();
         client.testChat();
-
     }
 
-
-    public void testChat() {
-        try {
-            clientProtocol.sendChatMessage(username, "CIAOOOOO");
-        }catch (ClientNetworkException e) {
-            clientUI.printMessageln(e.getMessage());
-        }
-    }
-
-    public static AbsUI getClientUI() {
-        return clientUI;
-    }
-
-    public static void setClientProtocol(ServerInteface clientProtocol) {
-        MainClient.clientProtocol = clientProtocol;
-    }
 }

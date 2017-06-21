@@ -1,6 +1,4 @@
-package it.polimi.ingsw.lim.network.ui.cli;
-
-import it.polimi.ingsw.lim.network.ui.AbsUI;
+package it.polimi.ingsw.lim.network.client.ui;
 
 import java.util.Scanner;
 

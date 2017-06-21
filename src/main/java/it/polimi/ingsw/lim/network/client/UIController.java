@@ -5,13 +5,14 @@ import it.polimi.ingsw.lim.network.ui.cli.CLI;
 import it.polimi.ingsw.lim.network.client.RMI.RMIClient;
 import it.polimi.ingsw.lim.network.client.socket.SocketClient;
 import it.polimi.ingsw.lim.network.ui.AbsUI;
+import it.polimi.ingsw.lim.network.client.ui.AbsUI;
 
 import java.util.Scanner;
 
 /**
  * Created by nico.
  */
-class UIController {
+public class UIController {
     private static AbsUI clientUI;
     private static ServerInteface clientProtocol;
     private static Scanner userInput = new Scanner(System.in);
@@ -41,10 +42,10 @@ class UIController {
     /**
      *  If the player want to config the network settings.
      */
-    void setNetworkProtocol() {
+    void setNetworkProtocol(UIController controller) {
         String protocol = clientUI.setNetworkSettings();
         if (protocol.equals("socket")) {
-            clientProtocol = new SocketClient();
+            clientProtocol = new SocketClient(controller);
         } else if (protocol.equals("rmi")) {
             clientProtocol = new RMIClient();
         }
@@ -81,5 +82,17 @@ class UIController {
                     System.out.println("Not a valid choice, enter yes/y if you want to use a GUI, no/n for a CLI");
             }
         }
+    }
+
+    public void testChat() {
+        try {
+            clientProtocol.sendChatMessage(username, "CIAOOOOO");
+        }catch (ClientNetworkException e) {
+            clientUI.printMessageln(e.getMessage());
+        }
+    }
+
+    public static void setClientProtocol(ServerInteface clientProtocol) {
+        UIController.clientProtocol = clientProtocol;
     }
 }
