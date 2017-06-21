@@ -1,5 +1,4 @@
 package it.polimi.ingsw.lim.network.server.socket;
-import static it.polimi.ingsw.lim.Log.*;
 import it.polimi.ingsw.lim.controller.Room;
 import it.polimi.ingsw.lim.controller.User;
 
@@ -7,7 +6,6 @@ import static it.polimi.ingsw.lim.Log.getLog;
 import static it.polimi.ingsw.lim.network.SocketConstants.*;
 import static it.polimi.ingsw.lim.network.server.MainServer.addUserToRoom;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Level;

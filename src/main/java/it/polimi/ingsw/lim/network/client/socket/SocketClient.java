@@ -3,11 +3,11 @@ package it.polimi.ingsw.lim.network.client.socket;
 import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
 import it.polimi.ingsw.lim.network.client.MainClient;
 import it.polimi.ingsw.lim.network.client.ServerInteface;
+import it.polimi.ingsw.lim.ui.UIController;
 
 import java.io.*;
 import java.net.Socket;
 import static it.polimi.ingsw.lim.network.SocketConstants.*;
-import static sun.management.snmp.jvminstr.JvmThreadInstanceEntryImpl.ThreadStateMap.Byte0.runnable;
 
 /**
  * Created by nico.
@@ -21,7 +21,7 @@ public class SocketClient implements Runnable, ServerInteface {
     /**
      * Socket client constructor
      */
-    public SocketClient(MainClient uiCallback) {
+    public SocketClient(UIController uiCallback) {
         this.commandHandler = new ServerCommandHandler(this, uiCallback);
         uiCallback.setClientProtocol(this);
     }
@@ -46,6 +46,25 @@ public class SocketClient implements Runnable, ServerInteface {
         }
     }
 
+    public void sendChatMessage(String sender, String message) throws ClientNetworkException{
+        try {
+            objFromClient.writeObject("CHAT "+sender+" "+message);
+            objFromClient.flush();
+        } catch (IOException e) {
+            throw new ClientNetworkException("Could not send chat message to server", e);
+        }
+    }
+    private void waitFromServer() throws ClientNetworkException {
+        while(true) {
+            try {
+                Object command = objToClient.readObject();
+                commandHandler.requestHandler(command);
+            } catch (IOException | ClassNotFoundException e) {
+                throw new ClientNetworkException("Could not get command from server", e);
+            }
+        }
+    }
+
     /**
      * This method is used for connect to the socket server
      * @throws ClientNetworkException raised if the client could not connect to server
@@ -57,28 +76,7 @@ public class SocketClient implements Runnable, ServerInteface {
             objFromClient = new ObjectOutputStream(socketClient.getOutputStream());
             objToClient = new ObjectInputStream(socketClient.getInputStream());
         } catch(IOException e) {
-           throw new ClientNetworkException("Could not create I/O stream", e);
-        }
-    }
-    public void sendChatMessage(String sender, String message) throws ClientNetworkException{
-        try {
-            objFromClient.writeObject("CHAT "+sender+" "+message);
-        } catch (IOException e) {
-            throw new ClientNetworkException("Could not send chat message to server", e);
-        }
-    }
-
-    private void waitFromServer() {
-        int tries = 0;
-        while(true) {
-            try {
-                Object command = objToClient.readObject();
-                commandHandler.requestHandler(command);
-            }catch (IOException | ClassNotFoundException e) {
-                //TODO: HANDLE
-                tries++;
-                if (tries == 3) return;
-            }
+            throw new ClientNetworkException("Could not create I/O stream", e);
         }
     }
 
@@ -87,7 +85,7 @@ public class SocketClient implements Runnable, ServerInteface {
             connect();
             waitFromServer();
         } catch (ClientNetworkException e) {
-            //TODO: Handle
+            UIController.getClientUI().printMessageln(e.getMessage());
         }
     }
 
