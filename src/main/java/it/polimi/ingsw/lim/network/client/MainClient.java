@@ -16,8 +16,5 @@ public class MainClient {
         client.setNetworkProtocol();
         client.login();
         client.testChat();
-        while(true) {
-
-        }
     }
 }

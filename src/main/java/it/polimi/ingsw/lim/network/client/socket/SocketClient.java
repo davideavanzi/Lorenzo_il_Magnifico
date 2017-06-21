@@ -41,6 +41,7 @@ public class SocketClient implements Runnable, ServerInteface {
         try {
             objFromClient.writeObject(LOGIN+" "+username);
             objFromClient.flush();
+            objFromClient.reset();
         } catch (IOException e) {
             throw new ClientNetworkException("Could not send login information to server", e);
         }
@@ -50,6 +51,7 @@ public class SocketClient implements Runnable, ServerInteface {
         try {
             objFromClient.writeObject("CHAT "+sender+" "+message);
             objFromClient.flush();
+            objFromClient.reset();
         } catch (IOException e) {
             throw new ClientNetworkException("Could not send chat message to server", e);
         }
@@ -61,6 +63,7 @@ public class SocketClient implements Runnable, ServerInteface {
                 commandHandler.requestHandler(command);
             } catch (IOException | ClassNotFoundException e) {
                 throw new ClientNetworkException("Could not get command from server", e);
+                //return;
             }
         }
     }
@@ -74,6 +77,7 @@ public class SocketClient implements Runnable, ServerInteface {
             // socket, input and output stream
             Socket socketClient = new Socket(getAddress(), getPort());
             objFromClient = new ObjectOutputStream(socketClient.getOutputStream());
+            objFromClient.flush();
             objToClient = new ObjectInputStream(socketClient.getInputStream());
         } catch(IOException e) {
             throw new ClientNetworkException("Could not create I/O stream", e);
@@ -87,6 +91,10 @@ public class SocketClient implements Runnable, ServerInteface {
         } catch (ClientNetworkException e) {
             UIController.getClientUI().printMessageln(e.getMessage());
         }
+    }
+
+    private boolean isConnected() {
+        return (this.objToClient != null);
     }
 
 }

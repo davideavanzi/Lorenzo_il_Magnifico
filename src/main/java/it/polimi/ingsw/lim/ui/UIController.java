@@ -67,7 +67,8 @@ public class UIController {
         } else if (protocol.equals("rmi")) {
             clientProtocol = new RMIClient();
         }
-
+        /* Performing login here broke the socket setup and communication! connection is made automatically
+         * as the connection protocol is established. TODO: handle in RMI
         int failedRetry = 0;
         while(failedRetry < 3) {
             try {
@@ -77,7 +78,7 @@ public class UIController {
                 failedRetry++;
                 clientUI.printMessageln(e.getMessage());
             }
-        }
+        } */
     }
 
     /**

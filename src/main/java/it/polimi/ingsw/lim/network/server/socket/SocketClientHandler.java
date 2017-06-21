@@ -53,6 +53,7 @@ public class SocketClientHandler implements Runnable, ClientInterface {
         try {
             // Input and output stream
             this.objFromServer = new ObjectOutputStream(socketClient.getOutputStream());
+            objFromServer.flush();
             this.objToServer = new ObjectInputStream(socketClient.getInputStream());
         } catch (IOException e) {
             getLog().log(Level.SEVERE, "Could not create I/O stream", e);
@@ -85,6 +86,8 @@ public class SocketClientHandler implements Runnable, ClientInterface {
     public void printToClient(String message) {
         try {
             objFromServer.writeObject(message);
+            objFromServer.flush();
+            objFromServer.reset();
         } catch (IOException e) {
             getLog().log(Level.SEVERE, "[SOCKET]: Could not send String to client", e);
         }
@@ -110,6 +113,7 @@ public class SocketClientHandler implements Runnable, ClientInterface {
         try {
             objFromServer.writeObject("CHAT "+sender+" "+message);
             objFromServer.flush();
+            objFromServer.reset();
         } catch (IOException e) {
             getLog().log(Level.SEVERE, () -> "[SOCKET]: can't send chat message to client");
         }
