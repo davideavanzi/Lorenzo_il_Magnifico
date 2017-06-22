@@ -48,4 +48,5 @@ public class Room {
     }
 
     public boolean isOpen() { return roomOpen; }
+
 }

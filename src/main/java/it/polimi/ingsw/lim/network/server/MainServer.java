@@ -52,6 +52,18 @@ public class MainServer {
         roomList = new ArrayList<>();
     }
 
+    public static User getUserFromUsername (String name) {
+        /*
+        return roomList.forEach(room -> room.getUsersList().stream()
+                .filter(user -> user.getUsername().equals(name)).findFirst().orElse(null)); */
+        for (Room room : roomList) {
+            for (User user : room.getUsersList())
+                if (user.getUsername().equals(name))
+                    return user;
+        }
+        return null;
+    }
+
     /**
      * @return the roomList's ArrayList.
      */
