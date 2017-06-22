@@ -33,7 +33,8 @@ public class SocketClient implements Runnable, ServerInterface {
         try {
             lock.lock();
         } catch (InterruptedException e) {
-            //TODO: Handle :(
+            //TODO: print to screen?
+            uiController.getClientUI().printMessageln(e.getMessage());
         }
 
     }
@@ -84,6 +85,8 @@ public class SocketClient implements Runnable, ServerInterface {
         try {
             lock.lock();
         } catch (InterruptedException e) {
+            //TODO: print to screen?
+            uiController.getClientUI().printMessageln(e.getMessage());
         }
         while(true) {
                 try {

@@ -237,7 +237,7 @@ public class Game {
         if (!destination.hasCard()) return false;
         FamilyMember slot = null;
         for (int i = 0; i < TOWER_HEIGHT; i++, slot = this.board.getTowers().get(towerColor).getFloor(i).getFamilyMember()) {
-            if (slot != null && fm.getOwnerColor() ==
+            if (slot != null && slot.getOwnerColor() ==
                     fm.getOwnerColor() && fm.getDiceColor() != NEUTRAL_COLOR)
                 return false;
         }

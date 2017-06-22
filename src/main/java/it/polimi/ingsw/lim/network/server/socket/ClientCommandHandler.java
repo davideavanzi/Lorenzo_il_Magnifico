@@ -28,7 +28,7 @@ class ClientCommandHandler {
         if(obj instanceof String) {
             ArrayList<String> command = new ArrayList<>(Arrays.asList(((String) obj).split(SPLITTER_REGEX)));
             String commandIdentifier = command.get(0);
-            getLog().log(Level.INFO, "[C-H] Handling command: "+obj);
+            getLog().log(Level.INFO,() -> "[C-H] Handling command: "+obj);
             if (commandIdentifier.equals(LOGIN)) {
                 this.user = new SocketUser(command.get(1), handlerCallback);
                 addUserToRoom(this.user);
@@ -41,7 +41,7 @@ class ClientCommandHandler {
                 this.user.getRoom().chatMessageToRoom(command.get(1), command.get(2));
                 getLog().log(Level.INFO, () -> "[C-H] message from "+command.get(1)+": "+command.get(2));
             } else {
-                getLog().log(Level.SEVERE, "[C-H] invalid message indentifier: "+commandIdentifier);
+                getLog().log(Level.SEVERE, () ->"[C-H] invalid message indentifier: "+commandIdentifier);
             }
         }
 

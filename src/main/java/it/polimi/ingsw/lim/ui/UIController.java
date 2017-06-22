@@ -50,7 +50,7 @@ public class UIController {
         ArrayList<String> commandInput = new ArrayList<>(Arrays.asList(input.split(" ")));
         String command = commandInput.get(0);
         if (command.equalsIgnoreCase("chat")) {
-            chat(input);
+            chat(input.split(" ", 2)[1]);
         } else if (command.equalsIgnoreCase("get-assets")) {
             assets();
         } else {
