@@ -1,5 +1,6 @@
 package it.polimi.ingsw.lim.model;
 
+import it.polimi.ingsw.lim.Log;
 import org.codehaus.jackson.annotate.JsonTypeInfo;
 
 import java.util.*;
@@ -22,12 +23,12 @@ public class YellowCard extends Card {
                       ArrayList<ImmediateEffect> iEffects,
                       ArrayList<Assets> productionCosts,
                       ArrayList<Assets> productionResults,
-                      Strengths actionStrenght,
+                      Strengths actionStrength,
                       String bonusMultiplier) {
         super(name, age, cost, iEffects);
         this.productionCosts = productionCosts;
         this.productionResults = productionResults;
-        this.actionStrenght = actionStrenght;
+        this.actionStrength = actionStrength;
         this.cardMultiplier = bonusMultiplier;
 
     }
@@ -45,7 +46,7 @@ public class YellowCard extends Card {
     /**
      * 
      */
-    private Strengths actionStrenght;
+    private Strengths actionStrength;
 
     /**
      * 
@@ -62,6 +63,10 @@ public class YellowCard extends Card {
 
     public ArrayList<Assets> getProductionResults() {
         return productionResults;
+    }
+
+    public Strengths getActionStrength() {
+        return actionStrength;
     }
 
 
@@ -92,4 +97,53 @@ public class YellowCard extends Card {
         }
     }
     */
+
+    /**
+     * the task of this method is to compare if two YellowCard are equal and return true if they are
+     * equals false otherwise.
+     * @param other is one of the two BlueCard to be compared
+     * @return true if the BlueCard are equal, false otherwise
+     */
+    @Override
+    public boolean equals (Object other){
+        if(!(other instanceof YellowCard)){
+            Log.getLog().info("other not BlueCard");
+            return false;
+        }
+        Log.getLog().info("***YELLOW CARD Testing Equals***");
+        Card card = (Card) other;
+        boolean equals = true;
+        if (!(this.equals(card))){
+            equals =  false;
+        }
+        YellowCard yellowCard = (YellowCard) card;
+        if (!(this.productionResults.size() == yellowCard.getProductionResults().size() && this.productionCosts.size() == yellowCard.getProductionCosts().size())){
+            Log.getLog().info("different size (production cost or production result) ");
+            equals = false;
+        }
+        else {
+            for (int i = 0; i < this.productionResults.size(); i++) {
+                if (!(this.productionCosts.get(i).equals(yellowCard.getProductionCosts().get(i)))) {
+                    Log.getLog().info("production cost different");
+                    equals = false;
+                }
+                if (!(this.productionResults.get(i).equals(yellowCard.getProductionResults().get(i)))) {
+                    Log.getLog().info("production result different");
+                    equals = false;
+                }
+            }
+        }
+        if(!(this.actionStrength.equals(yellowCard.getActionStrength()))){
+            Log.getLog().info("action strength different");
+            equals = false;
+        }
+        if(!(this.cardMultiplier.equals(yellowCard.getCardMultiplier()))){
+            Log.getLog().info("card multiplier different");
+            equals = false;
+        }
+        if(equals){
+            Log.getLog().info("YellowCardEquals");
+        }
+        return equals;
+    }
 }

@@ -49,7 +49,7 @@ public class BlueCard extends Card {
     private boolean towerBonusAllowed;
 
     /**
-     * the task of this method is to compare if two assets are equal and return true if they are
+     * the task of this method is to compare if two BlueCard are equal and return true if they are
      * equals false otherwise.
      * @param other is one of the two BlueCard to be compared
      * @return true if the BlueCard are equal, false otherwise
@@ -64,7 +64,7 @@ public class BlueCard extends Card {
         Card card = (Card) other;
         boolean equals = true;
         if (!(this.equals(card))){
-            equals =  false;
+            equals = false;
         }
         BlueCard blueCard = (BlueCard) card;
         if(!(this.permanentBonus.equals(blueCard.getPermanentBonus()))){
