@@ -24,7 +24,7 @@ class ServerCommandHandler {
 
     void requestHandler(Object obj) {
         if(obj instanceof String) {
-            ArrayList<String> command = new ArrayList<>(Arrays.asList(((String) obj).split(" ")));
+            ArrayList<String> command = new ArrayList<>(Arrays.asList(((String) obj).split(SPLITTER_REGEX)));
             String commandIdentifier = command.get(0);
             if (commandIdentifier.equals(LOGIN_SUCCESSFUL)) {
                 uiCallback.getClientUI().printMessageln("Login successful!");
@@ -35,5 +35,7 @@ class ServerCommandHandler {
                 uiCallback.getClientUI().printMessageln("[CHAT] message from "+command.get(1)+": "+command.get(2));
             }
         }
+        //check here if the command has not been fully eaten by handler?
+
     }
 }

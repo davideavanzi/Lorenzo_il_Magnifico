@@ -31,8 +31,9 @@ class ClientCommandHandler {
 
     void requestHandler(Object obj) {
         if(obj instanceof String) {
-            ArrayList<String> command = new ArrayList<String>(Arrays.asList(((String) obj).split(" ")));
+            ArrayList<String> command = new ArrayList<>(Arrays.asList(((String) obj).split(SPLITTER_REGEX)));
             String commandIdentifier = command.get(0);
+            getLog().log(Level.INFO, "[C-H] Handling command: "+obj);
             if (commandIdentifier.equals(LOGIN)) {
                 //TODO: username must not be null
                 this. room = addUserToRoom(new User(command.get(1), handlerCallback));
@@ -42,8 +43,11 @@ class ClientCommandHandler {
             } else if (commandIdentifier.equals(CHAT)) {
                 //The server has received a chat message from the client, it has to deliver it to other room mates.
                 room.chatMessage(command.get(1), command.get(2));
-                getLog().log(Level.INFO, () -> "[CHAT] message from "+command.get(1)+": "+command.get(2));
+                getLog().log(Level.INFO, () -> "[C-H] message from "+command.get(1)+": "+command.get(2));
+            } else {
+                getLog().log(Level.SEVERE, "[C-H] invalid message indentifier: "+commandIdentifier);
             }
         }
+
     }
 }

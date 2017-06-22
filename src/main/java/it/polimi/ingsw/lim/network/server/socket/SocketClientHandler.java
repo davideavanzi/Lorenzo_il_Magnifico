@@ -4,6 +4,7 @@ import it.polimi.ingsw.lim.controller.User;
 import it.polimi.ingsw.lim.network.server.ClientInterface;
 
 import static it.polimi.ingsw.lim.Log.*;
+import static it.polimi.ingsw.lim.network.SocketConstants.SPLITTER;
 import static it.polimi.ingsw.lim.network.server.MainServer.addUserToRoom;
 
 import java.io.*;
@@ -66,6 +67,7 @@ public class SocketClientHandler implements Runnable, ClientInterface {
             try {
                 Object command = objToServer.readObject();
                 commandHandler.requestHandler(command);
+                //command = null;
             }catch (IOException | ClassNotFoundException e) {
                 getLog().log(Level.SEVERE, "[SOCKET]: Could not receive object from client, " +
                         "maybe client is offline?  \n", e);
@@ -111,7 +113,7 @@ public class SocketClientHandler implements Runnable, ClientInterface {
      */
     public void chatMessage(String sender, String message) {
         try {
-            objFromServer.writeObject("CHAT "+sender+" "+message);
+            objFromServer.writeObject("CHAT"+SPLITTER+sender+SPLITTER+message);
             objFromServer.flush();
             objFromServer.reset();
         } catch (IOException e) {

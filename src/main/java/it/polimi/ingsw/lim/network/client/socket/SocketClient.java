@@ -39,7 +39,7 @@ public class SocketClient implements Runnable, ServerInteface {
 
     public void sendLogin(String username) throws ClientNetworkException {
         try {
-            objFromClient.writeObject(LOGIN+" "+username);
+            objFromClient.writeObject(LOGIN+SPLITTER+username);
             objFromClient.flush();
             objFromClient.reset();
         } catch (IOException e) {
@@ -49,7 +49,7 @@ public class SocketClient implements Runnable, ServerInteface {
 
     public void sendChatMessage(String sender, String message) throws ClientNetworkException{
         try {
-            objFromClient.writeObject("CHAT "+sender+" "+message);
+            objFromClient.writeObject("CHAT"+SPLITTER+sender+SPLITTER+message);
             objFromClient.flush();
             objFromClient.reset();
         } catch (IOException e) {
@@ -61,6 +61,7 @@ public class SocketClient implements Runnable, ServerInteface {
             try {
                 Object command = objToClient.readObject();
                 commandHandler.requestHandler(command);
+                command = null;
             } catch (IOException | ClassNotFoundException e) {
                 throw new ClientNetworkException("Could not get command from server", e);
                 //return;
