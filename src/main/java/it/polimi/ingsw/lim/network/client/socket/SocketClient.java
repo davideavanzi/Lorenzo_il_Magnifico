@@ -1,8 +1,8 @@
 package it.polimi.ingsw.lim.network.client.socket;
 
+import it.polimi.ingsw.lim.Lock;
 import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
-import it.polimi.ingsw.lim.network.client.MainClient;
-import it.polimi.ingsw.lim.network.client.ServerInteface;
+import it.polimi.ingsw.lim.network.client.ServerInterface;
 import it.polimi.ingsw.lim.ui.UIController;
 
 import java.io.*;
@@ -12,18 +12,27 @@ import static it.polimi.ingsw.lim.network.SocketConstants.*;
 /**
  * Created by nico.
  */
-public class SocketClient implements Runnable, ServerInteface {
+public class SocketClient implements Runnable, ServerInterface {
     private String address = "localhost";
     private int port = 8989;
     ObjectOutputStream objFromClient;
     ObjectInputStream objToClient;
     ServerCommandHandler commandHandler;
+    Lock lock;
+
     /**
      * Socket client constructor
      */
     public SocketClient(UIController uiCallback) {
         this.commandHandler = new ServerCommandHandler(this, uiCallback);
         uiCallback.setClientProtocol(this);
+        this.lock = new Lock();
+        try {
+            lock.lock();
+        } catch (InterruptedException e) {
+            //TODO: Handle :(
+        }
+
     }
 
     /**
@@ -57,15 +66,19 @@ public class SocketClient implements Runnable, ServerInteface {
         }
     }
     private void waitFromServer() throws ClientNetworkException {
+        try {
+            lock.lock();
+        } catch (InterruptedException e) {
+        }
         while(true) {
-            try {
-                Object command = objToClient.readObject();
-                commandHandler.requestHandler(command);
-                command = null;
-            } catch (IOException | ClassNotFoundException e) {
-                throw new ClientNetworkException("Could not get command from server", e);
-                //return;
-            }
+                try {
+                    Object command = objToClient.readObject();
+                    commandHandler.requestHandler(command);
+                } catch (IOException | ClassNotFoundException e) {
+                    throw new ClientNetworkException("Could not get command from server", e);
+                    //return;
+                }
+
         }
     }
 
@@ -80,6 +93,7 @@ public class SocketClient implements Runnable, ServerInteface {
             objFromClient = new ObjectOutputStream(socketClient.getOutputStream());
             objFromClient.flush();
             objToClient = new ObjectInputStream(socketClient.getInputStream());
+            lock.unlock();
         } catch(IOException e) {
             throw new ClientNetworkException("Could not create I/O stream", e);
         }
@@ -87,7 +101,7 @@ public class SocketClient implements Runnable, ServerInteface {
 
     public void run() {
         try {
-            connect();
+            //connect();
             waitFromServer();
         } catch (ClientNetworkException e) {
             UIController.getClientUI().printMessageln(e.getMessage());

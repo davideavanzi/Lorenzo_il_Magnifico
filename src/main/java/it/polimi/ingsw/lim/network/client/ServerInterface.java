@@ -8,7 +8,7 @@ import java.rmi.RemoteException;
  * Created by nico.
  * This interface is use to communication to the server.
  */
-public interface ServerInteface {
+public interface ServerInterface {
 
     /**
      * Calling this method the client will try to connect to the server.
