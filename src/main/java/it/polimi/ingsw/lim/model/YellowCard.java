@@ -6,7 +6,7 @@ import org.codehaus.jackson.annotate.JsonTypeInfo;
 import java.util.*;
 
 /**
- * This class represents a yellow developement card. These cards have different kinds of production possibilities:
+ * This class represents a yellow development card. These cards have different kinds of production possibilities:
  * - Just assets bonus
  * - Assets bonus with an assets cost (single transformation)
  * - Multiple transformations
@@ -118,7 +118,7 @@ public class YellowCard extends Card {
         }
         YellowCard yellowCard = (YellowCard) card;
         if (!(this.productionResults.size() == yellowCard.getProductionResults().size() && this.productionCosts.size() == yellowCard.getProductionCosts().size())){
-            Log.getLog().info("different size (production cost or production result) ");
+            Log.getLog().info("different size (production cost or production result)");
             equals = false;
         }
         else {

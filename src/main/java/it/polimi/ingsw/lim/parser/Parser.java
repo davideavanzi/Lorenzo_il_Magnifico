@@ -446,7 +446,7 @@ public class Parser {
                 if (yellowProductionNode.path(YELLOW_PRODUCTION_RESULT).isContainerNode()) {
                     JsonNode yellowProductionResult = yellowProductionNode.path(YELLOW_PRODUCTION_RESULT);
                     Assets tmpYellowProductionResult = parseAssets(yellowProductionResult);
-                    tmpYellowProductionCostList.add(tmpYellowProductionResult);
+                    tmpYellowProductionResultList.add(tmpYellowProductionResult);
                 }
             }
         }

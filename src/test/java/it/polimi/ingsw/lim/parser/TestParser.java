@@ -114,7 +114,6 @@ public class TestParser extends TestCase{
     private static void testYellowCardParser(Parser testParser)
             throws IOException, InvalidExcommunicationException, InvalidCardException, AssertionFailedError {
         YellowCard yellowCardExpected = createYellowCardExpected();
-        //System.out.println(yellowCardExpected.equals(testParser.getCard(3).get(YELLOW_COLOR).get(0)));
         assertEquals(yellowCardExpected, testParser.getCard(3).get(YELLOW_COLOR).get(0));
     }
 
