@@ -4,6 +4,7 @@ import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
 import it.polimi.ingsw.lim.network.client.ServerInterface;
 import it.polimi.ingsw.lim.network.server.RMI.RMIServerInterf;
 import it.polimi.ingsw.lim.ui.UIController;
+import sun.misc.Cleaner;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -73,6 +74,10 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
         } catch(NotBoundException | RemoteException | MalformedURLException e) {
             throw new ClientNetworkException("[RMI]: Could not connect to RMI server", e);
         }
+    }
+
+    public void getAssets() throws ClientNetworkException {
+
     }
 
     public void chatMessageToServer(String sender, String message) throws ClientNetworkException {

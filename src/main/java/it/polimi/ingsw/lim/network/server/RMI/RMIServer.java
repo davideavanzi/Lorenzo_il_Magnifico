@@ -1,7 +1,6 @@
 package it.polimi.ingsw.lim.network.server.RMI;
 
 import it.polimi.ingsw.lim.Log;
-import it.polimi.ingsw.lim.controller.User;
 import it.polimi.ingsw.lim.network.client.RMI.RMIClientInterf;
 import it.polimi.ingsw.lim.network.server.MainServer;
 
@@ -36,7 +35,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
 
     @Override
     public void chatMessageFromClient(String sender, String message) throws RemoteException {
-        MainServer.getUserFromUsername(sender).getRoom().chatMessage(sender, message);
+        MainServer.getUserFromUsername(sender).getRoom().chatMessageToRoom(sender, message);
     }
 
     public void login(String username, RMIClientInterf rci) throws RemoteException {

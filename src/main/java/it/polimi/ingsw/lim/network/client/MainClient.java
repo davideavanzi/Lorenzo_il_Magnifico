@@ -15,6 +15,6 @@ public class MainClient {
         UIController client = new UIController(setUI());
         client.setNetworkProtocol();
         client.login();
-        client.testChat();
+        client.inputHandler();
     }
 }

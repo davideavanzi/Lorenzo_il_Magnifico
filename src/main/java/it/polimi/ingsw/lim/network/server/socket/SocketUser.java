@@ -15,6 +15,6 @@ public class SocketUser extends User {
 
     @Override
     public void chatMessage(String sender, String message) {
-        this.sch.chatMessage(sender, message);
+        this.sch.chatMessageToClient(sender, message);
     }
 }

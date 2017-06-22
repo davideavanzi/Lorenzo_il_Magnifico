@@ -1,14 +1,23 @@
 package it.polimi.ingsw.lim.ui;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /**
  * Created by nico.
- * This is the client command line interface
+ * This is the client commandInput line interface
  */
 public class CLI extends AbsUI {
     Scanner userInput = new Scanner(System.in);
     String input;
+
+    public void waitUserInput() {
+        while(true) {
+            input = userInput.nextLine().toLowerCase();
+            UIController.inputParser(input);
+        }
+    }
 
     /**
      * Choose the connection protocol and connect to the server

@@ -1,10 +1,13 @@
 package it.polimi.ingsw.lim.ui;
 
+import it.polimi.ingsw.lim.Lock;
 import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
 import it.polimi.ingsw.lim.network.client.RMI.RMIClient;
 import it.polimi.ingsw.lim.network.client.ServerInterface;
 import it.polimi.ingsw.lim.network.client.socket.SocketClient;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -15,7 +18,8 @@ public class UIController {
     private static ServerInterface clientProtocol;
     private static Scanner userInput = new Scanner(System.in);
     //a copy of the user name is stored here
-    private String username;
+    private static String username;
+    Lock lock = new Lock();
 
     /**
      * The first thing to do is create a user interface, then the player must choose
@@ -38,9 +42,33 @@ public class UIController {
         UIController.clientProtocol = clientProtocol;
     }
 
-    public void testChat() {
+    public void inputHandler() {
+        UIController.clientUI.waitUserInput();
+    }
+
+    static void inputParser(String input) {
+        ArrayList<String> commandInput = new ArrayList<>(Arrays.asList(input.split(" ")));
+        String command = commandInput.get(0);
+        if (command.equalsIgnoreCase("chat")) {
+            chat(input);
+        } else if (command.equalsIgnoreCase("get-assets")) {
+            assets();
+        } else {
+            clientUI.printMessageln("Command not found: "+command);
+        }
+    }
+
+    private static void chat(String message) {
         try {
-            clientProtocol.chatMessageToServer(username, "CIAOOOOO");
+            clientProtocol.chatMessageToServer(username, message);
+        }catch (ClientNetworkException e) {
+            clientUI.printMessageln(e.getMessage());
+        }
+    }
+
+    private static void assets() {
+        try {
+            clientProtocol.getAssets();
         }catch (ClientNetworkException e) {
             clientUI.printMessageln(e.getMessage());
         }
@@ -66,8 +94,7 @@ public class UIController {
         } else if (protocol.equals("rmi")) {
             clientProtocol = new RMIClient(this);
         }
-        /* Performing login here broke the socket setup and communication! connection is made automatically
-         * as the connection protocol is established. TODO: handle in RMI */
+
         int failedRetry = 0;
         while(failedRetry < 3) {
             try {

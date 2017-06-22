@@ -1,6 +1,7 @@
 package it.polimi.ingsw.lim.network.client;
 
 import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
+import it.polimi.ingsw.lim.model.Assets;
 
 import java.rmi.RemoteException;
 
@@ -24,4 +25,6 @@ public interface ServerInterface {
     void sendLogin(String username) throws ClientNetworkException;
 
     void chatMessageToServer(String sender, String message) throws ClientNetworkException;
+
+    void getAssets() throws ClientNetworkException;
 }

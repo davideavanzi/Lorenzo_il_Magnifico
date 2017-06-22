@@ -30,6 +30,8 @@ class ServerCommandHandler {
                 uiCallback.getClientUI().printMessageln("Login successful!");
             } else if(commandIdentifier.equals(ASK_SERVANTS_AMOUNT)) {
 
+            } else if(commandIdentifier.equals(ANSWER_GET_ASSETS)) {
+
             } else if(commandIdentifier.equals(CHAT)) {
                 //The server has received a chat message from the client, it has to deliver it to other room mates.
                 uiCallback.getClientUI().printMessageln("[CHAT] message from "+command.get(1)+": "+command.get(2));

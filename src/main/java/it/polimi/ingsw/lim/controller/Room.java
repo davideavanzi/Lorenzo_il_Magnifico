@@ -37,7 +37,7 @@ public class Room {
         }
     }
 
-    public void chatMessage(String sender, String message) {
+    public void chatMessageToRoom(String sender, String message) {
         usersList.forEach(user -> user.chatMessage(sender, message));
     }
 

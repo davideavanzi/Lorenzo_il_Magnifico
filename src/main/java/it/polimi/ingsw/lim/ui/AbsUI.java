@@ -22,4 +22,7 @@ public abstract class AbsUI {
      */
     public abstract void printMessageln(String message);
     public abstract void printMessage(String message);
+
+    public void waitUserInput() {
+    }
 }

@@ -34,7 +34,7 @@ public class SocketClientHandler implements Runnable {
     /**
      * Socket client command handler.
      */
-    private ClientCommandHandler commandHandler;
+    private ClientCommandHandler clientCommandHandler;
 
     /**
      * Default constructor.
@@ -42,7 +42,11 @@ public class SocketClientHandler implements Runnable {
      */
     SocketClientHandler(Socket socketClient) {
         this.socketClient = socketClient;
-        commandHandler = new ClientCommandHandler(this);
+        clientCommandHandler = new ClientCommandHandler(this);
+    }
+
+    public User getUser() {
+        return user;
     }
 
     /**
@@ -64,8 +68,7 @@ public class SocketClientHandler implements Runnable {
         while(true) {
             try {
                 Object command = objToServer.readObject();
-                commandHandler.requestHandler(command);
-                //command = null;
+                clientCommandHandler.requestHandler(command);
             }catch (IOException | ClassNotFoundException e) {
                 getLog().log(Level.SEVERE,"[SOCKET]: Could not receive object from client, " +
                         "maybe client is offline?  \n Retrying "+(2-tries)+" times.");
@@ -83,33 +86,31 @@ public class SocketClientHandler implements Runnable {
         waitRequest();
     }
 
-    public void printToClient(String message) {
+    /*public void sendAssetsToClient(Assets assets) {
         try {
-            objFromServer.writeObject(message);
+            objFromServer.writeObject(ANSWER_GET_ASSETS);
             objFromServer.flush();
             objFromServer.reset();
         } catch (IOException e) {
-            getLog().log(Level.SEVERE, "[SOCKET]: Could not send String to client", e);
+            getLog().log(Level.SEVERE, () -> "[SOCKET] can't send command to server");
         }
-
     }
 
     public int askForServants(int minimum) {
-        /*
         try {
             objFromServer.writeObject();
         } catch (IOException e) {
             getLog().log(Level.SEVERE, () -> "[SOCKET] can't send command to server");
-        }*/
+        }
         return 0;
-    }
+    }*/
 
     /**
      * This method sends a chat message to the user
      * @param sender
      * @param message
      */
-    public void chatMessage(String sender, String message) {
+    public void chatMessageToClient(String sender, String message) {
         try {
             objFromServer.writeObject("CHAT"+SPLITTER+sender+SPLITTER+message);
             objFromServer.flush();
@@ -119,8 +120,15 @@ public class SocketClientHandler implements Runnable {
         }
     }
 
-    public User getUser() {
-        return user;
+    public void printToClient(String message) {
+        try {
+            objFromServer.writeObject(message);
+            objFromServer.flush();
+            objFromServer.reset();
+        } catch (IOException e) {
+            getLog().log(Level.SEVERE, "[SOCKET]: Could not send String to client", e);
+        }
+
     }
 }
 

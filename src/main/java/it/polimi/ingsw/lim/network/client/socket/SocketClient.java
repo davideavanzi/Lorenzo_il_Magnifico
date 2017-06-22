@@ -2,6 +2,7 @@ package it.polimi.ingsw.lim.network.client.socket;
 
 import it.polimi.ingsw.lim.Lock;
 import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
+import it.polimi.ingsw.lim.model.Assets;
 import it.polimi.ingsw.lim.network.client.ServerInterface;
 import it.polimi.ingsw.lim.ui.UIController;
 
@@ -67,6 +68,18 @@ public class SocketClient implements Runnable, ServerInterface {
             throw new ClientNetworkException("Could not send chat message to server", e);
         }
     }
+    //ASK FOR SERVANT
+
+    public void getAssets() throws ClientNetworkException {
+        try {
+            objFromClient.writeObject(GET_ASSETS);
+            objFromClient.flush();
+            objFromClient.reset();
+        } catch (IOException e) {
+            throw new ClientNetworkException("Could not send getAssets command to server", e);
+        }
+    }
+
     private void waitFromServer() throws ClientNetworkException {
         try {
             lock.lock();
