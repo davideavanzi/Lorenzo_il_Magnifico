@@ -101,13 +101,13 @@ public class YellowCard extends Card {
     /**
      * the task of this method is to compare if two YellowCard are equal and return true if they are
      * equals false otherwise.
-     * @param other is one of the two BlueCard to be compared
-     * @return true if the BlueCard are equal, false otherwise
+     * @param other is one of the two YellowCard to be compared
+     * @return true if the YelllowCard are equal, false otherwise
      */
     @Override
     public boolean equals (Object other){
         if(!(other instanceof YellowCard)){
-            Log.getLog().info("other not BlueCard");
+            Log.getLog().info("other not YellowCard");
             return false;
         }
         Log.getLog().info("***YELLOW CARD Testing Equals***");

@@ -99,6 +99,29 @@ public class TestParser extends TestCase{
         );
     }
 
+    private static PurpleCard createPurpleCardExpected(){
+        String nameExpected = "testPurpleCard";
+        int ageExpected = 1;
+        Assets assetsCostExpected = new Assets(0, 0, 0, 1, 0, 1, 0);
+        ArrayList<ImmediateEffect> iEffectExpected = new ArrayList<>();
+        Assets cardMultipliedEffectBonus = new Assets(1,0,0,0,0,0,0);
+        String cardMultipliedEffectString = "BLUE";
+        CardMultipliedEffect cardMultipliedEffectExpected = new CardMultipliedEffect(cardMultipliedEffectBonus, cardMultipliedEffectString);
+        iEffectExpected.add(cardMultipliedEffectExpected);
+        Assets endGameBonusExpected = new Assets(0, 0, 1, 0, 0, 0, 0);
+        int optionalBpRequirementExpected = 4;
+        int optionalBpCost = 2;
+        return new PurpleCard(
+                nameExpected,
+                ageExpected,
+                assetsCostExpected,
+                iEffectExpected,
+                endGameBonusExpected,
+                optionalBpRequirementExpected,
+                optionalBpCost
+        );
+    }
+
     private static void testGreenCardParser(Parser testParser)
             throws IOException, InvalidExcommunicationException, InvalidCardException, AssertionFailedError{
         GreenCard greenCardExpected = createGreenCardExpected();
@@ -115,6 +138,12 @@ public class TestParser extends TestCase{
             throws IOException, InvalidExcommunicationException, InvalidCardException, AssertionFailedError {
         YellowCard yellowCardExpected = createYellowCardExpected();
         assertEquals(yellowCardExpected, testParser.getCard(3).get(YELLOW_COLOR).get(0));
+    }
+
+    private static void testPurpleCardParser(Parser testParser)
+            throws IOException, InvalidExcommunicationException, InvalidCardException, AssertionFailedError {
+        PurpleCard purpleCardExpected = createPurpleCardExpected();
+        assertEquals(purpleCardExpected, testParser.getCard(1).get(PURPLE_COLOR).get(0));
     }
 
 
@@ -142,6 +171,14 @@ public class TestParser extends TestCase{
             } catch (AssertionFailedError e) {
                 e.printStackTrace();
                 getLog().info("YellowCardNotEqual");
+            }
+            try{
+                testPurpleCardParser(testParser);
+                getLog().info("PurpleCardParser Tested");
+            }
+            catch (AssertionFailedError e){
+                e.printStackTrace();
+                getLog().info("PurpleCardNotEqual");
             }
         }
         catch (IOException e){
