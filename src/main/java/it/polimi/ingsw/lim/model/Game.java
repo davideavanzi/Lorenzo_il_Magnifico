@@ -317,7 +317,7 @@ public class Game {
         for (FamilyMember f : this.board.getHarvest())
             if (f.getOwnerColor().equals(fm.getOwnerColor()) && ((f.getDiceColor().equals(NEUTRAL_COLOR)) == (fm.getDiceColor().equals(NEUTRAL_COLOR))))
                 return false;
-        if (servantsForHarvestAction(fm) < getPlayerFromColor(fm.getOwnerColor()).getResources().getServants())
+        if (servantsForHarvestAction(fm) > getPlayerFromColor(fm.getOwnerColor()).getResources().getServants())
             return false;
         return true;
     }
@@ -369,7 +369,7 @@ public class Game {
         for (FamilyMember f : this.board.getProduction())
             if (f.getOwnerColor().equals(fm.getOwnerColor()) && ((f.getDiceColor().equals(NEUTRAL_COLOR)) == (fm.getDiceColor().equals(NEUTRAL_COLOR))))
                 return false;
-        if (servantsForProductionAction(fm) < getPlayerFromColor(fm.getOwnerColor()).getResources().getServants())
+        if (servantsForProductionAction(fm) > getPlayerFromColor(fm.getOwnerColor()).getResources().getServants())
             return false;
         return true;
     }

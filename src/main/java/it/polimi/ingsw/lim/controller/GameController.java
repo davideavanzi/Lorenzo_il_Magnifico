@@ -62,7 +62,7 @@ public class GameController {
         System.out.println("La torre verde al piano uno ha la carta? "+game.getTower(GREEN_COLOR).getFloor(1).hasCard());
         System.out.println("DICE COLORS:");
         DICE_COLORS.forEach(color -> System.out.println(color+": "+game.getDice().get(color)));
-
+        System.out.println(game.isHarvestMoveAllowed(new FamilyMember(ORANGE_COLOR, GREEN_COLOR)));
     }
 
     /**
