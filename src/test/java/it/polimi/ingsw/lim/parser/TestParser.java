@@ -122,6 +122,21 @@ public class TestParser extends TestCase{
         );
     }
 
+    private static BlackCard createBlackCardExpected() {
+        String nameExpected = "testBlackCard";
+        int ageExpected = 1;
+        Assets assetsCostExpected = new Assets(0, 0, 0, 0, 1, 1, 0);
+        ArrayList<ImmediateEffect> iEffectExpected = new ArrayList<>();
+        CouncilFavorsEffect councilFavorsEffectExpected = new CouncilFavorsEffect(2);
+        iEffectExpected.add(councilFavorsEffectExpected);
+        return new BlackCard(
+                nameExpected,
+                ageExpected,
+                assetsCostExpected,
+                iEffectExpected
+        );
+    }
+
     private static void testGreenCardParser(Parser testParser)
             throws IOException, InvalidExcommunicationException, InvalidCardException, AssertionFailedError{
         GreenCard greenCardExpected = createGreenCardExpected();
@@ -146,6 +161,11 @@ public class TestParser extends TestCase{
         assertEquals(purpleCardExpected, testParser.getCard(1).get(PURPLE_COLOR).get(0));
     }
 
+    private static void testBlackCardParser(Parser testParser)
+            throws IOException, InvalidExcommunicationException, InvalidCardException, AssertionFailedError {
+        BlackCard blackCardExpected = createBlackCardExpected();
+        assertEquals(blackCardExpected, testParser.getCard(1).get(BLACK_COLOR).get(0));
+    }
 
     public static void main(String args[]){
         try {
@@ -179,6 +199,14 @@ public class TestParser extends TestCase{
             catch (AssertionFailedError e){
                 e.printStackTrace();
                 getLog().info("PurpleCardNotEqual");
+            }
+            try{
+                testBlackCardParser(testParser);
+                getLog().info("BlackCardParser Tested");
+            }
+            catch (AssertionFailedError e){
+                e.printStackTrace();
+                getLog().info("BlackCardNotEqual");
             }
         }
         catch (IOException e){
