@@ -4,6 +4,7 @@ import it.polimi.ingsw.lim.exceptions.InvalidCardException;
 import it.polimi.ingsw.lim.exceptions.InvalidExcommunicationException;
 import it.polimi.ingsw.lim.model.*;
 import junit.framework.*;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -167,6 +168,7 @@ public class TestParser extends TestCase {
         assertEquals(blackCardExpected, testParser.getCard(1).get(BLACK_COLOR).get(0));
     }
 
+    @Test
     public static void testCardParser() {
         try {
             Parser testParser = new Parser();
