@@ -257,7 +257,7 @@ public class Assets {
                 this.stone == assets.getStone() &&
                 this.servants == assets.getServants() &&
                 this.faithPoints == assets.getFaithPoints() &&
-                this.battlePoints == assets.getFaithPoints() &&
+                this.battlePoints == assets.getBattlePoints() &&
                 this.victoryPoints == assets.getVictoryPoints()
         );
     }

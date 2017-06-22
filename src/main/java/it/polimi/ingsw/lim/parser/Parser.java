@@ -431,32 +431,32 @@ public class Parser {
             (String cardName, int cardAge, Assets tmpCardAssetsCost, ArrayList<ImmediateEffect> immediateEffects, JsonNode cardNode) {
         ArrayList<Assets> tmpYellowProductionCostList = new ArrayList<>();
         ArrayList<Assets> tmpYellowProductionResultList = new ArrayList<>();
-        JsonNode yellowProductionNode = cardNode.path(YELLOW_PRODUCTION);
-        Iterator<JsonNode> yellowProductionEffectIterator = yellowProductionNode.getElements();
+        if(cardNode.path(YELLOW_PRODUCTION).isContainerNode()) {
+            JsonNode yellowProductionNode = cardNode.path(YELLOW_PRODUCTION);
+            Iterator<JsonNode> yellowProductionEffectIterator = yellowProductionNode.getElements();
 
-        while (yellowProductionEffectIterator.hasNext()) {
-            yellowProductionNode = yellowProductionEffectIterator.next();
+            while (yellowProductionEffectIterator.hasNext()) {
+                yellowProductionNode = yellowProductionEffectIterator.next();
 
-            if (yellowProductionNode.path(YELLOW_PRODUCTION_COST).isContainerNode()) {
-                JsonNode yellowProductionCost = yellowProductionNode.path(YELLOW_PRODUCTION_COST);
-                Assets tmpYellowProductionCost = parseAssets(yellowProductionCost);
-                tmpYellowProductionCostList.add(tmpYellowProductionCost);
-            }
-
-            if (yellowProductionNode.path(YELLOW_PRODUCTION_RESULT).isContainerNode()) {
-                JsonNode yellowProductionResult = yellowProductionNode.path(YELLOW_PRODUCTION_RESULT);
-                Assets tmpYellowProductionResult = parseAssets(yellowProductionResult);
-                tmpYellowProductionCostList.add(tmpYellowProductionResult);
+                if (yellowProductionNode.path(YELLOW_PRODUCTION_COST).isContainerNode()) {
+                    JsonNode yellowProductionCost = yellowProductionNode.path(YELLOW_PRODUCTION_COST);
+                    Assets tmpYellowProductionCost = parseAssets(yellowProductionCost);
+                    tmpYellowProductionCostList.add(tmpYellowProductionCost);
+                }
+                if (yellowProductionNode.path(YELLOW_PRODUCTION_RESULT).isContainerNode()) {
+                    JsonNode yellowProductionResult = yellowProductionNode.path(YELLOW_PRODUCTION_RESULT);
+                    Assets tmpYellowProductionResult = parseAssets(yellowProductionResult);
+                    tmpYellowProductionCostList.add(tmpYellowProductionResult);
+                }
             }
         }
-
         Strengths tmpYellowActionStrengths = new Strengths();
         if (cardNode.path(YELLOW_ACTION_STRENGTHS).isContainerNode()) {
             JsonNode yellowActionStrengths = cardNode.path(YELLOW_ACTION_STRENGTHS);
             tmpYellowActionStrengths = parseStrengths(yellowActionStrengths);
         }
 
-        String tmpYellowBonusMultiplier = null;
+        String tmpYellowBonusMultiplier = ""; //todo empty string costante?
         if (cardNode.path(YELLOW_BONUS_MULTIPLIER).isTextual()) {
             tmpYellowBonusMultiplier = cardNode.path(YELLOW_BONUS_MULTIPLIER).asText();
         }

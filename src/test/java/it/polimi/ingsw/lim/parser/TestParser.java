@@ -66,6 +66,39 @@ public class TestParser extends TestCase{
         );
     }
 
+    public static YellowCard createYellowCardExpected(){
+        String nameExpected = "testYellowCard";
+        int ageExpected = 3;
+        Assets assetsCostExpected = new Assets(0, 0, 0, 0, 0, 0, 3);
+        ArrayList<ImmediateEffect> iEffectExpected = new ArrayList<>();
+        Assets assetsMultipliedEffectBonus = new Assets(1, 0, 0, 0, 0, 0, 0);
+        Assets assetsMultipliedEffectMultiplier = new Assets(0, 0, 0, 0, 2, 0, 0);
+        AssetsMultipliedEffect assetsMultipliedEffectExpected = new AssetsMultipliedEffect(assetsMultipliedEffectBonus, assetsMultipliedEffectMultiplier);
+        iEffectExpected.add(assetsMultipliedEffectExpected);
+        ArrayList<Assets> productionCosts = new ArrayList<>();
+        Assets productionCost1 = new Assets(0, 1, 0, 0, 0, 0, 0);
+        Assets productionCost2 = new Assets(0, 3, 0, 0, 0, 0, 0);
+        productionCosts.add(productionCost1);
+        productionCosts.add(productionCost2);
+        ArrayList<Assets> productionResults = new ArrayList<>();
+        Assets productionResult1 = new Assets(5, 0, 0, 0, 0, 0, 0);
+        Assets productionResult2 = new Assets(15, 0, 0, 0, 0, 0, 0);
+        productionResults.add(productionResult1);
+        productionResults.add(productionResult2);
+        Strengths actionStrengthExpected = new Strengths();
+        String bonusMultiplierExpected = "";
+        return new YellowCard(
+                nameExpected,
+                ageExpected,
+                assetsCostExpected,
+                iEffectExpected,
+                productionCosts,
+                productionResults,
+                actionStrengthExpected,
+                bonusMultiplierExpected
+        );
+    }
+
     private static void testGreenCardParser(Parser testParser)
             throws IOException, InvalidExcommunicationException, InvalidCardException, AssertionFailedError{
         GreenCard greenCardExpected = createGreenCardExpected();
@@ -77,6 +110,14 @@ public class TestParser extends TestCase{
         BlueCard blueCardExpected = createBlueCardExpected();
         assertEquals(blueCardExpected, testParser.getCard(2).get(BLUE_COLOR).get(0));
     }
+
+    private static void testYellowCardParser(Parser testParser)
+            throws IOException, InvalidExcommunicationException, InvalidCardException, AssertionFailedError {
+        YellowCard yellowCardExpected = createYellowCardExpected();
+        //System.out.println(yellowCardExpected.equals(testParser.getCard(3).get(YELLOW_COLOR).get(0)));
+        assertEquals(yellowCardExpected, testParser.getCard(3).get(YELLOW_COLOR).get(0));
+    }
+
 
     public static void main(String args[]){
         try {
@@ -95,6 +136,13 @@ public class TestParser extends TestCase{
             } catch (AssertionFailedError e) {
                 e.printStackTrace();
                 getLog().info("BlueCardNotEqual");
+            }
+            try {
+                testYellowCardParser(testParser);
+                getLog().info("YellowCardParser Tested");
+            } catch (AssertionFailedError e) {
+                e.printStackTrace();
+                getLog().info("YellowCardNotEqual");
             }
         }
         catch (IOException e){
