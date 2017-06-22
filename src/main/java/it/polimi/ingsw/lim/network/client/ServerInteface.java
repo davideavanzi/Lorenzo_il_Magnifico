@@ -22,4 +22,6 @@ public interface ServerInteface {
      * @throws ClientNetworkException
      */
     void sendLogin(String username) throws ClientNetworkException;
+
+    void sendChatMessage(String sender, String message) throws ClientNetworkException;
 }

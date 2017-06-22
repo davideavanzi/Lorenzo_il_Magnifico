@@ -35,4 +35,6 @@ public class User {
     }
 
     public int askForServants(int minimum) { return clientInterf.askForServants(minimum); }
+
+    public void chatMessage(String sender, String message) { clientInterf.chatMessage(sender, message);}
 }

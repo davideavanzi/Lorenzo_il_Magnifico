@@ -1,16 +1,14 @@
 package it.polimi.ingsw.lim.network.server.socket;
 
-import it.polimi.ingsw.lim.controller.Room;
 import it.polimi.ingsw.lim.controller.User;
 import it.polimi.ingsw.lim.network.server.ClientInterface;
-import it.polimi.ingsw.lim.network.server.MainServer;
 
 import static it.polimi.ingsw.lim.Log.*;
+import static it.polimi.ingsw.lim.network.SocketConstants.SPLITTER;
 import static it.polimi.ingsw.lim.network.server.MainServer.addUserToRoom;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.logging.Level;
 
 /**
@@ -36,11 +34,17 @@ public class SocketClientHandler implements Runnable, ClientInterface {
     private ObjectInputStream objToServer;
 
     /**
+     * Socket client command handler.
+     */
+    private ClientCommandHandler commandHandler;
+
+    /**
      * Default constructor.
      * @param socketClient
      */
     SocketClientHandler(Socket socketClient) {
         this.socketClient = socketClient;
+        commandHandler = new ClientCommandHandler(this);
     }
 
     /**
@@ -49,47 +53,43 @@ public class SocketClientHandler implements Runnable, ClientInterface {
     private void createStream() {
         try {
             // Input and output stream
-            objFromServer = new ObjectOutputStream(socketClient.getOutputStream());
-            objToServer = new ObjectInputStream(socketClient.getInputStream());
+            this.objFromServer = new ObjectOutputStream(socketClient.getOutputStream());
+            objFromServer.flush();
+            this.objToServer = new ObjectInputStream(socketClient.getInputStream());
         } catch (IOException e) {
             getLog().log(Level.SEVERE, "Could not create I/O stream", e);
         }
     }
 
-    /**
-     * This is the login method.
-     * @throws IOException
-     * @throws ClassNotFoundException
-     */
-    private void login() throws IOException, ClassNotFoundException {
-        String username = (String)objToServer.readObject();
-        //TODO: sistema di autenticazione (salvare utenti in un file/db, se utente esistente se vuole caricare stat.)
-        addUserToRoom(new User(username, this));
-        System.out.println("added to room");
+    private void waitRequest() {
+        int tries = 0;
+        while(true) {
+            try {
+                Object command = objToServer.readObject();
+                commandHandler.requestHandler(command);
+                //command = null;
+            }catch (IOException | ClassNotFoundException e) {
+                getLog().log(Level.SEVERE, "[SOCKET]: Could not receive object from client, " +
+                        "maybe client is offline?  \n", e);
+                tries++;
+                if (tries == 3) return;
+            }
+        }
     }
 
     /**
      * Create the I/O socket stream, run until the login is successful then listen for a client command
      */
     public void run() {
-        int loginFailed = 0;
-
         createStream();
-        // If the login failed more than 3 times the thread exit
-        while(user == null || loginFailed < 3) {
-            try {
-                login();
-            } catch (IOException | ClassNotFoundException e) {
-                loginFailed++;
-                getLog().log(Level.SEVERE, "[SOCKET]: Could not perform login", e);
-            }
-        }
-        //requestHandler();
+        waitRequest();
     }
 
     public void printToClient(String message) {
         try {
             objFromServer.writeObject(message);
+            objFromServer.flush();
+            objFromServer.reset();
         } catch (IOException e) {
             getLog().log(Level.SEVERE, "[SOCKET]: Could not send String to client", e);
         }
@@ -97,9 +97,33 @@ public class SocketClientHandler implements Runnable, ClientInterface {
     }
 
     public int askForServants(int minimum) {
+        /*
+        try {
+            objFromServer.writeObject();
+        } catch (IOException e) {
+            getLog().log(Level.SEVERE, () -> "[SOCKET] can't send command to server");
+        }*/
         return 0;
     }
 
+    /**
+     * This method sends a chat message to the user
+     * @param sender
+     * @param message
+     */
+    public void chatMessage(String sender, String message) {
+        try {
+            objFromServer.writeObject("CHAT"+SPLITTER+sender+SPLITTER+message);
+            objFromServer.flush();
+            objFromServer.reset();
+        } catch (IOException e) {
+            getLog().log(Level.SEVERE, () -> "[SOCKET]: can't send chat message to client");
+        }
+    }
+
+    public User getUser() {
+        return user;
+    }
 }
 
 /*

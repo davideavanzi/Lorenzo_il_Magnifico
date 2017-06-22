@@ -9,4 +9,5 @@ public interface ClientInterface {
 
     int askForServants(int minimumAmount);
 
+    void chatMessage(String sender, String message);
 }

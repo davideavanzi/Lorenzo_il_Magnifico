@@ -68,6 +68,20 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf, C
 
     }
 
+    public void chatMessageFromUser(String message) {
+
+    }
+
+    /**
+     * This method sends a chat message to the user.
+     * @param sender
+     * @param message
+     */
+    @Override
+    public void chatMessage(String sender, String message) {
+
+    }
+
     @Override
     public int askForServants(int minimum) {
       return 0;

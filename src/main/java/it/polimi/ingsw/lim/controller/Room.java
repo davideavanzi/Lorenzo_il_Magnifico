@@ -28,7 +28,15 @@ public class Room {
 
     public void addUser(User user) {
         usersList.add(user);
-        getLog().log(Level.INFO, () -> "Adding "+ user.getUsername() +" to room");
+        getLog().log(Level.INFO, () -> "Adding "+ user.getUsername() +" to existing room");
+        if (usersList.size() == MAX_USERS_PER_ROOM) {
+            roomOpen = false;
+            getLog().log(Level.INFO, () -> "The room is now full");
+        }
+    }
+
+    public void chatMessage(String sender, String message) {
+        usersList.forEach(user -> user.chatMessage(sender, message));
     }
 
     public static List<User> getUsersList() {
