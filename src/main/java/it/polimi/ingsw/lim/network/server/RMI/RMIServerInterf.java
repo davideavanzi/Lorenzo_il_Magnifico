@@ -1,7 +1,6 @@
 package it.polimi.ingsw.lim.network.server.RMI;
 
 import it.polimi.ingsw.lim.network.client.RMI.RMIClientInterf;
-import it.polimi.ingsw.lim.network.server.ClientInterface;
 
 import java.rmi.*;
 
@@ -10,8 +9,7 @@ import java.rmi.*;
  */
 public interface RMIServerInterf extends Remote {
 
-    void login(String username) throws RemoteException;
+    void login(String username, RMIClientInterf rci) throws RemoteException;
 
-    void chatMessageFromUser(String message) throws RemoteException;
-
+    void chatMessageFromClient(String sender, String message) throws RemoteException;
 }

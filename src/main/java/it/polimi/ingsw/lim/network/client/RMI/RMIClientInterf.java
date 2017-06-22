@@ -7,7 +7,5 @@ import java.rmi.Remote;
  */
 public interface RMIClientInterf {
 
-    // Declaration of method that I'll use for rmi client
-    void chatMessage(String sender, String message);
-
+    void chatMessageFromServer(String sender, String message);
 }

@@ -2,7 +2,8 @@ package it.polimi.ingsw.lim.network.server.RMI;
 
 import it.polimi.ingsw.lim.Log;
 import it.polimi.ingsw.lim.controller.User;
-import it.polimi.ingsw.lim.network.server.ClientInterface;
+import it.polimi.ingsw.lim.network.client.RMI.RMIClientInterf;
+import it.polimi.ingsw.lim.network.server.MainServer;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -16,7 +17,7 @@ import static it.polimi.ingsw.lim.network.server.MainServer.addUserToRoom;
 /**
  * Created by Nico.
  */
-public class RMIServer extends UnicastRemoteObject implements RMIServerInterf, ClientInterface {
+public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
 
     /**
      * Default constructor
@@ -24,9 +25,23 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf, C
      */
     public RMIServer() throws RemoteException {}
 
-    public void login(String username) throws RemoteException {
+    /**
+     * This method sends a chat message to the user.
+     * @param sender
+     * @param message
+     */
+    public static void chatMessageToClient(String sender, String message, RMIClientInterf rci) {
+        rci.chatMessageFromServer(sender, message);
+    }
+
+    @Override
+    public void chatMessageFromClient(String sender, String message) throws RemoteException {
+        MainServer.getUserFromUsername(sender).getRoom().chatMessage(sender, message);
+    }
+
+    public void login(String username, RMIClientInterf rci) throws RemoteException {
         //TODO: sistema di autenticazione (salvare utenti in un file/db, se utente esistente se vuole caricare stat.)
-        addUserToRoom(new User(username, this));
+        addUserToRoom(new RMIUser(username, rci));
     }
 
     /**
@@ -61,29 +76,5 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf, C
         } catch(MalformedURLException e) {
             Log.getLog().log(Level.SEVERE, "[RMI]: URL unreachable", e);
         }
-    }
-
-    @Override
-    public void printToClient(String message) {
-
-    }
-
-    public void chatMessageFromUser(String message) {
-
-    }
-
-    /**
-     * This method sends a chat message to the user.
-     * @param sender
-     * @param message
-     */
-    @Override
-    public void chatMessage(String sender, String message) {
-
-    }
-
-    @Override
-    public int askForServants(int minimum) {
-      return 0;
     }
 }

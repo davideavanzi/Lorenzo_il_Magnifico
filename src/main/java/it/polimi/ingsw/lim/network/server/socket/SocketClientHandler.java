@@ -1,11 +1,9 @@
 package it.polimi.ingsw.lim.network.server.socket;
 
 import it.polimi.ingsw.lim.controller.User;
-import it.polimi.ingsw.lim.network.server.ClientInterface;
 
 import static it.polimi.ingsw.lim.Log.*;
 import static it.polimi.ingsw.lim.network.SocketConstants.SPLITTER;
-import static it.polimi.ingsw.lim.network.server.MainServer.addUserToRoom;
 
 import java.io.*;
 import java.net.Socket;
@@ -15,7 +13,7 @@ import java.util.logging.Level;
  * Created by Nico.
  * This class handles the connection to a socket client.
  */
-public class SocketClientHandler implements Runnable, ClientInterface {
+public class SocketClientHandler implements Runnable {
 
     /**
      * Socket for communicate with client.

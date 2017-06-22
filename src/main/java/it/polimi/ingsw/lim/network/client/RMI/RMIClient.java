@@ -3,6 +3,7 @@ package it.polimi.ingsw.lim.network.client.RMI;
 import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
 import it.polimi.ingsw.lim.network.client.ServerInterface;
 import it.polimi.ingsw.lim.network.server.RMI.RMIServerInterf;
+import it.polimi.ingsw.lim.ui.UIController;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -30,10 +31,14 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
      */
     RMIServerInterf rmiServer;
 
+    UIController uiController;
+
     /**
      * RMI client constructor.
      */
-    public RMIClient() {}
+    public RMIClient(UIController uiController) {
+        this.uiController = uiController;
+    }
 
     /**
      * @return the server's address.
@@ -48,7 +53,7 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
 
     public void sendLogin(String username) throws ClientNetworkException {
         try {
-            rmiServer.login(username);
+            rmiServer.login(username, this);
         } catch (RemoteException e) {
             throw new ClientNetworkException("[RMI]: Login Failed", e);
         }
@@ -68,12 +73,17 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
         }
     }
 
-    public void chatMessage(String sender, String message) {
-
+    public void chatMessageToServer(String sender, String message) throws ClientNetworkException {
+        try {
+            rmiServer.chatMessageFromClient(sender, message);
+        } catch (RemoteException e) {
+            throw new ClientNetworkException("[RMI]: Could not send a message to RMI server", e);
+        }
     }
 
-    public void sendChatMessage(String sender, String message) {
-
+    @Override
+    public void chatMessageFromServer(String sender, String message) {
+        uiController.getClientUI().printMessageln(message);
     }
 }
 

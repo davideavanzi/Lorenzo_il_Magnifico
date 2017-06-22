@@ -30,7 +30,7 @@ public class UIController {
         }
     }
 
-    public static AbsUI getClientUI() {
+    public AbsUI getClientUI() {
         return clientUI;
     }
 
@@ -40,7 +40,7 @@ public class UIController {
 
     public void testChat() {
         try {
-            clientProtocol.sendChatMessage(username, "CIAOOOOO");
+            clientProtocol.chatMessageToServer(username, "CIAOOOOO");
         }catch (ClientNetworkException e) {
             clientUI.printMessageln(e.getMessage());
         }
@@ -64,7 +64,7 @@ public class UIController {
         if (protocol.equals("socket")) {
             new Thread(new SocketClient(this)).start();
         } else if (protocol.equals("rmi")) {
-            clientProtocol = new RMIClient();
+            clientProtocol = new RMIClient(this);
         }
         /* Performing login here broke the socket setup and communication! connection is made automatically
          * as the connection protocol is established. TODO: handle in RMI */

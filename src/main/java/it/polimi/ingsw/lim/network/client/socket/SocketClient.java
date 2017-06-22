@@ -23,9 +23,9 @@ public class SocketClient implements Runnable, ServerInterface {
     /**
      * Socket client constructor
      */
-    public SocketClient(UIController uiCallback) {
-        this.commandHandler = new ServerCommandHandler(this, uiCallback);
-        uiCallback.setClientProtocol(this);
+    public SocketClient(UIController uiController) {
+        this.commandHandler = new ServerCommandHandler(this, uiController);
+        uiController.setClientProtocol(this);
         this.lock = new Lock();
         try {
             lock.lock();
@@ -56,7 +56,7 @@ public class SocketClient implements Runnable, ServerInterface {
         }
     }
 
-    public void sendChatMessage(String sender, String message) throws ClientNetworkException{
+    public void chatMessageToServer(String sender, String message) throws ClientNetworkException{
         try {
             objFromClient.writeObject("CHAT"+SPLITTER+sender+SPLITTER+message);
             objFromClient.flush();
