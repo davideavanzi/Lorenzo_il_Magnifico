@@ -13,9 +13,9 @@ import static it.polimi.ingsw.lim.Log.getLog;
 /**
  * Created by FabCars. The task of this test class is to test if card parser work as expected
  */
-public class TestParser extends TestCase{
+public class TestParser extends TestCase {
 
-    private static GreenCard createGreenCardExpected(){
+    private static GreenCard createGreenCardExpected() {
         String nameExpected = "testGreenCard";
         int ageExpected = 1;
         Assets assetsCostExpected = new Assets(1, 0, 0, 0, 0, 0, 0);
@@ -35,14 +35,14 @@ public class TestParser extends TestCase{
         );
     }
 
-    private static BlueCard createBlueCardExpected(){
+    private static BlueCard createBlueCardExpected() {
         String nameExpected = "testBlueCard";
         int ageExpected = 2;
         Assets assetsCostExpected = new Assets(2, 3, 0, 0, 0, 0, 0);
         ArrayList<ImmediateEffect> iEffectExpected = new ArrayList<>();
         Strengths actionEffectStrength = new Strengths(1, 0, 0, 0, 0, 0, 0);
         Assets actionEffectAsset = new Assets();
-        ActionEffect actionEffectExpected = new ActionEffect(actionEffectStrength , actionEffectAsset);
+        ActionEffect actionEffectExpected = new ActionEffect(actionEffectStrength, actionEffectAsset);
         iEffectExpected.add(actionEffectExpected);
         Strengths permaBonusExpected = new Strengths();
         Assets blueGreenDiscount = new Assets(1, 0, 0, 0, 0, 0, 0);
@@ -66,7 +66,7 @@ public class TestParser extends TestCase{
         );
     }
 
-    public static YellowCard createYellowCardExpected(){
+    private static YellowCard createYellowCardExpected() {
         String nameExpected = "testYellowCard";
         int ageExpected = 3;
         Assets assetsCostExpected = new Assets(0, 0, 0, 0, 0, 0, 3);
@@ -99,12 +99,12 @@ public class TestParser extends TestCase{
         );
     }
 
-    private static PurpleCard createPurpleCardExpected(){
+    private static PurpleCard createPurpleCardExpected() {
         String nameExpected = "testPurpleCard";
         int ageExpected = 1;
         Assets assetsCostExpected = new Assets(0, 0, 0, 1, 0, 1, 0);
         ArrayList<ImmediateEffect> iEffectExpected = new ArrayList<>();
-        Assets cardMultipliedEffectBonus = new Assets(1,0,0,0,0,0,0);
+        Assets cardMultipliedEffectBonus = new Assets(1, 0, 0, 0, 0, 0, 0);
         String cardMultipliedEffectString = "BLUE";
         CardMultipliedEffect cardMultipliedEffectExpected = new CardMultipliedEffect(cardMultipliedEffectBonus, cardMultipliedEffectString);
         iEffectExpected.add(cardMultipliedEffectExpected);
@@ -138,7 +138,7 @@ public class TestParser extends TestCase{
     }
 
     private static void testGreenCardParser(Parser testParser)
-            throws IOException, InvalidExcommunicationException, InvalidCardException, AssertionFailedError{
+            throws IOException, InvalidExcommunicationException, InvalidCardException, AssertionFailedError {
         GreenCard greenCardExpected = createGreenCardExpected();
         assertEquals(greenCardExpected, testParser.getCard(1).get(GREEN_COLOR).get(0));
     }
@@ -167,10 +167,10 @@ public class TestParser extends TestCase{
         assertEquals(blackCardExpected, testParser.getCard(1).get(BLACK_COLOR).get(0));
     }
 
-    public static void main(String args[]){
+    public static void testCardParser(String pathToTestFile) {
         try {
             Parser testParser = new Parser();
-            testParser.parser(CONFIGS_PATH.concat("test/"));
+            testParser.parser(pathToTestFile);
             try {
                 testGreenCardParser(testParser);
                 getLog().info("GreenCardParser Tested");
@@ -192,34 +192,31 @@ public class TestParser extends TestCase{
                 e.printStackTrace();
                 getLog().info("YellowCardNotEqual");
             }
-            try{
+            try {
                 testPurpleCardParser(testParser);
                 getLog().info("PurpleCardParser Tested");
-            }
-            catch (AssertionFailedError e){
+            } catch (AssertionFailedError e) {
                 e.printStackTrace();
                 getLog().info("PurpleCardNotEqual");
             }
-            try{
+            try {
                 testBlackCardParser(testParser);
                 getLog().info("BlackCardParser Tested");
-            }
-            catch (AssertionFailedError e){
+            } catch (AssertionFailedError e) {
                 e.printStackTrace();
                 getLog().info("BlackCardNotEqual");
             }
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
             getLog().info("IOException");
-        }
-        catch (InvalidCardException e){
+        } catch (InvalidCardException e) {
             e.printStackTrace();
             getLog().info("InvalidCardException");
-        }
-        catch (InvalidExcommunicationException e){
+        } catch (InvalidExcommunicationException e) {
             e.printStackTrace();
             getLog().info("InvalidExcommunicationException");
         }
     }
+
+
 }
