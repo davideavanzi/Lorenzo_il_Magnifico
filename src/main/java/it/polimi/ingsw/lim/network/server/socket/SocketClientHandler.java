@@ -67,8 +67,8 @@ public class SocketClientHandler implements Runnable {
                 commandHandler.requestHandler(command);
                 //command = null;
             }catch (IOException | ClassNotFoundException e) {
-                getLog().log(Level.SEVERE, "[SOCKET]: Could not receive object from client, " +
-                        "maybe client is offline?  \n", e);
+                getLog().log(Level.SEVERE,"[SOCKET]: Could not receive object from client, " +
+                        "maybe client is offline?  \n Retrying "+(2-tries)+" times.");
                 tries++;
                 if (tries == 3) return;
             }

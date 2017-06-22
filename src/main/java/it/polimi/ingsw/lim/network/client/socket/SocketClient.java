@@ -18,12 +18,14 @@ public class SocketClient implements Runnable, ServerInterface {
     ObjectOutputStream objFromClient;
     ObjectInputStream objToClient;
     ServerCommandHandler commandHandler;
+    UIController uiController;
     Lock lock;
 
     /**
      * Socket client constructor
      */
     public SocketClient(UIController uiController) {
+        this.uiController = uiController;
         this.commandHandler = new ServerCommandHandler(this, uiController);
         uiController.setClientProtocol(this);
         this.lock = new Lock();
@@ -104,7 +106,7 @@ public class SocketClient implements Runnable, ServerInterface {
             //connect();
             waitFromServer();
         } catch (ClientNetworkException e) {
-            UIController.getClientUI().printMessageln(e.getMessage());
+            uiController.getClientUI().printMessageln(e.getMessage());
         }
     }
 

@@ -53,8 +53,10 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
 
     public void sendLogin(String username) throws ClientNetworkException {
         try {
+            UnicastRemoteObject.exportObject(this, 0);
             rmiServer.login(username, this);
         } catch (RemoteException e) {
+            System.out.printf(e.getMessage());
             throw new ClientNetworkException("[RMI]: Login Failed", e);
         }
     }
@@ -83,7 +85,7 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
 
     @Override
     public void chatMessageFromServer(String sender, String message) {
-        uiController.getClientUI().printMessageln(message);
+        uiController.getClientUI().printMessageln("[CHAT] message from "+sender+": "+message);
     }
 }
 

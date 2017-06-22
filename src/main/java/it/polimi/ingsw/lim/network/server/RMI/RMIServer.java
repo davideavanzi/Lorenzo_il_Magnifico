@@ -30,7 +30,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
      * @param sender
      * @param message
      */
-    public static void chatMessageToClient(String sender, String message, RMIClientInterf rci) {
+    public static void chatMessageToClient(String sender, String message, RMIClientInterf rci) throws RemoteException{
         rci.chatMessageFromServer(sender, message);
     }
 

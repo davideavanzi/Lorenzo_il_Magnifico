@@ -23,11 +23,13 @@ public class Room {
         usersList = new ArrayList<>();
         gameController = new GameController();
         usersList.add(user);
+        user.setRoom(this);
         getLog().log(Level.INFO, () -> "Room created, adding "+ user.getUsername() +" to room");
     }
 
     public void addUser(User user) {
         usersList.add(user);
+        user.setRoom(this);
         getLog().log(Level.INFO, () -> "Adding "+ user.getUsername() +" to existing room");
         if (usersList.size() == MAX_USERS_PER_ROOM) {
             roomOpen = false;

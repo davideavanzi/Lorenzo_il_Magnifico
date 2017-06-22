@@ -13,4 +13,8 @@ public class SocketUser extends User {
         this.sch = sch;
     }
 
+    @Override
+    public void chatMessage(String sender, String message) {
+        this.sch.chatMessage(sender, message);
+    }
 }
