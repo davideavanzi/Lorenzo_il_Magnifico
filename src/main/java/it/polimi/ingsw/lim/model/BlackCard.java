@@ -1,4 +1,6 @@
 package it.polimi.ingsw.lim.model;
+import it.polimi.ingsw.lim.Log;
+
 import java.util.*;
 
 /**
@@ -16,4 +18,24 @@ public class BlackCard extends Card {
         super(name, age, cost, iEffects);
     }
 
+    /**
+     * the task of this method is to compare if two BlackCard are equal and return true if they are
+     * equals false otherwise.
+     * @param other is one of the two BlackCard to be compared
+     * @return true if the BlackCard are equal, false otherwise
+     */
+    @Override
+    public boolean equals (Object other) {
+        if (!(other instanceof BlackCard)) {
+            Log.getLog().info("other not BlackCard");
+            return false;
+        }
+        Log.getLog().info("***BLACK CARD Testing Equals***");
+        Card card = (Card) other;
+        if (!(super.equals(card))) {
+            return false;
+        }
+        Log.getLog().info("BlackCard Equal");
+        return true;
+    }
 }

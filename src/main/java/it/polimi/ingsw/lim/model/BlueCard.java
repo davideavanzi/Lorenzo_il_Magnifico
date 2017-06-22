@@ -49,13 +49,20 @@ public class BlueCard extends Card {
     private boolean towerBonusAllowed;
 
     /**
-     * the task of this method is to compare if two assets are equal and return true if they are
+     * the task of this method is to compare if two BlueCard are equal and return true if they are
      * equals false otherwise.
      * @param other is one of the two BlueCard to be compared
      * @return true if the BlueCard are equal, false otherwise
      */
     @Override
     public boolean equals (Object other){
+        if(other == this){
+            return true;
+        }
+        if (other == null){
+            Log.getLog().info("other = null");
+            return false;
+        }
         if(!(other instanceof BlueCard)){
             Log.getLog().info("other not BlueCard");
             return false;
@@ -63,8 +70,9 @@ public class BlueCard extends Card {
         Log.getLog().info("***BLUE CARD Testing Equals***");
         Card card = (Card) other;
         boolean equals = true;
-        if (!(this.equals(card))){
-            equals =  false;
+        //todo check
+        if (!(super.equals(card))){
+            equals = false;
         }
         BlueCard blueCard = (BlueCard) card;
         if(!(this.permanentBonus.equals(blueCard.getPermanentBonus()))){
@@ -75,12 +83,8 @@ public class BlueCard extends Card {
             Log.getLog().info("pick discount different");
             equals = false;
         }
-        if(!(this.permanentBonus.equals(blueCard.getPermanentBonus()))){
-            Log.getLog().info("permanent bonus different");
-            equals = false;
-        }
-        if(!(this.towerBonusAllowed == blueCard.getTowerBonusAllowed())){
-            Log.getLog().info("permanent bonus different");
+        if(this.towerBonusAllowed != blueCard.getTowerBonusAllowed()){
+            Log.getLog().info("tower bonus allowed different");
             equals = false;
         }
         if(equals){

@@ -1,0 +1,115 @@
+{
+  "card": [
+    {
+      "cardName": "testGreenCard",
+      "cardAge": 1,
+      "cardAssetsCost": {
+        "coin": 1
+      },
+      "cardImmediateEffect": {
+        "assetsEffect": {
+          "assetsEffectBonus": {
+            "wood": 1
+          }
+        }
+      },
+      "cardType": "greenCard",
+      "greenHarvestResult": {
+        "stone": 1
+      },
+      "greenActionStrengths": {
+        "harvestBonus": 1
+      }
+    },
+    {
+      "cardName": "testBlueCard",
+      "cardAge": 2,
+      "cardAssetsCost":{
+       "coin": 2,
+        "wood": 3
+      },
+      "cardImmediateEffect":{
+        "actionEffect":{
+          "actionEffectStrength":{
+            "harvestBonus": 1
+          }
+        }
+      },
+      "cardType": "blueCard",
+      "blueGreenDiscount":{
+        "coin": 1
+      }
+    },
+    {
+      "cardName": "testYellowCard",
+      "cardAge": 3,
+      "cardAssetsCost":{
+        "stone": 0,
+        "victoryPoints": 3
+      },
+      "cardImmediateEffect":{
+        "assetsMultipliedEffect":{
+          "assetsMultipliedEffectBonus":{
+            "coin": 1
+          },
+          "assetsMultipliedEffectMultiplier":{
+            "faithPoints": 2
+          }
+        }
+      },
+      "cardType": "yellowCard",
+      "yellowProduction":[
+        {
+          "yellowProductionCost": {
+            "wood":1
+          },
+          "yellowProductionResult": {
+            "coin": 5
+          }
+        },
+        {
+          "yellowProductionCost": {
+            "wood":3
+          },
+          "yellowProductionResult": {
+            "coin": 15
+          }
+        }
+      ]
+    },
+    {
+      "cardName": "testPurpleCard",
+      "cardAge": 1,
+      "cardAssetsCost": {
+        "servants": 1,
+        "battlePoints": 1
+      },
+      "cardImmediateEffect": {
+        "cardMultipliedEffect": {
+          "cardMultipliedEffectBonus": {
+            "coin": 1
+          },
+          "cardMultipliedEffectMultiplierColor": "BLUE"
+        }
+      },
+      "cardType": "purpleCard",
+      "purpleEndGameBonus": {
+        "stone": 1
+      },
+      "purpleOptionalBattlePointsRequirement": 4,
+      "purpleOptionalBattlePointsCost": 2
+    },
+    {
+      "cardName": "testBlackCard",
+      "cardAge": 1,
+      "cardAssetsCost": {
+        "faithPoints": 1,
+        "battlePoints": 1
+      },
+      "cardImmediateEffect": {
+        "councilFavorsEffectAmount": 2
+      },
+      "cardType": "blackCard"
+    }
+  ]
+}

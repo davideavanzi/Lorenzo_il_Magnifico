@@ -1,4 +1,6 @@
 package it.polimi.ingsw.lim.model;
+import it.polimi.ingsw.lim.Log;
+
 import java.util.*;
 
 /**
@@ -61,8 +63,16 @@ public class AssetsMultipliedEffect extends ImmediateEffect {
         if(!(other instanceof AssetsMultipliedEffect)){
             return false;
         }
+        boolean equals = true;
         AssetsMultipliedEffect assetsMultipliedEffect = (AssetsMultipliedEffect) other;
-        return (this.bonus.equals(assetsMultipliedEffect.getBonus()) &&
-                this.multiplier.equals(assetsMultipliedEffect.getMultiplier()));
+        if(!(this.bonus.equals(assetsMultipliedEffect.getBonus()))){
+            Log.getLog().info("bonus different");
+            equals = false;
+        }
+        if(!(this.multiplier.equals(assetsMultipliedEffect.getMultiplier()))){
+            Log.getLog().info("multiplier different");
+            equals = false;
+        }
+        return equals;
     }
 }

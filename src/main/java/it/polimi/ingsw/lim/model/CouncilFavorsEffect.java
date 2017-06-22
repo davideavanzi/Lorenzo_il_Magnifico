@@ -1,4 +1,6 @@
 package it.polimi.ingsw.lim.model;
+import it.polimi.ingsw.lim.Log;
+
 import java.util.*;
 
 /**
@@ -47,7 +49,12 @@ public class CouncilFavorsEffect extends ImmediateEffect {
         if(!(other instanceof CouncilFavorsEffect)){
             return false;
         }
+        boolean equals = true;
         CouncilFavorsEffect councilFavorsEffect = (CouncilFavorsEffect) other;
-        return (this.amount == councilFavorsEffect.getAmount());
+        if(!(this.amount == councilFavorsEffect.getAmount())){
+            equals = false;
+            Log.getLog().info("Different council favour effect");
+        }
+        return equals;
     }
 }
