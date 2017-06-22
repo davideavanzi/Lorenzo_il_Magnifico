@@ -1,7 +1,7 @@
 package it.polimi.ingsw.lim.network.client.RMI;
 
 import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
-import it.polimi.ingsw.lim.network.client.ServerInteface;
+import it.polimi.ingsw.lim.network.client.ServerInterface;
 import it.polimi.ingsw.lim.network.server.RMI.RMIServerInterf;
 
 import java.net.MalformedURLException;
@@ -14,7 +14,7 @@ import java.rmi.server.UnicastRemoteObject;
 /**
  * Created by nico.
  */
-public class RMIClient implements RMIClientInterf, ServerInteface {
+public class RMIClient implements RMIClientInterf, ServerInterface {
     /**
      * RMI server's ip address.
      */

@@ -1,9 +1,8 @@
 package it.polimi.ingsw.lim.ui;
 
 import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
-import it.polimi.ingsw.lim.network.client.MainClient;
 import it.polimi.ingsw.lim.network.client.RMI.RMIClient;
-import it.polimi.ingsw.lim.network.client.ServerInteface;
+import it.polimi.ingsw.lim.network.client.ServerInterface;
 import it.polimi.ingsw.lim.network.client.socket.SocketClient;
 
 import java.util.Scanner;
@@ -13,7 +12,7 @@ import java.util.Scanner;
  */
 public class UIController {
     private static AbsUI clientUI;
-    private static ServerInteface clientProtocol;
+    private static ServerInterface clientProtocol;
     private static Scanner userInput = new Scanner(System.in);
     //a copy of the user name is stored here
     private String username;
@@ -35,7 +34,7 @@ public class UIController {
         return clientUI;
     }
 
-    public static void setClientProtocol(ServerInteface clientProtocol) {
+    public static void setClientProtocol(ServerInterface clientProtocol) {
         UIController.clientProtocol = clientProtocol;
     }
 
@@ -68,7 +67,7 @@ public class UIController {
             clientProtocol = new RMIClient();
         }
         /* Performing login here broke the socket setup and communication! connection is made automatically
-         * as the connection protocol is established. TODO: handle in RMI
+         * as the connection protocol is established. TODO: handle in RMI */
         int failedRetry = 0;
         while(failedRetry < 3) {
             try {
@@ -78,7 +77,7 @@ public class UIController {
                 failedRetry++;
                 clientUI.printMessageln(e.getMessage());
             }
-        } */
+        }
     }
 
     /**
