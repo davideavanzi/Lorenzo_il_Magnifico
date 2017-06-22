@@ -3,13 +3,14 @@
 
 ## Functionalities:
 - Connections:
- - RMI
- - Socket
+  - RMI
+  - Socket
 - User Interfaces:
- - CLI
- - GUI
+  - CLI
+  - GUI
 - Full ruleset
 - Configurations loaded from files
+- Fifth player
 
 ### Customizable settings & configs:
 This software is able to load custom configurations from files, they are stored in src/main/gameData/configs/.
