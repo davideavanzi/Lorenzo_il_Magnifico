@@ -65,7 +65,7 @@ public class PurpleCard extends Card {
         Log.getLog().info("***PURPLE CARD Testing Equals***");
         Card card = (Card) other;
         boolean equals = true;
-        if (!(this.equals(card))) {
+        if (!(super.equals(card))) {
             equals = false;
         }
         PurpleCard purpleCard = (PurpleCard) card;

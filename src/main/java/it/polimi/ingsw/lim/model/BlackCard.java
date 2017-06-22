@@ -32,7 +32,7 @@ public class BlackCard extends Card {
         }
         Log.getLog().info("***BLACK CARD Testing Equals***");
         Card card = (Card) other;
-        if (!(this.equals(card))) {
+        if (!(super.equals(card))) {
             return false;
         }
         Log.getLog().info("BlackCard Equal");

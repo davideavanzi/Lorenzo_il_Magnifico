@@ -89,12 +89,17 @@ public abstract class Card {
      * @param other is one of the two card to be compared
      * @return true if the card are equal, false otherwise
      */
-    public boolean equals (Card other){
+    @Override
+    public boolean equals (Object other){
         if(other == this){
             return true;
         }
         if (other == null){
             Log.getLog().info("other = null");
+            return false;
+        }
+        if(!(other instanceof Card)){
+            Log.getLog().info("other not a card");
             return false;
         }
         Card card = (Card) other;
@@ -111,15 +116,14 @@ public abstract class Card {
             Log.getLog().info("cost different");
             equals = false;
         }
-        equals = this.getImmediateEffects().equals(card.getImmediateEffects());
         //starting to compare the immediate effects
-        if(!(this.getImmediateEffects().size() == card.getImmediateEffects().size())){
+        if(this.getImmediateEffects().size() != card.getImmediateEffects().size()){
             Log.getLog().info("immediate effect size different");
             equals = false;
         }
         for(int i = 0; i < this.getImmediateEffects().size(); i++){
             if (!(this.getImmediateEffects().get(i).equals(card.getImmediateEffects().get(i)))){
-                Log.getLog().info("immediate effect " + i + " different");
+                Log.getLog().info(("immediate effect " + i).concat(" different"));
                 equals = false;
             }
         }

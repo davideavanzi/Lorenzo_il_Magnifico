@@ -81,7 +81,7 @@
       "cardName": "testPurpleCard",
       "cardAge": 1,
       "cardAssetsCost": {
-        "servant": 1,
+        "servants": 1,
         "battlePoints": 1
       },
       "cardImmediateEffect": {

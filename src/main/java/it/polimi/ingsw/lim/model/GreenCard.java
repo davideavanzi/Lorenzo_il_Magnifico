@@ -53,7 +53,7 @@ public class GreenCard extends Card {
         Log.getLog().info("***GREEN CARD Testing Equals***");
         Card card = (Card) other;
         boolean equals = true;
-        if (!(this.equals(card))){
+        if (!(super.equals(card))){
             equals =  false;
         }
         GreenCard greenCard = (GreenCard) other;

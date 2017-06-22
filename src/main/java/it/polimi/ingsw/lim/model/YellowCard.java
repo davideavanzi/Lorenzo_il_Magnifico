@@ -113,7 +113,7 @@ public class YellowCard extends Card {
         Log.getLog().info("***YELLOW CARD Testing Equals***");
         Card card = (Card) other;
         boolean equals = true;
-        if (!(this.equals(card))){
+        if (!(super.equals(card))){
             equals =  false;
         }
         YellowCard yellowCard = (YellowCard) card;

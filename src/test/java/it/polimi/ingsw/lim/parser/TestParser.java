@@ -167,10 +167,10 @@ public class TestParser extends TestCase {
         assertEquals(blackCardExpected, testParser.getCard(1).get(BLACK_COLOR).get(0));
     }
 
-    public static void testCardParser(String pathToTestFile) {
+    public static void main(String args[]) {
         try {
             Parser testParser = new Parser();
-            testParser.parser(pathToTestFile);
+            testParser.parser(CONFIGS_PATH.concat("test/"));
             try {
                 testGreenCardParser(testParser);
                 getLog().info("GreenCardParser Tested");

@@ -60,17 +60,16 @@ public class ActionEffect extends ImmediateEffect {
             Log.getLog().info("other not BlueCard");
             return false;
         }
+        boolean equals = true;
         ActionEffect actionEffect = (ActionEffect) other;
-        /*if ((this.strength == null && actionEffect.getStrength() == null) || (this.discount == null && actionEffect.getDiscount() == null)){
-            return true;
+        if(!(this.strength.equals(actionEffect.getStrength()))){
+            Log.getLog().info("actionEffect Strength different");
+            equals = false;
         }
-        if (this.discount != null && actionEffect.getDiscount() == null ||
-                this.discount == null && actionEffect.getDiscount() != null ||
-                this.strength != null && actionEffect.getDiscount() == null ||
-                this.discount == null && actionEffect.getDiscount() != null){
-            return false;
-        }*/
-        return (this.strength.equals(actionEffect.getStrength()) &&
-                this.discount.equals(actionEffect.getDiscount()));
+        if(!(this.discount.equals(actionEffect.getDiscount()))){
+            Log.getLog().info("actionEffect Discount different");
+            equals= false;
+        }
+        return equals;
     }
 }
