@@ -167,7 +167,7 @@ public class TestParser extends TestCase {
         assertEquals(blackCardExpected, testParser.getCard(1).get(BLACK_COLOR).get(0));
     }
 
-    public static void main(String args[]) {
+    public static void testCardParser() {
         try {
             Parser testParser = new Parser();
             testParser.parser(CONFIGS_PATH.concat("test/"));
