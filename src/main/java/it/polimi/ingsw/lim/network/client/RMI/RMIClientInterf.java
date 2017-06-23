@@ -15,5 +15,5 @@ public interface RMIClientInterf extends Remote{
 
     void chatMessageFromServer(String sender, String message) throws RemoteException;
 
-    void updateClientGame(Board board, ArrayList<Player> players);
+    void updateClientGame(Board board) throws RemoteException;
 }

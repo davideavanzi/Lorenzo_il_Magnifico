@@ -16,8 +16,11 @@ import static it.polimi.ingsw.lim.Settings.*;
  */
 public class GameController {
     private Game game;
-    private PlayerTurn turn;
+    private Room roomCallback;
 
+    public GameController(Room roomCallback) {
+        this.roomCallback = roomCallback;
+    }
 
     public static void main(String[] args){
 
@@ -121,9 +124,10 @@ public class GameController {
         Strengths strength = new Strengths();
         if(this.game.isHarvestMoveAllowed(fm)){
             //move is affordable, ask the client in case more servants are needed
-            if (this.game.servantsForHarvestAction(fm) > 0)
-                //at least that amount of servants!
-                ;
+            int servantsForHarvestAction = this.game.servantsForHarvestAction(fm);
+            if (servantsForHarvestAction > 0)
+                roomCallback.getUser(this.game.getPlayerFromColor(fm.getOwnerColor()).getNickname())
+                        .askForServants(servantsForHarvestAction);
             this.game.harvestMove(fm);
             for (Card card: game.getPlayerFromColor(fm.getOwnerColor()).getCardsOfColor(GREEN_COLOR))
                 CardHandler.activateGreenCard((GreenCard)card, game.getPlayerFromColor(fm.getOwnerColor()));
@@ -147,10 +151,11 @@ public class GameController {
         }
     }
 
-    public void setTurn(PlayerTurn turn) {
-        this.turn = turn;
-    }
-
+    /**
+     * This method has to be called at the beginning of the game,
+     * otherwise it generates an order that might be incorrect
+     * @return
+     */
     public ArrayList<String> getPlayOrder() {
         return  game.getNewPlayerOrder();
     }

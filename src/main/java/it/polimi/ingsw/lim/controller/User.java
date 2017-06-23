@@ -40,10 +40,12 @@ public abstract class User {
         return room;
     }
 
-    //public int askForServants(int minimum) { return clientInterf.askForServants(minimum); }
-
     public abstract void chatMessage(String sender, String message);
 
     public abstract void sendGameState(Board board, ArrayList<Player> players);
+
+    public abstract int askForServants(int minimumAmount);
+
+    public abstract int chooseProduction();
 
 }

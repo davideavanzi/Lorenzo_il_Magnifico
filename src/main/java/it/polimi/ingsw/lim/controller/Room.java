@@ -26,7 +26,7 @@ public class Room {
 
     public Room(User user) {
         usersList = new ArrayList<>();
-        gameController = new GameController();
+        gameController = new GameController(this);
         usersList.add(user);
         user.setRoom(this);
         getLog().log(Level.INFO, () -> "Room created, adding "+ user.getUsername() +" to room");
@@ -59,8 +59,12 @@ public class Room {
     private void notifyEndTurn(){
         //todo switch turn to next player
     }
+    public User getUser(String username) {
+        return usersList.stream().filter(user -> user.getUsername().equals(username)).findFirst().orElse(null);
+    }
 
-    private class TimerEndTurn{
+
+    class TimerEndTurn{
         private Timer timer;
         public TimerEndTurn(int seconds, Room roomCallback){
             timer = new Timer();

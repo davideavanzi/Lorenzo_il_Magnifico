@@ -32,6 +32,8 @@ public class MainServer {
      */
     private static ArrayList<Room> roomList;
 
+    private static ArrayList<User> connectedUsers;
+
     /**
      * Declaration of SocketServer and RMIServer class.
      */
@@ -50,6 +52,7 @@ public class MainServer {
             getLog().log(Level.SEVERE, "[RMI]: Could not create RMIServer's instance", e);
         }
         roomList = new ArrayList<>();
+        connectedUsers = new ArrayList<>();
     }
 
     public static User getUserFromUsername (String name) {
@@ -72,11 +75,22 @@ public class MainServer {
     }
 
     /**
+     * This method searches a user from the list of connected users, if it is not present, it returns null
+     * @param username the user name to search
+     * @return the user, if not found null.
+     * TODO: is this really useful?
+     */
+    public static User getConnectedUser(String username) {
+        return connectedUsers.stream().filter(user -> user.getUsername().equals(username)).findFirst().orElse(null);
+    }
+
+    /**
      * The authenticated user is added to the first available room, if no room is available a new room is created.
      * @param user is the authenticated user.
      * @return the room in which the user was added (the last of the list)
      */
     public static Room addUserToRoom(User user) {
+        connectedUsers.add(user);
         if(roomList.isEmpty() || !roomList.get(roomList.size()-1).isOpen()) {
             roomList.add(new Room(user));
         } else {

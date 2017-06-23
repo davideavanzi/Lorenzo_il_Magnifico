@@ -26,4 +26,14 @@ public class SocketUser extends User {
     public void sendGameState(Board board, ArrayList<Player> players) {
         //TODO: implement
     }
+
+    @Override
+    public int askForServants(int minimumAmount) {
+        return 0; //TODO: implement
+    }
+
+    @Override
+    public int chooseProduction() {
+        return 0; //TODO: implement
+    }
 }

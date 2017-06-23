@@ -92,23 +92,10 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
     public void chatMessageFromServer(String sender, String message) {
         uiController.getClientUI().printMessageln("[CHAT] message from "+sender+": "+message);
     }
-<<<<<<< HEAD
-}
-=======
 
     @Override
-    public void updateClientGame(Board board, ArrayList<Player> players) {
-        uiController.updateGame(board, players);
+    public void updateClientGame(Board board) {
+        uiController.updateGame(board);
     }
 }
 
-/*
-    public void createLobby(String roomName) throws RemoteException {
-        rmiServer.createRoom(roomName, this);
-    }
-
-    public void joinFirstRoom() {
-
-    }
- */
->>>>>>> 1108a337f37cd579aa445fe69fb707bdbe65751d
