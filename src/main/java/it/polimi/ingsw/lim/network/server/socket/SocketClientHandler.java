@@ -86,25 +86,6 @@ public class SocketClientHandler implements Runnable {
         waitRequest();
     }
 
-    /*public void sendAssetsToClient(Assets assets) {
-        try {
-            objFromServer.writeObject(ANSWER_GET_ASSETS);
-            objFromServer.flush();
-            objFromServer.reset();
-        } catch (IOException e) {
-            getLog().log(Level.SEVERE, () -> "[SOCKET] can't send command to server");
-        }
-    }
-
-    public int askForServants(int minimum) {
-        try {
-            objFromServer.writeObject();
-        } catch (IOException e) {
-            getLog().log(Level.SEVERE, () -> "[SOCKET] can't send command to server");
-        }
-        return 0;
-    }*/
-
     /**
      * This method sends a chat message to the user
      * @param sender
@@ -126,7 +107,7 @@ public class SocketClientHandler implements Runnable {
             objFromServer.flush();
             objFromServer.reset();
         } catch (IOException e) {
-            getLog().log(Level.SEVERE, "[SOCKET]: Could not send String to client", e);
+            getLog().log(Level.SEVERE, () -> "[SOCKET]: Could not send String to client");
         }
 
     }

@@ -29,8 +29,8 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
      * @param sender
      * @param message
      */
-    public static void chatMessageToClient(String sender, String message, RMIClientInterf rci) throws RemoteException{
-        rci.chatMessageFromServer(sender, message);
+    public static void chatMessageToClient(String sender, String message, RMIClientInterf rmiClient) throws RemoteException{
+        rmiClient.chatMessageFromServer(sender, message);
     }
 
     @Override
@@ -38,9 +38,10 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
         MainServer.getUserFromUsername(sender).getRoom().chatMessageToRoom(sender, message);
     }
 
-    public void login(String username, RMIClientInterf rci) throws RemoteException {
+    @Override
+    public void login(String username, RMIClientInterf rmiClient) throws RemoteException {
         //TODO: sistema di autenticazione (salvare utenti in un file/db, se utente esistente se vuole caricare stat.)
-        addUserToRoom(new RMIUser(username, rci));
+        addUserToRoom(new RMIUser(username, rmiClient));
     }
 
     /**

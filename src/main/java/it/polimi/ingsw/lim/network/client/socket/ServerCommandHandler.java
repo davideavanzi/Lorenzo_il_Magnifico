@@ -1,11 +1,9 @@
 package it.polimi.ingsw.lim.network.client.socket;
 
-import it.polimi.ingsw.lim.network.client.MainClient;
 import it.polimi.ingsw.lim.ui.UIController;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.logging.Level;
 
 import static it.polimi.ingsw.lim.network.SocketConstants.*;
 
@@ -30,14 +28,10 @@ class ServerCommandHandler {
                 uiCallback.getClientUI().printMessageln("Login successful!");
             } else if(commandIdentifier.equals(ASK_SERVANTS_AMOUNT)) {
 
-            } else if(commandIdentifier.equals(ANSWER_GET_ASSETS)) {
-
             } else if(commandIdentifier.equals(CHAT)) {
                 //The server has received a chat message from the client, it has to deliver it to other room mates.
                 uiCallback.getClientUI().printMessageln("[CHAT] message from "+command.get(1)+": "+command.get(2));
             }
         }
-        //check here if the command has not been fully eaten by handler?
-
     }
 }

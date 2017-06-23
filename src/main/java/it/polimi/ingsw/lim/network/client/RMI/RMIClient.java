@@ -79,9 +79,6 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
         }
     }
 
-    public void getAssets() throws ClientNetworkException {
-
-    }
 
     public void chatMessageToServer(String sender, String message) throws ClientNetworkException {
         try {
@@ -95,6 +92,9 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
     public void chatMessageFromServer(String sender, String message) {
         uiController.getClientUI().printMessageln("[CHAT] message from "+sender+": "+message);
     }
+<<<<<<< HEAD
+}
+=======
 
     @Override
     public void updateClientGame(Board board, ArrayList<Player> players) {
@@ -111,3 +111,4 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
 
     }
  */
+>>>>>>> 1108a337f37cd579aa445fe69fb707bdbe65751d
