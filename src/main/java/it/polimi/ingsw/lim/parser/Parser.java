@@ -2,7 +2,6 @@ package it.polimi.ingsw.lim.parser;
 
 import it.polimi.ingsw.lim.model.*;
 import it.polimi.ingsw.lim.exceptions.*;
-import static it.polimi.ingsw.lim.parser.Writer.*;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import java.io.IOException;
@@ -31,6 +30,14 @@ public class Parser {
     private int councilFavors;
     private Assets councilBonus;
     private Assets startingGameBonus;
+    private int timerStartGame;
+    private int timerPlayMove;
+
+    //setters
+    public void setTimers(int timerStartGame, int timerPlayMove){
+        this.timerStartGame = timerStartGame;
+        this.timerPlayMove = timerPlayMove;
+    }
 
     public void setStartingGameBonus(Assets startingGameBonus){
         this.startingGameBonus = startingGameBonus;
@@ -66,6 +73,15 @@ public class Parser {
 
     public void setBoardPlayersHarvestBonus (ArrayList<Assets> boardPlayersHarvestBonus){
         this.boardPlayersHarvestBonus = boardPlayersHarvestBonus;
+    }
+
+    //getters
+    public int getTimerStartGame(){
+        return this.timerStartGame;
+    }
+
+    public int getTimerPlayMove(){
+        return this.timerPlayMove;
     }
 
     public ArrayList<HashMap<String, ArrayList<Card>>> getCards() {
@@ -119,8 +135,6 @@ public class Parser {
     public ArrayList<Assets> getBoardPlayersHarvestBonus(){
         return  this.boardPlayersHarvestBonus;
     }
-    
-    //TODO controlla se serve davvero il this nei get
 
     /**
      * this method parse an Assets' type from Json file
@@ -193,7 +207,6 @@ public class Parser {
                 strengthsToParse.path(BLACK_BONUS).asInt()
         );
     }
-
 
     /**
      * the task of this method is to parse all board assets bonuses (TowerBonuses, MarketBonuses, FaithTrackBonuses,
@@ -793,6 +806,13 @@ public class Parser {
         return tmpExcommunications;
     }
 
+    /**
+     * the task of this method is to parse the assets of the player board (production bonus)
+     * @param pathToConfiguratorBonusAssetsFile is the path to the config bonus assets file (from the root or
+     *                                          from the working directory)
+     * @return ArrayList of assets containing the player board assets bonus
+     * @throws IOException if in the given path do not exist the file needed
+     */
     private static ArrayList<Assets> parseBoardPlayerProductionBonus (String pathToConfiguratorBonusAssetsFile)
             throws IOException{
         //read JSon all file data
@@ -807,12 +827,17 @@ public class Parser {
         return parseArrayAssets(bonusesNode.path(BOARD_PLAYER_PRODUCTION_BONUS));
     }
 
+    /**
+     * the task of this method is to parse the assets of the player board (harvest bonus)
+     * @param pathToConfiguratorBonusAssetsFile is the path to the config bonus assets file (from the root or
+     *                                          from the working directory)
+     * @return ArrayList of assets containing the player board assets bonus
+     * @throws IOException if in the given path do not exist the file needed
+     */
     private static ArrayList<Assets> parseBoardPlayerHarvestBonus (String pathToConfiguratorBonusAssetsFile)
             throws IOException{
-        //read JSon all file data
         byte[] jsonData = Files.readAllBytes(Paths.get(pathToConfiguratorBonusAssetsFile));
 
-        //create ObjectMapper instance
         ObjectMapper objectMapper = new ObjectMapper();
 
         JsonNode rootNode = objectMapper.readTree(jsonData);
@@ -820,18 +845,69 @@ public class Parser {
 
         return parseArrayAssets(bonusesNode.path(BOARD_PLAYER_HARVEST_BONUS));
     }
-    //TODO: controlla se e' utile avere due metodi diversi oppure se farne uno singolo in cui viene passata un'altra stringa che contiene la chiave nel json file
-    
-    
+
+    /**
+     * the task of this method is to parse a timer (from a Json File). this timer will be used when a new player create
+     * a new room (is the waiting time for the new player that wants to join this room). it must be at least 60 second
+     * @param pathToConfiguratorTimersFile is the path to the config timers file (from the root or
+     *                                      from the working directory)
+     * @return an int (value of the timer in second)
+     * @throws IOException if in the given path do not exist the file needed
+     * @throws InvalidTimerException if the time is not specified or invalid
+     */
+    private static int parseTimerStartGame (String pathToConfiguratorTimersFile)
+            throws IOException, InvalidTimerException{
+        byte[] jsonData = Files.readAllBytes(Paths.get(pathToConfiguratorTimersFile));
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        JsonNode rootNode = objectMapper.readTree(jsonData);
+        JsonNode timersNode = rootNode.path(TIMERS);
+        if(timersNode.path(START_GAME_TIMER).isInt()){
+            //by default at least 60 seconds
+            if(timersNode.path(START_GAME_TIMER).asInt() >= 60) {
+                return timersNode.path(START_GAME_TIMER).asInt();
+            }
+        }
+        throw new InvalidTimerException("Start Game Timer invalid");
+    }
+
+    /**
+     * the task of this method is to parse a timer (from a Json File). this timer will be used during the turn of a
+     * player (is the maximum time to play a move). it must be at least 60 second.
+     * @param pathToConfiguratorTimersFile is the path to the config timers file (from the root or
+     *                                      from the working directory)
+     * @return an int (value of the timer in second)
+     * @throws IOException if in the given path do not exist the file needed
+     * @throws InvalidTimerException if the time is not specified or invalid
+     */
+    private static int parseTimerPlayMove (String pathToConfiguratorTimersFile)
+            throws IOException, InvalidTimerException {
+        byte[] jsonData = Files.readAllBytes(Paths.get(pathToConfiguratorTimersFile));
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        JsonNode rootNode = objectMapper.readTree(jsonData);
+        JsonNode timersNode = rootNode.path(TIMERS);
+        if (timersNode.path(PLAY_MOVE_TIMER).isInt()) {
+            //by default at least 60 seconds
+            if (timersNode.path(PLAY_MOVE_TIMER).asInt() >= 60) {
+                return timersNode.path(PLAY_MOVE_TIMER).asInt();
+            }
+        }
+        throw new InvalidTimerException("Play Move Timer invalid");
+    }
+
     /**
      * @param pathToDirectory
      * @return a parsed game (object Parser)
      * @throws IOException if in the given path do not exist the file needed
      * @throws InvalidCardException if even just one of the not nullable variables is null or invalid
      * @throws InvalidExcommunicationException if even just one of the not nullable variables is null or invalid
+     * @throws InvalidTimerException if even just one of the timer is not valid (or null)
      */
     public Parser parser(String pathToDirectory)
-            throws IOException, InvalidCardException, InvalidExcommunicationException{
+            throws IOException, InvalidCardException, InvalidExcommunicationException, InvalidTimerException{
         getLog().info("Try to parse Cards from file: ".concat(pathToDirectory).concat(CONFIGURATOR_CARD_FILE_NAME));
         this.setCards(cardParser(pathToDirectory.concat(CONFIGURATOR_CARD_FILE_NAME)));
         getLog().info("Cards parsed.");
@@ -843,10 +919,10 @@ public class Parser {
         this.setBoardPlayersProductionBonus(parseBoardPlayerProductionBonus(pathToDirectory.concat(CONFIGURATOR_BONUS_ASSETS_FILE_NAME)));
         this.setBoardPlayersHarvestBonus(parseBoardPlayerHarvestBonus(pathToDirectory.concat(CONFIGURATOR_BONUS_ASSETS_FILE_NAME)));
         getLog().info("Assets Bonuses parsed.");
-        //getLog().info("Try to parse Excommunication from file: ".concat(pathToDirectory).concat(CONFIGURATOR_EXCOMMUNICATION_FILE_NAME));
-        //this.setExcommunications(parseExcommunications(pathToDirectory.concat(CONFIGURATOR_EXCOMMUNICATION_FILE_NAME)));
-        //getLog().info("Excommunications parsed.");
+        getLog().info("Try to parse Excommunication from file: ".concat(pathToDirectory).concat(CONFIGURATOR_EXCOMMUNICATION_FILE_NAME));
+        this.setExcommunications(parseExcommunications(pathToDirectory.concat(CONFIGURATOR_EXCOMMUNICATION_FILE_NAME)));
+        getLog().info("Excommunications parsed.");
+        this.setTimers(parseTimerStartGame(pathToDirectory.concat(CONFIGURATOR_TIMERS_FILE_NAME)), parseTimerPlayMove(pathToDirectory.concat(CONFIGURATOR_TIMERS_FILE_NAME)));
         return this;
-
     }
 }

@@ -102,9 +102,15 @@ public class KeyConst {
     public static final String CONFIGURATOR_CARD_FILE_NAME = "configuratorCardFile.json";
     public static final String CONFIGURATOR_BONUS_ASSETS_FILE_NAME = "configuratorBonusesAssetsFile.json";
     public static final String CONFIGURATOR_EXCOMMUNICATION_FILE_NAME = "configuratorExcommunicationsFile.json";
+    public static final String CONFIGURATOR_TIMERS_FILE_NAME = "configuratorTimersFile.json";
 
     public static final String BOARD_PLAYER_PRODUCTION_BONUS = "boardPlayerProductionBonus";
     public static final String BOARD_PLAYER_HARVEST_BONUS = "boardPlayerHarvestBonus";
+
+    public static final String TIMERS = "timers";
+    public static final String START_GAME_TIMER = "startGameTimer";
+    public static final String PLAY_MOVE_TIMER = "playMoveTimer";
+
 
     //writer
     public static final String PATH_TO_WRITER_FILE = "src/test/writer.json";
