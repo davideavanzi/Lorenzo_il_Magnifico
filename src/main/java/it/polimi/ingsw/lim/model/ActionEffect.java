@@ -2,6 +2,8 @@ package it.polimi.ingsw.lim.model;
 
 import it.polimi.ingsw.lim.Log;
 
+import java.io.Serializable;
+
 /**
  * This class represents an immediate effect that gives the player the ability to make another action:
  * This action could be harvest, production or picking a card from a tower. The action is specified in the strength

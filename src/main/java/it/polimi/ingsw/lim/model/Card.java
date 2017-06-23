@@ -1,13 +1,14 @@
 package it.polimi.ingsw.lim.model;
 import it.polimi.ingsw.lim.Log;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * This abstract class is responsible of representing a generic development card. Each subclass will define different
  * behaviours for the 5 kinds of cards in the game (Green, Yellow, Blue, Purple, Black)
  */
-public abstract class Card {
+public abstract class Card implements Serializable {
 
     /**
      * The name of the card

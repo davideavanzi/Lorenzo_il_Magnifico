@@ -1,11 +1,12 @@
 package it.polimi.ingsw.lim.model;
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * Abstract class that represents an excommunication. It has always an age, an id and an array that contains
  * the excommunicated players
  */
-public abstract class Excommunication {
+public abstract class Excommunication implements Serializable {
 
     /**
      * Default constructor

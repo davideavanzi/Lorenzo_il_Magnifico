@@ -1,11 +1,12 @@
 package it.polimi.ingsw.lim.model;
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * This class represents family members. Players put them in places to make actions.
  * The neutral fm has a NEUTRAL color. it corresponds to a NEUTRAL dice which value is always 0.
  */
-public class FamilyMember {
+public class FamilyMember implements Serializable {
 
     /**
      * Constructor
