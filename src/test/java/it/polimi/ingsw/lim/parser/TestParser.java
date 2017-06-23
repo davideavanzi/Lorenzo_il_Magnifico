@@ -2,6 +2,7 @@ package it.polimi.ingsw.lim.parser;
 
 import it.polimi.ingsw.lim.exceptions.InvalidCardException;
 import it.polimi.ingsw.lim.exceptions.InvalidExcommunicationException;
+import it.polimi.ingsw.lim.exceptions.InvalidTimerException;
 import it.polimi.ingsw.lim.model.*;
 import junit.framework.*;
 import org.junit.Test;
@@ -217,6 +218,10 @@ public class TestParser extends TestCase {
         } catch (InvalidExcommunicationException e) {
             e.printStackTrace();
             getLog().info("InvalidExcommunicationException");
+        }
+        catch (InvalidTimerException e){
+            e.printStackTrace();
+            getLog().info("InvalidTimersException");
         }
     }
 
