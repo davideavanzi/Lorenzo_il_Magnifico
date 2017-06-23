@@ -1,5 +1,7 @@
 package it.polimi.ingsw.lim.controller;
 
+import it.polimi.ingsw.lim.model.Player;
+
 import static it.polimi.ingsw.lim.Log.getLog;
 import static it.polimi.ingsw.lim.Settings.*;
 
@@ -51,7 +53,5 @@ public class Room {
     }
 
     public boolean isOpen() { return roomOpen; }
-
-
 
 }
