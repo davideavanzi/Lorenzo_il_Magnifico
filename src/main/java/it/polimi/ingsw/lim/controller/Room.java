@@ -18,6 +18,7 @@ public class Room {
     private boolean roomOpen = true; // room open
     private static ArrayList<User> usersList;
     private ArrayList<String> playOrder;
+    private PlayerTurn turn;
 
     public Room(User user) {
         usersList = new ArrayList<>();
@@ -50,5 +51,7 @@ public class Room {
     }
 
     public boolean isOpen() { return roomOpen; }
+
+
 
 }

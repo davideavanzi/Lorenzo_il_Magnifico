@@ -2,6 +2,8 @@ package it.polimi.ingsw.lim.ui;
 
 import it.polimi.ingsw.lim.Lock;
 import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
+import it.polimi.ingsw.lim.model.Board;
+import it.polimi.ingsw.lim.model.Player;
 import it.polimi.ingsw.lim.network.client.RMI.RMIClient;
 import it.polimi.ingsw.lim.network.client.ServerInterface;
 import it.polimi.ingsw.lim.network.client.socket.SocketClient;
@@ -20,6 +22,8 @@ public class UIController {
     //a copy of the user name is stored here
     private static String username;
     Lock lock = new Lock();
+    private static Board localBoard;
+    private static ArrayList<Player> localPlayers;
 
     /**
      * The first thing to do is create a user interface, then the player must choose
@@ -127,5 +131,10 @@ public class UIController {
                     System.out.println("Not a valid choice, enter yes/y if you want to use a GUI, no/n for a CLI");
             }
         }
+    }
+
+    public void updateGame(Board board, ArrayList<Player> players) {
+        localBoard = board;
+        localPlayers = players;
     }
 }

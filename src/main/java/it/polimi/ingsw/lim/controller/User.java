@@ -1,5 +1,10 @@
 package it.polimi.ingsw.lim.controller;
 
+import it.polimi.ingsw.lim.model.Board;
+import it.polimi.ingsw.lim.model.Player;
+
+import java.util.ArrayList;
+
 /**
  * Created by Davide on 26/05/2017.
  * This class represent the person playing the game. It has a unique username picked from the db upon login.
@@ -38,4 +43,7 @@ public abstract class User {
     //public int askForServants(int minimum) { return clientInterf.askForServants(minimum); }
 
     public abstract void chatMessage(String sender, String message);
+
+    public abstract void sendGameState(Board board, ArrayList<Player> players);
+
 }
