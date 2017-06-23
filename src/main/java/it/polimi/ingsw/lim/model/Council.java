@@ -1,4 +1,5 @@
 package it.polimi.ingsw.lim.model;
+import java.io.Serializable;
 import java.util.*;
 
 import static it.polimi.ingsw.lim.Log.getLog;
@@ -9,7 +10,7 @@ import static it.polimi.ingsw.lim.Log.getLog;
  * same as the turn before. If not all players put a family member here, the order starts with the ones that put
  * a fm here, then the others following in the order of the turn before.
  */
-public class Council {
+public class Council implements Serializable {
 
     /**
      * Constructor

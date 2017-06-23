@@ -1,4 +1,5 @@
 package it.polimi.ingsw.lim.model;
+import java.io.Serializable;
 import java.util.*;
 
 import static it.polimi.ingsw.lim.Settings.*;
@@ -6,7 +7,7 @@ import static it.polimi.ingsw.lim.Settings.*;
 /**
  * This class holds values for strengths that affect the player while performing an action.
  */
-public class Strengths {
+public class Strengths implements Serializable {
 
     /**
      * Default constructor, all values are put to 0.

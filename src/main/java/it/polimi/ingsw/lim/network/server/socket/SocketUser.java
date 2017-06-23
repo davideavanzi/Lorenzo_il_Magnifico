@@ -1,6 +1,10 @@
 package it.polimi.ingsw.lim.network.server.socket;
 
 import it.polimi.ingsw.lim.controller.User;
+import it.polimi.ingsw.lim.model.Board;
+import it.polimi.ingsw.lim.model.Player;
+
+import java.util.ArrayList;
 
 /**
  * Created by nico.
@@ -16,5 +20,10 @@ public class SocketUser extends User {
     @Override
     public void chatMessage(String sender, String message) {
         this.sch.chatMessageToClient(sender, message);
+    }
+
+    @Override
+    public void sendGameState(Board board, ArrayList<Player> players) {
+        //TODO: implement
     }
 }

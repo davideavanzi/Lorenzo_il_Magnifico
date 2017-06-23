@@ -23,31 +23,20 @@ public class Game {
      */
     public Game() {
         getLog().info("Creating game instance");
-        this.age = 1;
-        this.turn = 1;
+        this.board = new Board();
+        this.board.setAge(1);
+        this.board.setTurn(1);
         this.players = new ArrayList<>();
         this.cardsDeck = new CardsDeck();
         this.availablePlayerColors = new ArrayList<>(PLAYER_COLORS);
-        this.board = new Board();
         this.dice = new HashMap<>();
         dice.put(NEUTRAL_COLOR, NEUTRAL_FM_STRENGTH);
     }
 
     /**
-     * The age in which the game is.
-     */
-    private int age;
-
-    /**
      * The board, contains links to the structures
      */
     private Board board;
-
-    /**
-     * The turn in which the game is.
-     */
-
-    private int turn;
 
     /**
      * List of all the players
@@ -75,7 +64,7 @@ public class Game {
      * @return an excommunication based on the game's age
      */
     public Excommunication GetExcommunication(){
-        return this.board.getExcommunications().get(this.age);
+        return this.board.getExcommunications().get(this.board.getAge());
     }
 
     /**
@@ -144,7 +133,7 @@ public class Game {
      * Deciding when to advance in ages and turn is a task of the main game controller.
      */
     public void setUpTurn(){
-        getLog().log(Level.INFO, "[NEW_TURN_SETUP] - Setting up turn number: %s", this.turn);
+        getLog().log(Level.INFO, "[NEW_TURN_SETUP] - Setting up turn number: %s", this.board.getTurn());
         clearHarvest();
         clearProduction();
         this.board.getCouncil().clear();
@@ -155,7 +144,7 @@ public class Game {
                 getLog().info("Clearing "+color+" tower");
                 this.board.getTowers().get(color).clear();
                 getLog().log(Level.INFO,"Adding cards to %s tower", color);
-                this.board.getTowers().get(color).addCards(cardsDeck.getCardsForTower(color, age));
+                this.board.getTowers().get(color).addCards(cardsDeck.getCardsForTower(color, this.board.getAge()));
             });
         getLog().info("Allotting family members to players");
         this.players.forEach(player ->
@@ -183,8 +172,8 @@ public class Game {
         this.board.setProduction(new ArrayList<>());
     }
 
-    public int getAge() { return  this.age; }
-    public int getTurn() { return  this.turn; }
+    public int getAge() { return  this.board.getAge(); }
+    public int getTurn() { return  this.board.getAge(); }
     public ArrayList<Player> getPlayers(){ return this.players; }
 
 
@@ -212,13 +201,13 @@ public class Game {
      */
 
     public void newTurn(){
-        if(this.turn >= TURNS_PER_AGE){
-            this.turn = 1;
-            this.age++;
-            getLog().log(Level.INFO, () -> "Advancing into new age, number: " + this.age);
+        if(this.board.getTurn() >= TURNS_PER_AGE){
+            this.board.setTurn(1);
+            this.board.setAge(this.board.getAge()+1);
+            getLog().log(Level.INFO, () -> "Advancing into new age, number: " + this.board.getAge());
         } else {
-            this.turn++;
-            getLog().log(Level.INFO, () -> "Advancing into new turn, number: %d" + this.turn);
+            this.board.setTurn(this.board.getTurn()+1);
+            getLog().log(Level.INFO, () -> "Advancing into new turn, number: %d" + this.board.getTurn());
         }
     }
 

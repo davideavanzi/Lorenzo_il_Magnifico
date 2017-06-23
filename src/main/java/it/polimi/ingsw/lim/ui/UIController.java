@@ -1,6 +1,8 @@
 package it.polimi.ingsw.lim.ui;
 
 import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
+import it.polimi.ingsw.lim.model.Board;
+import it.polimi.ingsw.lim.model.Player;
 import it.polimi.ingsw.lim.network.client.RMI.RMIClient;
 import it.polimi.ingsw.lim.network.client.ServerInterface;
 import it.polimi.ingsw.lim.network.client.socket.SocketClient;
@@ -20,6 +22,12 @@ public class UIController {
     private static Scanner userInput = new Scanner(System.in);
     //a copy of the user name is stored here
     private static String username;
+<<<<<<< HEAD
+=======
+    Lock lock = new Lock();
+    private static Board localBoard;
+    private static ArrayList<Player> localPlayers;
+>>>>>>> 1108a337f37cd579aa445fe69fb707bdbe65751d
 
     /**
      * The first thing to do is create a user interface, then the player must choose
@@ -169,6 +177,7 @@ public class UIController {
         }
     }
 
+<<<<<<< HEAD
     class UIConstant {
 
         protected static final String SPACE = " ";
@@ -188,5 +197,10 @@ public class UIController {
         protected static final String HELP_CHAT = "Usage: chat [MESSAGE].\nBroadcast a message to all client in the room";
         protected static final String HELP_TURN = "Usage: turn.\nShow which user is playing";
         protected static final String HELP_SHOW = "Usage: show [strength,assets,tower,card,leader,personal-board] [username]\nShow information about a specific user";
+=======
+    public void updateGame(Board board, ArrayList<Player> players) {
+        localBoard = board;
+        localPlayers = players;
+>>>>>>> 1108a337f37cd579aa445fe69fb707bdbe65751d
     }
 }

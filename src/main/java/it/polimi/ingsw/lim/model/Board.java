@@ -1,13 +1,14 @@
 package it.polimi.ingsw.lim.model;
 import static it.polimi.ingsw.lim.Settings.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
  * Created by ava on 12/06/17.
  */
-public class Board {
+public class Board implements Serializable {
 
     /**
      * Constructor
@@ -18,6 +19,16 @@ public class Board {
         this.harvest = new ArrayList<>();
         this.faithTrack = new Assets[FAITH_TRACK_LENGTH];
     }
+
+    /**
+     * The age in which the game is.
+     */
+    private int age;
+
+    /**
+     * The turn in which the game is.
+     */
+    private int turn;
 
     /**
      * This maps the three excommunication with an int representing it's age
@@ -94,5 +105,21 @@ public class Board {
 
     public void setProduction(ArrayList<FamilyMember> production) {
         this.production = production;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public int getTurn() {
+        return turn;
+    }
+
+    public void setTurn(int turn) {
+        this.turn = turn;
     }
 }

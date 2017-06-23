@@ -1,9 +1,12 @@
 package it.polimi.ingsw.lim.network.server.RMI;
 
 import it.polimi.ingsw.lim.controller.User;
+import it.polimi.ingsw.lim.model.Board;
+import it.polimi.ingsw.lim.model.Player;
 import it.polimi.ingsw.lim.network.client.RMI.RMIClientInterf;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 
 import static it.polimi.ingsw.lim.Log.getLog;
@@ -26,6 +29,10 @@ public class RMIUser extends User {
         } catch (RemoteException e) {
             getLog().log(Level.SEVERE, "[RMI] Remote error sending chat message to client.");
         }
+    }
+
+    @Override
+    public void sendGameState(Board board, ArrayList<Player> players) {
 
     }
 }

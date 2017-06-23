@@ -1,4 +1,5 @@
 package it.polimi.ingsw.lim.model;
+import java.io.Serializable;
 import java.util.*;
 
 import static it.polimi.ingsw.lim.Log.getLog;
@@ -6,7 +7,7 @@ import static it.polimi.ingsw.lim.Log.getLog;
 /**
  * This class represents the market. Slots and bonuses are mapped one-to-one
  */
-public class Market {
+public class Market implements Serializable {
 
     /**
      * Constructor, it creates a market of the proper size based on the number of players in the game

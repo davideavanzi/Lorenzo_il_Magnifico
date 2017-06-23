@@ -1,6 +1,8 @@
 package it.polimi.ingsw.lim.network.client.RMI;
 
 import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
+import it.polimi.ingsw.lim.model.Board;
+import it.polimi.ingsw.lim.model.Player;
 import it.polimi.ingsw.lim.network.client.ServerInterface;
 import it.polimi.ingsw.lim.network.server.RMI.RMIServerInterf;
 import it.polimi.ingsw.lim.ui.UIController;
@@ -12,6 +14,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 
 /**
  * Created by nico.
@@ -89,4 +92,23 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
     public void chatMessageFromServer(String sender, String message) {
         uiController.getClientUI().printMessageln("[CHAT] message from "+sender+": "+message);
     }
+<<<<<<< HEAD
 }
+=======
+
+    @Override
+    public void updateClientGame(Board board, ArrayList<Player> players) {
+        uiController.updateGame(board, players);
+    }
+}
+
+/*
+    public void createLobby(String roomName) throws RemoteException {
+        rmiServer.createRoom(roomName, this);
+    }
+
+    public void joinFirstRoom() {
+
+    }
+ */
+>>>>>>> 1108a337f37cd579aa445fe69fb707bdbe65751d

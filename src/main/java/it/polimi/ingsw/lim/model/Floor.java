@@ -1,10 +1,12 @@
 package it.polimi.ingsw.lim.model;
+import java.io.Serializable;
+
 import static it.polimi.ingsw.lim.Settings.FLOORS_ACTION_COSTS;
 
 /**
  * This class represents a single floor of a tower
  */
-public class Floor {
+public class Floor implements Serializable {
 
     /**
      * Constructor. it takes the integer corresponding to it's position in the tower

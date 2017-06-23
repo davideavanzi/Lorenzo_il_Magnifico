@@ -1,4 +1,5 @@
 package it.polimi.ingsw.lim.model;
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -9,7 +10,7 @@ import java.util.*;
  * - CardMultipliedEffect
  * - CouncilFavorsEffect
  */
-public abstract class ImmediateEffect {
+public abstract class ImmediateEffect implements Serializable {
 
     /**
      * Default constructor

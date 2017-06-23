@@ -1,5 +1,6 @@
 package it.polimi.ingsw.lim.model;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.logging.Level;
 
@@ -10,7 +11,7 @@ import static it.polimi.ingsw.lim.Settings.*;
  * Player are indexed by nickname, which corresponds to he user that is playing, and that username is unique
  * TODO: map family members with an hashmap?
  */
-public class Player {
+public class Player implements Serializable{
 
     /**
      * Creating an empty player with a nickname.

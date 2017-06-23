@@ -1,6 +1,7 @@
 package it.polimi.ingsw.lim.model;
 
 
+import java.io.Serializable;
 import java.util.*;
 import static it.polimi.ingsw.lim.Settings.*;
 
@@ -8,7 +9,7 @@ import static it.polimi.ingsw.lim.Settings.*;
  * Class representing a tower.
  * TODO: The tower itself doesn't know it's color, only the game knows. Is this right?
  */
-public class Tower {
+public class Tower implements Serializable {
 
     /**
      * Default constructor

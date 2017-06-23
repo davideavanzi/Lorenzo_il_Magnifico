@@ -1,5 +1,7 @@
 package it.polimi.ingsw.lim.controller;
 
+import it.polimi.ingsw.lim.model.Player;
+
 import static it.polimi.ingsw.lim.Log.getLog;
 import static it.polimi.ingsw.lim.Settings.*;
 
@@ -18,6 +20,7 @@ public class Room {
     private boolean roomOpen = true; // room open
     private static ArrayList<User> usersList;
     private ArrayList<String> playOrder;
+    private PlayerTurn turn;
 
     public Room(User user) {
         usersList = new ArrayList<>();
