@@ -7,7 +7,9 @@ import static it.polimi.ingsw.lim.Settings.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 import java.util.logging.Level;
+import java.util.TimerTask;
 
 /**
  * Created by Davide on 26/05/2017.
@@ -53,5 +55,29 @@ public class Room {
     }
 
     public boolean isOpen() { return roomOpen; }
+
+    private void notifyEndTurn(){
+        //todo switch turn to next player
+    }
+
+    private class TimerEndTurn{
+        private Timer timer;
+        public TimerEndTurn(int seconds, Room roomCallback){
+            timer = new Timer();
+            timer.schedule(new endTimer(roomCallback), seconds * 1000 /*by default ms (1s = 1000ms)*/);
+        }
+        private class endTimer extends TimerTask{
+            private Room roomCallback;
+            private endTimer(Room roomCallback) {
+                this.roomCallback = roomCallback;
+            }
+            @Override
+            public void run(){
+                //todo when timer end
+                roomCallback.notifyEndTurn();
+                timer.cancel();
+            }
+        }
+    }
 
 }
