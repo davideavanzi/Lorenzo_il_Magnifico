@@ -14,7 +14,7 @@ public class CLI extends AbsUI {
 
     public void waitUserInput() {
         while(true) {
-            input = userInput.nextLine().toLowerCase();
+            input = userInput.nextLine().toLowerCase().trim();
             UIController.inputParser(input);
         }
     }

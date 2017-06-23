@@ -76,9 +76,6 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
         }
     }
 
-    public void getAssets() throws ClientNetworkException {
-
-    }
 
     public void chatMessageToServer(String sender, String message) throws ClientNetworkException {
         try {
@@ -93,13 +90,3 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
         uiController.getClientUI().printMessageln("[CHAT] message from "+sender+": "+message);
     }
 }
-
-/*
-    public void createLobby(String roomName) throws RemoteException {
-        rmiServer.createRoom(roomName, this);
-    }
-
-    public void joinFirstRoom() {
-
-    }
- */

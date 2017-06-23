@@ -25,16 +25,15 @@ public class SocketClient implements Runnable, ServerInterface {
     /**
      * Socket client constructor
      */
-    public SocketClient(UIController uiController) {
-        this.uiController = uiController;
-        this.commandHandler = new ServerCommandHandler(this, uiController);
-        uiController.setClientProtocol(this);
+    public SocketClient(UIController uiCallback) {
+        this.uiController = uiCallback;
+        this.commandHandler = new ServerCommandHandler(this, uiCallback);
+        uiCallback.setClientProtocol(this);
         this.lock = new Lock();
         try {
             lock.lock();
         } catch (InterruptedException e) {
-            //TODO: print to screen?
-            uiController.getClientUI().printMessageln(e.getMessage());
+            uiCallback.getClientUI().printMessageln(e.getMessage());
         }
 
     }
@@ -67,17 +66,6 @@ public class SocketClient implements Runnable, ServerInterface {
             objFromClient.reset();
         } catch (IOException e) {
             throw new ClientNetworkException("Could not send chat message to server", e);
-        }
-    }
-    //ASK FOR SERVANT
-
-    public void getAssets() throws ClientNetworkException {
-        try {
-            objFromClient.writeObject(GET_ASSETS);
-            objFromClient.flush();
-            objFromClient.reset();
-        } catch (IOException e) {
-            throw new ClientNetworkException("Could not send getAssets command to server", e);
         }
     }
 

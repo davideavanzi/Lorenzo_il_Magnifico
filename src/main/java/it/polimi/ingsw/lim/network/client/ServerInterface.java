@@ -25,6 +25,4 @@ public interface ServerInterface {
     void sendLogin(String username) throws ClientNetworkException;
 
     void chatMessageToServer(String sender, String message) throws ClientNetworkException;
-
-    void getAssets() throws ClientNetworkException;
 }
