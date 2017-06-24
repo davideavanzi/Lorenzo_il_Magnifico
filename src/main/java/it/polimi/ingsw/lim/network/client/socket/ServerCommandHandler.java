@@ -30,7 +30,7 @@ class ServerCommandHandler {
 
             } else if(commandIdentifier.equals(CHAT)) {
                 //The server has received a chat message from the client, it has to deliver it to other room mates.
-                uiCallback.getClientUI().printMessageln("[CHAT] message from "+command.get(1)+": "+command.get(2));
+                uiCallback.getClientUI().printChatMessage(command.get(1), command.get(2));
             }
         }
     }

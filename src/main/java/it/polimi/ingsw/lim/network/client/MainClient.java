@@ -10,11 +10,21 @@ import static it.polimi.ingsw.lim.ui.UIController.setUI;
 public class MainClient {
 
     public static void main(String[] args) {
-        System.out.println("Welcome to Lorenzo Il Magnifico!");
+        splashScreen();
         System.out.println();
         UIController client = new UIController(setUI());
         client.setNetworkProtocol();
         client.login();
         client.inputHandler();
+    }
+
+    public static void splashScreen() {
+        System.out.println("Welcome to:\n" +
+                "     _                            _____      __     __)                           \n" +
+                " ___/__)                         (, /  /)   (, /|  /|               ,  /) ,       \n" +
+                "(, /   _____   _ __   _   ___      /  //      / | / |  _   _  __      //    _  ___\n" +
+                "  /   (_)/ (__(/_/ (_'_)_(_)   ___/__(/_   ) /  |/  |_(_(_(_/_/ (__(_/(__(_(__(_) \n" +
+                " (_____             .-/      (__ /        (_/   '        .-/        /)            \n" +
+                "        )          (_/                                  (_/        (/            ");
     }
 }

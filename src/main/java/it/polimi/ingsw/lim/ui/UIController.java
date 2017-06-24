@@ -32,11 +32,13 @@ public class UIController {
     /**
      * The first thing to do is create a user interface, then the player must choose
      * the network protocol
-     * @param gui
+     * @param ui
      */
-    public UIController(boolean gui) {
-        if(gui) {
+    public UIController(String ui) {
+        if(ui.equals("gui")) {
             //clientUI = new GUI();
+        } else if (ui.equals("morse")){
+            clientUI = new MorseLI();
         } else {
             clientUI = new CLI();
         }
@@ -159,12 +161,14 @@ public class UIController {
      * The player choose if he want to play with GUI or CLI.
      * @return true if you want to use a GUI, false if you want a CLI.
      */
-    public static boolean setUI() {
-        System.out.println("Do you want to play with a GUI? (y/n)");
+    public static String setUI() {
+        System.out.println("Choose your user interface: GUI, MORSE or CLI (default)");
         System.out.print("$ ");
+        return userInput.nextLine().toLowerCase();
+        /*
         while (true) {
-            String gui = userInput.nextLine().toLowerCase();
-            switch (gui) {
+            String ui = userInput.nextLine().toLowerCase();
+            switch (ui) {
                 case "no":
                 case "n":
                     return false;
@@ -174,7 +178,7 @@ public class UIController {
                 default:
                     System.out.println("Not a valid choice, enter yes/y if you want to use a GUI, no/n for a CLI");
             }
-        }
+        } */
     }
 
     public void updateGame(Board board) {

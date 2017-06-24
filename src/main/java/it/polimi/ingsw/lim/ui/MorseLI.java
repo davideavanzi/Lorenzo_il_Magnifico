@@ -1,22 +1,16 @@
 package it.polimi.ingsw.lim.ui;
 
-import com.diogonunes.jcdp.color.ColoredPrinter;
-import com.diogonunes.jcdp.color.api.Ansi;
-import com.vdurmont.emoji.EmojiParser;
+import it.polimi.ingsw.lim.utils.MorseParser;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 
 /**
- * Created by nico.
- * This is the client commandInput line interface
+ * Created by Davide on 23/06/2017.
  */
-public class CLI extends AbsUI {
+public class MorseLI extends AbsUI {
+
     Scanner userInput = new Scanner(System.in);
     String input;
-    ColoredPrinter cp = new ColoredPrinter.Builder(1, false).build();
-
 
     public void waitUserInput() {
         while(true) {
@@ -47,7 +41,7 @@ public class CLI extends AbsUI {
     }
 
     public String loginForm() {
-        printMessageln(":bust_in_silhouette:  Enter a username:");
+        printMessageln("Enter a username: :bust_in_silhouette:");
         printMessage("$ ");
         input = userInput.nextLine().toLowerCase();
         return input;
@@ -58,7 +52,7 @@ public class CLI extends AbsUI {
      * @param message
      */
     public void printMessageln(String message) {
-        System.out.println(EmojiParser.parseToUnicode(message));
+        System.out.println(MorseParser.encode(message));
     }
 
     /**
@@ -66,11 +60,13 @@ public class CLI extends AbsUI {
      * @param message
      */
     public void printMessage(String message) {
-        System.out.print(EmojiParser.parseToUnicode(message));
+        System.out.print(MorseParser.encode(message));
     }
 
+    @Override
     public void printChatMessage(String sender, String message) {
-        cp.print(EmojiParser.parseToUnicode(":email:  ")+"[CHAT] message from "+sender+" :", Ansi.Attribute.BOLD, Ansi.FColor.WHITE, Ansi.BColor.BLUE);
-        cp.print(message+"\n");
+        System.out.println(MorseParser.encode("[CHAT] Message from "+sender+" : "+message));
     }
 }
+
+
