@@ -25,6 +25,7 @@ public abstract class AbsUI {
      */
     public abstract void printMessageln(String message);
     public abstract void printMessage(String message);
+    public abstract void printChatMessage(String sender, String message);
 
     public abstract void waitUserInput();
 

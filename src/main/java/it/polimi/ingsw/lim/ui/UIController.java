@@ -1,17 +1,17 @@
 package it.polimi.ingsw.lim.ui;
 
-import it.polimi.ingsw.lim.Lock;
 import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
 import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.Player;
-import it.polimi.ingsw.lim.model.Tower;
 import it.polimi.ingsw.lim.network.client.RMI.RMIClient;
 import it.polimi.ingsw.lim.network.client.ServerInterface;
 import it.polimi.ingsw.lim.network.client.socket.SocketClient;
+import it.polimi.ingsw.lim.Lock;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
 
-import static it.polimi.ingsw.lim.Settings.TOWER_HEIGHT;
 import static it.polimi.ingsw.lim.ui.UIController.UIConstant.*;
 
 /**
@@ -23,18 +23,22 @@ public class UIController {
     private static Scanner userInput = new Scanner(System.in);
     //a copy of the user name is stored here
     private static String username;
+
     Lock lock = new Lock();
     private static Board localBoard;
     private static ArrayList<Player> localPlayers;
 
+
     /**
      * The first thing to do is create a user interface, then the player must choose
      * the network protocol
-     * @param gui
+     * @param ui
      */
-    public UIController(boolean gui) {
-        if(gui) {
+    public UIController(String ui) {
+        if(ui.equals("gui")) {
             //clientUI = new GUI();
+        } else if (ui.equals("morse")){
+            clientUI = new MorseLI();
         } else {
             clientUI = new CLI();
         }
@@ -46,14 +50,6 @@ public class UIController {
 
     public static void setClientProtocol(ServerInterface clientProtocol) {
         UIController.clientProtocol = clientProtocol;
-    }
-
-    public void updatePlayers(ArrayList<Player> player) {
-        localPlayers = player;
-    }
-
-    public void updateGame(Board board) {
-        localBoard = board;
     }
 
     public void inputHandler() {
@@ -96,26 +92,15 @@ public class UIController {
     }
 
     private static void manageShowCommand(ArrayList<String> commandInput) {
-        String username = commandInput.get(2);
         switch (commandInput.get(1)) {
             case STRENGTH:
-
+                
                 break;
             case ASSETS:
-                for (Player player : localPlayers)
-                    if (player.getNickname().equalsIgnoreCase(username))
-                        clientUI.getAssets(player.getResources(), username);
+
                 break;
             case TOWER:
-                HashMap<String, Tower> towers = localBoard.getTowers();
-                /*for (Map.Entry<String, Tower> twrs : towers.entrySet()) {
-                    String color = twrs.getKey();
-                    Tower twr = twrs.getValue();
-                    for (int count = 0; count < TOWER_HEIGHT; count++) {
-                        twr.getFloor(count).getCard();
-                        clientUI.showTowers(color, twr);
-                    }
-                }*/
+
                 break;
             case CARD:
 
@@ -176,12 +161,14 @@ public class UIController {
      * The player choose if he want to play with GUI or CLI.
      * @return true if you want to use a GUI, false if you want a CLI.
      */
-    public static boolean setUI() {
-        System.out.println("Do you want to play with a GUI? (y/n)");
+    public static String setUI() {
+        System.out.println("Choose your user interface: GUI, MORSE or CLI (default)");
         System.out.print("$ ");
+        return userInput.nextLine().toLowerCase();
+        /*
         while (true) {
-            String gui = userInput.nextLine().toLowerCase();
-            switch (gui) {
+            String ui = userInput.nextLine().toLowerCase();
+            switch (ui) {
                 case "no":
                 case "n":
                     return false;
@@ -191,7 +178,11 @@ public class UIController {
                 default:
                     System.out.println("Not a valid choice, enter yes/y if you want to use a GUI, no/n for a CLI");
             }
-        }
+        } */
+    }
+
+    public void updateGame(Board board) {
+        localBoard = board;
     }
 
     class UIConstant {
