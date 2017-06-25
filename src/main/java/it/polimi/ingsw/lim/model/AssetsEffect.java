@@ -29,7 +29,7 @@ public class AssetsEffect extends ImmediateEffect {
         System.out.println("      ---- Effect type ----      ");
         System.out.println("          Assets bonus");
         System.out.println("        ---- Bonus ----      ");
-        bonus.printAssets();
+        //bonus.printAssets();
 
     }
 

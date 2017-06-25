@@ -32,7 +32,7 @@ public class RMIUser extends User {
     }
 
     @Override
-    public void sendGameState(Board board, ArrayList<Player> players) {
+    public void sendGameState(Board board) {
 
     }
 }

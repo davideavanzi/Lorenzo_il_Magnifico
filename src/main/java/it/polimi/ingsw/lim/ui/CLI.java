@@ -1,7 +1,11 @@
 package it.polimi.ingsw.lim.ui;
 
+import it.polimi.ingsw.lim.model.Assets;
+import it.polimi.ingsw.lim.model.Tower;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Scanner;
 
 /**
@@ -17,6 +21,21 @@ public class CLI extends AbsUI {
             input = userInput.nextLine().toLowerCase().trim();
             UIController.inputParser(input);
         }
+    }
+
+    public void getAssets(Assets resource, String username) {
+        printMessageln(username+"'s resources:");
+        printMessageln("    - Gold:             "+resource.getCoins());
+        printMessageln("    - Wood:             "+resource.getWood());
+        printMessageln("    - Stone:            "+resource.getStone());
+        printMessageln("    - Servants:         "+resource.getServants());
+        printMessageln("    - FaithPoints:      "+resource.getFaithPoints());
+        printMessageln("    - BattlePoints:     "+resource.getBattlePoints());
+        printMessageln("    - VictoryPoints:    "+resource.getVictoryPoints());
+    }
+
+    public void showTowers(String color, Tower tower) {
+
     }
 
     /**

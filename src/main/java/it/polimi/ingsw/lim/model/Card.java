@@ -1,4 +1,5 @@
 package it.polimi.ingsw.lim.model;
+
 import it.polimi.ingsw.lim.Log;
 
 import java.io.Serializable;
@@ -70,8 +71,6 @@ public abstract class Card implements Serializable {
         System.out.println("[CARD PRINT]:\n Name:"+name+"\nAge:"+age);
         if (cost != null){
             System.out.println("PRINTING COST");
-            cost.printAssets();
-
         }
         //TODO:print effect
         if (immediateEffects != null)

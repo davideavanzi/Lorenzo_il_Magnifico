@@ -44,6 +44,5 @@ public abstract class User {
 
     public abstract void chatMessage(String sender, String message);
 
-    public abstract void sendGameState(Board board, ArrayList<Player> players);
-
+    public abstract void sendGameState(Board board);
 }

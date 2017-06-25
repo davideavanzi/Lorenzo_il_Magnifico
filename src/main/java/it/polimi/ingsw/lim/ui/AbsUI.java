@@ -1,5 +1,8 @@
 package it.polimi.ingsw.lim.ui;
 
+import it.polimi.ingsw.lim.model.Assets;
+import it.polimi.ingsw.lim.model.Tower;
+
 /**
  * Created by nico.
  */
@@ -23,6 +26,9 @@ public abstract class AbsUI {
     public abstract void printMessageln(String message);
     public abstract void printMessage(String message);
 
-    public void waitUserInput() {
-    }
+    public abstract void waitUserInput();
+
+    public abstract void showTowers(String color, Tower tower);
+
+    public abstract void getAssets(Assets resource, String username);
 }

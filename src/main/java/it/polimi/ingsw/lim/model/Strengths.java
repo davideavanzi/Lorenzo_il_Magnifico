@@ -28,10 +28,10 @@ public class Strengths implements Serializable {
      * @param harvest - harvest action strength
      * @param production - production action strength
      * @param green - strength to access the green tower
-     * @param green - strength to access the green tower
-     * @param blue - strength to access the green tower
-     * @param purple - strength to access the green tower
-     * @param black - strength to access the green tower
+     * @param yellow - strength to access the yellow tower
+     * @param blue - strength to access the blue tower
+     * @param purple - strength to access the purple tower
+     * @param black - strength to access the black tower
      */
     public Strengths(int harvest, int production, int green, int yellow, int blue, int purple, int black){
         this.towerstrengths = new HashMap<>();

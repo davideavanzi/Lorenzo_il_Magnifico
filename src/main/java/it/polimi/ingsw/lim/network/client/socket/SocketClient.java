@@ -107,26 +107,9 @@ public class SocketClient implements Runnable, ServerInterface {
 
     public void run() {
         try {
-            //connect();
             waitFromServer();
         } catch (ClientNetworkException e) {
             uiController.getClientUI().printMessageln(e.getMessage());
         }
     }
-
-    private boolean isConnected() {
-        return (this.objToClient != null);
-    }
-
 }
-
-/*
-            Scanner command = new Scanner(System.in);
-            String commandToSend;
-            while(true) {
-                System.out.println("Write a command: ");
-                commandToSend = command.nextLine();
-                objFromClient.writeObject(commandToSend);
-                System.out.println("[Server]: "+ objToClient.readObject());
-            }
-*/

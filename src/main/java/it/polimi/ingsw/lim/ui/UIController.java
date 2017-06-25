@@ -1,16 +1,17 @@
 package it.polimi.ingsw.lim.ui;
 
+import it.polimi.ingsw.lim.Lock;
 import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
 import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.Player;
+import it.polimi.ingsw.lim.model.Tower;
 import it.polimi.ingsw.lim.network.client.RMI.RMIClient;
 import it.polimi.ingsw.lim.network.client.ServerInterface;
 import it.polimi.ingsw.lim.network.client.socket.SocketClient;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
+import java.util.*;
 
+import static it.polimi.ingsw.lim.Settings.TOWER_HEIGHT;
 import static it.polimi.ingsw.lim.ui.UIController.UIConstant.*;
 
 /**
@@ -22,12 +23,9 @@ public class UIController {
     private static Scanner userInput = new Scanner(System.in);
     //a copy of the user name is stored here
     private static String username;
-<<<<<<< HEAD
-=======
     Lock lock = new Lock();
     private static Board localBoard;
     private static ArrayList<Player> localPlayers;
->>>>>>> 1108a337f37cd579aa445fe69fb707bdbe65751d
 
     /**
      * The first thing to do is create a user interface, then the player must choose
@@ -48,6 +46,14 @@ public class UIController {
 
     public static void setClientProtocol(ServerInterface clientProtocol) {
         UIController.clientProtocol = clientProtocol;
+    }
+
+    public void updatePlayers(ArrayList<Player> player) {
+        localPlayers = player;
+    }
+
+    public void updateGame(Board board) {
+        localBoard = board;
     }
 
     public void inputHandler() {
@@ -90,15 +96,26 @@ public class UIController {
     }
 
     private static void manageShowCommand(ArrayList<String> commandInput) {
+        String username = commandInput.get(2);
         switch (commandInput.get(1)) {
             case STRENGTH:
-                
+
                 break;
             case ASSETS:
-
+                for (Player player : localPlayers)
+                    if (player.getNickname().equalsIgnoreCase(username))
+                        clientUI.getAssets(player.getResources(), username);
                 break;
             case TOWER:
-
+                HashMap<String, Tower> towers = localBoard.getTowers();
+                /*for (Map.Entry<String, Tower> twrs : towers.entrySet()) {
+                    String color = twrs.getKey();
+                    Tower twr = twrs.getValue();
+                    for (int count = 0; count < TOWER_HEIGHT; count++) {
+                        twr.getFloor(count).getCard();
+                        clientUI.showTowers(color, twr);
+                    }
+                }*/
                 break;
             case CARD:
 
@@ -177,7 +194,6 @@ public class UIController {
         }
     }
 
-<<<<<<< HEAD
     class UIConstant {
 
         protected static final String SPACE = " ";
@@ -197,10 +213,5 @@ public class UIController {
         protected static final String HELP_CHAT = "Usage: chat [MESSAGE].\nBroadcast a message to all client in the room";
         protected static final String HELP_TURN = "Usage: turn.\nShow which user is playing";
         protected static final String HELP_SHOW = "Usage: show [strength,assets,tower,card,leader,personal-board] [username]\nShow information about a specific user";
-=======
-    public void updateGame(Board board, ArrayList<Player> players) {
-        localBoard = board;
-        localPlayers = players;
->>>>>>> 1108a337f37cd579aa445fe69fb707bdbe65751d
     }
 }

@@ -34,8 +34,6 @@ class ClientCommandHandler {
                 addUserToRoom(this.user);
             } else if(commandIdentifier.equals(ANSWER_SERVANTS_AMOUNT)) {
 
-            } else if(commandIdentifier.equals(GET_ASSETS)) {
-
             } else if (commandIdentifier.equals(CHAT)) {
                 //The server has received a chat message from the client, it has to deliver it to other room mates.
                 this.user.getRoom().chatMessageToRoom(command.get(1), command.get(2));

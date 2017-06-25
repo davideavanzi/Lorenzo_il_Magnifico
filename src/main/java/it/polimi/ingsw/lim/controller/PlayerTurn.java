@@ -1,7 +1,5 @@
 package it.polimi.ingsw.lim.controller;
 
-import it.polimi.ingsw.lim.model.Player;
-
 import static it.polimi.ingsw.lim.Settings.DEPLOYABLE_FM_PER_TURN;
 
 /**
@@ -27,5 +25,9 @@ public class PlayerTurn {
 
     public PlayerTurn(User user) {
        this.user = user;
+    }
+
+    public User getPlayerTurn() {
+        return this.user;
     }
 }
