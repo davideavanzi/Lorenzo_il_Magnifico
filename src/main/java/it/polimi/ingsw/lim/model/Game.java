@@ -102,7 +102,7 @@ public class Game {
         getLog().info("Adding bonuses to faith track");
         //TODO: maybe better with a standard for cycle?
         int i = 0;
-        for (Assets bonus : parsedGame.getFaithTrackbonuses())
+        for (Assets bonus : parsedGame.getFaithTrackBonuses())
             this.board.getFaithTrack()[i] = bonus;
 
         //TODO: Get a random excommunication for every age
