@@ -1,11 +1,9 @@
 package it.polimi.ingsw.lim.ui;
 
-import com.diogonunes.jcdp.color.ColoredPrinter;
-import com.diogonunes.jcdp.color.api.Ansi;
-import com.vdurmont.emoji.EmojiParser;
+import it.polimi.ingsw.lim.model.Assets;
+import it.polimi.ingsw.lim.model.Strengths;
+import it.polimi.ingsw.lim.model.Tower;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -15,14 +13,44 @@ import java.util.Scanner;
 public class CLI extends AbsUI {
     Scanner userInput = new Scanner(System.in);
     String input;
-    ColoredPrinter cp = new ColoredPrinter.Builder(1, false).build();
 
+    public void printStrengths(Strengths strengths, String username) {
+        if (strengths != null)
+            printMessageln(username.concat("'s strenghts: "));
+            //Todo print user strength
+    }
+
+    public void printAssets(Assets resource, String username) {
+        if (resource != null) {
+            printMessageln(username.concat("'s resources: "));
+            //Todo use emoji for resource??
+        }
+    }
+
+    public void printTower(String color, Tower tower) {
+        //Todo print the tower with a tui
+    }
+
+    public void printPlayerCards() {
+
+    }
+
+    public void printChatMessage(String sender, String message) {
+        printMessageln("[CHAT] message from "+sender+": "+message);
+    }
 
     public void waitUserInput() {
         while(true) {
             input = userInput.nextLine().toLowerCase().trim();
             UIController.inputParser(input);
         }
+    }
+
+    public String loginForm() {
+        printMessageln("Enter a username:");
+        printMessage("$ ");
+        input = userInput.nextLine().toLowerCase();
+        return input;
     }
 
     /**
@@ -46,19 +74,12 @@ public class CLI extends AbsUI {
         }
     }
 
-    public String loginForm() {
-        printMessageln(":bust_in_silhouette:  Enter a username:");
-        printMessage("$ ");
-        input = userInput.nextLine().toLowerCase();
-        return input;
-    }
-
     /**
      * Print on stdout a message
      * @param message
      */
     public void printMessageln(String message) {
-        System.out.println(EmojiParser.parseToUnicode(message));
+        System.out.println(message);
     }
 
     /**
@@ -66,11 +87,6 @@ public class CLI extends AbsUI {
      * @param message
      */
     public void printMessage(String message) {
-        System.out.print(EmojiParser.parseToUnicode(message));
-    }
-
-    public void printChatMessage(String sender, String message) {
-        cp.print(EmojiParser.parseToUnicode(":email:  ")+"[CHAT] message from "+sender+" :", Ansi.Attribute.BOLD, Ansi.FColor.WHITE, Ansi.BColor.BLUE);
-        cp.print(message+"\n");
+        System.out.print(message);
     }
 }

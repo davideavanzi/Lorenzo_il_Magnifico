@@ -11,7 +11,6 @@ public class MainClient {
 
     public static void main(String[] args) {
         splashScreen();
-        System.out.println();
         UIController client = new UIController(setUI());
         client.setNetworkProtocol();
         client.login();
@@ -26,5 +25,6 @@ public class MainClient {
                 "  /   (_)/ (__(/_/ (_'_)_(_)   ___/__(/_   ) /  |/  |_(_(_(_/_/ (__(_/(__(_(__(_) \n" +
                 " (_____             .-/      (__ /        (_/   '        .-/        /)            \n" +
                 "        )          (_/                                  (_/        (/            ");
+        System.out.println();
     }
 }

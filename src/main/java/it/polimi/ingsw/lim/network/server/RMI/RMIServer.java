@@ -24,6 +24,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
      */
     public RMIServer() throws RemoteException {}
 
+
     /**
      * This method sends a chat message to the user.
      * @param sender

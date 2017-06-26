@@ -49,16 +49,6 @@ public class SocketClient implements Runnable, ServerInterface {
     public int getPort() {return port;}
 
 
-    public void sendLogin(String username) throws ClientNetworkException {
-        try {
-            objFromClient.writeObject(LOGIN+SPLITTER+username);
-            objFromClient.flush();
-            objFromClient.reset();
-        } catch (IOException e) {
-            throw new ClientNetworkException("Could not send login information to server", e);
-        }
-    }
-
     public void chatMessageToServer(String sender, String message) throws ClientNetworkException{
         try {
             objFromClient.writeObject("CHAT"+SPLITTER+sender+SPLITTER+message);
@@ -69,22 +59,29 @@ public class SocketClient implements Runnable, ServerInterface {
         }
     }
 
+    public void sendLogin(String username) throws ClientNetworkException {
+        try {
+            objFromClient.writeObject(LOGIN+SPLITTER+username);
+            objFromClient.flush();
+            objFromClient.reset();
+        } catch (IOException e) {
+            throw new ClientNetworkException("Could not send login information to server", e);
+        }
+    }
+
     private void waitFromServer() throws ClientNetworkException {
         try {
             lock.lock();
         } catch (InterruptedException e) {
-            //TODO: print to screen?
             uiController.getClientUI().printMessageln(e.getMessage());
         }
         while(true) {
-                try {
-                    Object command = objToClient.readObject();
-                    commandHandler.requestHandler(command);
-                } catch (IOException | ClassNotFoundException e) {
-                    throw new ClientNetworkException("Could not get command from server", e);
-                    //return;
-                }
-
+            try {
+                Object command = objToClient.readObject();
+                commandHandler.requestHandler(command);
+            } catch (IOException | ClassNotFoundException e) {
+                throw new ClientNetworkException("Could not get command from server", e);
+            }
         }
     }
 

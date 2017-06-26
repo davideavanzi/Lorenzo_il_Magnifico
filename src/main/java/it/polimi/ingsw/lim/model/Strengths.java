@@ -13,14 +13,14 @@ public class Strengths implements Serializable {
      * Default constructor, all values are put to 0.
      */
     public Strengths() {
-        this.towerstrengths = new HashMap<>();
+        this.towerStrengths = new HashMap<>();
         this.harvestBonus = 0;
         this.productionBonus = 0;
-        this.towerstrengths.put(GREEN_COLOR, 0);
-        this.towerstrengths.put(YELLOW_COLOR, 0);
-        this.towerstrengths.put(BLUE_COLOR, 0);
-        this.towerstrengths.put(PURPLE_COLOR, 0);
-        this.towerstrengths.put(BLACK_COLOR, 0);
+        this.towerStrengths.put(GREEN_COLOR, 0);
+        this.towerStrengths.put(YELLOW_COLOR, 0);
+        this.towerStrengths.put(BLUE_COLOR, 0);
+        this.towerStrengths.put(PURPLE_COLOR, 0);
+        this.towerStrengths.put(BLACK_COLOR, 0);
     }
 
     /**
@@ -34,14 +34,14 @@ public class Strengths implements Serializable {
      * @param black - strength to access the black tower
      */
     public Strengths(int harvest, int production, int green, int yellow, int blue, int purple, int black){
-        this.towerstrengths = new HashMap<>();
+        this.towerStrengths = new HashMap<>();
         this.harvestBonus = harvest;
         this.productionBonus = production;
-        this.towerstrengths.put(GREEN_COLOR, green);
-        this.towerstrengths.put(YELLOW_COLOR, yellow);
-        this.towerstrengths.put(BLUE_COLOR, blue);
-        this.towerstrengths.put(PURPLE_COLOR, purple);
-        this.towerstrengths.put(BLACK_COLOR, black);
+        this.towerStrengths.put(GREEN_COLOR, green);
+        this.towerStrengths.put(YELLOW_COLOR, yellow);
+        this.towerStrengths.put(BLUE_COLOR, blue);
+        this.towerStrengths.put(PURPLE_COLOR, purple);
+        this.towerStrengths.put(BLACK_COLOR, black);
     }
 
     /**
@@ -55,7 +55,7 @@ public class Strengths implements Serializable {
     private int productionBonus;
 
 
-    private HashMap<String, Integer> towerstrengths;
+    private HashMap<String, Integer> towerStrengths;
 
     /**
      * 
@@ -77,7 +77,7 @@ public class Strengths implements Serializable {
     }
 
     public int getTowerStrength(String color) {
-        return this.towerstrengths.get(color);
+        return this.towerStrengths.get(color);
     }
 
     public HashMap<String, Integer> getDiceBonus() {
@@ -85,7 +85,7 @@ public class Strengths implements Serializable {
     }
 
     public HashMap<String, Integer> getTowerStrength() {
-        return towerstrengths;
+        return towerStrengths;
     }
 
     public int getHarvestBonus() {
@@ -100,17 +100,17 @@ public class Strengths implements Serializable {
         System.out.println("[strengths PRINT]");
         System.out.println("    - Harvest:          "+harvestBonus);
         System.out.println("    - Production:       "+productionBonus);
-        System.out.println("    - Green Bonus:      "+towerstrengths.get(GREEN_COLOR));
-        System.out.println("    - Blue Bonus:       "+towerstrengths.get(BLUE_COLOR));
-        System.out.println("    - Yellow Bonus:     "+towerstrengths.get(YELLOW_COLOR));
-        System.out.println("    - Purple Bonus:     "+towerstrengths.get(PURPLE_COLOR));
-        System.out.println("    - Black Bonus:      "+towerstrengths.get(BLACK_COLOR));
+        System.out.println("    - Green Bonus:      "+ towerStrengths.get(GREEN_COLOR));
+        System.out.println("    - Blue Bonus:       "+ towerStrengths.get(BLUE_COLOR));
+        System.out.println("    - Yellow Bonus:     "+ towerStrengths.get(YELLOW_COLOR));
+        System.out.println("    - Purple Bonus:     "+ towerStrengths.get(PURPLE_COLOR));
+        System.out.println("    - Black Bonus:      "+ towerStrengths.get(BLACK_COLOR));
         //TODO: print dices bonuses
         System.out.println("[END strengths PRINT]");
     }
 
     public void setTowerStrength(String color, int value) {
-        this.towerstrengths.replace(color, value);
+        this.towerStrengths.replace(color, value);
     }
 
     /**
@@ -133,7 +133,7 @@ public class Strengths implements Serializable {
         Strengths strengths = (Strengths) other;
         return (this.harvestBonus == strengths.getHarvestBonus() &&
                 this.productionBonus == strengths.getProductionBonus() &&
-                this.towerstrengths.equals(strengths.getTowerStrength())
+                this.towerStrengths.equals(strengths.getTowerStrength())
                 //this.diceBonus.equals(strengths.getDiceBonus())
         );
     }

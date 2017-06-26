@@ -1,6 +1,7 @@
 package it.polimi.ingsw.lim.ui;
 
 import it.polimi.ingsw.lim.model.Assets;
+import it.polimi.ingsw.lim.model.Strengths;
 import it.polimi.ingsw.lim.model.Tower;
 
 /**
@@ -25,11 +26,16 @@ public abstract class AbsUI {
      */
     public abstract void printMessageln(String message);
     public abstract void printMessage(String message);
-    public abstract void printChatMessage(String sender, String message);
 
     public abstract void waitUserInput();
 
-    public abstract void showTowers(String color, Tower tower);
+    public abstract void printChatMessage(String sender, String message);
 
-    public abstract void getAssets(Assets resource, String username);
+    public abstract void printStrengths(Strengths strengths, String username);
+
+    public abstract void printAssets(Assets resource, String username);
+
+    public abstract void printTower(String color, Tower tower);
+
+    public abstract void printPlayerCards();
 }

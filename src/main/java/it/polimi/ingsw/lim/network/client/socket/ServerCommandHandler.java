@@ -39,7 +39,7 @@ class ServerCommandHandler {
             uiCallback.updateGame(board);
         } else if (obj instanceof Player) {//TODO: is it correct?
             ArrayList<Player> players = new ArrayList<>(); //TODO: how can i convert obj in an arrayList of player
-            uiCallback.updatePlayers(players);
+            //uiCallback.updatePlayers(players);
         }
     }
 }

@@ -6,7 +6,6 @@ import it.polimi.ingsw.lim.model.Player;
 import it.polimi.ingsw.lim.network.client.RMI.RMIClient;
 import it.polimi.ingsw.lim.network.client.ServerInterface;
 import it.polimi.ingsw.lim.network.client.socket.SocketClient;
-import it.polimi.ingsw.lim.Lock;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,8 +22,6 @@ public class UIController {
     private static Scanner userInput = new Scanner(System.in);
     //a copy of the user name is stored here
     private static String username;
-
-    Lock lock = new Lock();
     private static Board localBoard;
     private static ArrayList<Player> localPlayers;
 
@@ -48,6 +45,10 @@ public class UIController {
         return clientUI;
     }
 
+    public void updateGame(Board board) {
+        localBoard = board;
+    }
+
     public static void setClientProtocol(ServerInterface clientProtocol) {
         UIController.clientProtocol = clientProtocol;
     }
@@ -57,7 +58,7 @@ public class UIController {
     }
 
     static void inputParser(String input) {
-        ArrayList<String> commandInput = new ArrayList<>(Arrays.asList(input.split(" ")));
+        ArrayList<String> commandInput = new ArrayList<>(Arrays.asList(input.split(SPACE)));
         String command = commandInput.get(0);
         switch (command) {
             case CHAT:
@@ -91,19 +92,34 @@ public class UIController {
         clientUI.printMessageln(HELP_SHOW);
     }
 
+    private static Player lookForPlayer() {
+        for (Player pl : localPlayers)
+            if (username.equalsIgnoreCase(pl.getNickname()))
+                return pl;
+        return null;
+    }
+
     private static void manageShowCommand(ArrayList<String> commandInput) {
+        String username = commandInput.get(2);
         switch (commandInput.get(1)) {
             case STRENGTH:
-                
+                if (lookForPlayer() != null)
+
                 break;
             case ASSETS:
-
+                if (lookForPlayer() != null)
+                    clientUI.printAssets(lookForPlayer().getResources(), username);
+                else
+                    clientUI.printMessageln(ERROR_USERNAME);
                 break;
             case TOWER:
-
+                //clientUI.printsTower();
                 break;
             case CARD:
-
+                if (lookForPlayer() != null)
+                    clientUI.printPlayerCards();
+                else
+                    clientUI.printMessageln(ERROR_USERNAME);
                 break;
             case LEADER:
 
@@ -165,24 +181,6 @@ public class UIController {
         System.out.println("Choose your user interface: GUI, MORSE or CLI (default)");
         System.out.print("$ ");
         return userInput.nextLine().toLowerCase();
-        /*
-        while (true) {
-            String ui = userInput.nextLine().toLowerCase();
-            switch (ui) {
-                case "no":
-                case "n":
-                    return false;
-                case "yes":
-                case "y":
-                    return true;
-                default:
-                    System.out.println("Not a valid choice, enter yes/y if you want to use a GUI, no/n for a CLI");
-            }
-        } */
-    }
-
-    public void updateGame(Board board) {
-        localBoard = board;
     }
 
     class UIConstant {
@@ -204,5 +202,7 @@ public class UIController {
         protected static final String HELP_CHAT = "Usage: chat [MESSAGE].\nBroadcast a message to all client in the room";
         protected static final String HELP_TURN = "Usage: turn.\nShow which user is playing";
         protected static final String HELP_SHOW = "Usage: show [strength,assets,tower,card,leader,personal-board] [username]\nShow information about a specific user";
+
+        protected static final String ERROR_USERNAME = "This player does not exist.\nPlease enter a valid username.";
     }
 }
