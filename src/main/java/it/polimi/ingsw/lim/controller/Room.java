@@ -1,14 +1,10 @@
 package it.polimi.ingsw.lim.controller;
 
 import it.polimi.ingsw.lim.Log;
-import it.polimi.ingsw.lim.model.Player;
-import it.polimi.ingsw.lim.network.server.MainServer;
 
 import static it.polimi.ingsw.lim.Log.getLog;
 import static it.polimi.ingsw.lim.Settings.*;
 
-import java.io.IOException;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -27,6 +23,7 @@ public class Room {
     private ArrayList<User> usersList;
     private ArrayList<String> playOrder;
     private PlayerTurn turn;
+    private int turnNumber;
 
 
     public Room(User user) {
@@ -71,6 +68,11 @@ public class Room {
     public void switchTurn(){
         int size = playOrder.size();
         int i = 0;
+        this.turnNumber++;
+        if(turnNumber == 4*size){
+            turnNumber = 0;
+            startNewTurn();
+        }
         String nextUserName;
         for (String userName: playOrder){
             if(userName.equals(turn.getUserName())){
@@ -95,6 +97,8 @@ public class Room {
 
     private void startNewTurn(){
         this.playOrder = gameController.getPlayOrder();
+        this.gameController.startNewTurn();
+
         this.turn = new PlayerTurn(this.getUser(this.playOrder.get(0)));
     }
 

@@ -190,6 +190,10 @@ public class GameController {
         return game.getNewPlayerOrder();
     }
 
+    public void startNewTurn(){
+        this.game.newTurn();
+    }
+
     public Room getRoomCallback() {
         return roomCallback;
     }
