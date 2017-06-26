@@ -1,6 +1,6 @@
 package it.polimi.ingsw.lim.ui;
 
-import it.polimi.ingsw.lim.utils.MorseParser;
+//import it.polimi.ingsw.lim.utils.MorseParser;
 
 import java.util.Scanner;
 
@@ -52,7 +52,8 @@ public class MorseLI extends AbsUI {
      * @param message
      */
     public void printMessageln(String message) {
-        System.out.println(MorseParser.encode(message));
+
+        //System.out.println(MorseParser.encode(message));
     }
 
     /**
@@ -60,12 +61,12 @@ public class MorseLI extends AbsUI {
      * @param message
      */
     public void printMessage(String message) {
-        System.out.print(MorseParser.encode(message));
+        //System.out.print(MorseParser.encode(message));
     }
 
     @Override
     public void printChatMessage(String sender, String message) {
-        System.out.println(MorseParser.encode("[CHAT] Message from "+sender+" : "+message));
+        //System.out.println(MorseParser.encode("[CHAT] Message from "+sender+" : "+message));
     }
 }
 
