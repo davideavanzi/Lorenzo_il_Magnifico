@@ -35,7 +35,7 @@ public class UIController {
         if(ui.equals("gui")) {
             //clientUI = new GUI();
         } else if (ui.equals("morse")){
-            clientUI = new MorseLI();
+            //clientUI = new MorseLI();
         } else {
             clientUI = new CLI();
         }

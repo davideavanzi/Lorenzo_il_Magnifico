@@ -53,6 +53,10 @@ public class Room {
         usersList.forEach(user -> user.chatMessage(sender, message));
     }
 
+    public void broadcastMessage(String message) {
+        usersList.forEach(user -> user.broadcastMessage(message));
+    }
+
     public List<User> getUsersList() {
         return usersList;
     }

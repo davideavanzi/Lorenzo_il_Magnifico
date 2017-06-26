@@ -60,6 +60,12 @@ public abstract class User {
     }
 
     /**
+     * This method sends a generic information message coming from the server
+     * @param message
+     */
+    public abstract void broadcastMessage(String message);
+
+    /**
      * Ask the user which one of the possible favors wants to receive.
      * @param possibleFavors the list of possible favors to choose from.
      * @return an integer between 0 and the possibleFavors size

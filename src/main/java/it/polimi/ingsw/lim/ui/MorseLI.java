@@ -7,7 +7,7 @@ import java.util.Scanner;
 /**
  * Created by Davide on 23/06/2017.
  */
-public class MorseLI extends AbsUI {
+public abstract class MorseLI extends AbsUI {
 
     Scanner userInput = new Scanner(System.in);
     String input;

@@ -52,4 +52,9 @@ public class RMIUser extends User {
     public int chooseFavor(List<Assets> possibleFavors) {
         return 0;
     }
+
+    @Override
+    public void broadcastMessage(String message) {
+
+    }
 }

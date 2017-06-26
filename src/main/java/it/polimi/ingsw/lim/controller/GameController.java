@@ -162,7 +162,6 @@ public class GameController {
             this.game.harvestMove(fm);
             for (Card card: game.getPlayerFromColor(fm.getOwnerColor()).getCardsOfColor(GREEN_COLOR))
                 CardHandler.activateGreenCard((GreenCard)card, game.getPlayerFromColor(fm.getOwnerColor()));
-
             //perform action ?
 
         }
