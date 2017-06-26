@@ -104,7 +104,7 @@ public class Parser {
         return this.boardAssetsBonuses.get(MARKET);
     }
 
-    public Assets[] getFaithTrackbonuses() {
+    public Assets[] getFaithTrackBonuses() {
         return this.boardAssetsBonuses.get(FAITH_TRACK);
     }
 
