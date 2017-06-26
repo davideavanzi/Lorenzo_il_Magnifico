@@ -49,7 +49,7 @@ public class ActionEffect extends ImmediateEffect {
         strength.printStrengths();
         if (discount != null){
             System.out.println("    ---- Action Discount ----      ");
-            discount.printAssets();
+            //discount.printAssets();
         }
     }
 

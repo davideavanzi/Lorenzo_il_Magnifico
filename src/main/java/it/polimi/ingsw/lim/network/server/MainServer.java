@@ -32,6 +32,9 @@ public class MainServer {
      */
     private static ArrayList<Room> roomList;
 
+    /**
+     * ArrayList of connected users.
+     */
     private static ArrayList<User> connectedUsers;
 
     /**
@@ -55,6 +58,13 @@ public class MainServer {
         connectedUsers = new ArrayList<>();
     }
 
+    /**
+     * @return the roomList's ArrayList.
+     */
+    public static ArrayList<Room> getRoomList() {
+        return roomList;
+    }
+
     public static User getUserFromUsername (String name) {
         /*
         return roomList.forEach(room -> room.getUsersList().stream()
@@ -65,13 +75,6 @@ public class MainServer {
                     return user;
         }
         return null;
-    }
-
-    /**
-     * @return the roomList's ArrayList.
-     */
-    public static ArrayList<Room> getRoomList() {
-        return roomList;
     }
 
     /**

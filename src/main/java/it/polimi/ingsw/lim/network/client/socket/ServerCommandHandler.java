@@ -1,5 +1,7 @@
 package it.polimi.ingsw.lim.network.client.socket;
 
+import it.polimi.ingsw.lim.model.Board;
+import it.polimi.ingsw.lim.model.Player;
 import it.polimi.ingsw.lim.ui.UIController;
 
 import java.util.ArrayList;
@@ -32,6 +34,12 @@ class ServerCommandHandler {
                 //The server has received a chat message from the client, it has to deliver it to other room mates.
                 uiCallback.getClientUI().printChatMessage(command.get(1), command.get(2));
             }
+        } else if (obj instanceof Board) {
+            Board board = (Board)obj;
+            uiCallback.updateGame(board);
+        } else if (obj instanceof Player) {//TODO: is it correct?
+            ArrayList<Player> players = new ArrayList<>(); //TODO: how can i convert obj in an arrayList of player
+            //uiCallback.updatePlayers(players);
         }
     }
 }

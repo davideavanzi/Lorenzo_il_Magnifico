@@ -2,11 +2,9 @@ package it.polimi.ingsw.lim.network.client.RMI;
 
 import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
 import it.polimi.ingsw.lim.model.Board;
-import it.polimi.ingsw.lim.model.Player;
 import it.polimi.ingsw.lim.network.client.ServerInterface;
 import it.polimi.ingsw.lim.network.server.RMI.RMIServerInterf;
 import it.polimi.ingsw.lim.ui.UIController;
-import sun.misc.Cleaner;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -14,7 +12,6 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
 
 /**
  * Created by nico.
@@ -35,13 +32,13 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
      */
     RMIServerInterf rmiServer;
 
-    UIController uiController;
+    UIController uiCallback;
 
     /**
      * RMI client constructor.
      */
-    public RMIClient(UIController uiController) {
-        this.uiController = uiController;
+    public RMIClient(UIController uiCallback) {
+        this.uiCallback = uiCallback;
     }
 
     /**
@@ -90,12 +87,12 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
 
     @Override
     public void chatMessageFromServer(String sender, String message) {
-        uiController.getClientUI().printMessageln("[CHAT] message from "+sender+": "+message);
+        uiCallback.getClientUI().printChatMessage(sender, message);
     }
 
     @Override
     public void updateClientGame(Board board) {
-        uiController.updateGame(board);
+        uiCallback.updateGame(board);
     }
 }
 

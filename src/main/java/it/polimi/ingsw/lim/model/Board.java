@@ -66,7 +66,6 @@ public class Board implements Serializable {
      */
     private Market market;
 
-
     // GETTERS
 
     public HashMap<Integer, Excommunication> getExcommunications() {
@@ -83,9 +82,7 @@ public class Board implements Serializable {
         return faithTrack;
     }
 
-    public HashMap<String, Tower> getTowers() {
-        return towers;
-    }
+    public HashMap<String, Tower> getTowers() { return towers; }
 
     public Market getMarket() {
         return market;
@@ -115,9 +112,7 @@ public class Board implements Serializable {
         this.age = age;
     }
 
-    public int getTurn() {
-        return turn;
-    }
+    public int getTurn() { return turn; }
 
     public void setTurn(int turn) {
         this.turn = turn;

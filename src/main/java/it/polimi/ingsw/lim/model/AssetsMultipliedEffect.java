@@ -41,9 +41,9 @@ public class AssetsMultipliedEffect extends ImmediateEffect {
         System.out.println("      ---- Effect type ----      ");
         System.out.println("        Multiplied Assets");
         System.out.println("      ---- Base bonus ----      ");
-        bonus.printAssets();
+        //bonus.printAssets();
         System.out.println("   ---- Bonus Multiplier ----      ");
-        multiplier.printAssets();
+        //multiplier.printAssets();
     }
 
     /**
