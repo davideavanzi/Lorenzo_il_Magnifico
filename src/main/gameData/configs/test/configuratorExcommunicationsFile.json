@@ -1,0 +1,33 @@
+{
+  "excommunications":[
+    [
+      {
+        "excommunicationType":"assetsMalusExcommunication",
+        "assetsMalusExcommunication":{"stone":1}
+      },
+      {
+        "excommunicationType":"strengthMalusExcommunication",
+        "strengthMalusExcommunication":{"yellowBonus":1}
+      }
+    ],
+    [
+      {
+        "excommunicationType":"marketExcommunication"
+      },
+      {
+        "excommunicationType":"turnExcommunication"
+      }
+    ],
+    [
+      {
+        "excommunicationType":"servantsExcommunication"
+      },
+      {
+        "excommunicationType":"endGameExcommunication",
+        "endGameExcommunication":"YELLOW",
+        "productionCardCostMalus":{"coin":1},
+        "onAssetsMalus":{"wood":1}
+      }
+    ]
+  ]
+}

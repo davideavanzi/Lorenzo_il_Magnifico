@@ -1,10 +1,12 @@
 package it.polimi.ingsw.lim.network.server.socket;
 
 import it.polimi.ingsw.lim.controller.User;
+import it.polimi.ingsw.lim.model.Assets;
 import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.Player;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by nico.
@@ -35,5 +37,10 @@ public class SocketUser extends User {
     @Override
     public int chooseProduction() {
         return 0; //TODO: implement
+    }
+
+    @Override
+    public int chooseFavor(List<Assets> possibleFavors) {
+        return 0;
     }
 }

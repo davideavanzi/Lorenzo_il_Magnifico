@@ -7,7 +7,7 @@ import static it.polimi.ingsw.lim.Log.getLog;
 /**
  * This class represents the council. Players will put family members here. At the end of the turn, the gaming
  * order of the players is obtained by looking at the order of the family members in here. Otherwise it will be the
- * same as the turn before. If not all players put a family member here, the order starts with the ones that put
+ * same as the turn before. If not all players put a family member here, the order starts with the ones that have put
  * a fm here, then the others following in the order of the turn before.
  */
 public class Council implements Serializable {

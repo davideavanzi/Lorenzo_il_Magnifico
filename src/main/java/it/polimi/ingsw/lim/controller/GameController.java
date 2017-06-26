@@ -18,9 +18,7 @@ public class GameController {
     private Game game;
     private Room roomCallback;
 
-    public GameController(Room roomCallback) {
-        this.roomCallback = roomCallback;
-    }
+    public GameController(Room roomCallback) { this.roomCallback = roomCallback; }
 
     public static void main(String[] args){
 
@@ -90,6 +88,41 @@ public class GameController {
         return true;
     }
 
+    /**
+     * This method creates an empty instance of the game
+     */
+    public void createGame() {
+        Game game = new Game();
+
+        roomCallback.getUsersList().forEach(user ->
+            user.setPlayer(game.addPlayer(user.getUsername())));
+
+        String defaultPath = "default/";
+        //TODO: handle exception in a proper place
+        Parser parsedGame = new Parser();
+        try {
+            parsedGame.parser(CONFIGS_PATH+defaultPath);
+        } catch (Exception e) {
+            getLog().severe("PARSER ERROR:\n"+e.getMessage());
+        }
+        getLog().info("Validating game data with current settings.");
+        //TODO: how to call validating method?
+        if(validateParsedData(parsedGame))
+            getLog().severe("[ERROR] - parsed data are incorrect");
+        //building game
+        getLog().info("Setting up game with parsed data");
+        //TODO: add players before setting up the game!;
+        game.addPlayer("CIAONE");
+        game.addPlayer("HELLONE");
+        game.addPlayer("HOLAONE");
+        try {
+            game.setUpGame(parsedGame);
+        } catch (GameSetupException e) {
+            getLog().severe(e.getMessage());
+        }
+        game.setUpTurn();
+    }
+
 
     /**
      * This methods moves a family member in a tower, checking if the action is legal.
@@ -110,7 +143,9 @@ public class GameController {
                 //move is affordable, ask the client in case more servants are needed
                 if (this.game.servantsForTowerAction(fm, towerColor, floor) > 0);
                 //ask player!
-                this.game.towerMove(towerColor, floor, fm);
+                Card card = this.game.towerMove(towerColor, floor, fm);
+                //TODO: activate immediateEffect and long term effect for blue cards!
+                //if (card instanceof BlueCard) CardHandler.activateBlueCard((BlueCard)card, );
                 //perform action
             } else {
                 getLog().log(Level.INFO, "But the move is not affordable");
@@ -160,4 +195,7 @@ public class GameController {
         return  game.getNewPlayerOrder();
     }
 
+    public Room getRoomCallback() {
+        return roomCallback;
+    }
 }

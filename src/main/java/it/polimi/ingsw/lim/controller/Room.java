@@ -1,6 +1,7 @@
 package it.polimi.ingsw.lim.controller;
 
 import it.polimi.ingsw.lim.model.Player;
+import it.polimi.ingsw.lim.network.server.MainServer;
 
 import static it.polimi.ingsw.lim.Log.getLog;
 import static it.polimi.ingsw.lim.Settings.*;
@@ -20,9 +21,10 @@ public class Room {
 
     private transient GameController gameController;
     private boolean roomOpen = true; // room open
-    private static ArrayList<User> usersList;
+    private ArrayList<User> usersList;
     private ArrayList<String> playOrder;
     private PlayerTurn turn;
+
 
     public Room(User user) {
         usersList = new ArrayList<>();
@@ -46,7 +48,7 @@ public class Room {
         usersList.forEach(user -> user.chatMessage(sender, message));
     }
 
-    public static List<User> getUsersList() {
+    public List<User> getUsersList() {
         return usersList;
     }
 
@@ -56,9 +58,25 @@ public class Room {
 
     public boolean isOpen() { return roomOpen; }
 
-    private void notifyEndTurn(){
-        //todo switch turn to next player
+    private void switchTurn(){
+        int size = playOrder.size();
+        int i = 0;
+        String nextUserName;
+        for (String userName: playOrder){
+            if(userName.equals(turn.getUserName())){
+                break;
+            }
+            i++;
+        }
+        if(i < size){
+            nextUserName = playOrder.get(i + 1);
+        }
+        else {
+            nextUserName = playOrder.get(0); //take the first
+        }
+        this.turn = new PlayerTurn(MainServer.getConnectedUser(nextUserName));
     }
+
     public User getUser(String username) {
         return usersList.stream().filter(user -> user.getUsername().equals(username)).findFirst().orElse(null);
     }
@@ -77,8 +95,7 @@ public class Room {
             }
             @Override
             public void run(){
-                //todo when timer end
-                roomCallback.notifyEndTurn();
+                roomCallback.switchTurn();
                 timer.cancel();
             }
         }

@@ -102,7 +102,7 @@ public class Game {
         getLog().info("Adding bonuses to faith track");
         //TODO: maybe better with a standard for cycle?
         int i = 0;
-        for (Assets bonus : parsedGame.getFaithTrackbonuses())
+        for (Assets bonus : parsedGame.getFaithTrackBonuses())
             this.board.getFaithTrack()[i] = bonus;
 
         //TODO: Get a random excommunication for every age
@@ -154,14 +154,6 @@ public class Game {
         getLog().info("[NEW_TURN_SETUP_END]");
     }
 
-    /**
-     * This method adds a player to the game.
-     * TODO: do we have to check again if there are more than 5?
-     */
-    public void addPlayer(Player pl){
-        this.players.add(pl);
-    }
-
     private void clearHarvest(){
         getLog().info("Clearing Harvest space");
         this.board.setHarvest(new ArrayList<>());
@@ -188,12 +180,14 @@ public class Game {
 
 
     /**
-     * This method picks an available color and adds it to the new created player
-     * @param nickname
+     * This method adds a player to the game.
+     * TODO: do we have to check again if there are more than 5?
      */
-    public void addPlayer(String nickname) {
+    public Player addPlayer(String nickname) {
         String color = this.availablePlayerColors.remove(0);
-        this.players.add(new Player(nickname, color));
+        Player pl = new Player(nickname, color);
+        this.players.add(pl);
+        return pl;
     }
 
     /**
@@ -270,7 +264,7 @@ public class Game {
      * @param floorNumber
      * @param fm
      */
-    public void towerMove(String towerColor, int floorNumber, FamilyMember fm) {
+    public Card towerMove(String towerColor, int floorNumber, FamilyMember fm) {
         Player actor = this.getPlayerFromColor(fm.getOwnerColor());
         Card card = this.board.getTowers().get(towerColor).getFloor(floorNumber).pullCard();
         Assets actionCost = new Assets(card.getCost());
@@ -279,8 +273,7 @@ public class Game {
         actionCost.subtractToZero(actor.getPickDiscount(towerColor));
         actor.getResources().subtract(actionCost);
         actor.addCard(card, towerColor);
-        //TODO: activate immediateEffect and long term effect for blue cards!
-        if (card instanceof BlueCard) CardHandler.activateBlueCard((BlueCard)card, actor);
+        return card;
     }
 
     /**
