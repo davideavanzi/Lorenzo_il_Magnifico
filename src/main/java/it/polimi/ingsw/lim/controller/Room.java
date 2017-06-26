@@ -1,11 +1,13 @@
 package it.polimi.ingsw.lim.controller;
 
+import it.polimi.ingsw.lim.Log;
 import it.polimi.ingsw.lim.model.Player;
 import it.polimi.ingsw.lim.network.server.MainServer;
 
 import static it.polimi.ingsw.lim.Log.getLog;
 import static it.polimi.ingsw.lim.Settings.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -41,6 +43,9 @@ public class Room {
         if (usersList.size() == MAX_USERS_PER_ROOM) {
             roomOpen = false;
             getLog().log(Level.INFO, () -> "The room is now full");
+        }
+        if(this.usersList.size() >= 2){
+            new TimerEnd(20, this, "ROOM_TIMER");//todo make configurable time
         }
     }
 
@@ -81,21 +86,36 @@ public class Room {
         return usersList.stream().filter(user -> user.getUsername().equals(username)).findFirst().orElse(null);
     }
 
-
-    class TimerEndTurn{
+    private class TimerEnd{
         private Timer timer;
-        public TimerEndTurn(int seconds, Room roomCallback){
+        public TimerEnd(int seconds, Room roomCallback, String timerType){
             timer = new Timer();
-            timer.schedule(new endTimer(roomCallback), seconds * 1000 /*by default ms (1s = 1000ms)*/);
+            if(timerType.equals("TURN_TIMER")) {
+                timer.schedule(new endTurnTimer(roomCallback), seconds * 1000 /*by default ms (1s = 1000ms)*/);
+            }
+            else if (timerType.equals("ROOM_TIMER")){
+                timer.schedule(new roomTimer(roomCallback), seconds * 1000 /*by default ms (1s = 1000ms)*/);
+            }
         }
-        private class endTimer extends TimerTask{
+        private class endTurnTimer extends TimerTask{
             private Room roomCallback;
-            private endTimer(Room roomCallback) {
+            private endTurnTimer(Room roomCallback) {
                 this.roomCallback = roomCallback;
             }
             @Override
             public void run(){
                 roomCallback.switchTurn();
+                timer.cancel();
+            }
+        }
+        private class roomTimer extends TimerTask{
+            private Room roomCallback;
+            private roomTimer(Room roomCallback) {
+                this.roomCallback = roomCallback;
+            }
+            @Override
+            public void run(){
+                gameController.createGame();
                 timer.cancel();
             }
         }
