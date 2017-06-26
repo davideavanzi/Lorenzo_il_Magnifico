@@ -93,8 +93,7 @@ public class GameController {
      * This method creates an empty instance of the game
      */
     public void createGame() {
-        Game game = new Game();
-
+        this.game = new Game();
         roomCallback.getUsersList().forEach(user ->
             user.setPlayer(game.addPlayer(user.getUsername())));
         Collections.shuffle(game.getPlayers());
@@ -188,7 +187,7 @@ public class GameController {
      * @return
      */
     public ArrayList<String> getPlayOrder() {
-        return  game.getNewPlayerOrder();
+        return game.getNewPlayerOrder();
     }
 
     public Room getRoomCallback() {

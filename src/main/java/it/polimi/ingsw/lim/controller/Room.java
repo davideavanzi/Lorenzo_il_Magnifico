@@ -8,6 +8,7 @@ import static it.polimi.ingsw.lim.Log.getLog;
 import static it.polimi.ingsw.lim.Settings.*;
 
 import java.io.IOException;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -45,7 +46,7 @@ public class Room {
             getLog().log(Level.INFO, () -> "The room is now full");
         }
         if(this.usersList.size() >= 2){
-            new TimerEnd(20, this, "ROOM_TIMER");//todo make configurable time
+            new TimerEnd(20, this);//todo make configurable time
         }
     }
 
@@ -67,7 +68,7 @@ public class Room {
 
     public boolean isOpen() { return roomOpen; }
 
-    private void switchTurn(){
+    public void switchTurn(){
         int size = playOrder.size();
         int i = 0;
         String nextUserName;
@@ -77,49 +78,41 @@ public class Room {
             }
             i++;
         }
-        if(i < size){
+        Log.getLog().info("player ".concat(turn.getUserName()).concat(" ending turn"));
+        if(i + 1 < size){
             nextUserName = playOrder.get(i + 1);
         }
         else {
             nextUserName = playOrder.get(0); //take the first
         }
-        this.turn = new PlayerTurn(MainServer.getConnectedUser(nextUserName));
+        this.turn = new PlayerTurn(this.getUser(nextUserName));
+        Log.getLog().info("player ".concat(turn.getUserName()).concat(" now can play"));
     }
 
     public User getUser(String username) {
         return usersList.stream().filter(user -> user.getUsername().equals(username)).findFirst().orElse(null);
     }
 
+    private void startNewTurn(){
+        this.playOrder = gameController.getPlayOrder();
+        this.turn = new PlayerTurn(this.getUser(this.playOrder.get(0)));
+    }
+
     private class TimerEnd{
         private Timer timer;
-        public TimerEnd(int seconds, Room roomCallback, String timerType){
+        private TimerEnd(int seconds, Room roomCallback){
             timer = new Timer();
-            if(timerType.equals("TURN_TIMER")) {
-                timer.schedule(new endTurnTimer(roomCallback), seconds * 1000 /*by default ms (1s = 1000ms)*/);
-            }
-            else if (timerType.equals("ROOM_TIMER")){
-                timer.schedule(new roomTimer(roomCallback), seconds * 1000 /*by default ms (1s = 1000ms)*/);
-            }
+            timer.schedule(new RoomTimer(roomCallback), seconds * 1000 /*by default ms (1s = 1000ms)*/);
         }
-        private class endTurnTimer extends TimerTask{
+        private class RoomTimer extends TimerTask{
             private Room roomCallback;
-            private endTurnTimer(Room roomCallback) {
-                this.roomCallback = roomCallback;
-            }
-            @Override
-            public void run(){
-                roomCallback.switchTurn();
-                timer.cancel();
-            }
-        }
-        private class roomTimer extends TimerTask{
-            private Room roomCallback;
-            private roomTimer(Room roomCallback) {
+            private RoomTimer(Room roomCallback) {
                 this.roomCallback = roomCallback;
             }
             @Override
             public void run(){
                 gameController.createGame();
+                roomCallback.startNewTurn();
                 timer.cancel();
             }
         }
