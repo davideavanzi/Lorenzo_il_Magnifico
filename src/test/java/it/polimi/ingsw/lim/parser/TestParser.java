@@ -12,10 +12,12 @@ import java.util.ArrayList;
 
 import static it.polimi.ingsw.lim.Settings.*;
 import static it.polimi.ingsw.lim.Log.getLog;
+import static junit.framework.TestCase.assertEquals;
+
 /**
  * Created by FabCars. The task of this test class is to test if card parser work as expected
  */
-public class TestParser extends TestCase {
+public class TestParser {
 
     private static GreenCard createGreenCardExpected() {
         String nameExpected = "testGreenCard";
@@ -140,40 +142,38 @@ public class TestParser extends TestCase {
     }
 
     private static void testGreenCardParser(Parser testParser)
-            throws IOException, InvalidExcommunicationException, InvalidCardException, AssertionFailedError {
+            throws InvalidCardException, AssertionFailedError {
         GreenCard greenCardExpected = createGreenCardExpected();
         assertEquals(greenCardExpected, testParser.getCard(1).get(GREEN_COLOR).get(0));
     }
 
     private static void testBlueCardParser(Parser testParser)
-            throws IOException, InvalidExcommunicationException, InvalidCardException, AssertionFailedError {
+            throws InvalidCardException, AssertionFailedError {
         BlueCard blueCardExpected = createBlueCardExpected();
         assertEquals(blueCardExpected, testParser.getCard(2).get(BLUE_COLOR).get(0));
     }
 
     private static void testYellowCardParser(Parser testParser)
-            throws IOException, InvalidExcommunicationException, InvalidCardException, AssertionFailedError {
+            throws InvalidCardException, AssertionFailedError {
         YellowCard yellowCardExpected = createYellowCardExpected();
         assertEquals(yellowCardExpected, testParser.getCard(3).get(YELLOW_COLOR).get(0));
     }
 
     private static void testPurpleCardParser(Parser testParser)
-            throws IOException, InvalidExcommunicationException, InvalidCardException, AssertionFailedError {
+            throws InvalidCardException, AssertionFailedError {
         PurpleCard purpleCardExpected = createPurpleCardExpected();
         assertEquals(purpleCardExpected, testParser.getCard(1).get(PURPLE_COLOR).get(0));
     }
 
     private static void testBlackCardParser(Parser testParser)
-            throws IOException, InvalidExcommunicationException, InvalidCardException, AssertionFailedError {
+            throws InvalidCardException, AssertionFailedError {
         BlackCard blackCardExpected = createBlackCardExpected();
         assertEquals(blackCardExpected, testParser.getCard(1).get(BLACK_COLOR).get(0));
     }
 
     @Test
-    public static void testCardParser() {
+    private static void testCardParser(Parser testParser) {
         try {
-            Parser testParser = new Parser();
-            testParser.parser(CONFIGS_PATH.concat("test/"));
             try {
                 testGreenCardParser(testParser);
                 getLog().info("GreenCardParser Tested");
@@ -209,21 +209,110 @@ public class TestParser extends TestCase {
                 e.printStackTrace();
                 getLog().info("BlackCardNotEqual");
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-            getLog().info("IOException");
         } catch (InvalidCardException e) {
             e.printStackTrace();
             getLog().info("InvalidCardException");
-        } catch (InvalidExcommunicationException e) {
+        }
+    }
+
+    private static ArrayList<Excommunication> createFirstAgeExcommunication(){
+        ArrayList<Excommunication> firstAgeExcommExpected = new ArrayList<>();
+        AssetsExcommunication e1Expected = new AssetsExcommunication(new Assets(0,0,1,0,0,0,0));
+        firstAgeExcommExpected.add(e1Expected);
+        StrengthsExcommunication e2Expected = new StrengthsExcommunication(new Strengths(0,0,0,1,0,0,0));
+        firstAgeExcommExpected.add(e2Expected);
+        return firstAgeExcommExpected;
+    }
+
+    private static ArrayList<Excommunication> createSecondAgeExcommunication(){
+        ArrayList<Excommunication> secondAgeExcommExpected = new ArrayList<>();
+        MarketExcommunication e1Expected = new MarketExcommunication();
+        secondAgeExcommExpected.add(e1Expected);
+        TurnExcommunication e2Expected = new TurnExcommunication();
+        secondAgeExcommExpected.add(e2Expected);
+        return secondAgeExcommExpected;
+    }
+
+    private static ArrayList<Excommunication> createThirdAgeExcommunication(){
+        ArrayList<Excommunication> firtAgeExcommExpected = new ArrayList<>();
+        ServantsExcommunication e1Expected = new ServantsExcommunication();
+        firtAgeExcommExpected.add(e1Expected);
+        Assets[] onAssetsMalus = new Assets[1];
+        onAssetsMalus[0] = new Assets(0,1,0,0,0,0,0);
+        EndGameExcommunication e2Expected = new EndGameExcommunication(YELLOW_COLOR, new Assets(1,0,0,0,0,0,0), onAssetsMalus);
+        firtAgeExcommExpected.add(e2Expected);
+        return firtAgeExcommExpected;
+    }
+
+    private static void testFirstAgeExcommunication(Parser testParser) throws InvalidExcommunicationException{
+        ArrayList<Excommunication> firstAgeExcommExpected = createFirstAgeExcommunication();
+        assertEquals(firstAgeExcommExpected, testParser.getExcommunications().get(1));
+    }
+
+    private static void testSecondAgeExcommunication(Parser testParser) throws InvalidExcommunicationException{
+        ArrayList<Excommunication> secondAgeExcommExpected = createSecondAgeExcommunication();
+        assertEquals(secondAgeExcommExpected, testParser.getExcommunications().get(2));
+    }
+
+    private static void testThirdAgeExcommunication(Parser testParser) throws InvalidExcommunicationException{
+        ArrayList<Excommunication> thirdAgeExcommExpected = createThirdAgeExcommunication();
+        assertEquals(thirdAgeExcommExpected, testParser.getExcommunications().get(3));
+    }
+
+    @Test
+    private static void testExcommunicationParser(Parser testParser){
+        try{
+            try {
+                testFirstAgeExcommunication(testParser);
+            }
+            catch (AssertionFailedError e) {
+                e.printStackTrace();
+                getLog().info("firstAgeExcommunicationNotEqual");
+            }
+            try {
+                testSecondAgeExcommunication(testParser);
+            }
+            catch (AssertionFailedError e) {
+                e.printStackTrace();
+                getLog().info("SecondAgeExcommunicationNotEqual");
+            }
+            try {
+                testThirdAgeExcommunication(testParser);
+            }
+            catch (AssertionFailedError e) {
+                e.printStackTrace();
+                getLog().info("ThirdAgeExcommunicationNotEqual");
+            }
+        }
+        catch (InvalidExcommunicationException e) {
             e.printStackTrace();
             getLog().info("InvalidExcommunicationException");
+        }
+    }
+
+    @Test
+    public static void testParser() {
+        try {
+            Parser testParser = new Parser();
+            testParser.parser(CONFIGS_PATH.concat("test/"));
+            testCardParser(testParser);
+            testExcommunicationParser(testParser);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            getLog().info("IOException");
         }
         catch (InvalidTimerException e){
             e.printStackTrace();
             getLog().info("InvalidTimersException");
         }
+        catch (InvalidCardException e) {
+            e.printStackTrace();
+            getLog().info("InvalidCardException");
+        }
+        catch (InvalidExcommunicationException e) {
+            e.printStackTrace();
+            getLog().info("InvalidExcommunicationException");
+        }
     }
-
-
 }
