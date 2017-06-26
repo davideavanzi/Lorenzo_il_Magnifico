@@ -1,9 +1,11 @@
 package it.polimi.ingsw.lim.controller;
 
+import it.polimi.ingsw.lim.model.Assets;
 import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.Player;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Davide on 26/05/2017.
@@ -15,6 +17,7 @@ public abstract class User {
 
     private String username;
     private Room room;
+    private Player player;
 
 
     /**
@@ -47,5 +50,20 @@ public abstract class User {
     public abstract int askForServants(int minimumAmount);
 
     public abstract int chooseProduction();
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    /**
+     * Ask the user which one of the possible favors wants to receive.
+     * @param possibleFavors the list of possible favors to choose from.
+     * @return an integer between 0 and the possibleFavors size
+     */
+    public abstract int chooseFavor(List<Assets> possibleFavors);
 
 }

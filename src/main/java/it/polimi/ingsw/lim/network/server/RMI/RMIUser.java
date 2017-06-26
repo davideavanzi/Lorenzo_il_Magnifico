@@ -1,12 +1,14 @@
 package it.polimi.ingsw.lim.network.server.RMI;
 
 import it.polimi.ingsw.lim.controller.User;
+import it.polimi.ingsw.lim.model.Assets;
 import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.Player;
 import it.polimi.ingsw.lim.network.client.RMI.RMIClientInterf;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 
 import static it.polimi.ingsw.lim.Log.getLog;
@@ -44,5 +46,10 @@ public class RMIUser extends User {
     @Override
     public int chooseProduction() {
         return 0; //TODO: implement
+    }
+
+    @Override
+    public int chooseFavor(List<Assets> possibleFavors) {
+        return 0;
     }
 }

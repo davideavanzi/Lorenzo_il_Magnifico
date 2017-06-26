@@ -1,7 +1,11 @@
 package it.polimi.ingsw.lim.controller;
 
 
+import it.polimi.ingsw.lim.Log;
+import it.polimi.ingsw.lim.exceptions.ControllerException;
 import it.polimi.ingsw.lim.model.*;
+
+import java.util.logging.Level;
 
 /**
  * Created by ava on 15/06/17.
@@ -9,33 +13,41 @@ import it.polimi.ingsw.lim.model.*;
  */
 public class EffectHandler {
 
-    public static void activateActionEffect(ActionEffect effect, Player pl) {
+    private static void activateActionEffect(ActionEffect effect, User recipient) {
 
     }
 
-    public static void activateAssetsEffect(AssetsEffect effect, Player pl) {
+    private static void activateAssetsEffect(AssetsEffect effect, User recipient) {
+        Player pl = recipient.getPlayer();
         pl.setResources(pl.getResources().add(effect.getBonus()));
     }
 
-    public static void activateAssetsMultipliedEffect(AssetsMultipliedEffect effect, Player pl) {
+    private static void activateAssetsMultipliedEffect(AssetsMultipliedEffect effect, User recipient) {
+        Player pl = recipient.getPlayer();
         pl.setResources(pl.getResources().add(
                 effect.getBonus().multiply(pl.getResources().divide(effect.getMultiplier()))));
     }
 
-    public static void activateCardMultipliedEffect(CardMultipliedEffect effect, Player pl) {
+    private static void activateCardMultipliedEffect(CardMultipliedEffect effect, User recipient) {
+        Player pl = recipient.getPlayer();
         pl.setResources(pl.getResources().add(
                 effect.getBonus().multiply(pl.getCardsAmount(effect.getMultiplierColor()))));
     }
 
-    public static void activateCouncilFavorsEffect(CouncilFavorsEffect effect, Player pl) {
+    private static void activateCouncilFavorsEffect(CouncilFavorsEffect effect, User recipient) {
+        try {
+            CFavorsHandler.giveFavors(recipient, effect.getAmount());
+        } catch (ControllerException e) {
+            Log.getLog().log(Level.SEVERE, "Controller error. Providing more favors than possible.");
+        }
 
     }
 
-    public static void activateImmediateEffect(ImmediateEffect iEffect, Player pl) {
-        if (iEffect instanceof ActionEffect) activateActionEffect((ActionEffect)iEffect, pl);
-        if (iEffect instanceof AssetsEffect) activateAssetsEffect((AssetsEffect)iEffect, pl);
-        if (iEffect instanceof AssetsMultipliedEffect) activateAssetsMultipliedEffect((AssetsMultipliedEffect)iEffect, pl);
-        if (iEffect instanceof CardMultipliedEffect) activateCardMultipliedEffect((CardMultipliedEffect)iEffect, pl);
-        if (iEffect instanceof CouncilFavorsEffect) activateCouncilFavorsEffect((CouncilFavorsEffect)iEffect, pl);
+    public static void activateImmediateEffect(ImmediateEffect iEffect, User recipient) {
+        if (iEffect instanceof ActionEffect) activateActionEffect((ActionEffect)iEffect, recipient);
+        if (iEffect instanceof AssetsEffect) activateAssetsEffect((AssetsEffect)iEffect, recipient);
+        if (iEffect instanceof AssetsMultipliedEffect) activateAssetsMultipliedEffect((AssetsMultipliedEffect)iEffect, recipient);
+        if (iEffect instanceof CardMultipliedEffect) activateCardMultipliedEffect((CardMultipliedEffect)iEffect, recipient);
+        if (iEffect instanceof CouncilFavorsEffect) activateCouncilFavorsEffect((CouncilFavorsEffect)iEffect, recipient);
     }
 }

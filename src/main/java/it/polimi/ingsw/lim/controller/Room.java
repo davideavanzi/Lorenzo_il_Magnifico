@@ -21,7 +21,7 @@ public class Room {
 
     private transient GameController gameController;
     private boolean roomOpen = true; // room open
-    private static ArrayList<User> usersList;
+    private ArrayList<User> usersList;
     private ArrayList<String> playOrder;
     private PlayerTurn turn;
 
@@ -48,7 +48,7 @@ public class Room {
         usersList.forEach(user -> user.chatMessage(sender, message));
     }
 
-    public static List<User> getUsersList() {
+    public List<User> getUsersList() {
         return usersList;
     }
 

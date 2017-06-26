@@ -270,7 +270,7 @@ public class Game {
      * @param floorNumber
      * @param fm
      */
-    public void towerMove(String towerColor, int floorNumber, FamilyMember fm) {
+    public Card towerMove(String towerColor, int floorNumber, FamilyMember fm) {
         Player actor = this.getPlayerFromColor(fm.getOwnerColor());
         Card card = this.board.getTowers().get(towerColor).getFloor(floorNumber).pullCard();
         Assets actionCost = new Assets(card.getCost());
@@ -279,8 +279,7 @@ public class Game {
         actionCost.subtractToZero(actor.getPickDiscount(towerColor));
         actor.getResources().subtract(actionCost);
         actor.addCard(card, towerColor);
-        //TODO: activate immediateEffect and long term effect for blue cards!
-        if (card instanceof BlueCard) CardHandler.activateBlueCard((BlueCard)card, actor);
+        return card;
     }
 
     /**
