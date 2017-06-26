@@ -171,7 +171,6 @@ public class TestParser {
         assertEquals(blackCardExpected, testParser.getCard(1).get(BLACK_COLOR).get(0));
     }
 
-    @Test
     private static void testCardParser(Parser testParser) {
         try {
             try {
@@ -259,7 +258,6 @@ public class TestParser {
         assertEquals(thirdAgeExcommExpected, testParser.getExcommunications().get(3));
     }
 
-    @Test
     private static void testExcommunicationParser(Parser testParser){
         try{
             try {
@@ -289,7 +287,6 @@ public class TestParser {
             getLog().info("InvalidExcommunicationException");
         }
     }
-
     @Test
     public static void testParser() {
         try {
