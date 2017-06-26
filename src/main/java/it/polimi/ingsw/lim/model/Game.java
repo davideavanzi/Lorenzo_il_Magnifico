@@ -154,14 +154,6 @@ public class Game {
         getLog().info("[NEW_TURN_SETUP_END]");
     }
 
-    /**
-     * This method adds a player to the game.
-     * TODO: do we have to check again if there are more than 5?
-     */
-    public void addPlayer(Player pl){
-        this.players.add(pl);
-    }
-
     private void clearHarvest(){
         getLog().info("Clearing Harvest space");
         this.board.setHarvest(new ArrayList<>());
@@ -188,12 +180,14 @@ public class Game {
 
 
     /**
-     * This method picks an available color and adds it to the new created player
-     * @param nickname
+     * This method adds a player to the game.
+     * TODO: do we have to check again if there are more than 5?
      */
-    public void addPlayer(String nickname) {
+    public Player addPlayer(String nickname) {
         String color = this.availablePlayerColors.remove(0);
-        this.players.add(new Player(nickname, color));
+        Player pl = new Player(nickname, color);
+        this.players.add(pl);
+        return pl;
     }
 
     /**

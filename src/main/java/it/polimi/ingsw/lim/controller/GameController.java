@@ -94,7 +94,8 @@ public class GameController {
     public void createGame() {
         Game game = new Game();
 
-        roomCallback.getUsersList().forEach(user -> game.addPlayer(user.getUsername()));
+        roomCallback.getUsersList().forEach(user ->
+            user.setPlayer(game.addPlayer(user.getUsername())));
 
         String defaultPath = "default/";
         //TODO: handle exception in a proper place
