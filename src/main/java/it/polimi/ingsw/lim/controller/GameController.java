@@ -111,10 +111,6 @@ public class GameController {
             getLog().severe("[ERROR] - parsed data are incorrect");
         //building game
         getLog().info("Setting up game with parsed data");
-        //TODO: add players before setting up the game!;
-        game.addPlayer("CIAONE");
-        game.addPlayer("HELLONE");
-        game.addPlayer("HOLAONE");
         try {
             game.setUpGame(parsedGame);
         } catch (GameSetupException e) {
