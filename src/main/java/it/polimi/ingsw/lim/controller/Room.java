@@ -42,7 +42,7 @@ public class Room {
             roomOpen = false;
             getLog().log(Level.INFO, () -> "The room is now full");
         }
-        if(this.usersList.size() >= 2){
+        if(this.usersList.size() == 2){
             new TimerEnd(20, this);//todo make configurable time
         }
     }
