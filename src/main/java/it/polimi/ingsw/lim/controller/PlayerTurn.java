@@ -25,6 +25,10 @@ public class PlayerTurn {
     private int bonusHarvestAction = 0;
     private int bonusProductionAction = 0;
 
+    public String getUserName(){
+        return this.user.getUsername();
+    }
+
     public PlayerTurn(User user) {
        this.user = user;
     }
