@@ -5,6 +5,7 @@ import it.polimi.ingsw.lim.model.*;
 import it.polimi.ingsw.lim.parser.Parser;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.logging.Level;
 
 import static it.polimi.ingsw.lim.Log.*;
@@ -96,7 +97,7 @@ public class GameController {
 
         roomCallback.getUsersList().forEach(user ->
             user.setPlayer(game.addPlayer(user.getUsername())));
-
+        Collections.shuffle(game.getPlayers());
         String defaultPath = "default/";
         //TODO: handle exception in a proper place
         Parser parsedGame = new Parser();
