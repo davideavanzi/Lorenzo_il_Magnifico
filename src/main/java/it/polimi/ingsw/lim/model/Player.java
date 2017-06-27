@@ -155,6 +155,11 @@ public class Player implements Serializable{
         return this.cards.get(color).size();
     }
 
+    public Assets getDefaultHarvestBonus() {
+        return defaultHarvestBonus;
+    }
 
-
+    public Assets getDefaultProductionBonus() {
+        return defaultProductionBonus;
+    }
 }
