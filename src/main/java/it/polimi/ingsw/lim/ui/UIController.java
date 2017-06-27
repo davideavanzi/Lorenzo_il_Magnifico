@@ -105,7 +105,7 @@ public class UIController {
                 case INFO:
                     if (lookForPlayer() == null)
                         throw new InvalidInputException(("[INPUT_PARSER]: Username not found in your room :").concat(username));
-                    
+
                     break;
                 case BOARD:
 
