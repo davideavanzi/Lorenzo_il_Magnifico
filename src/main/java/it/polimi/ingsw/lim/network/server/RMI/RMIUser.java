@@ -25,17 +25,21 @@ public class RMIUser extends User {
     }
 
     @Override
-    public void chatMessage(String sender, String message) {
+    public void sendGameUpdate(Board board, ArrayList<Player> players) {
         try {
-            RMIServer.chatMessageToClient(sender, message, this.rci);
+            RMIServer.sendGameToClient(board, players, this.rci);
         } catch (RemoteException e) {
-            getLog().log(Level.SEVERE, "[RMI] Remote error sending chat message to client.");
+            getLog().log(Level.SEVERE, "[RMI]: Remote error sending board and arrayList of player to client.");
         }
     }
 
     @Override
-    public void sendGameState(Board board, ArrayList<Player> players) {
-
+    public void sendChatMessage(String sender, String message) {
+        try {
+            RMIServer.chatMessageToClient(sender, message, this.rci);
+        } catch (RemoteException e) {
+            getLog().log(Level.SEVERE, "[RMI]: Remote error sending chat message to client.");
+        }
     }
 
     @Override

@@ -266,6 +266,10 @@ public class GameController {
         actor.getPlayer().setResources(actor.getPlayer().getResources().add(bonusAccumulator));
     }
 
+    public ArrayList<Player> getActualplayingOrder() {
+        return this.game.getPlayers();
+    }
+
     /**
      *
      * @param optionalBaseStr

@@ -11,9 +11,8 @@ public class SocketConstants {
     public final static String SPLITTER = "|||";
     public final static String SPLITTER_REGEX = "\\|\\|\\|";
 
-    public final static String ASK_SERVANTS_AMOUNT = "ASK_SERVANTS_AMOUNT";
-    public final static String ANSWER_SERVANTS_AMOUNT = "ANSWER_SERVANTS_AMOUNT";
     public final static String LOGIN = "LOGIN";
-    public final static String LOGIN_SUCCESSFUL = "LOGIN SUCCESSFUL";
+    public final static String LOGIN_SUCCESSFUL = "LOGIN_SUCCESSFUL";
     public final static String CHAT = "CHAT";
+    public final static String TURN_ORDER = "TURN_ORDER";
 }

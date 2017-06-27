@@ -1,6 +1,8 @@
 package it.polimi.ingsw.lim.network.server.RMI;
 
 import it.polimi.ingsw.lim.Log;
+import it.polimi.ingsw.lim.model.Board;
+import it.polimi.ingsw.lim.model.Player;
 import it.polimi.ingsw.lim.network.client.RMI.RMIClientInterf;
 import it.polimi.ingsw.lim.network.server.MainServer;
 
@@ -9,6 +11,8 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.*;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
+import java.util.Map;
 import java.util.logging.Level;
 
 import static it.polimi.ingsw.lim.network.server.MainServer.addUserToRoom;
@@ -24,13 +28,16 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
      */
     public RMIServer() throws RemoteException {}
 
+    public static void sendGameToClient(Board board, ArrayList<Player> players, RMIClientInterf rmiClient) throws RemoteException {
+        rmiClient.updateClientGame(board, players);
+    }
 
     /**
      * This method sends a chat message to the user.
      * @param sender
      * @param message
      */
-    public static void chatMessageToClient(String sender, String message, RMIClientInterf rmiClient) throws RemoteException{
+    public static void chatMessageToClient(String sender, String message, RMIClientInterf rmiClient) throws RemoteException {
         rmiClient.chatMessageFromServer(sender, message);
     }
 

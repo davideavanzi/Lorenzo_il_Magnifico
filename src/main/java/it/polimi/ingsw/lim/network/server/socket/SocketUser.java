@@ -20,18 +20,18 @@ public class SocketUser extends User {
     }
 
     @Override
-    public void chatMessage(String sender, String message) {
+    public void sendGameUpdate(Board board, ArrayList<Player> players) {
+        this.sch.sendGameToClient(board, players);
+    }
+
+    @Override
+    public void sendChatMessage(String sender, String message) {
         this.sch.chatMessageToClient(sender, message);
     }
 
     @Override
-    public void sendGameState(Board board, ArrayList<Player> players) {
-        //TODO: implement
-    }
-
-    @Override
     public int askForServants(int minimumAmount) {
-        return 0; //TODO: implement
+        return 0;
     }
 
     @Override

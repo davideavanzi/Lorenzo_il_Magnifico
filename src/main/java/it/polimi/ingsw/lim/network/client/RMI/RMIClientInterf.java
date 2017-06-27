@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public interface RMIClientInterf extends Remote{
 
-    void chatMessageFromServer(String sender, String message) throws RemoteException;
+    void updateClientGame(Board board, ArrayList<Player> players) throws RemoteException;
 
-    void updateClientGame(Board board) throws RemoteException;
+    void chatMessageFromServer(String sender, String message) throws RemoteException;
 }

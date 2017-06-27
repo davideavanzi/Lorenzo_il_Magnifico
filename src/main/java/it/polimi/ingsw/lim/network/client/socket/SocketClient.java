@@ -2,12 +2,14 @@ package it.polimi.ingsw.lim.network.client.socket;
 
 import it.polimi.ingsw.lim.Lock;
 import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
-import it.polimi.ingsw.lim.model.Assets;
+import it.polimi.ingsw.lim.model.Player;
 import it.polimi.ingsw.lim.network.client.ServerInterface;
 import it.polimi.ingsw.lim.ui.UIController;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
+
 import static it.polimi.ingsw.lim.network.SocketConstants.*;
 
 /**
@@ -48,25 +50,26 @@ public class SocketClient implements Runnable, ServerInterface {
      */
     public int getPort() {return port;}
 
-
-    public void chatMessageToServer(String sender, String message) throws ClientNetworkException{
+    public void chatMessageToServer(String sender, String message) throws ClientNetworkException {
         try {
-            objFromClient.writeObject("CHAT"+SPLITTER+sender+SPLITTER+message);
-            objFromClient.flush();
-            objFromClient.reset();
+            sendObjToServer(CHAT + SPLITTER + sender + SPLITTER + message);
         } catch (IOException e) {
-            throw new ClientNetworkException("Could not send chat message to server", e);
+            throw new ClientNetworkException("[SOCKET]: Could not send chat message to server", e);
         }
     }
 
     public void sendLogin(String username) throws ClientNetworkException {
         try {
-            objFromClient.writeObject(LOGIN+SPLITTER+username);
-            objFromClient.flush();
-            objFromClient.reset();
+            sendObjToServer(LOGIN + SPLITTER + username);
         } catch (IOException e) {
-            throw new ClientNetworkException("Could not send login information to server", e);
+            throw new ClientNetworkException("[SOCKET]: Could not send login information to server", e);
         }
+    }
+
+    public void sendObjToServer(Object obj) throws IOException {
+        objFromClient.writeObject(obj);
+        objFromClient.flush();
+        objFromClient.reset();
     }
 
     private void waitFromServer() throws ClientNetworkException {

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.lim.controller;
 
-import it.polimi.ingsw.lim.Log;
+import it.polimi.ingsw.lim.model.Player;
+import it.polimi.ingsw.lim.network.server.MainServer;
 
 import static it.polimi.ingsw.lim.Log.getLog;
 import static it.polimi.ingsw.lim.Settings.*;
@@ -18,12 +19,11 @@ import java.util.TimerTask;
  */
 public class Room {
 
-    private GameController gameController;
+    private transient GameController gameController;
     private boolean roomOpen = true; // room open
     private ArrayList<User> usersList;
     private ArrayList<String> playOrder;
     private PlayerTurn turn;
-    private int turnNumber;
 
 
     public Room(User user) {
@@ -33,6 +33,18 @@ public class Room {
         user.setRoom(this);
         getLog().log(Level.INFO, () -> "Room created, adding "+ user.getUsername() +" to room");
     }
+
+    public GameController getGameController() { return gameController; }
+
+    public List<User> getUsersList() {
+        return usersList;
+    }
+
+    public boolean isFull() {
+        return (this.usersList.size() >= MAX_USERS_PER_ROOM);
+    }
+
+    public boolean isOpen() { return roomOpen; }
 
     public void addUser(User user) {
         usersList.add(user);
@@ -48,7 +60,7 @@ public class Room {
     }
 
     public void chatMessageToRoom(String sender, String message) {
-        usersList.forEach(user -> user.chatMessage(sender, message));
+        usersList.forEach(user -> user.sendChatMessage(sender, message));
     }
 
     public void broadcastMessage(String message) {

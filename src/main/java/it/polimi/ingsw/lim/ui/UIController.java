@@ -1,6 +1,7 @@
 package it.polimi.ingsw.lim.ui;
 
 import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
+import it.polimi.ingsw.lim.exceptions.InvalidInputException;
 import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.Player;
 import it.polimi.ingsw.lim.network.client.RMI.RMIClient;
@@ -45,8 +46,12 @@ public class UIController {
         return clientUI;
     }
 
-    public void updateGame(Board board) {
+    public void updateBoard(Board board) {
         localBoard = board;
+    }
+
+    public void updatePlayers(ArrayList<Player> players) {
+        localPlayers = players;
     }
 
     public static void setClientProtocol(ServerInterface clientProtocol) {
@@ -57,28 +62,62 @@ public class UIController {
         UIController.clientUI.waitUserInput();
     }
 
-    static void inputParser(String input) {
+    public static void inputParser(String input) {
         ArrayList<String> commandInput = new ArrayList<>(Arrays.asList(input.split(SPACE)));
         String command = commandInput.get(0);
-        switch (command) {
-            case CHAT:
-                chat(input.split(SPACE, 2)[1]);
-                break;
-            case TURN:
+        try {
+            if (commandInput.size() < 2)
+                throw new InvalidInputException("[INPUT_PARSER]: Command parameters not found");
 
-                break;
-            case SHOW:
-                if(commandInput.size() == 3) {
-                    manageShowCommand(commandInput);
-                } else {
-                    clientUI.printMessageln(HELP_CHAT);
+                switch (command) {
+                    case CHAT:
+                        chat(input.split(SPACE, 2)[1]);
+                        break;
+                    case SHOW:
+                        showCommand(commandInput);
+                        break;
+                    default:
+                        throw new InvalidInputException(("[INPUT_PARSER]: command not found: ").concat(command));
                 }
-                break;
-            case HELP:
-                help();
-                break;
-            default:
-                clientUI.printMessageln("Command not found: "+command);
+        } catch (InvalidInputException e) {
+            clientUI.printMessageln(e.getMessage());
+        }
+    }
+/*
+    public static void inputParserMod(String input) {
+        ArrayList<String> parameters = new ArrayList<>(Arrays.asList(input.split(SPACE)));
+        String commandID = parameters.remove(0);
+        HashMap<String, ArrayList<String>> command = new HashMap<>();
+        command.put(CHAT, parameters);
+        command.put(TURN, parameters);
+        command.put(SHOW, parameters);
+        command.put(HELP, null);
+    }
+*/
+    public static void showCommand(ArrayList<String> command) {
+        String parameter = command.get(1);
+        String username = command.get(2);
+        try {
+            switch (parameter) {
+                case TURN:
+                    turnOrder();
+                    break;
+                case INFO:
+                    if (lookForPlayer() == null)
+                        throw new InvalidInputException(("[INPUT_PARSER]: Username not found in your room :").concat(username));
+                    
+                    break;
+                case BOARD:
+
+                    break;
+                case HELP:
+                    help();
+                    break;
+                default:
+                    throw new InvalidInputException(("[INPUT_PARSER]: show command parameters not found: ").concat(parameter));
+            }
+        } catch (InvalidInputException e) {
+            clientUI.printMessageln(e.getMessage());
         }
     }
 
@@ -99,37 +138,10 @@ public class UIController {
         return null;
     }
 
-    private static void manageShowCommand(ArrayList<String> commandInput) {
-        String username = commandInput.get(2);
-        switch (commandInput.get(1)) {
-            case STRENGTH:
-                if (lookForPlayer() != null)
-
-                break;
-            case ASSETS:
-                if (lookForPlayer() != null)
-                    clientUI.printAssets(lookForPlayer().getResources(), username);
-                else
-                    clientUI.printMessageln(ERROR_USERNAME);
-                break;
-            case TOWER:
-                //clientUI.printsTower();
-                break;
-            case CARD:
-                if (lookForPlayer() != null)
-                    clientUI.printPlayerCards();
-                else
-                    clientUI.printMessageln(ERROR_USERNAME);
-                break;
-            case LEADER:
-
-                break;
-            case PERSONAL_BOARD:
-
-                break;
-            default:
-                clientUI.printMessageln("Invalid show command's parameter");
-        }
+    private static void turnOrder() {
+        clientUI.printMessageln("Turn order: ");
+        for (Player pl : localPlayers)
+            clientUI.printMessageln(pl.getNickname());
     }
 
     private static void chat(String message) {
@@ -188,21 +200,18 @@ public class UIController {
         protected static final String SPACE = " ";
 
         protected static final String CHAT = "chat";
-        protected static final String TURN = "turn";
         protected static final String SHOW = "show";
+        protected static final String TURN = "turn";
+        protected static final String INFO = "info";
+        protected static final String BOARD = "board";
         protected static final String HELP = "help";
 
-        protected static final String STRENGTH = "strength";
-        protected static final String ASSETS = "assets";
-        protected static final String TOWER = "tower";
-        protected static final String CARD = "card";
-        protected static final String LEADER = "leader";
-        protected static final String PERSONAL_BOARD = "personal-board";
 
         protected static final String HELP_CHAT = "Usage: chat [MESSAGE].\nBroadcast a message to all client in the room";
-        protected static final String HELP_TURN = "Usage: turn.\nShow which user is playing";
-        protected static final String HELP_SHOW = "Usage: show [strength,assets,tower,card,leader,personal-board] [username]\nShow information about a specific user";
-
-        protected static final String ERROR_USERNAME = "This player does not exist.\nPlease enter a valid username.";
+        protected static final String HELP_TURN = "Usage: turn\nShow which user is playing";
+        protected static final String HELP_SHOW = "Usage: show [turn,board,help]\n" +
+                                                  "Show the turn order, the game board or this help message\n" +
+                                                  "       show [info] [username]\n" +
+                                                  "Show personal information";
     }
 }

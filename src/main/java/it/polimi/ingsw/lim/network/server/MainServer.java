@@ -4,6 +4,7 @@ import static it.polimi.ingsw.lim.Log.*;
 
 import it.polimi.ingsw.lim.controller.Room;
 import it.polimi.ingsw.lim.controller.User;
+import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.network.server.RMI.RMIServer;
 import it.polimi.ingsw.lim.network.server.socket.SocketServer;
 

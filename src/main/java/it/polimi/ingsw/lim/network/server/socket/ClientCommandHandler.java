@@ -32,12 +32,10 @@ class ClientCommandHandler {
             if (commandIdentifier.equals(LOGIN)) {
                 this.user = new SocketUser(command.get(1), handlerCallback);
                 addUserToRoom(this.user);
-            } else if(commandIdentifier.equals(ANSWER_SERVANTS_AMOUNT)) {
+            } else if(commandIdentifier.equals(TURN_ORDER)) {
 
             } else if (commandIdentifier.equals(CHAT)) {
-                //The server has received a chat message from the client, it has to deliver it to other room mates.
                 this.user.getRoom().chatMessageToRoom(command.get(1), command.get(2));
-                getLog().log(Level.INFO, () -> "[C-H] message from "+command.get(1)+": "+command.get(2));
             } else {
                 getLog().log(Level.SEVERE, () ->"[C-H] invalid message indentifier: "+commandIdentifier);
             }

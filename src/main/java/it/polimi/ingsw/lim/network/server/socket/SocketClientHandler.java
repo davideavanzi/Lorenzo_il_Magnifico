@@ -1,12 +1,18 @@
 package it.polimi.ingsw.lim.network.server.socket;
 
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import it.polimi.ingsw.lim.controller.User;
+import it.polimi.ingsw.lim.model.Board;
+import it.polimi.ingsw.lim.model.Player;
 
 import static it.polimi.ingsw.lim.Log.*;
+import static it.polimi.ingsw.lim.network.SocketConstants.CHAT;
 import static it.polimi.ingsw.lim.network.SocketConstants.SPLITTER;
+import static it.polimi.ingsw.lim.network.SocketConstants.TURN_ORDER;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.logging.Level;
 
 /**
@@ -49,18 +55,54 @@ public class SocketClientHandler implements Runnable {
         return user;
     }
 
+
+
     /**
-     * Create I/O stream for socket connection.
+     * It's used for the updated board and ArrayList of connected (to the server) users.
+     * @param board
+     * @param players
      */
-    private void createStream() {
+    public void sendGameToClient(Board board, ArrayList<Player> players) {
         try {
-            // Input and output stream
-            this.objFromServer = new ObjectOutputStream(socketClient.getOutputStream());
-            objFromServer.flush();
-            this.objToServer = new ObjectInputStream(socketClient.getInputStream());
+            sendObjectToClient(board);
+            sendObjectToClient(players);
         } catch (IOException e) {
-            getLog().log(Level.SEVERE, "Could not create I/O stream", e);
+            getLog().log(Level.SEVERE, "[SOCKET]: Could not send game update to the client", e);
         }
+    }
+
+    public void sendTurnOrder(ArrayList<String> players) {
+        try {
+            sendObjectToClient(TURN_ORDER + SPLITTER + players);
+        } catch (IOException e) {
+            getLog().log(Level.SEVERE, "[SOCKET]: Could not send turn order request to the client", e);
+        }
+    }
+    /**
+     * This method sends a chat message to the user
+     * @param sender
+     * @param message
+     */
+    public void chatMessageToClient(String sender, String message) {
+        try {
+            sendObjectToClient(CHAT + SPLITTER + sender + SPLITTER + message);
+        } catch (IOException e) {
+            getLog().log(Level.SEVERE, "[SOCKET]: Could not send chat message to the client", e);
+        }
+    }
+
+    public void printToClient(String message) {
+        try {
+            sendObjectToClient(message);
+        } catch (IOException e) {
+            getLog().log(Level.SEVERE, "[SOCKET]: Could not send message to the client", e);
+        }
+    }
+
+    public void sendObjectToClient(Object obj) throws IOException {
+        objFromServer.writeObject(obj);
+        objFromServer.flush();
+        objFromServer.reset();
     }
 
     private void waitRequest() {
@@ -79,36 +121,24 @@ public class SocketClientHandler implements Runnable {
     }
 
     /**
+     * Create I/O stream for socket connection.
+     */
+    private void createStream() {
+        try {
+            // Input and output stream
+            this.objFromServer = new ObjectOutputStream(socketClient.getOutputStream());
+            objFromServer.flush();
+            this.objToServer = new ObjectInputStream(socketClient.getInputStream());
+        } catch (IOException e) {
+            getLog().log(Level.SEVERE, "Could not create I/O stream", e);
+        }
+    }
+
+    /**
      * Create the I/O socket stream, run until the login is successful then listen for a client command
      */
     public void run() {
         createStream();
         waitRequest();
-    }
-
-    /**
-     * This method sends a chat message to the user
-     * @param sender
-     * @param message
-     */
-    public void chatMessageToClient(String sender, String message) {
-        try {
-            objFromServer.writeObject("CHAT"+SPLITTER+sender+SPLITTER+message);
-            objFromServer.flush();
-            objFromServer.reset();
-        } catch (IOException e) {
-            getLog().log(Level.SEVERE, () -> "[SOCKET]: can't send chat message to client");
-        }
-    }
-
-    public void printToClient(String message) {
-        try {
-            objFromServer.writeObject(message);
-            objFromServer.flush();
-            objFromServer.reset();
-        } catch (IOException e) {
-            getLog().log(Level.SEVERE, () -> "[SOCKET]: Could not send String to client");
-        }
-
     }
 }
