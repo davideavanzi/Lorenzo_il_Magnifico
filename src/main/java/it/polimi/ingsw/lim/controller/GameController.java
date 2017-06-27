@@ -2,11 +2,14 @@ package it.polimi.ingsw.lim.controller;
 
 import it.polimi.ingsw.lim.exceptions.GameSetupException;
 import it.polimi.ingsw.lim.model.*;
+import it.polimi.ingsw.lim.network.server.RMI.RMIUser;
 import it.polimi.ingsw.lim.parser.Parser;
+import org.codehaus.jackson.annotate.JsonTypeInfo;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.lim.Log.*;
 import static it.polimi.ingsw.lim.Settings.*;
@@ -21,10 +24,22 @@ public class GameController {
 
     public GameController(Room roomCallback) { this.roomCallback = roomCallback; }
 
+    public GameController() {  }
+
+
     public static void main(String[] args){
 
         createLogFile();
         getLog().info("Creating new game instance.");
+        GameController contr = new GameController();
+        contr.createGame();
+        contr.game.addPlayer("CIAONE");
+        contr.game.addPlayer("HELLONE");
+        contr.game.addPlayer("HOLAONE");
+
+        contr.moveInTower(contr.game.getPlayer("CIAONE").pullFamilyMember(BLACK_COLOR), GREEN_COLOR,1);
+        contr.moveInHarvest(contr.game.getPlayer("CIAONE").pullFamilyMember(WHITE_COLOR));
+        /*
         Game game = new Game();
         String defaultPath = "default/";
         getLog().log(Level.INFO, () -> "Parsing game data from path: " + CONFIGS_PATH+defaultPath);
@@ -57,7 +72,7 @@ public class GameController {
         game.setUpTurn();
         game.getTower("GREEN").getFloor(1).getCard().printCard();
 
-        //moveInTower(game.getPlayer("CIAONE").pullFamilyMember(BLACK_COLOR), GREEN_COLOR,1);
+        moveInTower(game.getPlayer("CIAONE").pullFamilyMember(BLACK_COLOR), GREEN_COLOR,1);
 
         System.out.println("Carte verdi in ciaone: "+game.getPlayer("CIAONE").getCardsOfColor(GREEN_COLOR).size());
 
@@ -65,6 +80,8 @@ public class GameController {
         System.out.println("DICE COLORS:");
         DICE_COLORS.forEach(color -> System.out.println(color+": "+game.getDice().get(color)));
         System.out.println(game.isHarvestMoveAllowed(new FamilyMember(ORANGE_COLOR, GREEN_COLOR)));
+
+        */
     }
 
     /**
@@ -90,7 +107,8 @@ public class GameController {
     }
 
     /**
-     * This method creates an empty instance of the game
+     * This method creates an empty instance of the game.
+     * Room must have players before instantiating game instance
      */
     public void createGame() {
         this.game = new Game();
@@ -130,19 +148,28 @@ public class GameController {
      */
     public void moveInTower (FamilyMember fm, String towerColor, int floor) {
         Strengths strength = new Strengths();
-        getLog().log(Level.INFO, "Player "+this.game.getPlayerFromColor(fm.getOwnerColor()).getNickname()+
+        User actor = roomCallback.getUser(this.game.getPlayerFromColor(fm.getOwnerColor()).getNickname());
+        getLog().log(Level.INFO, "Player "+actor.getPlayer().getNickname()+
                 " is trying to enter "+towerColor+" tower at floor number "+floor+" with the "
                 +fm.getDiceColor()+" family member of value "+this.game.getDice().get(fm.getDiceColor()));
-
         if(this.game.isTowerMoveAllowed(towerColor, floor, fm, strength)){
             if(this.game.isTowerMoveAffordable(towerColor, floor, fm)){
-                //move is affordable, ask the client in case more servants are needed
-                if (this.game.servantsForTowerAction(fm, towerColor, floor) > 0);
-                //ask player!
+                int servantsForTowerAction = this.game.servantsForTowerAction(fm, towerColor, floor);
+                int servantsDeployed;
+                do {
+                    servantsDeployed = actor.askForServants(servantsForTowerAction);
+                } while (servantsDeployed < servantsForTowerAction || servantsDeployed >
+                                this.game.getPlayerFromColor(fm.getOwnerColor()).getResources().getServants());
                 Card card = this.game.towerMove(towerColor, floor, fm);
-                //TODO: activate immediateEffect and long term effect for blue cards!
-                //if (card instanceof BlueCard) CardHandler.activateBlueCard((BlueCard)card, );
-                //perform action
+                //Activate before all resources bonus, then actions.
+                card.getImmediateEffects().stream().filter(ie -> ie instanceof AssetsEffect)
+                        .filter(ie -> ie instanceof AssetsMultipliedEffect)
+                        .filter(ie -> ie instanceof CardMultipliedEffect)
+                        .filter(ie -> ie instanceof CouncilFavorsEffect)
+                        .forEach(ie -> EffectHandler.activateImmediateEffect(ie, actor));
+                card.getImmediateEffects().stream().filter(ie -> ie instanceof ActionEffect)
+                        .forEach(ie -> EffectHandler.activateImmediateEffect(ie, actor));
+                if (card instanceof BlueCard) CardHandler.activateBlueCard((BlueCard)card, actor.getPlayer());
             } else {
                 getLog().log(Level.INFO, "But the move is not affordable");
             }
@@ -151,33 +178,50 @@ public class GameController {
         }
     }
 
-    public void moveInHarvest (FamilyMember fm, String towerColor, int floor) {
-        Strengths strength = new Strengths();
+    /**
+     * This method performs the actual harvest move.
+     * It does not require a reference to the remote user as the harvest has not costs to choose.
+     * @param fm the family member deployed for the action
+     */
+    public void moveInHarvest (FamilyMember fm) {
         if(this.game.isHarvestMoveAllowed(fm)){
-            //move is affordable, ask the client in case more servants are needed
+            Player actor = this.game.getPlayerFromColor(fm.getOwnerColor());
             int servantsForHarvestAction = this.game.servantsForHarvestAction(fm);
-            if (servantsForHarvestAction > 0)
-                roomCallback.getUser(this.game.getPlayerFromColor(fm.getOwnerColor()).getNickname())
+            actor.setResources(actor.getResources().add(actor.getDefaultHarvestBonus()));
+            int servantsDeployed;
+            do {
+                servantsDeployed = roomCallback.getUser(this.game.getPlayerFromColor(fm.getOwnerColor()).getNickname())
                         .askForServants(servantsForHarvestAction);
+            } while (servantsDeployed < servantsForHarvestAction ||
+                    servantsDeployed > this.game.getPlayerFromColor(fm.getOwnerColor()).getResources().getServants());
             this.game.harvestMove(fm);
-            for (Card card: game.getPlayerFromColor(fm.getOwnerColor()).getCardsOfColor(GREEN_COLOR))
-                CardHandler.activateGreenCard((GreenCard)card, game.getPlayerFromColor(fm.getOwnerColor()));
-            //perform action ?
-
+            int actionStrength = game.calcHarvestActionStr(fm, servantsDeployed, 0);
+            for (Card card: game.getPlayerFromColor(fm.getOwnerColor()).getCardsOfColor(GREEN_COLOR)) {
+                GreenCard activeCard = (GreenCard) card;
+                if (activeCard.getActionStrength().getHarvestBonus() <= actionStrength)
+                    CardHandler.activateGreenCard(activeCard, game.getPlayerFromColor(fm.getOwnerColor()));
+            }
         }
     }
 
-    public void moveInProduction (FamilyMember fm, String towerColor, int floor) {
-        Strengths strength = new Strengths();
+    public void moveInProduction (FamilyMember fm, User actor) {
         if(this.game.isProductionMoveAllowed(fm)){
-            //move is affordable, ask the client in case more servants are needed
-            if (this.game.servantsForProductionAction(fm) > 0)
-                //at least that amount of servants!
-                ;
-            this.game.harvestMove(fm);
-            for (Card card: game.getPlayerFromColor(fm.getOwnerColor()).getCardsOfColor(GREEN_COLOR))
-                CardHandler.activateGreenCard((GreenCard)card, game.getPlayerFromColor(fm.getOwnerColor()));
-            //perform action
+            Assets bonusAccumulator = new Assets(actor.getPlayer().getDefaultProductionBonus());
+            int servantsForProductionAction = this.game.servantsForProductionAction(fm);
+            int servantsDeployed;
+            do {
+                servantsDeployed = roomCallback.getUser(this.game.getPlayerFromColor(fm.getOwnerColor()).getNickname())
+                        .askForServants(servantsForProductionAction);
+            } while (servantsDeployed < servantsForProductionAction ||
+                    servantsDeployed > this.game.getPlayerFromColor(fm.getOwnerColor()).getResources().getServants());
+            this.game.productionMove(fm);
+            int actionStrength = game.calcProductionActionStr(fm, servantsDeployed, 0);
+            for (Card card: game.getPlayerFromColor(fm.getOwnerColor()).getCardsOfColor(GREEN_COLOR)) {
+                YellowCard activeCard = (YellowCard) card;
+                if (activeCard.getActionStrength().getProductionBonus() <= actionStrength)
+                    CardHandler.activateYellowCard(activeCard, actor, bonusAccumulator);
+            }
+            actor.getPlayer().setResources(actor.getPlayer().getResources().add(bonusAccumulator));
         }
     }
 

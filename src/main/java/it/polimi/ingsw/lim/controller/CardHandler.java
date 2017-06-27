@@ -22,37 +22,30 @@ public class CardHandler {
      * This method activates a yellow card, checking the type of bonus.
      * productionResults must not be null in any case (TODO: check it in yellow card constructor!)
      * @param card the card to activate
-     * @param pl the player performing the action
+     * @param actor the user performing the action
      */
-    public static void activateYellowCard (YellowCard card, Player pl) {
-        Log.getLog().log(Level.INFO, () -> "activating production card "+card.getName()+" for player "+pl.getNickname());
+    public static void activateYellowCard (YellowCard card, User actor, Assets bonusAccumulator) {
+        Log.getLog().log(Level.INFO, () ->
+                "activating production card "+card.getName()+" for player "+actor.getPlayer().getNickname());
         ArrayList<Assets> productionResults = card.getProductionResults();
         if (card.getCardMultiplier() != null) {
-            pl.setResources(pl.getResources().add(productionResults.get(0)
-                    .multiply(pl.getCardsAmount(card.getCardMultiplier()))));
+            actor.getPlayer().setResources(actor.getPlayer().getResources().add(productionResults.get(0)
+                    .multiply(actor.getPlayer().getCardsAmount(card.getCardMultiplier()))));
         } else if (card.getProductionCosts().size() == 0) {
-            pl.setResources(pl.getResources().add(card.getProductionResults().get(0)));
+            actor.getPlayer().setResources(actor.getPlayer().getResources().add(card.getProductionResults().get(0)));
         } else {
             ArrayList<Assets[]> availableOptions = new ArrayList<>();
             for (int i = 0; i < card.getProductionCosts().size(); i++)
-                if (pl.getResources().isGreaterOrEqual(card.getProductionCosts().get(i))) {
+                if (actor.getPlayer().getResources().isGreaterOrEqual(card.getProductionCosts().get(i))) {
                     availableOptions.add(new Assets[]{card.getProductionCosts().get(i),
                             card.getProductionResults().get(i)});
                 }
             if (availableOptions.size() > 0) {
-                int option = 0;
-                if (availableOptions.size() > 1) {
-                    //TODO: ask the player which production prefers to activate!
-                }
-                pl.setResources(pl.getResources().subtract(availableOptions.get(option)[1])
-                        .add(availableOptions.get(option)[2]));
+                int chosenOption = actor.chooseProduction(availableOptions);
+                actor.getPlayer().setResources(actor.getPlayer().getResources()
+                        .subtract(availableOptions.get(chosenOption)[1]));
+                bonusAccumulator.add(availableOptions.get(chosenOption)[2]);
             }
-            /* pretty but useless :(
-            ArrayList<Assets> productionCosts = card.getProductionCosts().stream()
-                    .filter(cost -> pl.getResources().isGreaterOrEqual(cost))
-                    .collect(Collectors.toCollection(ArrayList::new));
-            */
-
         }
     }
 
@@ -74,16 +67,4 @@ public class CardHandler {
                         pl.setPickDiscount(color, pl.getPickDiscount(color).add(card.getPickDiscounts().get(color))));
         }
     }
-
-    /**
-     * TODO: do we have to set an else case? - USELESS
-     * @param card
-     * @param pl
-     */
-    /*
-    public static void activateCard (Card card, Player pl) {
-        if (card instanceof GreenCard) activateGreenCard((GreenCard)card, pl);
-        if (card instanceof BlueCard) activateBlueCard((BlueCard)card, pl);
-        if (card instanceof YellowCard) activateYellowCard((YellowCard) card, pl);
-    } */
 }

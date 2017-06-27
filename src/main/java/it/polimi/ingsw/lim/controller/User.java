@@ -3,6 +3,7 @@ package it.polimi.ingsw.lim.controller;
 import it.polimi.ingsw.lim.model.Assets;
 import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.Player;
+import org.codehaus.jackson.annotate.JsonTypeInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +50,13 @@ public abstract class User {
 
     public abstract int askForServants(int minimumAmount);
 
-    public abstract int chooseProduction();
+    /**
+     * This method asks the user which production wants to activate. A production option is an array of two
+     * Assets objects: the first is the cost, the second is the result.
+     * @param options production options the player can choose from
+     * @return the integer corresponding to the option position in the list.
+     */
+    public abstract int chooseProduction(ArrayList<Assets[]> options);
 
     public Player getPlayer() {
         return player;

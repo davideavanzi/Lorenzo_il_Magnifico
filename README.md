@@ -1,8 +1,8 @@
 # Lorenzo_il_Magnifico
 #### Software Engineering project. AA 2016/17
 
-## JavaDoc:
-### http://lim.ingsw.davideavanzi.com/javadoc
+### JavaDoc:
+#### http://lim.ingsw.davideavanzi.com/javadoc
 
 ## Functionalities:
 - Connections:

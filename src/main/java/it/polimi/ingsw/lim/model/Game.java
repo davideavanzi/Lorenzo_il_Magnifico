@@ -133,7 +133,7 @@ public class Game {
      * Deciding when to advance in ages and turn is a task of the main game controller.
      */
     public void setUpTurn(){
-        getLog().log(Level.INFO, "[NEW_TURN_SETUP] - Setting up turn number: %s", this.board.getTurn());
+        getLog().log(Level.INFO, () -> "[NEW_TURN_SETUP] - Setting up turn number: "+ this.board.getTurn());
         clearHarvest();
         clearProduction();
         this.board.getCouncil().clear();
@@ -143,7 +143,7 @@ public class Game {
             {
                 getLog().info("Clearing "+color+" tower");
                 this.board.getTowers().get(color).clear();
-                getLog().log(Level.INFO,"Adding cards to %s tower", color);
+                getLog().log(Level.INFO,"Adding cards to "+color+" tower");
                 this.board.getTowers().get(color).addCards(cardsDeck.getCardsForTower(color, this.board.getAge()));
             });
         getLog().info("Allotting family members to players");
@@ -165,7 +165,7 @@ public class Game {
     }
 
     public int getAge() { return  this.board.getAge(); }
-    public int getTurn() { return  this.board.getAge(); }
+    public int getTurn() { return  this.board.getTurn(); }
     public ArrayList<Player> getPlayers(){ return this.players; }
 
 
@@ -297,7 +297,8 @@ public class Game {
         if(this.players.size() == 2 && !this.board.getHarvest().isEmpty())
             return false;
         for (FamilyMember f : this.board.getHarvest())
-            if (f.getOwnerColor().equals(fm.getOwnerColor()) && ((f.getDiceColor().equals(NEUTRAL_COLOR)) == (fm.getDiceColor().equals(NEUTRAL_COLOR))))
+            if (f.getOwnerColor().equals(fm.getOwnerColor()) && ((f.getDiceColor().equals(NEUTRAL_COLOR)) ==
+                    (fm.getDiceColor().equals(NEUTRAL_COLOR))))
                 return false;
         if (servantsForHarvestAction(fm) > getPlayerFromColor(fm.getOwnerColor()).getResources().getServants())
             return false;
@@ -310,6 +311,15 @@ public class Game {
      */
     public void harvestMove(FamilyMember fm) {
         this.board.getHarvest().add(fm);
+        getPlayerFromColor(fm.getOwnerColor()).pullFamilyMember(fm.getDiceColor());
+    }
+
+    /**
+     * Performs a move to the harvest site.
+     * @param fm the family member used in this action
+     */
+    public void productionMove(FamilyMember fm) {
+        this.board.getProduction().add(fm);
         getPlayerFromColor(fm.getOwnerColor()).pullFamilyMember(fm.getDiceColor());
     }
 
@@ -345,11 +355,38 @@ public class Game {
         return (servants > 0) ? -servants : 0;
     }
 
+    /**
+     * Calculates the strength to perform an harvest action. If family member is null, it means that this
+     * is a fast action provided by an immediate effect of a card.
+     * @param fm
+     * @param servantsDeployed
+     * @param tmpActionStr
+     * @return
+     */
+    public int calcHarvestActionStr(FamilyMember fm, int servantsDeployed, int tmpActionStr) {
+        int baseStr = (fm == null) ? tmpActionStr : this.getDice().get(fm.getDiceColor());
+        return baseStr+servantsDeployed+getPlayerFromColor(fm.getOwnerColor()).getStrengths().getHarvestBonus();
+    }
+
+    /**
+     * Calculates the strength to perform a production action. If family member is null, it means that this
+     * is a fast action provided by an immediate effect of a card.
+     * @param fm
+     * @param servantsDeployed
+     * @param tmpActionStr
+     * @return
+     */
+    public int calcProductionActionStr(FamilyMember fm, int servantsDeployed, int tmpActionStr) {
+        int baseStr = (fm == null) ? tmpActionStr : this.getDice().get(fm.getDiceColor());
+        return baseStr+servantsDeployed+getPlayerFromColor(fm.getOwnerColor()).getStrengths().getProductionBonus();
+    }
+
     public boolean isProductionMoveAllowed(FamilyMember fm) {
         if(this.players.size() == 2 && !this.board.getProduction().isEmpty())
             return false;
         for (FamilyMember f : this.board.getProduction())
-            if (f.getOwnerColor().equals(fm.getOwnerColor()) && ((f.getDiceColor().equals(NEUTRAL_COLOR)) == (fm.getDiceColor().equals(NEUTRAL_COLOR))))
+            if (f.getOwnerColor().equals(fm.getOwnerColor()) && ((f.getDiceColor().equals(NEUTRAL_COLOR)) ==
+                    (fm.getDiceColor().equals(NEUTRAL_COLOR))))
                 return false;
         if (servantsForProductionAction(fm) > getPlayerFromColor(fm.getOwnerColor()).getResources().getServants())
             return false;

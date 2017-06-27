@@ -35,7 +35,7 @@ public class SocketUser extends User {
     }
 
     @Override
-    public int chooseProduction() {
+    public int chooseProduction(ArrayList<Assets[]> options) {
         return 0; //TODO: implement
     }
 
