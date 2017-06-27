@@ -288,7 +288,7 @@ public class TestParser {
         }
     }
     @Test
-    public static void testParser() {
+    public void testParser() {
         try {
             Parser testParser = new Parser();
             testParser.parser(CONFIGS_PATH.concat("test/"));
