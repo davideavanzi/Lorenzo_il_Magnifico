@@ -279,6 +279,13 @@ public class Game {
         return card;
     }
 
+
+    public boolean isFastTowerMoveAllowed(String towerColor, int floor) {
+        Floor destination = this.board.getTowers().get(towerColor).getFloor(floor);
+        if (!destination.hasCard()) return false;
+        return true; //TODO: implement
+    }
+
     /**
      * This method checks if any player has entered a specified tower
      * @param towerColor the color of the tower
@@ -439,6 +446,14 @@ public class Game {
     public int servantsForTowerAction(FamilyMember fm,String towerColor, int floor) {
         int actionStr = dice.get(fm.getDiceColor())
                 + this.getPlayerFromColor(fm.getOwnerColor()).getStrengths().getTowerStrength(towerColor);
+        int actionCost = this.board.getTowers().get(towerColor).getFloor(floor).getActionCost();
+        int servants = actionCost - actionStr;
+        return (servants > 0) ? -servants : 0;
+    }
+
+    public int servantsForFastTowerAction(int actionBonus,String towerColor, int floor, Player pl) {
+        int actionStr = actionBonus
+                + pl.getStrengths().getTowerStrength(towerColor);
         int actionCost = this.board.getTowers().get(towerColor).getFloor(floor).getActionCost();
         int servants = actionCost - actionStr;
         return (servants > 0) ? -servants : 0;

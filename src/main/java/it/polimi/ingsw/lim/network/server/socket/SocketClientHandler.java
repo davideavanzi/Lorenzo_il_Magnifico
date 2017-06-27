@@ -1,6 +1,5 @@
 package it.polimi.ingsw.lim.network.server.socket;
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import it.polimi.ingsw.lim.controller.User;
 import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.Player;

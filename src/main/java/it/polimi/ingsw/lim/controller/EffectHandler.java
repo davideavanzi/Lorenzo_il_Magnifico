@@ -32,12 +32,10 @@ public class EffectHandler {
             recipient.getRoom().getGameController()
                     .fastProductionAction(effect.getStrength().getHarvestBonus(),recipient);
         } else {
-            /* TODO: implement
-            HashMap<String, Integer> actions = new HashMap<>();
-            HashMap<String, Integer> map = recipient.getRoom().getGameController()
-                    .fastTowerAction(effect.getStrength().getTowerStrength();
-            map.entrySet().stream().filter(map2 -> map2.getValue() > 0).collect(Collectors.toMap(p -> p.getKey(), p -> p.getValue())), recipient);
-            */
+            /* Parse possible target towers and send them to the gameController */
+            HashMap<String, Integer> targetTowers = new HashMap<>();
+            recipient.getRoom().getGameController()
+                    .fastTowerAction(effect.getStrength().getTowerStrength(),effect.getDiscount(),recipient);
         }
     }
 

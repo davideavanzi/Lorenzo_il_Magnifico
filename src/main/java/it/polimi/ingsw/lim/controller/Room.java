@@ -1,7 +1,6 @@
 package it.polimi.ingsw.lim.controller;
 
-import it.polimi.ingsw.lim.model.Player;
-import it.polimi.ingsw.lim.network.server.MainServer;
+import it.polimi.ingsw.lim.Log;
 
 import static it.polimi.ingsw.lim.Log.getLog;
 import static it.polimi.ingsw.lim.Settings.*;
@@ -24,6 +23,7 @@ public class Room {
     private ArrayList<User> usersList;
     private ArrayList<String> playOrder;
     private PlayerTurn turn;
+    private int turnNumber;
 
 
     public Room(User user) {
@@ -33,18 +33,6 @@ public class Room {
         user.setRoom(this);
         getLog().log(Level.INFO, () -> "Room created, adding "+ user.getUsername() +" to room");
     }
-
-    public GameController getGameController() { return gameController; }
-
-    public List<User> getUsersList() {
-        return usersList;
-    }
-
-    public boolean isFull() {
-        return (this.usersList.size() >= MAX_USERS_PER_ROOM);
-    }
-
-    public boolean isOpen() { return roomOpen; }
 
     public void addUser(User user) {
         usersList.add(user);
@@ -122,7 +110,7 @@ public class Room {
         private Timer timer;
         private TimerEnd(int seconds, Room roomCallback){
             timer = new Timer();
-            timer.schedule(new RoomTimer(roomCallback), (long) (seconds * 1000) /*by default ms (1s = 1000ms)*/);
+            timer.schedule(new RoomTimer(roomCallback), seconds * 1000 /*by default ms (1s = 1000ms)*/);
         }
         private class RoomTimer extends TimerTask{
             private Room roomCallback;

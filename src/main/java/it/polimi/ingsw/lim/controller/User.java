@@ -5,6 +5,7 @@ import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.Player;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -82,6 +83,10 @@ public abstract class User {
      * @return an integer between 0 and the possibleFavors size
      */
     public abstract int chooseFavor(List<Assets> possibleFavors);
+
+    public abstract String chooseTower(HashMap<String, Integer> possibleTowers);
+
+    public abstract int chooseFloor();
 
     /**
      * This method sends a message to the user relative to it's gaming state.

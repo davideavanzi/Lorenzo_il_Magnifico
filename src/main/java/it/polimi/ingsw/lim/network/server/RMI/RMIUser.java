@@ -8,6 +8,7 @@ import it.polimi.ingsw.lim.network.client.RMI.RMIClientInterf;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -59,11 +60,19 @@ public class RMIUser extends User {
 
     @Override
     public void broadcastMessage(String message) {
-
     }
 
     @Override
     public void gameMessage(String message) {
+    }
 
+    @Override
+    public String chooseTower(HashMap<String, Integer> possibleTowers) {
+        return null;
+    }
+
+    @Override
+    public int chooseFloor() {
+        return 0;
     }
 }

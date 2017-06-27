@@ -12,7 +12,9 @@ import it.polimi.ingsw.lim.parser.Parser;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.lim.Log.*;
 import static it.polimi.ingsw.lim.Settings.*;
@@ -271,12 +273,20 @@ public class GameController {
     }
 
     /**
-     *
+     * This method handles the whole logic to perform a fast tower action, activated by an immediate effect
      * @param optionalBaseStr
      * @param actor
      */
-    public void fastTowerAction(HashMap<String, Integer> optionalBaseStr, User actor) {
-
+    public void fastTowerAction(HashMap<String, Integer> optionalBaseStr, Assets optionalDiscount, User actor) {
+        //Filter available target towers for fast action
+        Map<String, Integer> activeBonuses = optionalBaseStr.entrySet().stream()
+                .filter(option -> option.getValue() > 0)
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        HashMap<String, Integer> availableTowers = new HashMap<>(activeBonuses);
+        do {
+            String targetTower = actor.chooseTower(availableTowers);
+            int targetFloor = actor.chooseFloor();
+        } while (false);
     }
 
 

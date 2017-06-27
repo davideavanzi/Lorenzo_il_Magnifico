@@ -6,6 +6,7 @@ import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.Player;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -50,6 +51,15 @@ public class SocketUser extends User {
 
     @Override
     public void gameMessage(String message) {
+    }
 
+    @Override
+    public int chooseFloor() {
+        return 0;
+    }
+
+    @Override
+    public String chooseTower(HashMap<String, Integer> possibleTowers) {
+        return null;
     }
 }
