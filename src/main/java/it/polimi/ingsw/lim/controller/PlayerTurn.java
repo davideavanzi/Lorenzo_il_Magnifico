@@ -60,10 +60,10 @@ public class PlayerTurn {
         private Timer timer;
         private TimerEnd(int seconds, PlayerTurn turnCallback){
             timer = new Timer();
-            timer.schedule(new endTurnTimer(), seconds * 1000 /*by default ms (1s = 1000ms)*/);
+            timer.schedule(new EndTurnTimer(), (long) (seconds * 1000) /*by default ms (1s = 1000ms)*/);
             turnCallback.setTimer(timer);
         }
-        private class endTurnTimer extends TimerTask {
+        private class EndTurnTimer extends TimerTask {
             @Override
             public void run(){
                 endTurn("timer ending");

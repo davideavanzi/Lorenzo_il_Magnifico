@@ -18,7 +18,7 @@ import java.util.TimerTask;
  */
 public class Room {
 
-    private transient GameController gameController;
+    private GameController gameController;
     private boolean roomOpen = true; // room open
     private ArrayList<User> usersList;
     private ArrayList<String> playOrder;
@@ -106,7 +106,7 @@ public class Room {
         private Timer timer;
         private TimerEnd(int seconds, Room roomCallback){
             timer = new Timer();
-            timer.schedule(new RoomTimer(roomCallback), seconds * 1000 /*by default ms (1s = 1000ms)*/);
+            timer.schedule(new RoomTimer(roomCallback), (long) (seconds * 1000) /*by default ms (1s = 1000ms)*/);
         }
         private class RoomTimer extends TimerTask{
             private Room roomCallback;
