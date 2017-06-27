@@ -9,13 +9,26 @@ import java.util.Scanner;
  * This is the client commandInput line interface
  */
 public class CLI extends AbsUI {
+
+    /**
+     * Scanner for stdin.
+     */
     Scanner userInput = new Scanner(System.in);
+
+    /**
+     * This contain the input command.
+     */
     String input;
 
     public void printBoard(Board board) {
 
     }
 
+    /**
+     * Print to stdout a chat message.
+     * @param sender the sender's username.
+     * @param message the chat message.
+     */
     public void printChatMessage(String sender, String message) {
         printMessageln("[CHAT] message from "+sender+": "+message);
     }
@@ -30,6 +43,10 @@ public class CLI extends AbsUI {
         }
     }
 
+    /**
+     * Enter the login information.
+     * @return the login information.
+     */
     public String loginForm() {
         printMessageln("Enter a username:");
         printMessage("$ ");

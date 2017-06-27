@@ -13,18 +13,37 @@ import java.util.List;
  * Created by nico.
  */
 public class SocketUser extends User {
+
+    /**
+     * Socket Client Handler reference.
+     */
     SocketClientHandler sch;
 
-    public SocketUser(String username, SocketClientHandler sch) {
+    /**
+     * Constructor.
+     * @param username
+     * @param sch
+     */
+    SocketUser(String username, SocketClientHandler sch) {
         super(username);
         this.sch = sch;
     }
 
+    /**
+     * Send the Game board and the player List to client.
+     * @param board the game board.
+     * @param players arrayList of connected player.
+     */
     @Override
     public void sendGameUpdate(Board board, ArrayList<Player> players) {
         this.sch.sendGameToClient(board, players);
     }
 
+    /**
+     * Send a chat messagge to the client.
+     * @param sender
+     * @param message
+     */
     @Override
     public void sendChatMessage(String sender, String message) {
         this.sch.chatMessageToClient(sender, message);

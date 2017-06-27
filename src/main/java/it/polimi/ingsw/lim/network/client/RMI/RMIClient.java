@@ -34,6 +34,9 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
      */
     RMIServerInterf rmiServer;
 
+    /**
+     * The UI controller's reference.
+     */
     UIController uiCallback;
 
     /**
@@ -59,6 +62,12 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
         uiCallback.updatePlayers(players);
     }
 
+    /**
+     * Send a chat message to server.
+     * @param sender the username of the sender.
+     * @param message the chat message.
+     * @throws ClientNetworkException
+     */
     @Override
     public void chatMessageToServer(String sender, String message) throws ClientNetworkException {
         try {
@@ -68,11 +77,21 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
         }
     }
 
+    /**
+     * Print the chat message received.
+     * @param sender the username of the sender.
+     * @param message the chat message.
+     */
     @Override
     public void chatMessageFromServer(String sender, String message) {
         uiCallback.getClientUI().printChatMessage(sender, message);
     }
 
+    /**
+     * Send the login information to the server.
+     * @param username
+     * @throws ClientNetworkException
+     */
     @Override
     public void sendLogin(String username) throws ClientNetworkException {
         try {

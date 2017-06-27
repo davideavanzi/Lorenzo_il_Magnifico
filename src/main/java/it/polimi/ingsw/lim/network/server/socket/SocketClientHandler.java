@@ -5,9 +5,7 @@ import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.Player;
 
 import static it.polimi.ingsw.lim.Log.*;
-import static it.polimi.ingsw.lim.network.SocketConstants.CHAT;
-import static it.polimi.ingsw.lim.network.SocketConstants.SPLITTER;
-import static it.polimi.ingsw.lim.network.SocketConstants.TURN_ORDER;
+import static it.polimi.ingsw.lim.network.SocketConstants.*;
 
 import java.io.*;
 import java.net.Socket;
@@ -26,7 +24,7 @@ public class SocketClientHandler implements Runnable {
     private Socket socketClient;
 
     /**
-     *
+     * User's reference.
      */
     private User user = null;
 
@@ -50,6 +48,9 @@ public class SocketClientHandler implements Runnable {
         clientCommandHandler = new ClientCommandHandler(this);
     }
 
+    /**
+     * @return the user.
+     */
     public User getUser() {
         return user;
     }
@@ -70,13 +71,6 @@ public class SocketClientHandler implements Runnable {
         }
     }
 
-    public void sendTurnOrder(ArrayList<String> players) {
-        try {
-            sendObjectToClient(TURN_ORDER + SPLITTER + players);
-        } catch (IOException e) {
-            getLog().log(Level.SEVERE, "[SOCKET]: Could not send turn order request to the client", e);
-        }
-    }
     /**
      * This method sends a chat message to the user
      * @param sender
@@ -90,6 +84,10 @@ public class SocketClientHandler implements Runnable {
         }
     }
 
+    /**
+     * Print notification to the client.
+     * @param message
+     */
     public void printToClient(String message) {
         try {
             sendObjectToClient(message);
@@ -98,12 +96,20 @@ public class SocketClientHandler implements Runnable {
         }
     }
 
-    public void sendObjectToClient(Object obj) throws IOException {
+    /**
+     * This method is the only that write object to the socket client.
+     * @param obj
+     * @throws IOException
+     */
+    private void sendObjectToClient(Object obj) throws IOException {
         objFromServer.writeObject(obj);
         objFromServer.flush();
         objFromServer.reset();
     }
 
+    /**
+     * Wait for input and pass it to a parser.
+     */
     private void waitRequest() {
         int tries = 0;
         while(true) {

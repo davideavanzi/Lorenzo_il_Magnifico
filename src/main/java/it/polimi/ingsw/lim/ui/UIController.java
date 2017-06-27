@@ -18,19 +18,41 @@ import static it.polimi.ingsw.lim.ui.UIController.UIConstant.*;
  * Created by nico.
  */
 public class UIController {
+    /**
+     * The abstract UI of the client.
+     */
     private static AbsUI clientUI;
+
+    /**
+     * The interface for communicate with server.
+     */
     private static ServerInterface clientProtocol;
+
+    /**
+     * Scanner for stdin.
+     */
     private static Scanner userInput = new Scanner(System.in);
-    //a copy of the user name is stored here
+
+    /**
+     * User's nickname.
+     */
     private static String username;
+
+    /**
+     * Updated game board.
+     */
     private static Board localBoard;
+
+    /**
+     * List of player in the same Game, sort by turn order.
+     */
     private static ArrayList<Player> localPlayers;
 
 
     /**
      * The first thing to do is create a user interface, then the player must choose
      * the network protocol
-     * @param ui
+     * @param ui this String represent the User Interface chosen.
      */
     public UIController(String ui) {
         if(ui.equals("gui")) {
@@ -42,18 +64,33 @@ public class UIController {
         }
     }
 
+    /**
+     * @return the abstract UI of client.
+     */
     public AbsUI getClientUI() {
         return clientUI;
     }
 
+    /**
+     * Every turn the board is send to all client.
+     * @param board
+     */
     public void updateBoard(Board board) {
         localBoard = board;
     }
 
+    /**
+     * Every turn the player's list is send to all client.
+     * @param players
+     */
     public void updatePlayers(ArrayList<Player> players) {
         localPlayers = players;
     }
 
+    /**
+     * Calling this method the UI controller is link with the client socket.
+     * @param clientProtocol
+     */
     public static void setClientProtocol(ServerInterface clientProtocol) {
         UIController.clientProtocol = clientProtocol;
     }
@@ -62,7 +99,11 @@ public class UIController {
         UIController.clientUI.waitUserInput();
     }
 
-    public static void inputParser(String input) {
+    /**
+     * The input's parser.
+     * @param input the command
+     */
+    static void inputParser(String input) {
         ArrayList<String> commandInput = new ArrayList<>(Arrays.asList(input.split(SPACE)));
         String command = commandInput.get(0);
         try {
@@ -83,18 +124,12 @@ public class UIController {
             clientUI.printMessageln(e.getMessage());
         }
     }
-/*
-    public static void inputParserMod(String input) {
-        ArrayList<String> parameters = new ArrayList<>(Arrays.asList(input.split(SPACE)));
-        String commandID = parameters.remove(0);
-        HashMap<String, ArrayList<String>> command = new HashMap<>();
-        command.put(CHAT, parameters);
-        command.put(TURN, parameters);
-        command.put(SHOW, parameters);
-        command.put(HELP, null);
-    }
-*/
-    public static void showCommand(ArrayList<String> command) {
+
+    /**
+     * The show command parameters manager.
+     * @param command
+     */
+    private static void showCommand(ArrayList<String> command) {
         String parameter = command.get(1);
         String username = command.get(2);
         try {
@@ -121,6 +156,9 @@ public class UIController {
         }
     }
 
+    /**
+     * The help message.
+     */
     private static void help() {
         clientUI.printMessageln("Command List:");
         clientUI.printMessageln(CHAT);
@@ -131,6 +169,10 @@ public class UIController {
         clientUI.printMessageln(HELP_SHOW);
     }
 
+    /**
+     * @return the player if it found in the player's ArrayList.
+     * @return null if it could not found the player.
+     */
     private static Player lookForPlayer() {
         for (Player pl : localPlayers)
             if (username.equalsIgnoreCase(pl.getNickname()))
@@ -138,12 +180,19 @@ public class UIController {
         return null;
     }
 
+    /**
+     * Print the currently turn order.
+     */
     private static void turnOrder() {
         clientUI.printMessageln("Turn order: ");
         for (Player pl : localPlayers)
             clientUI.printMessageln(pl.getNickname());
     }
 
+    /**
+     * Send a chat message to the server.
+     * @param message the chat message
+     */
     private static void chat(String message) {
         try {
             clientProtocol.chatMessageToServer(username, message);
@@ -152,6 +201,9 @@ public class UIController {
         }
     }
 
+    /**
+     * It required a username and a password for the authentication.
+     */
     public void login() {
         String username = clientUI.loginForm();
         this.username = username;
@@ -163,7 +215,7 @@ public class UIController {
     }
 
     /**
-     *  If the player want to config the network settings.
+     *  Connect the client to the server with the previously chosen protocol.
      */
     public void setNetworkProtocol() {
         String protocol = clientUI.setNetworkSettings();
@@ -186,8 +238,7 @@ public class UIController {
     }
 
     /**
-     * The player choose if he want to play with GUI or CLI.
-     * @return true if you want to use a GUI, false if you want a CLI.
+     * @return the chosen User Interface.
      */
     public static String setUI() {
         System.out.println("Choose your user interface: GUI, MORSE or CLI (default)");
@@ -195,23 +246,26 @@ public class UIController {
         return userInput.nextLine().toLowerCase();
     }
 
+    /**
+     * Constants used by UI controller.
+     */
     class UIConstant {
 
-        protected static final String SPACE = " ";
+        static final String SPACE = " ";
 
         protected static final String CHAT = "chat";
-        protected static final String SHOW = "show";
-        protected static final String TURN = "turn";
+        static final String SHOW = "show";
+        static final String TURN = "turn";
         protected static final String INFO = "info";
-        protected static final String BOARD = "board";
-        protected static final String HELP = "help";
+        static final String BOARD = "board";
+        static final String HELP = "help";
 
 
-        protected static final String HELP_CHAT = "Usage: chat [MESSAGE].\nBroadcast a message to all client in the room";
-        protected static final String HELP_TURN = "Usage: turn\nShow which user is playing";
-        protected static final String HELP_SHOW = "Usage: show [turn,board,help]\n" +
-                                                  "Show the turn order, the game board or this help message\n" +
-                                                  "       show [info] [username]\n" +
-                                                  "Show personal information";
+        static final String HELP_CHAT = "Usage: chat [MESSAGE].\nBroadcast a message to all client in the room";
+        static final String HELP_TURN = "Usage: turn\nShow which user is playing";
+        static final String HELP_SHOW = "Usage: show [turn,board,help]\n" +
+                                        "Show the turn order, the game board or this help message\n" +
+                                        "       show [info] [username]\n" +
+                                        "Show personal information";
     }
 }

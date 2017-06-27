@@ -13,10 +13,17 @@ import java.util.logging.Level;
  */
 class ClientCommandHandler {
 
+    /**
+     * Link every SocketClientHandler to the corrispondent Client Command Handler.
+     * @param handlerCallback
+     */
     ClientCommandHandler(SocketClientHandler handlerCallback) {
         this.handlerCallback = handlerCallback;
     }
 
+    /**
+     * User's reference.
+     */
     SocketUser user;
 
     /**
@@ -24,6 +31,10 @@ class ClientCommandHandler {
      */
     private SocketClientHandler handlerCallback;
 
+    /**
+     * Parse the input object for calling the corrispondent method.
+     * @param obj
+     */
     void requestHandler(Object obj) {
         if(obj instanceof String) {
             ArrayList<String> command = new ArrayList<>(Arrays.asList(((String) obj).split(SPLITTER_REGEX)));

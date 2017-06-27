@@ -18,13 +18,26 @@ import static it.polimi.ingsw.lim.Log.getLog;
  * Created by nico.
  */
 public class RMIUser extends User {
+    /**
+     * rmi Client reference.
+     */
     RMIClientInterf rci;
 
-    public RMIUser(String username, RMIClientInterf rci) {
+    /**
+     * Constructor.
+     * @param username
+     * @param rci
+     */
+    RMIUser(String username, RMIClientInterf rci) {
         super(username);
         this.rci = rci;
     }
 
+    /**
+     *
+     * @param board the game board
+     * @param players arrayList of connected player
+     */
     @Override
     public void sendGameUpdate(Board board, ArrayList<Player> players) {
         try {

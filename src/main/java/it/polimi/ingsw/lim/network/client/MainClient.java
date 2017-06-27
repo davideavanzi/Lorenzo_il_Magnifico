@@ -9,6 +9,10 @@ import static it.polimi.ingsw.lim.ui.UIController.setUI;
  */
 public class MainClient {
 
+    /**
+     * This is the launcher of the Game.
+     * @param args
+     */
     public static void main(String[] args) {
         splashScreen();
         UIController client = new UIController(setUI());

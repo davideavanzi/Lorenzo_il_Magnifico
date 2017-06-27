@@ -16,10 +16,20 @@ import java.util.List;
  */
 public abstract class User {
 
+    /**
+     * The user's nickname.
+     */
     private String username;
-    private Room room;
-    private Player player;
 
+    /**
+     * A game room.
+     */
+    private Room room;
+
+    /**
+     * A player of the game.
+     */
+    private Player player;
 
     /**
      * User constructor
@@ -36,14 +46,19 @@ public abstract class User {
         return username;
     }
 
-    public void setRoom(Room room) {
-        this.room = room;
-    }
-
     public Room getRoom() {
         return room;
     }
 
+    public void setRoom(Room room) {
+        this.room = room;
+    }
+
+    /**
+     * Send chat message to client.
+     * @param sender
+     * @param message
+     */
     public abstract void sendChatMessage(String sender, String message);
 
     public abstract int askForServants(int minimumAmount);
@@ -63,10 +78,17 @@ public abstract class User {
      */
     public abstract void sendGameUpdate(Board board, ArrayList<Player> players);
 
+    /**
+     * @return the correspondent player.
+     */
     public Player getPlayer() {
         return player;
     }
 
+    /**
+     * Set the players.
+     * @param player
+     */
     public void setPlayer(Player player) {
         this.player = player;
     }

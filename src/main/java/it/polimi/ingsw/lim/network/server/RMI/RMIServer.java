@@ -12,7 +12,6 @@ import java.rmi.RemoteException;
 import java.rmi.registry.*;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.logging.Level;
 
 import static it.polimi.ingsw.lim.network.server.MainServer.addUserToRoom;
@@ -28,6 +27,13 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
      */
     public RMIServer() throws RemoteException {}
 
+    /**
+     * Every turn the updated board and player's ArrayList is broadcast to all roommates.
+     * @param board the game board.
+     * @param players the player ArrayList.
+     * @param rmiClient the client's reference.
+     * @throws RemoteException
+     */
     public static void sendGameToClient(Board board, ArrayList<Player> players, RMIClientInterf rmiClient) throws RemoteException {
         rmiClient.updateClientGame(board, players);
     }
@@ -41,11 +47,23 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
         rmiClient.chatMessageFromServer(sender, message);
     }
 
+    /**
+     * Broadcast the chat message to all roommates.
+     * @param sender who send the chat message.
+     * @param message the chat message.
+     * @throws RemoteException
+     */
     @Override
     public void chatMessageFromClient(String sender, String message) throws RemoteException {
         MainServer.getUserFromUsername(sender).getRoom().chatMessageToRoom(sender, message);
     }
 
+    /**
+     * The rmi login method. It's used for users authentication.
+     * @param username
+     * @param rmiClient
+     * @throws RemoteException
+     */
     @Override
     public void login(String username, RMIClientInterf rmiClient) throws RemoteException {
         //TODO: sistema di autenticazione (salvare utenti in un file/db, se utente esistente se vuole caricare stat.)

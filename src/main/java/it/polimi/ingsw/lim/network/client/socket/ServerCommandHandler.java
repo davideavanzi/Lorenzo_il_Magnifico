@@ -14,14 +14,26 @@ import static it.polimi.ingsw.lim.network.SocketConstants.*;
  */
 class ServerCommandHandler {
 
+    /**
+     * Socket client's reference.
+     */
     private SocketClient clientCallback;
     private UIController uiCallback;
 
+    /**
+     * Constructor.
+     * @param handlerCallback
+     * @param uiCallback
+     */
     ServerCommandHandler(SocketClient handlerCallback, UIController uiCallback) {
         this.clientCallback = handlerCallback;
         this.uiCallback = uiCallback;
     }
 
+    /**
+     * Parse the input object for calling the corrispondent method.
+     * @param obj
+     */
     void requestHandler(Object obj) {
         if(obj instanceof String) {
             ArrayList<String> command = new ArrayList<>(Arrays.asList(((String) obj).split(SPLITTER_REGEX)));
