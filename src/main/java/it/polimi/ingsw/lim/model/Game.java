@@ -1,6 +1,7 @@
 package it.polimi.ingsw.lim.model;
-import it.polimi.ingsw.lim.controller.CardHandler;
 import it.polimi.ingsw.lim.exceptions.GameSetupException;
+import it.polimi.ingsw.lim.model.cards.Card;
+import it.polimi.ingsw.lim.model.excommunications.Excommunication;
 import it.polimi.ingsw.lim.parser.Parser;
 
 import java.util.*;
@@ -216,7 +217,7 @@ public class Game {
      */
     public boolean isTowerMoveAllowed(String towerColor, int floorNumber, FamilyMember fm, Strengths strength) {
         Floor destination = this.board.getTowers().get(towerColor).getFloor(floorNumber);
-        if(destination.isOccupied()) return false;
+        if (destination.isOccupied()) return false;
         if (!destination.hasCard()) return false;
         FamilyMember slot = null;
         for (int i = 0; i < TOWER_HEIGHT; i++, slot = this.board.getTowers().get(towerColor).getFloor(i).getFamilyMember()) {
@@ -230,6 +231,8 @@ public class Game {
             return false;
         return true;
     }
+
+
 
     /**
      * This method checks if a specified move into a tower is affordable by the player performing the move.
@@ -300,7 +303,7 @@ public class Game {
             if (f.getOwnerColor().equals(fm.getOwnerColor()) && ((f.getDiceColor().equals(NEUTRAL_COLOR)) ==
                     (fm.getDiceColor().equals(NEUTRAL_COLOR))))
                 return false;
-        if (servantsForHarvestAction(fm) > getPlayerFromColor(fm.getOwnerColor()).getResources().getServants())
+        if (servantsForHarvestAction(fm, 0) > getPlayerFromColor(fm.getOwnerColor()).getResources().getServants())
             return false;
         return true;
     }
@@ -330,10 +333,11 @@ public class Game {
      * @return
      * TODO: add excomm malus ? is it already in the player?
      */
-    public int servantsForProductionAction(FamilyMember fm) {
+    public int servantsForProductionAction(FamilyMember fm, int baseStr) {
+        int baseStrength = (fm == null) ? baseStr : this.dice.get(fm.getDiceColor());
         int actionCost = (this.board.getHarvest().size() <= PRODUCTION_DEFAULTSPACE_SIZE)
                 ? PRODUCTION_DEFAULT_STR : PRODUCTION_STR_MALUS;
-        int actionStr = this.dice.get(fm.getDiceColor()) +
+        int actionStr = baseStrength +
                 getPlayerFromColor(fm.getOwnerColor()).getStrengths().getHarvestBonus();
         int servants = actionCost - actionStr;
         return (servants > 0) ? -servants : 0;
@@ -346,10 +350,11 @@ public class Game {
      * @return
      * TODO: add excomm malus ? is it already in the player?
      */
-    public int servantsForHarvestAction(FamilyMember fm) {
+    public int servantsForHarvestAction(FamilyMember fm, int baseStr) {
+        int baseStrength = (fm == null) ? baseStr : this.dice.get(fm.getDiceColor());
         int actionCost = (this.board.getHarvest().size() <= HARVEST_DEFAULTSPACE_SIZE)
                 ? HARVEST_DEFAULT_STR : HARVEST_STR_MALUS;
-        int actionStr = this.dice.get(fm.getDiceColor()) +
+        int actionStr = baseStrength +
                 getPlayerFromColor(fm.getOwnerColor()).getStrengths().getHarvestBonus();
         int servants = actionCost - actionStr;
         return (servants > 0) ? -servants : 0;
@@ -388,7 +393,7 @@ public class Game {
             if (f.getOwnerColor().equals(fm.getOwnerColor()) && ((f.getDiceColor().equals(NEUTRAL_COLOR)) ==
                     (fm.getDiceColor().equals(NEUTRAL_COLOR))))
                 return false;
-        if (servantsForProductionAction(fm) > getPlayerFromColor(fm.getOwnerColor()).getResources().getServants())
+        if (servantsForProductionAction(fm, 0) > getPlayerFromColor(fm.getOwnerColor()).getResources().getServants())
             return false;
         return true;
     }

@@ -46,6 +46,10 @@ public class SocketUser extends User {
 
     @Override
     public void broadcastMessage(String message) {
+    }
+
+    @Override
+    public void gameMessage(String message) {
 
     }
 }

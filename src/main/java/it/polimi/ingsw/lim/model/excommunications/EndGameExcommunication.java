@@ -1,5 +1,5 @@
-package it.polimi.ingsw.lim.model;
-import java.util.*;
+package it.polimi.ingsw.lim.model.excommunications;
+import it.polimi.ingsw.lim.model.Assets;
 
 /**
  * This excommunication gives a malus to the player at the end of the game

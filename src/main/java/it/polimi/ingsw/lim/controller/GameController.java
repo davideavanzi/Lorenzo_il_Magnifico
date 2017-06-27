@@ -2,14 +2,17 @@ package it.polimi.ingsw.lim.controller;
 
 import it.polimi.ingsw.lim.exceptions.GameSetupException;
 import it.polimi.ingsw.lim.model.*;
-import it.polimi.ingsw.lim.network.server.RMI.RMIUser;
+import it.polimi.ingsw.lim.model.cards.BlueCard;
+import it.polimi.ingsw.lim.model.cards.Card;
+import it.polimi.ingsw.lim.model.cards.GreenCard;
+import it.polimi.ingsw.lim.model.cards.YellowCard;
+import it.polimi.ingsw.lim.model.immediateEffects.*;
 import it.polimi.ingsw.lim.parser.Parser;
-import org.codehaus.jackson.annotate.JsonTypeInfo;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.logging.Level;
-import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.lim.Log.*;
 import static it.polimi.ingsw.lim.Settings.*;
@@ -162,10 +165,9 @@ public class GameController {
                                 this.game.getPlayerFromColor(fm.getOwnerColor()).getResources().getServants());
                 Card card = this.game.towerMove(towerColor, floor, fm);
                 //Activate before all resources bonus, then actions.
-                card.getImmediateEffects().stream().filter(ie -> ie instanceof AssetsEffect)
-                        .filter(ie -> ie instanceof AssetsMultipliedEffect)
-                        .filter(ie -> ie instanceof CardMultipliedEffect)
-                        .filter(ie -> ie instanceof CouncilFavorsEffect)
+                card.getImmediateEffects().stream().filter(ie -> ie instanceof AssetsEffect
+                        || ie instanceof AssetsMultipliedEffect || ie instanceof CardMultipliedEffect
+                        || ie instanceof CouncilFavorsEffect)
                         .forEach(ie -> EffectHandler.activateImmediateEffect(ie, actor));
                 card.getImmediateEffects().stream().filter(ie -> ie instanceof ActionEffect)
                         .forEach(ie -> EffectHandler.activateImmediateEffect(ie, actor));
@@ -186,7 +188,7 @@ public class GameController {
     public void moveInHarvest (FamilyMember fm) {
         if(this.game.isHarvestMoveAllowed(fm)){
             Player actor = this.game.getPlayerFromColor(fm.getOwnerColor());
-            int servantsForHarvestAction = this.game.servantsForHarvestAction(fm);
+            int servantsForHarvestAction = this.game.servantsForHarvestAction(fm, 0);
             actor.setResources(actor.getResources().add(actor.getDefaultHarvestBonus()));
             int servantsDeployed;
             do {
@@ -206,17 +208,16 @@ public class GameController {
 
     public void moveInProduction (FamilyMember fm, User actor) {
         if(this.game.isProductionMoveAllowed(fm)){
-            Assets bonusAccumulator = new Assets(actor.getPlayer().getDefaultProductionBonus());
-            int servantsForProductionAction = this.game.servantsForProductionAction(fm);
+            int servantsForProductionAction = this.game.servantsForProductionAction(fm, 0);
             int servantsDeployed;
             do {
-                servantsDeployed = roomCallback.getUser(this.game.getPlayerFromColor(fm.getOwnerColor()).getNickname())
-                        .askForServants(servantsForProductionAction);
+                servantsDeployed = actor.askForServants(servantsForProductionAction);
             } while (servantsDeployed < servantsForProductionAction ||
                     servantsDeployed > this.game.getPlayerFromColor(fm.getOwnerColor()).getResources().getServants());
             this.game.productionMove(fm);
+            Assets bonusAccumulator = new Assets(actor.getPlayer().getDefaultProductionBonus());
             int actionStrength = game.calcProductionActionStr(fm, servantsDeployed, 0);
-            for (Card card: game.getPlayerFromColor(fm.getOwnerColor()).getCardsOfColor(GREEN_COLOR)) {
+            for (Card card: game.getPlayerFromColor(fm.getOwnerColor()).getCardsOfColor(YELLOW_COLOR)) {
                 YellowCard activeCard = (YellowCard) card;
                 if (activeCard.getActionStrength().getProductionBonus() <= actionStrength)
                     CardHandler.activateYellowCard(activeCard, actor, bonusAccumulator);
@@ -224,6 +225,56 @@ public class GameController {
             actor.getPlayer().setResources(actor.getPlayer().getResources().add(bonusAccumulator));
         }
     }
+
+    //FAST ACTIONS:
+
+    public void fastHarvestAction(int baseStr, User actor) {
+        int servantsForHarvestAction = this.game.servantsForHarvestAction(null, baseStr);
+        if (servantsForHarvestAction >
+                actor.getPlayer().getResources().getServants()) return;
+        int servantsDeployed;
+        do {
+            servantsDeployed = actor.askForServants(servantsForHarvestAction);
+        } while (servantsDeployed < servantsForHarvestAction ||
+                servantsDeployed > actor.getPlayer().getResources().getServants());
+        actor.getPlayer().setResources(actor.getPlayer()
+                .getResources().add(actor.getPlayer().getDefaultHarvestBonus()));
+        int actionStrength = game.calcHarvestActionStr(null, servantsDeployed, baseStr);
+        for (Card card: actor.getPlayer().getCardsOfColor(GREEN_COLOR)) {
+            GreenCard activeCard = (GreenCard) card;
+            if (activeCard.getActionStrength().getHarvestBonus() <= actionStrength)
+                CardHandler.activateGreenCard(activeCard, actor.getPlayer());
+        }
+    }
+
+    public void fastProductionAction(int baseStr, User actor) {
+        int servantsForProductionAction = this.game.servantsForProductionAction(null, baseStr);
+        if (servantsForProductionAction >
+                actor.getPlayer().getResources().getServants()) return;
+        int servantsDeployed;
+        do {
+            servantsDeployed = actor.askForServants(servantsForProductionAction);
+        } while (servantsDeployed < servantsForProductionAction ||
+                servantsDeployed > actor.getPlayer().getResources().getServants());
+        Assets bonusAccumulator = new Assets(actor.getPlayer().getDefaultProductionBonus());
+        int actionStrength = game.calcProductionActionStr(null, servantsDeployed, baseStr);
+        for (Card card: actor.getPlayer().getCardsOfColor(YELLOW_COLOR)) {
+            YellowCard activeCard = (YellowCard) card;
+            if (activeCard.getActionStrength().getProductionBonus() <= actionStrength)
+                CardHandler.activateYellowCard(activeCard, actor, bonusAccumulator);
+        }
+        actor.getPlayer().setResources(actor.getPlayer().getResources().add(bonusAccumulator));
+    }
+
+    /**
+     *
+     * @param optionalBaseStr
+     * @param actor
+     */
+    public void fastTowerAction(HashMap<String, Integer> optionalBaseStr, User actor) {
+
+    }
+
 
     /**
      * This method has to be called at the beginning of the game,

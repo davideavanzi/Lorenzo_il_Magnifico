@@ -1,8 +1,9 @@
 package it.polimi.ingsw.lim.model;
 
+import it.polimi.ingsw.lim.model.cards.Card;
+
 import java.util.*;
 
-import static it.polimi.ingsw.lim.Log.getLog;
 import static  it.polimi.ingsw.lim.Settings.*;
 
 /**

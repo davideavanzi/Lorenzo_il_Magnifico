@@ -79,4 +79,9 @@ public abstract class User {
      */
     public abstract int chooseFavor(List<Assets> possibleFavors);
 
+    /**
+     * This method sends a message to the user relative to it's gaming state.
+     * @param message the message to send
+     */
+    public abstract void gameMessage(String message);
 }

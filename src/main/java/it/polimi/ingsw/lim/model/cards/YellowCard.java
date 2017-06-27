@@ -1,7 +1,9 @@
-package it.polimi.ingsw.lim.model;
+package it.polimi.ingsw.lim.model.cards;
 
 import it.polimi.ingsw.lim.Log;
-import org.codehaus.jackson.annotate.JsonTypeInfo;
+import it.polimi.ingsw.lim.model.Assets;
+import it.polimi.ingsw.lim.model.immediateEffects.ImmediateEffect;
+import it.polimi.ingsw.lim.model.Strengths;
 
 import java.util.*;
 

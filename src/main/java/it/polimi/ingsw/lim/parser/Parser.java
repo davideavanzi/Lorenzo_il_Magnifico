@@ -2,6 +2,9 @@ package it.polimi.ingsw.lim.parser;
 
 import it.polimi.ingsw.lim.model.*;
 import it.polimi.ingsw.lim.exceptions.*;
+import it.polimi.ingsw.lim.model.cards.*;
+import it.polimi.ingsw.lim.model.excommunications.*;
+import it.polimi.ingsw.lim.model.immediateEffects.*;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import java.io.IOException;

@@ -95,6 +95,10 @@ public class Room {
         return usersList.stream().filter(user -> user.getUsername().equals(username)).findFirst().orElse(null);
     }
 
+    public GameController getGameController() {
+        return gameController;
+    }
+
     private void startNewTurn(){
         this.playOrder = gameController.getPlayOrder();
         this.gameController.startNewTurn();
