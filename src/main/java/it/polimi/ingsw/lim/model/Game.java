@@ -1,4 +1,5 @@
 package it.polimi.ingsw.lim.model;
+import it.polimi.ingsw.lim.controller.GameController;
 import it.polimi.ingsw.lim.exceptions.GameSetupException;
 import it.polimi.ingsw.lim.model.cards.Card;
 import it.polimi.ingsw.lim.model.cards.PurpleCard;
@@ -23,7 +24,7 @@ public class Game {
      * Constructor. Sets starting age and turn. These go from 1 inclusive to their MAX value defined in the settings
      * TODO: should we leave them here?
      */
-    public Game() {
+    public Game(GameController controllerCallback) {
         getLog().info("Creating game instance");
         this.board = new Board();
         this.board.setAge(1);
@@ -32,6 +33,7 @@ public class Game {
         this.cardsDeck = new CardsDeck();
         this.availablePlayerColors = new ArrayList<>(PLAYER_COLORS);
         this.dice = new HashMap<>();
+        this.controllerCallback = controllerCallback;
         dice.put(NEUTRAL_COLOR, NEUTRAL_FM_STRENGTH);
     }
 
@@ -59,6 +61,11 @@ public class Game {
      *
      */
     private List<String> availablePlayerColors;
+
+    /**
+     * reference to the controller handling this game instance
+     */
+    private GameController controllerCallback;
 
     // ############################################################# METHODS AHEAD
 
@@ -201,9 +208,10 @@ public class Game {
             this.board.setTurn(1);
             this.board.setAge(this.board.getAge()+1);
             getLog().log(Level.INFO, () -> "Advancing into new age, number: " + this.board.getAge());
+            controllerCallback.handleExcommunications();
         } else {
             this.board.setTurn(this.board.getTurn()+1);
-            getLog().log(Level.INFO, () -> "Advancing into new turn, number: %d" + this.board.getTurn());
+            getLog().log(Level.INFO, () -> "Advancing into new turn, number: " + this.board.getTurn());
         }
     }
 
@@ -481,6 +489,18 @@ public class Game {
         int actionCost = this.board.getTowers().get(towerColor).getFloor(floor).getActionCost();
         int servants = actionCost - actionStr;
         return (servants > 0) ? -servants : 0;
+    }
+
+
+    // ------------------------------------------------------------------------ Excommunications
+
+    /**
+     * This method returns if a player has enough faith points in order not to be excommunicated
+     * @param pl the player
+     * @return the answer
+     */
+    public boolean isNotExcommunicable(Player pl) {
+        return pl.getResources().getFaithPoints() > FIRST_EXCOMM_FP+this.board.getAge()-1;
     }
 
     /**

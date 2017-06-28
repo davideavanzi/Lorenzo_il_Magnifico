@@ -124,4 +124,10 @@ public abstract class User {
      * @return a boolean that indicates if the player wants to pay with his battle points
      */
     public abstract boolean askForOptionalBpPick(int requirement, int cost);
+
+    /**
+     * This method asks a user if he wants to take an excommunication
+     * @return a boolean that indicates if the player wants the excommunication
+     */
+    public abstract boolean askForExcommunication();
 }

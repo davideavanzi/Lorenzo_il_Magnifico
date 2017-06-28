@@ -113,7 +113,7 @@ public class GameController {
      * Room must have players before instantiating game instance
      */
     public void createGame() {
-        this.game = new Game();
+        this.game = new Game(this);
         roomCallback.getUsersList().forEach(user ->
             user.setPlayer(game.addPlayer(user.getUsername())));
         Collections.shuffle(game.getPlayers());
@@ -139,6 +139,12 @@ public class GameController {
         game.setUpTurn();
     }
 
+    /**
+     * This method is called from the game upon a new age, it asks whether a player wants to keep
+     */
+    public void handleExcommunications() {
+        //this.roomCallback.getUsersList().forEach(user -> if(this.game.));
+    }
 
     /**
      * This methods moves a family member in a tower, checking if the action is legal.
@@ -336,6 +342,7 @@ public class GameController {
     }
 
     public void startNewTurn(){
+        //TODO: HANDLE HERE EXCOMMUNICATIONS? don't think so
         this.game.newTurn();
     }
 

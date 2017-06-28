@@ -22,7 +22,7 @@ public class Room {
     private boolean roomOpen = true; // room open
     private ArrayList<User> usersList;
     private ArrayList<String> playOrder;
-    private PlayerTurn turn;
+    private PlayerRound round;
     private int turnNumber;
 
 
@@ -65,8 +65,11 @@ public class Room {
 
     public boolean isOpen() { return roomOpen; }
 
-    public void fmPlaced() { this.turn.decreaseFmAmount(); }
+    public void fmPlaced() { this.round.decreaseFmAmount(); }
 
+    /**
+     * This method is called when a round has ended and switches the round to the next player.
+     */
     public void switchTurn(){
         int size = playOrder.size();
         int i = 0;
@@ -74,23 +77,24 @@ public class Room {
         if(turnNumber == 4*size){
             turnNumber = 0;
             startNewTurn();
+            return;
         }
         String nextUserName;
         for (String userName: playOrder){
-            if(userName.equals(turn.getUserName())){
+            if(userName.equals(round.getUserName())){
                 break;
             }
             i++;
         }
-        Log.getLog().info("player ".concat(turn.getUserName()).concat(" ending turn"));
+        Log.getLog().info("player ".concat(round.getUserName()).concat(" ending round"));
         if(i + 1 < size){
             nextUserName = playOrder.get(i + 1);
         }
         else {
             nextUserName = playOrder.get(0); //take the first
         }
-        this.turn = new PlayerTurn(this.getUser(nextUserName));
-        Log.getLog().info("player ".concat(turn.getUserName()).concat(" now can play"));
+        this.round = new PlayerRound(this.getUser(nextUserName));
+        Log.getLog().info("player ".concat(round.getUserName()).concat(" now can play"));
     }
 
     public User getUser(String username) {
@@ -104,8 +108,7 @@ public class Room {
     private void startNewTurn(){
         this.playOrder = gameController.getPlayOrder();
         this.gameController.startNewTurn();
-
-        this.turn = new PlayerTurn(this.getUser(this.playOrder.get(0)));
+        this.round = new PlayerRound(this.getUser(this.playOrder.get(0)));
     }
 
     private class TimerEnd{
