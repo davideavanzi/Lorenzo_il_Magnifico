@@ -25,7 +25,6 @@ public class Room {
     private PlayerRound round;
     private int turnNumber;
 
-
     public Room(User user) {
         usersList = new ArrayList<>();
         gameController = new GameController(this);
