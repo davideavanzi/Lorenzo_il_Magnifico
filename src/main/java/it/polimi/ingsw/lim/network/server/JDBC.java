@@ -53,7 +53,7 @@ public class JDBC {
         Log.getLog().info("user: ".concat(userName).concat(" added"));
     }
 
-    public boolean isContain (String userName, String password) throws SQLException{
+    public boolean isContainUser (String userName, String password) throws SQLException{
         String sql = "SELECT userName, password FROM REGISTRATION";
         ResultSet resultSet = statement.executeQuery(sql);
         while (resultSet.next()){
@@ -71,7 +71,7 @@ public class JDBC {
         return false;
     }
 
-    public boolean isAlreadySelected(String userName) throws SQLException{
+    public boolean isAlreadySelectedUserName (String userName) throws SQLException{
         String sql = "SELECT userName, password FROM Registration";
         ResultSet resultSet = statement.executeQuery(sql);
         while (resultSet.next()){
