@@ -111,6 +111,10 @@ public class Room {
         this.round = new PlayerRound(this.getUser(this.playOrder.get(0)));
     }
 
+    public void closeRoom(){
+        this.roomOpen = false;
+    }
+
     private class TimerEnd{
         private Timer timer;
         private TimerEnd(int seconds, Room roomCallback){
@@ -124,6 +128,7 @@ public class Room {
             }
             @Override
             public void run(){
+                roomCallback.closeRoom();
                 gameController.createGame();
                 roomCallback.startNewTurn();
                 timer.cancel();
