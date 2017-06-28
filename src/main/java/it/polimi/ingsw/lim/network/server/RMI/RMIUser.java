@@ -1,5 +1,6 @@
 package it.polimi.ingsw.lim.network.server.RMI;
 
+import com.sun.org.apache.regexp.internal.RE;
 import it.polimi.ingsw.lim.controller.User;
 import it.polimi.ingsw.lim.model.Assets;
 import it.polimi.ingsw.lim.model.Board;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.logging.Level;
 
 import static it.polimi.ingsw.lim.Log.getLog;
+import static java.lang.Thread.sleep;
 
 /**
  * Created by nico.
@@ -31,6 +33,7 @@ public class RMIUser extends User {
     RMIUser(String username, RMIClientInterf rci) {
         super(username);
         this.rci = rci;
+        new Thread(new RMIAliveness(this)).start();
     }
 
     /**
@@ -92,5 +95,37 @@ public class RMIUser extends User {
     @Override
     public boolean askForOptionalBpPick(int requirement, int cost) {
         return false;
+    }
+
+    @Override
+    public boolean askForExcommunication() {
+        return false;
+    }
+
+    public void ping() throws RemoteException {
+      this.rci.isAlive();
+    }
+
+    private class RMIAliveness implements Runnable{
+        private RMIUser user;
+
+        public RMIAliveness(RMIUser user) {
+            this.user = user;
+        }
+
+        @Override
+        public void run() {
+            try {
+                while (true) {
+                    sleep(1000);
+                    user.ping();
+                }
+            } catch (InterruptedException e) {
+                getLog().log(Level.SEVERE, () -> "RMI Aliveness thread interrupted for user "+user.getUsername());
+            } catch (RemoteException e) {
+                user.hasDied();
+            }
+            Thread.currentThread().interrupt();
+        }
     }
 }

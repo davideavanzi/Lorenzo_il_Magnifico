@@ -69,7 +69,6 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
      */
     @Override
     public void login(String username, String password, RMIClientInterf rmiClient) throws RemoteException, LoginFailException {
-        MainServer.getJDBC().createTable();
         try {
             if (MainServer.getJDBC().isAlreadySelectedUserName(username)) {
                 if (MainServer.getJDBC().isContainUser(username, password)) {

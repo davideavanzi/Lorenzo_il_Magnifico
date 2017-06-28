@@ -7,6 +7,9 @@ import it.polimi.ingsw.lim.model.Player;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+
+import static it.polimi.ingsw.lim.Log.getLog;
 
 /**
  * Created by Davide on 26/05/2017.
@@ -27,9 +30,14 @@ public abstract class User {
     private Room room;
 
     /**
-     * A player of the game.
+     * A reference to the corresponding player of the game.
      */
     private Player player;
+
+    /**
+     * A boolean where is stored the connection status
+     */
+    private boolean isAlive = true;
 
     /**
      * User constructor
@@ -52,6 +60,11 @@ public abstract class User {
 
     public void setRoom(Room room) {
         this.room = room;
+    }
+
+    public void hasDied() {
+        getLog().log(Level.INFO, () -> "User "+this.getUsername()+" has disconnected.");
+        this.isAlive = false;
     }
 
     /**

@@ -97,7 +97,6 @@ public class GameController {
      * - Faith track bonuses corresponding to faith track length
      * TODO: do we have to check if every card is valid?
      */
-
     private static boolean validateParsedData (Parser parsedGame){
         for (int age = 1; age <= AGES_NUMBER; age++)
             for (String color : DEFAULT_TOWERS_COLORS)
@@ -342,7 +341,6 @@ public class GameController {
     }
 
     public void startNewTurn(){
-        //TODO: HANDLE HERE EXCOMMUNICATIONS? don't think so
         this.game.newTurn();
     }
 

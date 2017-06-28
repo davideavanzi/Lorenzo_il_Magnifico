@@ -86,4 +86,9 @@ public class SocketUser extends User {
     public boolean askForOptionalBpPick(int requirement, int cost) {
         return false;
     }
+
+    @Override
+    public boolean askForExcommunication() {
+        return false;
+    }
 }

@@ -118,5 +118,12 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
             throw new ClientNetworkException("[RMI]: Could not connect to RMI server", e);
         }
     }
+
+    /**
+     * Empty method used to check if an rmi connected user is alive.
+     * @throws RemoteException
+     */
+    @Override
+    public void isAlive() throws RemoteException { }
 }
 

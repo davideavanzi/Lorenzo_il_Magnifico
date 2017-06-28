@@ -127,7 +127,7 @@ public class SocketClientHandler implements Runnable {
                 getLog().log(Level.SEVERE,"[SOCKET]: Could not receive object from client, " +
                         "maybe client is offline?  \n Retrying "+(2-tries)+" times.");
                 tries++;
-                if (tries == 3) return;
+                if (tries == 3) { this.user.hasDied(); return; }
             }
             catch (ClientNetworkException e){
                 e.printStackTrace();
@@ -137,7 +137,6 @@ public class SocketClientHandler implements Runnable {
     }
 
     public void login(String username, String password, SocketClientHandler handlerCallback) throws LoginFailException{
-        MainServer.getJDBC().createTable();
         try {
             if (MainServer.getJDBC().isAlreadySelectedUserName(username)) {
                 if (MainServer.getJDBC().isContainUser(username, password)) {

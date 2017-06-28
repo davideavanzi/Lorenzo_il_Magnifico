@@ -21,6 +21,7 @@ public class JDBC {
         Class.forName(JDBC_DRIVER);
         this.connection = DriverManager.getConnection(DB_URL);
         this.statement = this.connection.createStatement();
+        this.createTable();
     }
 
     public void createTable() {
