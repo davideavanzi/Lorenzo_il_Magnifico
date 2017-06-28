@@ -15,7 +15,7 @@ public abstract class AbsUI {
 
     public abstract void waitUserInput();
 
-    public abstract String loginForm();
+    public abstract String loginForm(String command);
 
     /**
      * This method is used for set the network protocol from the selected ui

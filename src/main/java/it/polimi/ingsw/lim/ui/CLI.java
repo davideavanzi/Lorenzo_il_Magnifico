@@ -47,8 +47,8 @@ public class CLI extends AbsUI {
      * Enter the login information.
      * @return the login information.
      */
-    public String loginForm() {
-        printMessageln("Enter a username:");
+    public String loginForm(String command) {
+        printMessageln("Enter a ".concat(command).concat(": "));
         printMessage("$ ");
         input = userInput.nextLine().toLowerCase();
         return input;

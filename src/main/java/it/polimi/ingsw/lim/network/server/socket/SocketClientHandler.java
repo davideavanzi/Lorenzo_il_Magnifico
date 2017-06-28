@@ -1,14 +1,21 @@
 package it.polimi.ingsw.lim.network.server.socket;
 
+import it.polimi.ingsw.lim.Log;
 import it.polimi.ingsw.lim.controller.User;
+import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
+import it.polimi.ingsw.lim.exceptions.LoginFailException;
 import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.Player;
+import it.polimi.ingsw.lim.network.server.MainServer;
+import it.polimi.ingsw.lim.network.server.RMI.RMIUser;
 
 import static it.polimi.ingsw.lim.Log.*;
 import static it.polimi.ingsw.lim.network.SocketConstants.*;
+import static it.polimi.ingsw.lim.network.server.MainServer.addUserToRoom;
 
 import java.io.*;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
@@ -122,6 +129,39 @@ public class SocketClientHandler implements Runnable {
                 tries++;
                 if (tries == 3) return;
             }
+            catch (ClientNetworkException e){
+                e.printStackTrace();
+                //todo redo login
+            }
+        }
+    }
+
+    public void login(String username, String password, SocketClientHandler handlerCallback) throws LoginFailException{
+        MainServer.getJDBC().createTable();
+        try {
+            if (MainServer.getJDBC().isAlreadySelectedUserName(username)) {
+                if (MainServer.getJDBC().isContainUser(username, password)) {
+                    Log.getLog().info("[LOGIN]: success login. welcome back".concat(username));
+                    this.user = new SocketUser(username, handlerCallback);
+                    addUserToRoom(this.user);
+                    return;
+                }
+                else {
+                    Log.getLog().info("[LOGIN]: bad password or username ".concat(username).concat("already selected?"));
+                    throw new LoginFailException("bad password or username already selected");
+                }
+            }
+            else{
+                MainServer.getJDBC().insertRecord(username, password);
+                this.user = new SocketUser(username, handlerCallback);
+                addUserToRoom(this.user);
+                Log.getLog().info("[LOGIN]: success login");
+            }
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+            Log.getLog().severe("[SQL]: fail to do login");
+            throw new LoginFailException("fail to do login");
         }
     }
 

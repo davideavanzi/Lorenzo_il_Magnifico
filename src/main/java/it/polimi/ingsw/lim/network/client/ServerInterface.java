@@ -24,7 +24,7 @@ public interface ServerInterface {
      * @param username
      * @throws ClientNetworkException
      */
-    void sendLogin(String username) throws ClientNetworkException;
+    void sendLogin(String username, String password) throws ClientNetworkException;
 
     /**
      * Send a chat message to the server.

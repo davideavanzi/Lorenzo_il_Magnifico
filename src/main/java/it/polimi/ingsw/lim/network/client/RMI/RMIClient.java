@@ -1,6 +1,7 @@
 package it.polimi.ingsw.lim.network.client.RMI;
 
 import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
+import it.polimi.ingsw.lim.exceptions.LoginFailException;
 import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.Player;
 import it.polimi.ingsw.lim.network.client.ServerInterface;
@@ -93,11 +94,11 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
      * @throws ClientNetworkException
      */
     @Override
-    public void sendLogin(String username) throws ClientNetworkException {
+    public void sendLogin(String username, String password) throws ClientNetworkException{
         try {
             UnicastRemoteObject.exportObject(this, 0);
-            rmiServer.login(username, this);
-        } catch (RemoteException e) {
+            rmiServer.login(username, password, this);
+        } catch (RemoteException | LoginFailException e) {
             System.out.printf(e.getMessage());
             throw new ClientNetworkException("[RMI]: Login Failed", e);
         }

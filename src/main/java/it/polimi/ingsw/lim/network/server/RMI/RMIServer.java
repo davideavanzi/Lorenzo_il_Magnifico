@@ -1,6 +1,7 @@
 package it.polimi.ingsw.lim.network.server.RMI;
 
 import it.polimi.ingsw.lim.Log;
+import it.polimi.ingsw.lim.exceptions.LoginFailException;
 import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.Player;
 import it.polimi.ingsw.lim.network.client.RMI.RMIClientInterf;
@@ -11,10 +12,12 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.*;
 import java.rmi.server.UnicastRemoteObject;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
 import static it.polimi.ingsw.lim.network.server.MainServer.addUserToRoom;
+import static it.polimi.ingsw.lim.network.server.MainServer.main;
 
 /**
  * Created by Nico.
@@ -65,9 +68,31 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
      * @throws RemoteException
      */
     @Override
-    public void login(String username, RMIClientInterf rmiClient) throws RemoteException {
-        //TODO: sistema di autenticazione (salvare utenti in un file/db, se utente esistente se vuole caricare stat.)
-        addUserToRoom(new RMIUser(username, rmiClient));
+    public void login(String username, String password, RMIClientInterf rmiClient) throws RemoteException, LoginFailException {
+        MainServer.getJDBC().createTable();
+        try {
+            if (MainServer.getJDBC().isAlreadySelectedUserName(username)) {
+                if (MainServer.getJDBC().isContainUser(username, password)) {
+                    Log.getLog().info("[LOGIN]: success login. welcome back".concat(username));
+                    addUserToRoom(new RMIUser(username, rmiClient));
+                    return;
+                }
+                else {
+                    Log.getLog().info("[LOGIN]: bad password or username ".concat(username).concat("already selected?"));
+                    throw new LoginFailException("bad password or username already selected");
+                }
+            }
+            else{
+                MainServer.getJDBC().insertRecord(username, password);
+                addUserToRoom(new RMIUser(username, rmiClient));
+                Log.getLog().info("[LOGIN]: success login");
+            }
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+            Log.getLog().severe("[SQL]: fail to do login");
+            throw new LoginFailException("fail to do login");
+        }
     }
 
     /**

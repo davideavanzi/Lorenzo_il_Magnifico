@@ -205,11 +205,12 @@ public class UIController {
      * It required a username and a password for the authentication.
      */
     public void login() {
-        String username = clientUI.loginForm();
-        this.username = username;
+        String username = clientUI.loginForm("username");
+        String password = clientUI.loginForm("password");
         try {
-            clientProtocol.sendLogin(username);
+            clientProtocol.sendLogin(username, password);
         } catch (ClientNetworkException e) {
+            //todo redo login
             clientUI.printMessageln(e.getMessage());
         }
     }

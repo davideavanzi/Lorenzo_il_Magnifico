@@ -80,4 +80,15 @@ public class JDBC {
         Log.getLog().info("user: ".concat(userName).concat(" deleted"));
     }
 
+    public static void main (String args[]){
+        try {
+            JDBC jdbc = new JDBC();
+            jdbc.createTable();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
 }

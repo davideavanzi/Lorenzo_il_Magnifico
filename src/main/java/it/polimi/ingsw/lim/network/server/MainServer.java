@@ -9,6 +9,7 @@ import it.polimi.ingsw.lim.network.server.RMI.RMIServer;
 import it.polimi.ingsw.lim.network.server.socket.SocketServer;
 
 import java.rmi.RemoteException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
@@ -47,6 +48,13 @@ public class MainServer {
     /**
      * MainServer Constructor.
      */
+
+    private static JDBC jdbc;
+
+    public static JDBC getJDBC(){
+        return jdbc;
+    }
+
     private MainServer() {
         createLogFile();
         socketServer = new SocketServer();
@@ -57,6 +65,17 @@ public class MainServer {
         }
         roomList = new ArrayList<>();
         connectedUsers = new ArrayList<>();
+        try {
+            jdbc = new JDBC();
+        }
+        catch (SQLException e){
+            getLog().severe("[SQL]: Some errors in SQL query ");
+            e.printStackTrace();
+        }
+        catch (ClassNotFoundException e){
+            getLog().severe("[SQL]: Can't locate driver for SQLite ");
+            e.printStackTrace();
+        }
     }
 
     /**

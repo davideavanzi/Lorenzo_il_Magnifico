@@ -95,9 +95,9 @@ public class SocketClient implements Runnable, ServerInterface {
      * @param username
      * @throws ClientNetworkException
      */
-    public void sendLogin(String username) throws ClientNetworkException {
+    public void sendLogin(String username, String password) throws ClientNetworkException {
         try {
-            sendObjToServer(LOGIN + SPLITTER + username);
+            sendObjToServer(LOGIN + SPLITTER + username + SPLITTER + password);
         } catch (IOException e) {
             throw new ClientNetworkException("[SOCKET]: Could not send login information to server", e);
         }
