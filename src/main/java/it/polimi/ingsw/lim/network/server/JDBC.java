@@ -70,9 +70,15 @@ public class JDBC {
         statement.executeUpdate(sql);
     }
 
-    private void dropDataBase() throws  SQLException{
+    private void dropDataBase() throws SQLException{
         String sql = "DROP DATABASE USERS";
         statement.executeUpdate(sql);
+    }
+
+    public boolean ifExistTable() throws SQLException{
+        DatabaseMetaData meta = this.connection.getMetaData();
+        ResultSet res = meta.getTables(null, null, "REGISTRATION", null);
+        return res.next();
     }
 
     public static void main(String args[]){
@@ -83,6 +89,7 @@ public class JDBC {
             jdbc.insertRecord("user", "pass");
             System.out.println(jdbc.isContain("user", "pass"));
             System.out.println(jdbc.isContain("asd", "zxc"));
+            jdbc.ifExistTable();
             jdbc.dropDataBase();
         }
         catch (Exception e){
