@@ -6,14 +6,14 @@ import java.sql.*;
  *
  */
 public class JDBC {
-    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+    private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 
-    static final String USER = "root";
-    static final String PASS = "root";
+    private static final String USER = "root";
+    private static final String PASS = "root";
 
     private Connection connection;
     private Statement statement;
-    String DB_URL = "jdbc:mysql://127.0.0.1:3306/";
+    private String DB_URL = "jdbc:mysql://127.0.0.1:3306/";
 
     public JDBC () throws SQLException, ClassNotFoundException{
         Class.forName(JDBC_DRIVER);
