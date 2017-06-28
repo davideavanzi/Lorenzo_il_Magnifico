@@ -9,6 +9,10 @@ import static it.polimi.ingsw.lim.ui.UIController.setUI;
  */
 public class MainClient {
 
+    /**
+     * This is the launcher of the Game.
+     * @param args
+     */
     public static void main(String[] args) {
         splashScreen();
         UIController client = new UIController(setUI());
@@ -17,7 +21,7 @@ public class MainClient {
         client.inputHandler();
     }
 
-    public static void splashScreen() {
+    private static void splashScreen() {
         System.out.println("Welcome to:\n" +
                 "     _                            _____      __     __)                           \n" +
                 " ___/__)                         (, /  /)   (, /|  /|               ,  /) ,       \n" +
@@ -26,5 +30,17 @@ public class MainClient {
                 " (_____             .-/      (__ /        (_/   '        .-/        /)            \n" +
                 "        )          (_/                                  (_/        (/            ");
         System.out.println();
+    }
+    
+    void asd() {
+        System.out.println(" +-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+\n" +
+                            "|                       |                       |                       |                       |                       |\n" +
+                            "+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+\n" +
+                            "|                       |                       |                       |                       |                       |\n" +
+                            "+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+\n" +
+                            "|                       |                       |                       |                       |                       |\n" +
+                            "+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+\n" +
+                            "|                       |                       |                       |                       |                       |\n" +
+                            "+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+");
     }
 }

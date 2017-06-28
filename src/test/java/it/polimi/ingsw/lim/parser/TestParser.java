@@ -4,6 +4,9 @@ import it.polimi.ingsw.lim.exceptions.InvalidCardException;
 import it.polimi.ingsw.lim.exceptions.InvalidExcommunicationException;
 import it.polimi.ingsw.lim.exceptions.InvalidTimerException;
 import it.polimi.ingsw.lim.model.*;
+import it.polimi.ingsw.lim.model.cards.*;
+import it.polimi.ingsw.lim.model.excommunications.*;
+import it.polimi.ingsw.lim.model.immediateEffects.*;
 import junit.framework.*;
 import org.junit.Test;
 

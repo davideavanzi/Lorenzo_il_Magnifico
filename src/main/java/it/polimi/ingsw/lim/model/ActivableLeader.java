@@ -1,4 +1,6 @@
 package it.polimi.ingsw.lim.model;
+import it.polimi.ingsw.lim.model.immediateEffects.ImmediateEffect;
+
 import java.util.*;
 
 /**

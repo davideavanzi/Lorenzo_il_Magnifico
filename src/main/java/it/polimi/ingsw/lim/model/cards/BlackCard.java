@@ -1,5 +1,7 @@
-package it.polimi.ingsw.lim.model;
+package it.polimi.ingsw.lim.model.cards;
 import it.polimi.ingsw.lim.Log;
+import it.polimi.ingsw.lim.model.Assets;
+import it.polimi.ingsw.lim.model.immediateEffects.ImmediateEffect;
 
 import java.util.*;
 

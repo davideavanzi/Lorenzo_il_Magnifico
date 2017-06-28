@@ -3,9 +3,9 @@ package it.polimi.ingsw.lim.controller;
 import it.polimi.ingsw.lim.model.Assets;
 import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.Player;
-import org.codehaus.jackson.annotate.JsonTypeInfo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -16,10 +16,20 @@ import java.util.List;
  */
 public abstract class User {
 
+    /**
+     * The user's nickname.
+     */
     private String username;
-    private Room room;
-    private Player player;
 
+    /**
+     * A game room.
+     */
+    private Room room;
+
+    /**
+     * A player of the game.
+     */
+    private Player player;
 
     /**
      * User constructor
@@ -36,17 +46,20 @@ public abstract class User {
         return username;
     }
 
-    public void setRoom(Room room) {
-        this.room = room;
-    }
-
     public Room getRoom() {
         return room;
     }
 
-    public abstract void chatMessage(String sender, String message);
+    public void setRoom(Room room) {
+        this.room = room;
+    }
 
-    public abstract void sendGameState(Board board, ArrayList<Player> players);
+    /**
+     * Send chat message to client.
+     * @param sender
+     * @param message
+     */
+    public abstract void sendChatMessage(String sender, String message);
 
     public abstract int askForServants(int minimumAmount);
 
@@ -58,10 +71,24 @@ public abstract class User {
      */
     public abstract int chooseProduction(ArrayList<Assets[]> options);
 
+    /**
+     * Calling this method the server will send the updated board and the list of the connected user to the client.
+     * @param board the game board
+     * @param players arrayList of connected player
+     */
+    public abstract void sendGameUpdate(Board board, ArrayList<Player> players);
+
+    /**
+     * @return the correspondent player.
+     */
     public Player getPlayer() {
         return player;
     }
 
+    /**
+     * Set the players.
+     * @param player
+     */
     public void setPlayer(Player player) {
         this.player = player;
     }
@@ -79,4 +106,13 @@ public abstract class User {
      */
     public abstract int chooseFavor(List<Assets> possibleFavors);
 
+    public abstract String chooseTower(HashMap<String, Integer> possibleTowers);
+
+    public abstract int chooseFloor();
+
+    /**
+     * This method sends a message to the user relative to it's gaming state.
+     * @param message the message to send
+     */
+    public abstract void gameMessage(String message);
 }

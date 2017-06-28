@@ -1,5 +1,5 @@
-package it.polimi.ingsw.lim.model;
-import java.util.*;
+package it.polimi.ingsw.lim.model.immediateEffects;
+import it.polimi.ingsw.lim.model.Assets;
 
 /**
  * This kind of effect gives to the player a resource bonus, multiplied by the amount of cards

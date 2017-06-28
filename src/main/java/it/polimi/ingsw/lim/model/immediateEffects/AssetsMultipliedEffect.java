@@ -1,7 +1,6 @@
-package it.polimi.ingsw.lim.model;
+package it.polimi.ingsw.lim.model.immediateEffects;
 import it.polimi.ingsw.lim.Log;
-
-import java.util.*;
+import it.polimi.ingsw.lim.model.Assets;
 
 /**
  * This class represent a specific immediate effect: it gives a bonus multiplied for the amount of assets specified

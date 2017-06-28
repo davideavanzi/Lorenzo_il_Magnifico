@@ -1,8 +1,8 @@
-package it.polimi.ingsw.lim.model;
+package it.polimi.ingsw.lim.model.immediateEffects;
 
 import it.polimi.ingsw.lim.Log;
-
-import java.io.Serializable;
+import it.polimi.ingsw.lim.model.Assets;
+import it.polimi.ingsw.lim.model.Strengths;
 
 /**
  * This class represents an immediate effect that gives the player the ability to make another action:

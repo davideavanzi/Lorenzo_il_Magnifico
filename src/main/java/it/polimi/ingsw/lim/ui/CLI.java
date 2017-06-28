@@ -1,8 +1,6 @@
 package it.polimi.ingsw.lim.ui;
 
-import it.polimi.ingsw.lim.model.Assets;
-import it.polimi.ingsw.lim.model.Strengths;
-import it.polimi.ingsw.lim.model.Tower;
+import it.polimi.ingsw.lim.model.Board;
 
 import java.util.Scanner;
 
@@ -11,34 +9,33 @@ import java.util.Scanner;
  * This is the client commandInput line interface
  */
 public class CLI extends AbsUI {
+
+    /**
+     * Scanner for stdin.
+     */
     Scanner userInput = new Scanner(System.in);
+
+    /**
+     * This contain the input command.
+     */
     String input;
 
-    public void printStrengths(Strengths strengths, String username) {
-        if (strengths != null)
-            printMessageln(username.concat("'s strenghts: "));
-            //Todo print user strength
-    }
-
-    public void printAssets(Assets resource, String username) {
-        if (resource != null) {
-            printMessageln(username.concat("'s resources: "));
-            //Todo use emoji for resource??
-        }
-    }
-
-    public void printTower(String color, Tower tower) {
-        //Todo print the tower with a tui
-    }
-
-    public void printPlayerCards() {
+    public void printBoard(Board board) {
 
     }
 
+    /**
+     * Print to stdout a chat message.
+     * @param sender the sender's username.
+     * @param message the chat message.
+     */
     public void printChatMessage(String sender, String message) {
         printMessageln("[CHAT] message from "+sender+": "+message);
     }
 
+    /**
+     * Waiting for user input, then passing it to a input parser
+     */
     public void waitUserInput() {
         while(true) {
             input = userInput.nextLine().toLowerCase().trim();
@@ -46,6 +43,10 @@ public class CLI extends AbsUI {
         }
     }
 
+    /**
+     * Enter the login information.
+     * @return the login information.
+     */
     public String loginForm() {
         printMessageln("Enter a username:");
         printMessage("$ ");

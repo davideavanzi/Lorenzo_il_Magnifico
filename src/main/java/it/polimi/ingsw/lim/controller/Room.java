@@ -18,7 +18,7 @@ import java.util.TimerTask;
  */
 public class Room {
 
-    private GameController gameController;
+    private transient GameController gameController;
     private boolean roomOpen = true; // room open
     private ArrayList<User> usersList;
     private ArrayList<String> playOrder;
@@ -48,7 +48,7 @@ public class Room {
     }
 
     public void chatMessageToRoom(String sender, String message) {
-        usersList.forEach(user -> user.chatMessage(sender, message));
+        usersList.forEach(user -> user.sendChatMessage(sender, message));
     }
 
     public void broadcastMessage(String message) {
@@ -95,6 +95,10 @@ public class Room {
         return usersList.stream().filter(user -> user.getUsername().equals(username)).findFirst().orElse(null);
     }
 
+    public GameController getGameController() {
+        return gameController;
+    }
+
     private void startNewTurn(){
         this.playOrder = gameController.getPlayOrder();
         this.gameController.startNewTurn();
@@ -106,7 +110,7 @@ public class Room {
         private Timer timer;
         private TimerEnd(int seconds, Room roomCallback){
             timer = new Timer();
-            timer.schedule(new RoomTimer(roomCallback), (long) (seconds * 1000) /*by default ms (1s = 1000ms)*/);
+            timer.schedule(new RoomTimer(roomCallback), seconds * 1000 /*by default ms (1s = 1000ms)*/);
         }
         private class RoomTimer extends TimerTask{
             private Room roomCallback;

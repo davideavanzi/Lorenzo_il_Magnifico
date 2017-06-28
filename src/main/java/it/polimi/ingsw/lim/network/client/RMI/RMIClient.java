@@ -2,6 +2,7 @@ package it.polimi.ingsw.lim.network.client.RMI;
 
 import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
 import it.polimi.ingsw.lim.model.Board;
+import it.polimi.ingsw.lim.model.Player;
 import it.polimi.ingsw.lim.network.client.ServerInterface;
 import it.polimi.ingsw.lim.network.server.RMI.RMIServerInterf;
 import it.polimi.ingsw.lim.ui.UIController;
@@ -12,6 +13,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 
 /**
  * Created by nico.
@@ -32,6 +34,9 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
      */
     RMIServerInterf rmiServer;
 
+    /**
+     * The UI controller's reference.
+     */
     UIController uiCallback;
 
     /**
@@ -51,7 +56,43 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
      */
     public int getPort() {return port;}
 
+    @Override
+    public void updateClientGame(Board board, ArrayList<Player> players) {
+        uiCallback.updateBoard(board);
+        uiCallback.updatePlayers(players);
+    }
 
+    /**
+     * Send a chat message to server.
+     * @param sender the username of the sender.
+     * @param message the chat message.
+     * @throws ClientNetworkException
+     */
+    @Override
+    public void chatMessageToServer(String sender, String message) throws ClientNetworkException {
+        try {
+            rmiServer.chatMessageFromClient(sender, message);
+        } catch (RemoteException e) {
+            throw new ClientNetworkException("[RMI]: Could not send a message to the server", e);
+        }
+    }
+
+    /**
+     * Print the chat message received.
+     * @param sender the username of the sender.
+     * @param message the chat message.
+     */
+    @Override
+    public void chatMessageFromServer(String sender, String message) {
+        uiCallback.getClientUI().printChatMessage(sender, message);
+    }
+
+    /**
+     * Send the login information to the server.
+     * @param username
+     * @throws ClientNetworkException
+     */
+    @Override
     public void sendLogin(String username) throws ClientNetworkException {
         try {
             UnicastRemoteObject.exportObject(this, 0);
@@ -66,6 +107,7 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
      * It's called to establish the connection between server and client.
      * @throws ClientNetworkException
      */
+    @Override
     public void connect() throws ClientNetworkException {
         try {
             LocateRegistry.getRegistry(getAddress(), getPort());
@@ -74,25 +116,6 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
         } catch(NotBoundException | RemoteException | MalformedURLException e) {
             throw new ClientNetworkException("[RMI]: Could not connect to RMI server", e);
         }
-    }
-
-
-    public void chatMessageToServer(String sender, String message) throws ClientNetworkException {
-        try {
-            rmiServer.chatMessageFromClient(sender, message);
-        } catch (RemoteException e) {
-            throw new ClientNetworkException("[RMI]: Could not send a message to RMI server", e);
-        }
-    }
-
-    @Override
-    public void chatMessageFromServer(String sender, String message) {
-        uiCallback.getClientUI().printChatMessage(sender, message);
-    }
-
-    @Override
-    public void updateClientGame(Board board) {
-        uiCallback.updateGame(board);
     }
 }
 

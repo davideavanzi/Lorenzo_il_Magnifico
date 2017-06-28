@@ -1,4 +1,4 @@
-package it.polimi.ingsw.lim.model;
+package it.polimi.ingsw.lim.model.immediateEffects;
 import java.io.Serializable;
 import java.util.*;
 

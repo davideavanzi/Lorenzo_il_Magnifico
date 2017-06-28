@@ -1,4 +1,6 @@
-package it.polimi.ingsw.lim.model;
+package it.polimi.ingsw.lim.model.excommunications;
+import it.polimi.ingsw.lim.model.Player;
+
 import java.io.Serializable;
 import java.util.*;
 

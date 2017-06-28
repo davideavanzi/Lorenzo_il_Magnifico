@@ -13,10 +13,17 @@ import java.util.logging.Level;
  */
 class ClientCommandHandler {
 
+    /**
+     * Link every SocketClientHandler to the corrispondent Client Command Handler.
+     * @param handlerCallback
+     */
     ClientCommandHandler(SocketClientHandler handlerCallback) {
         this.handlerCallback = handlerCallback;
     }
 
+    /**
+     * User's reference.
+     */
     SocketUser user;
 
     /**
@@ -24,6 +31,10 @@ class ClientCommandHandler {
      */
     private SocketClientHandler handlerCallback;
 
+    /**
+     * Parse the input object for calling the corrispondent method.
+     * @param obj
+     */
     void requestHandler(Object obj) {
         if(obj instanceof String) {
             ArrayList<String> command = new ArrayList<>(Arrays.asList(((String) obj).split(SPLITTER_REGEX)));
@@ -32,12 +43,10 @@ class ClientCommandHandler {
             if (commandIdentifier.equals(LOGIN)) {
                 this.user = new SocketUser(command.get(1), handlerCallback);
                 addUserToRoom(this.user);
-            } else if(commandIdentifier.equals(ANSWER_SERVANTS_AMOUNT)) {
+            } else if(commandIdentifier.equals(TURN_ORDER)) {
 
             } else if (commandIdentifier.equals(CHAT)) {
-                //The server has received a chat message from the client, it has to deliver it to other room mates.
                 this.user.getRoom().chatMessageToRoom(command.get(1), command.get(2));
-                getLog().log(Level.INFO, () -> "[C-H] message from "+command.get(1)+": "+command.get(2));
             } else {
                 getLog().log(Level.SEVERE, () ->"[C-H] invalid message indentifier: "+commandIdentifier);
             }

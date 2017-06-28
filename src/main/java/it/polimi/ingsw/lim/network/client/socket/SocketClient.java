@@ -2,24 +2,52 @@ package it.polimi.ingsw.lim.network.client.socket;
 
 import it.polimi.ingsw.lim.Lock;
 import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
-import it.polimi.ingsw.lim.model.Assets;
 import it.polimi.ingsw.lim.network.client.ServerInterface;
 import it.polimi.ingsw.lim.ui.UIController;
 
 import java.io.*;
 import java.net.Socket;
+
 import static it.polimi.ingsw.lim.network.SocketConstants.*;
 
 /**
  * Created by nico.
  */
 public class SocketClient implements Runnable, ServerInterface {
+
+    /**
+     * The socket server's address.
+     */
     private String address = "localhost";
+
+    /**
+     * The socket server's port.
+     */
     private int port = 8989;
+
+    /**
+     * The socket client's output stream.
+     */
     ObjectOutputStream objFromClient;
+
+    /**
+     * The socket client's input stream.
+     */
     ObjectInputStream objToClient;
+
+    /**
+     * Reference to the server command handler.
+     */
     ServerCommandHandler commandHandler;
+
+    /**
+     * Reference to the UI controller.
+     */
     UIController uiController;
+
+    /**
+     * Declaration of the Lock.
+     */
     Lock lock;
 
     /**
@@ -41,34 +69,55 @@ public class SocketClient implements Runnable, ServerInterface {
     /**
      * @return the server's address
      */
-    public String getAddress() {return address;}
+    private String getAddress() {return address;}
 
     /**
      * @return the server's socket port
      */
-    public int getPort() {return port;}
+    private int getPort() {return port;}
 
-
-    public void chatMessageToServer(String sender, String message) throws ClientNetworkException{
+    /**
+     * Send chat message through the client's output stream.
+     * @param sender the username of the sender
+     * @param message the chat message
+     * @throws ClientNetworkException
+     */
+    public void chatMessageToServer(String sender, String message) throws ClientNetworkException {
         try {
-            objFromClient.writeObject("CHAT"+SPLITTER+sender+SPLITTER+message);
-            objFromClient.flush();
-            objFromClient.reset();
+            sendObjToServer(CHAT + SPLITTER + sender + SPLITTER + message);
         } catch (IOException e) {
-            throw new ClientNetworkException("Could not send chat message to server", e);
+            throw new ClientNetworkException("[SOCKET]: Could not send chat message to server", e);
         }
     }
 
+    /**
+     * Send login information to server.
+     * @param username
+     * @throws ClientNetworkException
+     */
     public void sendLogin(String username) throws ClientNetworkException {
         try {
-            objFromClient.writeObject(LOGIN+SPLITTER+username);
-            objFromClient.flush();
-            objFromClient.reset();
+            sendObjToServer(LOGIN + SPLITTER + username);
         } catch (IOException e) {
-            throw new ClientNetworkException("Could not send login information to server", e);
+            throw new ClientNetworkException("[SOCKET]: Could not send login information to server", e);
         }
     }
 
+    /**
+     * This method is the only that write object to the socket server.
+     * @param obj to send
+     * @throws IOException
+     */
+    private void sendObjToServer(Object obj) throws IOException {
+        objFromClient.writeObject(obj);
+        objFromClient.flush();
+        objFromClient.reset();
+    }
+
+    /**
+     * Wait forever for object from server.
+     * @throws ClientNetworkException
+     */
     private void waitFromServer() throws ClientNetworkException {
         try {
             lock.lock();

@@ -1,4 +1,6 @@
 package it.polimi.ingsw.lim.model;
+import it.polimi.ingsw.lim.model.cards.Card;
+
 import java.io.Serializable;
 
 import static it.polimi.ingsw.lim.Settings.FLOORS_ACTION_COSTS;

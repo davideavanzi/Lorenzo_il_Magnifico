@@ -1,5 +1,5 @@
-package it.polimi.ingsw.lim.model;
-import java.util.*;
+package it.polimi.ingsw.lim.model.excommunications;
+import it.polimi.ingsw.lim.model.Assets;
 
 /**
  *  This kinds of excommunication subtracts the specified amount of resourced every time a player gets a bonus.

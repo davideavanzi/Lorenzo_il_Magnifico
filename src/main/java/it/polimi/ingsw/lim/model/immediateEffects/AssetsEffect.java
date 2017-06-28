@@ -1,7 +1,6 @@
-package it.polimi.ingsw.lim.model;
+package it.polimi.ingsw.lim.model.immediateEffects;
 import it.polimi.ingsw.lim.Log;
-
-import java.util.*;
+import it.polimi.ingsw.lim.model.Assets;
 
 /**
  * This effect class provides a simple bonus in term of resources

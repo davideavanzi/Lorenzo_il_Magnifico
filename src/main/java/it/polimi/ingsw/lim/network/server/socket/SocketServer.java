@@ -19,30 +19,9 @@ public class SocketServer {
     private ServerSocket serverSck;
 
     /**
-     * This boolean set the server state
-     */
-    private static Boolean isServerRunning = true;
-
-    /**
      * Empty constructor
      */
     public SocketServer() {}
-
-    /**
-     * @return the state of the socket server
-     */
-    public static boolean getIsServerRunning() {
-        return isServerRunning;
-    }
-
-    /**
-     * Set the state of the socket server
-     *
-     * @param state
-     */
-    public static void setIsServerRunning(boolean state) {
-        isServerRunning = state;
-    }
 
     /**
      * This method is use for starting the socket server
@@ -57,6 +36,9 @@ public class SocketServer {
         }
     }
 
+    /**
+     * Create a thread for wait connection by new client.
+     */
     private class clientConnectionRequestHandler extends Thread {
 
         /**
@@ -64,7 +46,7 @@ public class SocketServer {
          * Eventually when the server will be stopped the socket gets closed.
          */
         public void run() {
-            while (isServerRunning) {
+            while (true) {
                 try {
                     getLog().log(Level.INFO, "[SOCKET]: Waiting for clients");
                     Socket clientSck = serverSck.accept();

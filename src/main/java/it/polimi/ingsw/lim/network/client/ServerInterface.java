@@ -2,8 +2,10 @@ package it.polimi.ingsw.lim.network.client;
 
 import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
 import it.polimi.ingsw.lim.model.Assets;
+import it.polimi.ingsw.lim.model.Player;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 /**
  * Created by nico.
@@ -24,5 +26,11 @@ public interface ServerInterface {
      */
     void sendLogin(String username) throws ClientNetworkException;
 
+    /**
+     * Send a chat message to the server.
+     * @param sender the username of the sender
+     * @param message the chat message
+     * @throws ClientNetworkException
+     */
     void chatMessageToServer(String sender, String message) throws ClientNetworkException;
 }
