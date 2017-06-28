@@ -88,4 +88,9 @@ public class RMIUser extends User {
     public int chooseFloor() {
         return 0;
     }
+
+    @Override
+    public boolean askForOptionalBpPick(int requirement, int cost) {
+        return false;
+    }
 }

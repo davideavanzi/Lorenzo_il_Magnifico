@@ -65,6 +65,8 @@ public class Room {
 
     public boolean isOpen() { return roomOpen; }
 
+    public void fmPlaced() { this.turn.decreaseFmAmount(); }
+
     public void switchTurn(){
         int size = playOrder.size();
         int i = 0;

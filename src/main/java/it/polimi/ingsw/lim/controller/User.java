@@ -115,4 +115,13 @@ public abstract class User {
      * @param message the message to send
      */
     public abstract void gameMessage(String message);
+
+    /**
+     * This method is called when a player can pick a purple card both paying normal cost and
+     * it's optional cost in terms of battle points.
+     * @param requirement the amount of battle points required to pay this way
+     * @param cost the amount of battle points that the player will pay
+     * @return a boolean that indicates if the player wants to pay with his battle points
+     */
+    public abstract boolean askForOptionalBpPick(int requirement, int cost);
 }

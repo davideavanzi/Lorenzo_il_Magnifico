@@ -44,6 +44,8 @@ public class PlayerTurn {
         return this.user;
     }
 
+    public void decreaseFmAmount() { this.fmToDeploy--; }
+
     public void endTurn (String endType){
         Log.getLog().info("turn player ".concat(this.getUserName()).concat(" is ending due to ").concat(endType));
         if(endType.equals("player ending")){
