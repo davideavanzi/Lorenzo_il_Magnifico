@@ -216,6 +216,8 @@ public class Assets implements Serializable {
      */
     public Assets addCoins(int amount) { this.coins += amount; return this; }
 
+    public Assets addServants(int amount) { this.servants += amount; return this; }
+
     public Assets subtractCoins(int amount) { this.coins -= amount; return this;}
 
     /**

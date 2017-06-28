@@ -81,4 +81,9 @@ public class SocketUser extends User {
     public String chooseTower(HashMap<String, Integer> possibleTowers) {
         return null;
     }
+
+    @Override
+    public boolean askForOptionalBpPick(int requirement, int cost) {
+        return false;
+    }
 }

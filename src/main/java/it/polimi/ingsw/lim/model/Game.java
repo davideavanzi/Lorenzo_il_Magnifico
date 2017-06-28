@@ -1,6 +1,7 @@
 package it.polimi.ingsw.lim.model;
 import it.polimi.ingsw.lim.exceptions.GameSetupException;
 import it.polimi.ingsw.lim.model.cards.Card;
+import it.polimi.ingsw.lim.model.cards.PurpleCard;
 import it.polimi.ingsw.lim.model.excommunications.Excommunication;
 import it.polimi.ingsw.lim.parser.Parser;
 
@@ -236,6 +237,7 @@ public class Game {
 
     /**
      * This method checks if a specified move into a tower is affordable by the player performing the move.
+     * it also checks if is a purple card and has an optional cost to pick the card
      * TODO: add malus count while entering tower from excomm.
      * @param towerColor
      * @param floorNumber
@@ -250,7 +252,7 @@ public class Game {
         Assets additionalCost = new Assets();
         Assets playerAssets = new Assets(this.getPlayerFromColor(fm.getOwnerColor()).getResources());
         additionalCost.addCoins(COINS_TO_ENTER_OCCUPIED_TOWER);
-        if (this.isTowerOccupied(towerColor) && playerAssets.subtract(additionalCost).isNegative())
+        if (this.isTowerOccupied(towerColor) && !playerAssets.isGreaterOrEqual(additionalCost))
             return false;
         if (this.servantsForTowerAction(fm, towerColor, floorNumber) > playerAssets.getServants())
             return false;
@@ -261,29 +263,51 @@ public class Game {
         return false;
     }
 
+    public boolean isCardAffordable(Card card, Player actor, String towerColor) {
+        Assets cardCost = card.getCost().subtractToZero
+                (actor.getPickDiscount(towerColor));
+        return (actor.getResources().isGreaterOrEqual(cardCost));
+    }
+
+    public boolean isPurpleCardAffordable(PurpleCard card, Player pl){
+        return (pl.getResources().getVictoryPoints() > card.getOptionalBpRequirement());
+    }
+
     /**
      * This method makes the actual tower move
      * @param towerColor
      * @param floorNumber
      * @param fm
+     * @param servantsDeployed
+     * @param useBp
      */
-    public Card towerMove(String towerColor, int floorNumber, FamilyMember fm) {
+    public void towerMove(String towerColor, int floorNumber, FamilyMember fm, int servantsDeployed, boolean useBp) {
         Player actor = this.getPlayerFromColor(fm.getOwnerColor());
-        Card card = this.board.getTowers().get(towerColor).getFloor(floorNumber).pullCard();
-        Assets actionCost = new Assets(card.getCost());
+        Floor destination = this.board.getTowers().get(towerColor).getFloor(floorNumber);
+        Card card = destination.pullCard();
+        //Action cost is different whether the player wants to pay the card's cost or the purple's card bp cost.
+        Assets actionCost = (useBp) ? new Assets().addServants(((PurpleCard)card).getOptionalBpCost()) :
+                new Assets(card.getCost()).addServants(servantsDeployed);
         if(this.isTowerOccupied(towerColor))
             actionCost.addCoins(COINS_TO_ENTER_OCCUPIED_TOWER);
+        destination.setFamilyMemberSlot(actor.pullFamilyMember(fm.getDiceColor()));
         actionCost.subtractToZero(actor.getPickDiscount(towerColor));
         actor.getResources().subtract(actionCost);
         actor.addCard(card, towerColor);
-        return card;
     }
 
-
-    public boolean isFastTowerMoveAllowed(String towerColor, int floor) {
+    /**
+     * This method checks if a player can perform a fast tower move, also if it can afford to pick the card.
+     * @param towerColor
+     * @param floor
+     * @return
+     */
+    public boolean isFastTowerMoveAllowed(String towerColor, int floor, Player pl) {
         Floor destination = this.board.getTowers().get(towerColor).getFloor(floor);
         if (!destination.hasCard()) return false;
-        return true; //TODO: implement
+        if (destination.getCard().getCost().isGreaterOrEqual(pl.getResources().add(pl.getPickDiscount(towerColor))))
+            return false;
+        return true;
     }
 
     /**
