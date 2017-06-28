@@ -33,5 +33,6 @@
     <orderEntry type="library" name="junit:junit:4.12" level="project" />
     <orderEntry type="library" name="org.ops4j.pax.jdbc:pax-jdbc-mysql:1.1.0" level="project" />
     <orderEntry type="library" name="src" level="project" />
+    <orderEntry type="library" name="org.xerial:sqlite-jdbc:3.15.1" level="project" />
   </component>
 </module>

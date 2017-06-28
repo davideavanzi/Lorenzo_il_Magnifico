@@ -8,47 +8,37 @@ import java.sql.*;
  *
  */
 public class JDBC {
-    private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+    private static final String JDBC_DRIVER = "org.sqlite.JDBC";
 
     private static final String USER = "root";
     private static final String PASS = "root";
 
     private Connection connection;
     private Statement statement;
-    private String DB_URL = "jdbc:mysql://127.0.0.1:3306/";
+    private String DB_URL = "jdbc:sqlite:USERS.db/";
 
     public JDBC () throws SQLException, ClassNotFoundException{
         Class.forName(JDBC_DRIVER);
-        this.connection = DriverManager.getConnection(DB_URL, USER, PASS);
+        this.connection = DriverManager.getConnection(DB_URL);
         this.statement = this.connection.createStatement();
-    }
-
-    public void createDataBase() {
-        try {
-            String sql = "CREATE DATABASE USERS";
-            this.statement.executeUpdate(sql);
-            DB_URL = DB_URL.concat("USERS");
-        }
-        catch (SQLException e){
-            DB_URL = DB_URL.concat("USERS");
-            Log.getLog().info("databse already exists");
-        }
     }
 
     public void createTable() {
         try {
             this.connection = DriverManager.getConnection(DB_URL, USER, PASS);
             this.statement = this.connection.createStatement();
-            String sql = "CREATE TABLE REGISTRATION ".concat("(userName VARCHAR(255) not NULL, ").concat(" password VARCHAR(255) not NULL, ").concat(" PRIMARY KEY ( userName ))");
+            String sql = "CREATE TABLE REGISTRATION ".concat("(userName VARCHAR(255) not NULL, ").concat(" password VARCHAR(255) not NULL, ").concat(" victory INT DEFAULT 0,").concat(" PRIMARY KEY ( userName ))");
             this.statement.executeUpdate(sql);
+            Log.getLog().info("table created");
         }
         catch (SQLException e){
+            e.printStackTrace();
             Log.getLog().info("table already exists");
         }
     }
 
     public void insertRecord(String userName, String password) throws SQLException{
-        String sql = "INSERT INTO REGISTRATION VALUES ('".concat(userName).concat("', '").concat(password.concat("')"));
+        String sql = "INSERT INTO REGISTRATION VALUES ('".concat(userName).concat("', '").concat(password.concat("', 0)"));
         this.statement.executeUpdate(sql);
         Log.getLog().info("user: ".concat(userName).concat(" added"));
     }
@@ -90,8 +80,4 @@ public class JDBC {
         Log.getLog().info("user: ".concat(userName).concat(" deleted"));
     }
 
-    private void dropDataBase() throws SQLException{
-        String sql = "DROP DATABASE USERS";
-        statement.executeUpdate(sql);
-    }
 }
