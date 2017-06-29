@@ -156,7 +156,7 @@ public class SocketClientHandler implements Runnable {
             else{
                 MainServer.getJDBC().insertRecord(username, password);
                 this.user = new SocketUser(username, handlerCallback);
-                addUserToRoom(this.user);
+                user.setRoom(addUserToRoom(this.user));
                 Log.getLog().info("[LOGIN]: success login");
             }
         }

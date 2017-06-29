@@ -24,11 +24,6 @@ class ClientCommandHandler {
     }
 
     /**
-     * User's reference.
-     */
-    SocketUser user;
-
-    /**
      * A callback to the client handler
      */
     private SocketClientHandler handlerCallback;
@@ -51,7 +46,7 @@ class ClientCommandHandler {
             } else if(commandIdentifier.equals("a")) {
 
             } else if (commandIdentifier.equals(CHAT)) {
-                this.user.getRoom().chatMessageToRoom(command.get(1), command.get(2));
+                this.handlerCallback.getUser().getRoom().chatMessageToRoom(command.get(1), command.get(2));
             } else {
                 getLog().log(Level.SEVERE, () ->"[C-H] invalid message indentifier: "+commandIdentifier);
             }
