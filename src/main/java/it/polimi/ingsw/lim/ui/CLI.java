@@ -4,6 +4,7 @@ import it.polimi.ingsw.lim.Lock;
 import it.polimi.ingsw.lim.exceptions.InvalidInputException;
 import it.polimi.ingsw.lim.model.Player;
 
+import java.io.Console;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -146,7 +147,19 @@ public class CLI extends AbsUI {
     public String loginForm(String command) {
         printMessageln("Enter a ".concat(command).concat(": "));
         printMessage("$ ");
-        input = userInput.nextLine().toLowerCase().trim();
+        if(command.equals("username")) {
+            input = userInput.nextLine().trim();
+        }else if(command.equals("password")){
+            Console console;
+            char[] passwd;
+            if((console = System.console()) != null) {
+                if ((passwd = console.readPassword()) != null) {
+                    input = String.valueOf(passwd);
+                }
+            }else{
+                input = userInput.nextLine().trim();
+            }   
+        }
         return input;
     }
 

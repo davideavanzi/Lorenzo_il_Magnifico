@@ -93,7 +93,7 @@ public class Room {
             nextUserName = playOrder.get(0); //take the first
         }
         this.round = new PlayerRound(this.getUser(nextUserName));
-        Log.getLog().info("player ".concat(round.getUserName()).concat(" now can play"));
+        Log.getLog().info("player ".concat(round.getUserName()).concat(" now can play ").concat("in room" + this.getUser(nextUserName).getRoom().toString()));
     }
 
     User getUser(String username) {
