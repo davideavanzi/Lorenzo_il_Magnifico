@@ -68,6 +68,10 @@ public abstract class User {
         this.isAlive = false;
     }
 
+    public boolean isAlive() {
+        return this.isAlive;
+    }
+
     /**
      * Send chat message to client.
      * @param sender

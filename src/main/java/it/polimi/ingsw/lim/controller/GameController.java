@@ -6,10 +6,7 @@ import it.polimi.ingsw.lim.model.cards.*;
 import it.polimi.ingsw.lim.model.immediateEffects.*;
 import it.polimi.ingsw.lim.parser.Parser;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
@@ -342,8 +339,14 @@ public class GameController {
 
     public void startNewTurn(){
         this.game.newTurn();
+        this.game.setUpTurn();
     }
 
+    public int[] getTime() {
+        return new int[] {this.game.getAge(), this.game.getTurn()};
+    }
+
+    //TODO: do we need it?
     public Room getRoomCallback() {
         return roomCallback;
     }
