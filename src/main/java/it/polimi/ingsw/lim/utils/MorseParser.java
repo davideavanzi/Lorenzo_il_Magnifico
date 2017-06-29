@@ -1,8 +1,7 @@
 package it.polimi.ingsw.lim.utils;
 
-import java.util.Scanner;
 import java.util.HashMap;
-import java.util.Map;
+
 
 
 /**
