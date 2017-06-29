@@ -3,11 +3,10 @@ package it.polimi.ingsw.lim.network.server.socket;
 import it.polimi.ingsw.lim.Log;
 import it.polimi.ingsw.lim.controller.User;
 import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
-import it.polimi.ingsw.lim.exceptions.LoginFailException;
+import it.polimi.ingsw.lim.exceptions.LoginFailedException;
 import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.Player;
 import it.polimi.ingsw.lim.network.server.MainServer;
-import it.polimi.ingsw.lim.network.server.RMI.RMIUser;
 
 import static it.polimi.ingsw.lim.Log.*;
 import static it.polimi.ingsw.lim.network.SocketConstants.*;
@@ -58,18 +57,22 @@ public class SocketClientHandler implements Runnable {
     /**
      * @return the user.
      */
-    public User getUser() {
-        return user;
+    public User getUser() { return user; }
+
+    void sendIfUserPlaying(Boolean isPlaying) {
+        try {
+            sendObjectToClient(TURN + SPLITTER + isPlaying);
+        } catch (IOException e) {
+            getLog().log(Level.SEVERE, "[SOCKET]: Could not send turn indicator to the client", e);
+        }
     }
-
-
 
     /**
      * It's used for the updated board and ArrayList of connected (to the server) users.
      * @param board
      * @param players
      */
-    public void sendGameToClient(Board board, ArrayList<Player> players) {
+    void sendGameToClient(Board board, ArrayList<Player> players) {
         try {
             sendObjectToClient(board);
             sendObjectToClient(players);
@@ -83,7 +86,7 @@ public class SocketClientHandler implements Runnable {
      * @param sender
      * @param message
      */
-    public void chatMessageToClient(String sender, String message) {
+    void chatMessageToClient(String sender, String message) {
         try {
             sendObjectToClient(CHAT + SPLITTER + sender + SPLITTER + message);
         } catch (IOException e) {
@@ -136,10 +139,10 @@ public class SocketClientHandler implements Runnable {
         }
     }
 
-    public void login(String username, String password, SocketClientHandler handlerCallback) throws LoginFailException{
+    public void login(String username, String password, SocketClientHandler handlerCallback) throws LoginFailedException {
         try {
             if (MainServer.getJDBC().isAlreadySelectedUserName(username)) {
-                if (MainServer.getJDBC().isContainUser(username, password)) {
+                if (MainServer.getJDBC().isUserContained(username, password)) {
                     Log.getLog().info("[LOGIN]: success login. welcome back".concat(username));
                     this.user = new SocketUser(username, handlerCallback);
                     addUserToRoom(this.user);
@@ -147,7 +150,7 @@ public class SocketClientHandler implements Runnable {
                 }
                 else {
                     Log.getLog().info("[LOGIN]: bad password or username ".concat(username).concat("already selected?"));
-                    throw new LoginFailException("bad password or username already selected");
+                    throw new LoginFailedException("bad password or username already selected");
                 }
             }
             else{
@@ -160,7 +163,7 @@ public class SocketClientHandler implements Runnable {
         catch (SQLException e){
             e.printStackTrace();
             Log.getLog().severe("[SQL]: fail to do login");
-            throw new LoginFailException("fail to do login");
+            throw new LoginFailedException("fail to do login");
         }
     }
 

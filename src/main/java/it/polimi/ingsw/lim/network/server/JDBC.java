@@ -44,7 +44,7 @@ public class JDBC {
         Log.getLog().info("user: ".concat(userName).concat(" added"));
     }
 
-    public boolean isContainUser (String userName, String password) throws SQLException{
+    public boolean isUserContained(String userName, String password) throws SQLException{
         String sql = "SELECT userName, password FROM REGISTRATION";
         ResultSet resultSet = statement.executeQuery(sql);
         while (resultSet.next()){

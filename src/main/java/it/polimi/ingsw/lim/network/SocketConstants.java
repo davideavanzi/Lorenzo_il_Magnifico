@@ -14,5 +14,5 @@ public class SocketConstants {
     public final static String LOGIN = "LOGIN";
     public final static String LOGIN_SUCCESSFUL = "LOGIN_SUCCESSFUL";
     public final static String CHAT = "CHAT";
-    public final static String TURN_ORDER = "TURN_ORDER";
+    public final static String TURN = "TURN";
 }

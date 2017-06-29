@@ -39,6 +39,11 @@ public class SocketUser extends User {
         this.sch.sendGameToClient(board, players);
     }
 
+    @Override
+    public void isPlayerTurn(Boolean isPlaying) {
+        this.sch.sendIfUserPlaying(isPlaying);
+    }
+
     /**
      * Send a chat messagge to the client.
      * @param sender

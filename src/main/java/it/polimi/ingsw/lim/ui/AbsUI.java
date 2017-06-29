@@ -1,7 +1,5 @@
 package it.polimi.ingsw.lim.ui;
 
-import it.polimi.ingsw.lim.model.Board;
-
 /**
  * Created by nico.
  */
@@ -9,11 +7,9 @@ public abstract class AbsUI {
 
     AbsUI() {}
 
-    public abstract void printBoard(Board board);
-
     public abstract void printChatMessage(String sender, String message);
 
-    public abstract void waitUserInput();
+    public abstract void waitForRequest();
 
     public abstract String loginForm(String command);
 

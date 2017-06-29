@@ -51,6 +51,15 @@ public class RMIUser extends User {
     }
 
     @Override
+    public void isPlayerTurn(Boolean isPlaying) {
+        try {
+            RMIServer.setPlayerTurn(isPlaying, this.rci);
+        } catch (RemoteException e) {
+            getLog().log(Level.SEVERE, "[RMI]: Remote error sending board and arrayList of player to client.");
+        }
+    }
+
+    @Override
     public void sendChatMessage(String sender, String message) {
         try {
             RMIServer.chatMessageToClient(sender, message, this.rci);

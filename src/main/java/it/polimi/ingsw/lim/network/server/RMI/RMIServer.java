@@ -1,7 +1,7 @@
 package it.polimi.ingsw.lim.network.server.RMI;
 
 import it.polimi.ingsw.lim.Log;
-import it.polimi.ingsw.lim.exceptions.LoginFailException;
+import it.polimi.ingsw.lim.exceptions.LoginFailedException;
 import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.Player;
 import it.polimi.ingsw.lim.network.client.RMI.RMIClientInterf;
@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 
 import static it.polimi.ingsw.lim.network.server.MainServer.addUserToRoom;
-import static it.polimi.ingsw.lim.network.server.MainServer.main;
 
 /**
  * Created by Nico.
@@ -39,6 +38,10 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
      */
     public static void sendGameToClient(Board board, ArrayList<Player> players, RMIClientInterf rmiClient) throws RemoteException {
         rmiClient.updateClientGame(board, players);
+    }
+
+    public static void setPlayerTurn(Boolean state, RMIClientInterf rmiClient) throws RemoteException {
+        rmiClient.isUserPlaying(state);
     }
 
     /**
@@ -68,17 +71,17 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
      * @throws RemoteException
      */
     @Override
-    public void login(String username, String password, RMIClientInterf rmiClient) throws RemoteException, LoginFailException {
+    public void login(String username, String password, RMIClientInterf rmiClient) throws RemoteException, LoginFailedException {
         try {
             if (MainServer.getJDBC().isAlreadySelectedUserName(username)) {
-                if (MainServer.getJDBC().isContainUser(username, password)) {
+                if (MainServer.getJDBC().isUserContained(username, password)) {
                     Log.getLog().info("[LOGIN]: success login. welcome back".concat(username));
                     addUserToRoom(new RMIUser(username, rmiClient));
                     return;
                 }
                 else {
                     Log.getLog().info("[LOGIN]: bad password or username ".concat(username).concat("already selected?"));
-                    throw new LoginFailException("bad password or username already selected");
+                    throw new LoginFailedException("bad password or username already selected");
                 }
             }
             else{
@@ -90,7 +93,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
         catch (SQLException e){
             e.printStackTrace();
             Log.getLog().severe("[SQL]: fail to do login");
-            throw new LoginFailException("fail to do login");
+            throw new LoginFailedException("fail to do login");
         }
     }
 

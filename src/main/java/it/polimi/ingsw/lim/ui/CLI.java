@@ -1,8 +1,16 @@
 package it.polimi.ingsw.lim.ui;
 
-import it.polimi.ingsw.lim.model.Board;
+import it.polimi.ingsw.lim.Lock;
+import it.polimi.ingsw.lim.exceptions.InvalidInputException;
+import it.polimi.ingsw.lim.model.Player;
 
+import java.util.HashMap;
 import java.util.Scanner;
+
+import static it.polimi.ingsw.lim.ui.UIController.*;
+import static it.polimi.ingsw.lim.ui.UIController.UIConstant.*;
+import static it.polimi.ingsw.lim.ui.UIController.UIConstant.INFO;
+import static it.polimi.ingsw.lim.ui.UIController.UIConstant.TURN;
 
 /**
  * Created by nico.
@@ -13,15 +21,33 @@ public class CLI extends AbsUI {
     /**
      * Scanner for stdin.
      */
-    Scanner userInput = new Scanner(System.in);
+    private Scanner userInput = new Scanner(System.in);
 
     /**
      * This contain the input command.
      */
-    String input;
+    private String input;
 
-    public void printBoard(Board board) {
+    private UIController uiCallback;
 
+    private Lock lock;
+
+    protected CLI(UIController uiCallback) {
+        lock = new Lock();
+        lock.lock();
+        this.uiCallback = uiCallback;
+        initializeCommandLine();
+    }
+
+    public Lock getLock() {
+        return lock;
+    }
+
+    /**
+     * Simply print on stdout a string.
+     */
+    public void turnForm() {
+        printMessageln("Turn order: ");
     }
 
     /**
@@ -30,16 +56,86 @@ public class CLI extends AbsUI {
      * @param message the chat message.
      */
     public void printChatMessage(String sender, String message) {
-        printMessageln("[CHAT] message from "+sender+": "+message);
+        printMessageln("[CHAT]: message from "+sender+": "+message);
+    }
+
+    private void personalInformation() {
+
     }
 
     /**
-     * Waiting for user input, then passing it to a input parser
+     * Print the currently turn order.
      */
-    public void waitUserInput() {
-        while(true) {
-            input = userInput.nextLine().toLowerCase().trim();
-            UIController.inputParser(input);
+    private void turnOrder() {
+        turnForm();
+        for (Player pl : uiCallback.getLocalPlayers())
+            printMessageln(pl.getNickname());
+    }
+
+    /**
+     * Send a chat message to the server.
+     */
+    private void chat() {
+        printMessage("Enter a chat message: ");
+        userInput.nextLine();
+        input = userInput.nextLine().trim();
+        uiCallback.sendChatMessage(input);
+        lock.unlock();
+
+    }
+
+    private void cmdManager(String command) throws InvalidInputException {
+        if (cmdDescr.get(command) == null)
+            throw new InvalidInputException(("[COMMAND_LINE]: Command not found: ").concat(command));
+        if (availableCmdList.get(command) == null)
+            throw new InvalidInputException(("[COMMAND_LINE]: Command not available: ").concat(command));
+        availableCmdList.get(command).run();
+    }
+
+    private void printCmd() {
+        printMessageln("Available Command:");
+        printMessageln("");
+        availableCmdList.keySet().forEach(command -> System.out.printf("%-30s%s%n", command, cmdDescr.get(command)));
+        printMessage("");
+    }
+
+    public void waitForRequest() {
+        while (true) {
+            printCmd();
+            printMessage("Enter a command: ");
+            input = userInput.next().toLowerCase().trim();
+            try {
+                cmdManager(input);
+            } catch (InvalidInputException e) {
+                printMessageln(e.getMessage());
+            }
+            lock.lock();
+        }
+    }
+
+    private void initializeCommandLine() {
+        cmdDescr = new HashMap<>();
+        availableCmdList = new HashMap<>();
+
+        //Description HashMap
+        cmdDescr.put(CHAT, CHAT_DESCR);
+        cmdDescr.put(TURN, TURN_DESCR);
+        cmdDescr.put(INFO, INFO_DESCR);
+        cmdDescr.put(FAMILY_MEMBER, FAMILY_MEMBER_DESCR);
+        cmdDescr.put(LEADER_CARD, LEADER_CARD_DESCR);
+        cmdDescr.put(CHOOSE_FAVOR, CHOOSE_FAVOR_DESCR);
+        cmdDescr.put(CHOOSE_TOWER,CHOOSE_TOWER_DESCR);
+        cmdDescr.put(CHOOSE_FLOOR, CHOOSE_FLOOR_DESCR);
+        cmdDescr.put(CHOOSE_PRODUCTION, CHOOSE_PRODUCTION_DESCR);
+
+        //Command HashMap
+        availableCmdList.put(CHAT, () -> chat());
+        availableCmdList.put(TURN, () -> turnOrder());
+        availableCmdList.put(INFO, () -> personalInformation());
+
+        if(true/*isMyTurn*/) {
+            //availableCmdList.put(FAMILY_MEMBER, () -> );
+            //availableCmdList.put(LEADER_CARD, () -> );
         }
     }
 
@@ -50,7 +146,7 @@ public class CLI extends AbsUI {
     public String loginForm(String command) {
         printMessageln("Enter a ".concat(command).concat(": "));
         printMessage("$ ");
-        input = userInput.nextLine().toLowerCase();
+        input = userInput.nextLine().toLowerCase().trim();
         return input;
     }
 
@@ -58,9 +154,8 @@ public class CLI extends AbsUI {
      * Choose the connection protocol and connect to the server
      */
     public String setNetworkSettings() {
-        printMessageln("Please select the network protocol: (socket/rmi) ");
+        printMessage("Please select the network protocol: (socket/rmi): ");
         while (true) {
-            printMessage("$ ");
             input = userInput.nextLine().toLowerCase();
             switch (input) {
                 case "socket":

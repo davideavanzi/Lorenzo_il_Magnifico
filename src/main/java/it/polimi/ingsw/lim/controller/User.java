@@ -1,5 +1,6 @@
 package it.polimi.ingsw.lim.controller;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import it.polimi.ingsw.lim.model.Assets;
 import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.Player;
@@ -73,6 +74,8 @@ public abstract class User {
      * @param message
      */
     public abstract void sendChatMessage(String sender, String message);
+
+    public abstract void isPlayerTurn(Boolean isPlaying);
 
     public abstract int askForServants(int minimumAmount);
 

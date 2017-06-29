@@ -40,8 +40,8 @@ class ServerCommandHandler {
             String commandIdentifier = command.get(0);
             if (commandIdentifier.equalsIgnoreCase(LOGIN_SUCCESSFUL)) {
                 uiCallback.getClientUI().printMessageln("Login successful!");
-            } else if(commandIdentifier.equalsIgnoreCase(TURN_ORDER)) {
-
+            } else if(commandIdentifier.equalsIgnoreCase(TURN)) {
+                uiCallback.setIsMyTurn(Boolean.valueOf(command.get(1)));
             } else if(commandIdentifier.equalsIgnoreCase(CHAT)) {
                 //The server has received a chat message from the client, it has to deliver it to other room mates.
                 uiCallback.getClientUI().printChatMessage(command.get(1), command.get(2));

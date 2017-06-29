@@ -1,11 +1,10 @@
 package it.polimi.ingsw.lim.network.server.socket;
 
 import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
-import it.polimi.ingsw.lim.exceptions.LoginFailException;
+import it.polimi.ingsw.lim.exceptions.LoginFailedException;
 
 import static it.polimi.ingsw.lim.Log.getLog;
 import static it.polimi.ingsw.lim.network.SocketConstants.*;
-import static it.polimi.ingsw.lim.network.server.MainServer.addUserToRoom;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,11 +45,10 @@ class ClientCommandHandler {
             if (commandIdentifier.equals(LOGIN)) {
                 try {
                     handlerCallback.login(command.get(1), command.get(2), handlerCallback);
-                }
-                catch (LoginFailException e){
+                } catch (LoginFailedException e){
                     throw new ClientNetworkException("[SOCKET]: Login failed", e);
                 }
-            } else if(commandIdentifier.equals(TURN_ORDER)) {
+            } else if(commandIdentifier.equals("a")) {
 
             } else if (commandIdentifier.equals(CHAT)) {
                 this.user.getRoom().chatMessageToRoom(command.get(1), command.get(2));

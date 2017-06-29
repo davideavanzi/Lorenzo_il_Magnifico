@@ -1,6 +1,6 @@
 package it.polimi.ingsw.lim.network.server.RMI;
 
-import it.polimi.ingsw.lim.exceptions.LoginFailException;
+import it.polimi.ingsw.lim.exceptions.LoginFailedException;
 import it.polimi.ingsw.lim.network.client.RMI.RMIClientInterf;
 
 import java.rmi.*;
@@ -10,7 +10,7 @@ import java.rmi.*;
  */
 public interface RMIServerInterf extends Remote {
 
-    void login(String username, String password, RMIClientInterf rci) throws RemoteException, LoginFailException;
+    void login(String username, String password, RMIClientInterf rci) throws RemoteException, LoginFailedException;
 
     void chatMessageFromClient(String sender, String message) throws RemoteException;
 }

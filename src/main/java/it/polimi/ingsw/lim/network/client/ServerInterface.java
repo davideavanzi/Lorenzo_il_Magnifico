@@ -14,10 +14,12 @@ import java.util.ArrayList;
 public interface ServerInterface {
 
     /**
-     * Calling this method the client will try to connect to the server.
+     * Send a chat message to the server.
+     * @param sender the username of the sender
+     * @param message the chat message
      * @throws ClientNetworkException
      */
-    void connect() throws ClientNetworkException;
+    void chatMessageToServer(String sender, String message) throws ClientNetworkException;
 
     /**
      * This method is used for send the login information to the server.
@@ -27,10 +29,8 @@ public interface ServerInterface {
     void sendLogin(String username, String password) throws ClientNetworkException;
 
     /**
-     * Send a chat message to the server.
-     * @param sender the username of the sender
-     * @param message the chat message
+     * Calling this method the client will try to connect to the server.
      * @throws ClientNetworkException
      */
-    void chatMessageToServer(String sender, String message) throws ClientNetworkException;
+    void connect() throws ClientNetworkException;
 }

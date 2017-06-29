@@ -96,11 +96,11 @@ public class Room {
         Log.getLog().info("player ".concat(round.getUserName()).concat(" now can play"));
     }
 
-    public User getUser(String username) {
+    User getUser(String username) {
         return usersList.stream().filter(user -> user.getUsername().equals(username)).findFirst().orElse(null);
     }
 
-    public GameController getGameController() {
+    GameController getGameController() {
         return gameController;
     }
 

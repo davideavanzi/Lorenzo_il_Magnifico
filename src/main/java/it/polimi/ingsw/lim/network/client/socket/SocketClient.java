@@ -58,11 +58,7 @@ public class SocketClient implements Runnable, ServerInterface {
         this.commandHandler = new ServerCommandHandler(this, uiCallback);
         uiCallback.setClientProtocol(this);
         this.lock = new Lock();
-        try {
-            lock.lock();
-        } catch (InterruptedException e) {
-            uiCallback.getClientUI().printMessageln(e.getMessage());
-        }
+        lock.lock();
 
     }
 
@@ -119,11 +115,7 @@ public class SocketClient implements Runnable, ServerInterface {
      * @throws ClientNetworkException
      */
     private void waitFromServer() throws ClientNetworkException {
-        try {
-            lock.lock();
-        } catch (InterruptedException e) {
-            uiController.getClientUI().printMessageln(e.getMessage());
-        }
+        lock.lock();
         while(true) {
             try {
                 Object command = objToClient.readObject();

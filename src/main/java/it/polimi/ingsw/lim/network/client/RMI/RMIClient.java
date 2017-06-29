@@ -1,7 +1,7 @@
 package it.polimi.ingsw.lim.network.client.RMI;
 
 import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
-import it.polimi.ingsw.lim.exceptions.LoginFailException;
+import it.polimi.ingsw.lim.exceptions.LoginFailedException;
 import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.Player;
 import it.polimi.ingsw.lim.network.client.ServerInterface;
@@ -50,17 +50,22 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
     /**
      * @return the server's address.
      */
-    public String getAddress() {return address;}
+    private String getAddress() {return address;}
 
     /**
      * @return the server's rmi port.
      */
-    public int getPort() {return port;}
+    private int getPort() {return port;}
 
     @Override
     public void updateClientGame(Board board, ArrayList<Player> players) {
         uiCallback.updateBoard(board);
         uiCallback.updatePlayers(players);
+    }
+
+    @Override
+    public void isUserPlaying(Boolean state) throws RemoteException {
+        uiCallback.setIsMyTurn(state);
     }
 
     /**
@@ -98,7 +103,7 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
         try {
             UnicastRemoteObject.exportObject(this, 0);
             rmiServer.login(username, password, this);
-        } catch (RemoteException | LoginFailException e) {
+        } catch (RemoteException | LoginFailedException e) {
             System.out.printf(e.getMessage());
             throw new ClientNetworkException("[RMI]: Login Failed", e);
         }
