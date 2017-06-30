@@ -911,20 +911,20 @@ public class Parser {
      */
     public Parser parser(String pathToDirectory)
             throws IOException, InvalidCardException, InvalidExcommunicationException, InvalidTimerException{
-        getLog().info("Try to parse Cards from file: ".concat(pathToDirectory).concat(CONFIGURATOR_CARD_FILE_NAME));
+        getLog().info("[PARSER]: Try to parse Cards from file: ".concat(pathToDirectory).concat(CONFIGURATOR_CARD_FILE_NAME));
         this.setCards(cardParser(pathToDirectory.concat(CONFIGURATOR_CARD_FILE_NAME)));
-        getLog().info("Cards parsed.");
-        getLog().info("Try to parse Assets Bonuses from file: ".concat(pathToDirectory).concat(CONFIGURATOR_BONUS_ASSETS_FILE_NAME));
+        getLog().info("[PARSER]: Cards parsed.");
+        getLog().info("[PARSER]: Try to parse Assets Bonuses from file: ".concat(pathToDirectory).concat(CONFIGURATOR_BONUS_ASSETS_FILE_NAME));
         this.setBoardAssetsBonuses(boardAssetsParser(pathToDirectory.concat(CONFIGURATOR_BONUS_ASSETS_FILE_NAME)));
         this.setCouncilBonus(parseCouncilBonus(pathToDirectory.concat(CONFIGURATOR_BONUS_ASSETS_FILE_NAME)));
         this.setCouncilFavors(parseCouncilFavours(pathToDirectory.concat(CONFIGURATOR_BONUS_ASSETS_FILE_NAME)));
         this.setStartingGameBonus(parseStartingGameBonus(pathToDirectory.concat(CONFIGURATOR_BONUS_ASSETS_FILE_NAME)));
         this.setBoardPlayersProductionBonus(parseBoardPlayerProductionBonus(pathToDirectory.concat(CONFIGURATOR_BONUS_ASSETS_FILE_NAME)));
         this.setBoardPlayersHarvestBonus(parseBoardPlayerHarvestBonus(pathToDirectory.concat(CONFIGURATOR_BONUS_ASSETS_FILE_NAME)));
-        getLog().info("Assets Bonuses parsed.");
-        getLog().info("Try to parse Excommunication from file: ".concat(pathToDirectory).concat(CONFIGURATOR_EXCOMMUNICATION_FILE_NAME));
+        getLog().info("[PARSER]: Assets Bonuses parsed.");
+        getLog().info("[PARSER]: Try to parse Excommunication from file: ".concat(pathToDirectory).concat(CONFIGURATOR_EXCOMMUNICATION_FILE_NAME));
         this.setExcommunications(parseExcommunications(pathToDirectory.concat(CONFIGURATOR_EXCOMMUNICATION_FILE_NAME)));
-        getLog().info("Excommunications parsed.");
+        getLog().info("[PARSER]: Excommunications parsed.");
         this.setTimers(parseTimerStartGame(pathToDirectory.concat(CONFIGURATOR_TIMERS_FILE_NAME)), parseTimerPlayMove(pathToDirectory.concat(CONFIGURATOR_TIMERS_FILE_NAME)));
         return this;
     }

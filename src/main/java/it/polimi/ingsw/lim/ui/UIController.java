@@ -79,6 +79,10 @@ public class UIController {
         }
     }
 
+    public Board getLocalBoard(){
+        return localBoard;
+    }
+
     /**
      * @return the abstract UI of client.
      */
@@ -144,7 +148,7 @@ public class UIController {
         try {
             clientProtocol.sendLogin(username, password);
         } catch (ClientNetworkException e) {
-            //todo redo login
+            //todo redo login and controllare se col comando password quando si usa una console vera funziona l'hiding del testo
             clientUI.printMessageln(e.getMessage());
         }
     }

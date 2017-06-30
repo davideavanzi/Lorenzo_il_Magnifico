@@ -38,7 +38,7 @@ public class JDBC {
     }
 
     public void insertRecord(String userName, String password) throws SQLException{
-        String sql = "INSERT INTO REGISTRATION VALUES ('".concat(userName).concat("', '").concat(password.concat("', 0)"));
+        String sql = "INSERT INTO REGISTRATION VALUES ('".concat(userName).concat("', '").concat(password).concat("', 0)");
         this.statement.executeUpdate(sql);
         Log.getLog().info("[SQLite]: User: ".concat(userName).concat(" added"));
     }
