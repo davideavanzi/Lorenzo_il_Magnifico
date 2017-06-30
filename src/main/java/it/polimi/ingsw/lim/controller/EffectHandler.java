@@ -8,7 +8,6 @@ import it.polimi.ingsw.lim.model.immediateEffects.*;
 
 import java.util.HashMap;
 import java.util.logging.Level;
-import java.util.stream.Collectors;
 
 /**
  * Created by ava on 15/06/17.

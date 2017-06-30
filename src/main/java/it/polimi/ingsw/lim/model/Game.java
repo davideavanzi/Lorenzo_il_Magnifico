@@ -467,7 +467,8 @@ public class Game {
         ArrayList<FamilyMember> fms = this.board.getCouncil().getFamilyMembers();
         ArrayList<String> councilPlayers = new ArrayList<>();
         for (FamilyMember fm : fms) {
-            councilPlayers.add(players.stream().filter(pl -> pl.getColor().equals(fm.getOwnerColor())).findFirst().orElse(null).getNickname());
+            councilPlayers.add(players.stream().filter(pl -> pl.getColor().equals(fm.getOwnerColor()))
+                    .findFirst().orElse(null).getNickname());
         }
         for (Player pl : this.players) {
             if (!councilPlayers.contains(pl.getNickname()))
@@ -504,6 +505,9 @@ public class Game {
         return (servants > 0) ? -servants : 0;
     }
 
+    public Board getBoard() {
+        return board;
+    }
 
     // ------------------------------------------------------------------------ Excommunications
 
@@ -517,7 +521,8 @@ public class Game {
     }
 
     public Excommunication getExcommunicationByAge(int age) {
-        return this.board.getExcommunications().stream().filter(excomm -> excomm.getAge() == age).findFirst().orElse(null);
+        return this.board.getExcommunications().stream().filter(excomm -> excomm.getAge() == age)
+                .findFirst().orElse(null);
     }
 
     /**

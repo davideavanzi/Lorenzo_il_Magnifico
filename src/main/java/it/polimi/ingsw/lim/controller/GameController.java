@@ -346,6 +346,10 @@ public class GameController {
         return new int[] {this.game.getAge(), this.game.getTurn()};
     }
 
+    public Board getBoard() {
+        return this.game.getBoard();
+    }
+
     //TODO: do we need it?
     public Room getRoomCallback() {
         return roomCallback;
