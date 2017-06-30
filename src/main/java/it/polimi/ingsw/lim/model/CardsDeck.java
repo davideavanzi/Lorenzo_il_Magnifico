@@ -37,11 +37,11 @@ public class CardsDeck {
      * @return an arraylist of cards that will go into the tower
      * TODO: check integrity
      */
-    public ArrayList <Card> getCardsForTower(String color, int age) {
+    public ArrayList <Card> pullCardsForTower(String color, int age) {
         ArrayList<Card> cards = new ArrayList<>();
         for (int i = 0; i < TOWER_HEIGHT; i++){
             Random randomGenerator = new Random();
-            cards.add(developementCards.get(age).get(color).get(randomGenerator.nextInt(developementCards.get(age).get(color).size())));
+            cards.add(developementCards.get(age).get(color).remove(randomGenerator.nextInt(developementCards.get(age).get(color).size())));
         }
         return cards;
     }

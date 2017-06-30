@@ -158,7 +158,7 @@ public class Game {
                 getLog().info("Clearing "+color+" tower");
                 this.board.getTowers().get(color).clear();
                 getLog().log(Level.INFO,"Adding cards to "+color+" tower");
-                this.board.getTowers().get(color).addCards(cardsDeck.getCardsForTower(color, this.board.getAge()));
+                this.board.getTowers().get(color).addCards(cardsDeck.pullCardsForTower(color, this.board.getAge()));
             });
         getLog().info("Allotting family members to players");
         this.players.forEach(player ->
