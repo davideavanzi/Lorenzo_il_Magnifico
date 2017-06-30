@@ -5,6 +5,7 @@ import it.polimi.ingsw.lim.exceptions.InvalidInputException;
 import it.polimi.ingsw.lim.model.*;
 import it.polimi.ingsw.lim.model.cards.*;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.SystemUtils;
 
 import java.io.Console;
 import java.util.HashMap;
@@ -207,6 +208,7 @@ public class CLI extends AbsUI {
         this.printTowers();
         this.printMarket();
         this.printFaithPointsTrack();
+        this.printVictoryPointsTrack();
     }
 
     private void printTower(String color){
@@ -371,5 +373,65 @@ public class CLI extends AbsUI {
             printMessageln("");
             printMessageln("");
         }
+    }
+    
+    private void printVictoryPointsTrack(){
+        String format = "||%1$-6s|%2$-6s|%3$-6s|%4$-6s|%5$-6s|%6$-6s|%7$-6s|%8$-6s|%9$-6s|%10$-6s|%11$-6s|%12$-6s|%13$-6s|%14$-6s|%15$-6s|%16$-6s|%17$-6s|%18$-6s|%19$-6s|%20$-6s||\n";
+        String s = "_______________________________________________________________________________________________________________________________________________";
+        printMessageln(s);
+        String sRid = "_  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _ ";
+        for (int i = 0; i < 100; i += 20){
+            System.out.format(
+                    format,
+                    StringUtils.center(("VP:" + (i + 1)), 6),
+                    StringUtils.center(("VP:" + (i + 2)), 6),
+                    StringUtils.center(("VP:" + (i + 3)), 6),
+                    StringUtils.center(("VP:" + (i + 4)), 6),
+                    StringUtils.center(("VP:" + (i + 5)), 6),
+                    StringUtils.center(("VP:" + (i + 6)), 6),
+                    StringUtils.center(("VP:" + (i + 7)), 6),
+                    StringUtils.center(("VP:" + (i + 8)), 6),
+                    StringUtils.center(("VP:" + (i + 9)), 6),
+                    StringUtils.center(("VP:" + (i + 10)), 6),
+                    StringUtils.center(("VP:" + (i + 11)), 6),
+                    StringUtils.center(("VP:" + (i + 12)), 6),
+                    StringUtils.center(("VP:" + (i + 13)), 6),
+                    StringUtils.center(("VP:" + (i + 14)), 6),
+                    StringUtils.center(("VP:" + (i + 15)), 6),
+                    StringUtils.center(("VP:" + (i + 16)), 6),
+                    StringUtils.center(("VP:" + (i + 17)), 6),
+                    StringUtils.center(("VP:" + (i + 18)), 6),
+                    StringUtils.center(("VP:" + (i + 19)), 6),
+                    StringUtils.center(("VP:" + (i + 20)), 6)
+            );
+            printMessageln(sRid);
+            System.out.format(
+                    format,
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    ""
+            );
+            printMessageln(s);
+            printMessageln("");
+        }
+        printMessageln("");
+        printMessageln("");
     }
 }
