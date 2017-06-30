@@ -205,6 +205,8 @@ public class CLI extends AbsUI {
     
     public void printBoard(){
         this.printTowers();
+        this.printMarket();
+        this.printFaithPointsTrack();
     }
 
     private void printTower(String color){
@@ -286,6 +288,32 @@ public class CLI extends AbsUI {
         printMessageln("");
         printMessageln("");
     }
+
+    private void printMarket(){
+        Assets [] assets = this.uiCallback.getLocalBoard().getMarket().getBonus();
+        FamilyMember[] familyMembers = this.uiCallback.getLocalBoard().getMarket().getSlots();
+        String format = "||%-20s||\n";
+        String s = "________________________";
+        for(int i = 0; i < 2; i++){
+            printMessageln(s);
+            System.out.format(format, "", 20);
+            System.out.format(format, StringUtils.center(("MARKET " + i), 20));
+            System.out.format(format, "_  _  _  _  _  _  _ ");
+            System.out.format(format, "");
+            printAsset(assets[i]);
+            System.out.format(format, "");
+            printMessageln(s);
+            if(this.uiCallback.getLocalBoard().getMarket().isPositionOccupied(i)){
+                printMessageln("");
+                printMessageln("");
+                printMessageln(s);
+                System.out.format(format, StringUtils.center(familyMembers[i].getOwnerColor(), 20));
+                printMessageln(s);
+            }
+        }
+        printMessageln("");
+        printMessageln("");
+    }
     
     private void printTowers(){
         this.printTower(GREEN_COLOR);
@@ -298,47 +326,50 @@ public class CLI extends AbsUI {
         printMessageln("");
     }
 
-    private void printCardInTower(Card card, String color,int floor){
-        if(card != null) {
-            System.out.printf("|Name: %s",card.getName());
-            System.out.printf("%7s","|\t|");
+    public void printAsset(Assets asset){
+        if(asset.getCoins() != 0){
+            printMessageln(("|| Coins:\t\t\t"+asset.getCoins()).concat(" ||"));
         }
-        else{
-            if(this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(floor).isOccupied()){
-                printMessage("| Card slot empty\t\t|");
-                printMessage(this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(floor).getFamilyMember().getOwnerColor());
-                printMessage("|");
-            }
-            else{
-                printMessage("| Card slot empty\t\t|\t\t|");
-            }
+        if(asset.getWood() != 0){
+            printMessageln(("|| Woods:\t\t\t\t"+asset.getWood()).concat(" ||"));
+        }
+        if(asset.getStone() != 0){
+            printMessageln(("|| Stones:\t\t\t"+asset.getStone()).concat(" ||"));
+        }
+        if(asset.getServants() != 0){
+            printMessageln(("|| Servants:\t\t"+asset.getServants()).concat(" ||"));
+        }
+        if(asset.getFaithPoints() != 0){
+            printMessageln(("|| Faith Points:\t\t"+asset.getFaithPoints()).concat(" ||"));
+        }
+        if(asset.getBattlePoints() != 0){
+            printMessageln(("|| Battle Points:\t"+asset.getBattlePoints()).concat(" ||"));
+        }
+        if(asset.getVictoryPoints() != 0){
+            printMessageln(("| Victory Points:\t"+asset.getVictoryPoints()).concat(" ||"));
         }
     }
 
-
-    public void printAsset(Assets asset){
-        printMessageln("_______________________");
-        if(asset.getCoins() != 0){
-            printMessageln(("| Coins:\t\t\t"+asset.getCoins()).concat(" |"));
+    private void printFaithPointsTrack(){
+        Assets[] assets = this.uiCallback.getLocalBoard().getFaithTrack();
+        String format = "||%-20s||\n";
+        String s = "________________________";
+        for(int i = 0; i < FAITH_TRACK_LENGTH ; i++){
+            printMessageln(s);
+            System.out.format(format, "", 20);
+            System.out.format(format, StringUtils.center(("Faith Track: " + i), 20));
+            System.out.format(format, "_  _  _  _  _  _  _ ");
+            System.out.format(format, "");
+            if(assets[i] != null) {
+                printAsset(assets[i]);
+            }
+            else{
+                System.out.format(format, StringUtils.center(("No Assets"), 20));
+            }
+            System.out.format(format, "");
+            printMessageln(s);
+            printMessageln("");
+            printMessageln("");
         }
-        if(asset.getWood() != 0){
-            printMessageln(("| Woods:\t\t\t\t"+asset.getWood()).concat(" |"));
-        }
-        if(asset.getStone() != 0){
-            printMessageln(("| Stones:\t\t\t"+asset.getStone()).concat(" |"));
-        }
-        if(asset.getServants() != 0){
-            printMessageln(("| Servants:\t\t\t"+asset.getServants()).concat(" |"));
-        }
-        if(asset.getFaithPoints() != 0){
-            printMessageln(("| Faith Points:\t\t"+asset.getFaithPoints()).concat(" |"));
-        }
-        if(asset.getBattlePoints() != 0){
-            printMessageln(("| Battle Points:\t"+asset.getBattlePoints()).concat(" |"));
-        }
-        if(asset.getVictoryPoints() != 0){
-            printMessageln(("| Victory Points:\t"+asset.getVictoryPoints()).concat(" |"));
-        }
-        printMessageln("_______________________");
     }
 }
