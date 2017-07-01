@@ -92,7 +92,7 @@ public class SocketClient implements Runnable, ServerInterface {
     }
 
     /**
-     * Send sendLoginInfo information to server.
+     * Send login information to server.
      * @param username
      * @throws ClientNetworkException
      */
@@ -100,7 +100,7 @@ public class SocketClient implements Runnable, ServerInterface {
         try {
             sendObjToServer(LOGIN + SPLITTER + username + SPLITTER + password);
         } catch (IOException e) {
-            throw new ClientNetworkException("[SOCKET]: Could not send sendLoginInfo information to server", e);
+            throw new ClientNetworkException("[SOCKET]: Could not send login information to server", e);
         }
     }
 

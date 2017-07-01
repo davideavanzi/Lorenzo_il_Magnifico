@@ -160,12 +160,12 @@ public class CLI extends AbsUI {
     }
 
     /**
-     * Enter the sendLoginInfo information.
-     * @return the sendLoginInfo information.
+     * Enter the login information.
+     * @return the login information.
      */
     @Override
     public String[] loginForm() {
-        String[] loginInfo = new String[1];
+        String[] loginInfo = new String[2];
         printMessage("Enter a username: ");
         loginInfo[0] = userInput.nextLine().trim();
         printMessage("Enter a password: ");
