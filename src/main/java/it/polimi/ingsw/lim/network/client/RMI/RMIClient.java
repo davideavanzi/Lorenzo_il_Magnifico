@@ -93,18 +93,22 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
         uiCallback.getClientUI().printChatMessage(sender, message);
     }
 
+    @Override
+    public int askUserServants(int minimum) throws RemoteException {
+        return uiCallback.getClientUI().sendServantsToServer(minimum);
+    }
+
     /**
      * Send the login information to the server.
      * @param username
      * @throws ClientNetworkException
      */
     @Override
-    public void sendLogin(String username, String password) throws ClientNetworkException{
+    public void sendLogin(String username, String password) throws ClientNetworkException {
         try {
             UnicastRemoteObject.exportObject(this, 0);
             rmiServer.login(username, password, this);
         } catch (RemoteException | LoginFailedException e) {
-            System.out.printf(e.getMessage());
             throw new ClientNetworkException("[RMI]: Login Failed", e);
         }
     }

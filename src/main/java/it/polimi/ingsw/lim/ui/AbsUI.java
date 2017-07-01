@@ -9,6 +9,12 @@ public abstract class AbsUI {
 
     public abstract void printChatMessage(String sender, String message);
 
+    //public abstract void printLoginResult(boolean isLogged);
+
+    public abstract int sendServantsToServer(int minimum);
+
+    public abstract void cmdManager(String command);
+
     public abstract void waitForRequest();
 
     public abstract String loginForm(String command);

@@ -2,13 +2,14 @@ package it.polimi.ingsw.lim.network.client.socket;
 
 import it.polimi.ingsw.lim.Lock;
 import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
+import it.polimi.ingsw.lim.exceptions.LoginFailedException;
 import it.polimi.ingsw.lim.network.client.ServerInterface;
 import it.polimi.ingsw.lim.ui.UIController;
 
 import java.io.*;
 import java.net.Socket;
 
-import static it.polimi.ingsw.lim.network.SocketConstants.*;
+import static it.polimi.ingsw.lim.network.ServerConstants.*;
 
 /**
  * Created by nico.
@@ -46,6 +47,11 @@ public class SocketClient implements Runnable, ServerInterface {
     UIController uiController;
 
     /**
+     * The command receive from the server
+     */
+    Object command;
+
+    /**
      * Declaration of the Lock.
      */
     Lock lock;
@@ -59,7 +65,6 @@ public class SocketClient implements Runnable, ServerInterface {
         uiCallback.setClientProtocol(this);
         this.lock = new Lock();
         lock.lock();
-
     }
 
     /**
@@ -91,11 +96,18 @@ public class SocketClient implements Runnable, ServerInterface {
      * @param username
      * @throws ClientNetworkException
      */
-    public void sendLogin(String username, String password) throws ClientNetworkException {
+    public void sendLogin(String username, String password) throws ClientNetworkException, LoginFailedException {
         try {
             sendObjToServer(LOGIN + SPLITTER + username + SPLITTER + password);
         } catch (IOException e) {
             throw new ClientNetworkException("[SOCKET]: Could not send login information to server", e);
+        }
+
+        try {
+            command = objToClient.readObject();
+            commandHandler.requestHandler(command);
+        } catch (IOException | ClassNotFoundException e) {
+            throw new ClientNetworkException("[SOCKET]: Could not get response from server", e);
         }
     }
 
@@ -120,8 +132,8 @@ public class SocketClient implements Runnable, ServerInterface {
             try {
                 Object command = objToClient.readObject();
                 commandHandler.requestHandler(command);
-            } catch (IOException | ClassNotFoundException e) {
-                throw new ClientNetworkException("Could not get command from server", e);
+            } catch (IOException | ClassNotFoundException | LoginFailedException e) {
+                throw new ClientNetworkException("[SOCKET]: Could not get command from server", e);
             }
         }
     }

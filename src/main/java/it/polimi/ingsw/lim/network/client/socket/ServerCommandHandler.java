@@ -1,5 +1,6 @@
 package it.polimi.ingsw.lim.network.client.socket;
 
+import it.polimi.ingsw.lim.exceptions.LoginFailedException;
 import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.Player;
 import it.polimi.ingsw.lim.ui.UIController;
@@ -7,7 +8,7 @@ import it.polimi.ingsw.lim.ui.UIController;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static it.polimi.ingsw.lim.network.SocketConstants.*;
+import static it.polimi.ingsw.lim.network.ServerConstants.*;
 
 /**
  * Created by ava on 20/06/17.
@@ -31,25 +32,28 @@ class ServerCommandHandler {
     }
 
     /**
-     * Parse the input object for calling the corrispondent method.
+     * Parse the input object for calling the correspondent method.
      * @param obj
      */
-    void requestHandler(Object obj) {
-        if(obj instanceof String) {
+    void requestHandler(Object obj) throws LoginFailedException {
+        if (obj instanceof String) {
             ArrayList<String> command = new ArrayList<>(Arrays.asList(((String) obj).split(SPLITTER_REGEX)));
             String commandIdentifier = command.get(0);
-            if (commandIdentifier.equalsIgnoreCase(LOGIN_SUCCESSFUL)) {
-                uiCallback.getClientUI().printMessageln("Login successful!");
-            } else if(commandIdentifier.equalsIgnoreCase(TURN)) {
+            if (commandIdentifier.equalsIgnoreCase(LOGIN_RESPONSE)) {
+                if (!Boolean.valueOf(command.get(1)))
+                    throw new LoginFailedException("[LOGIN]: Username or password are incorrect");
+            } else if (commandIdentifier.equalsIgnoreCase(TURN)) {
                 uiCallback.setIsMyTurn(Boolean.valueOf(command.get(1)));
-            } else if(commandIdentifier.equalsIgnoreCase(CHAT)) {
-                //The server has received a chat message from the client, it has to deliver it to other room mates.
+            } else if (commandIdentifier.equalsIgnoreCase(CHAT)) {
                 uiCallback.getClientUI().printChatMessage(command.get(1), command.get(2));
+            } else if (commandIdentifier.equalsIgnoreCase(SERVANT)) {
+                uiCallback.manageCmd(SERVANT);
             }
         } else if (obj instanceof Board) {
             Board board = (Board)obj;
             uiCallback.updateBoard(board);
-        } else if (obj instanceof Player) {//TODO: is it correct?
+
+        } else if (obj instanceof Player) {
             ArrayList<Player> players = new ArrayList<>(); //TODO: how can i convert obj in an arrayList of player
             uiCallback.updatePlayers(players);
         }

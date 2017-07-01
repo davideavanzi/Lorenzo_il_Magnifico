@@ -2,14 +2,13 @@ package it.polimi.ingsw.lim.network.server.socket;
 
 import it.polimi.ingsw.lim.Log;
 import it.polimi.ingsw.lim.controller.User;
-import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
 import it.polimi.ingsw.lim.exceptions.LoginFailedException;
 import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.Player;
 import it.polimi.ingsw.lim.network.server.MainServer;
 
 import static it.polimi.ingsw.lim.Log.*;
-import static it.polimi.ingsw.lim.network.SocketConstants.*;
+import static it.polimi.ingsw.lim.network.ServerConstants.*;
 import static it.polimi.ingsw.lim.network.server.MainServer.addUserToRoom;
 
 import java.io.*;
@@ -59,12 +58,21 @@ public class SocketClientHandler implements Runnable {
      */
     public User getUser() { return user; }
 
-    void sendIfUserPlaying(Boolean isPlaying) {
+    void sendIfUserPlaying(boolean isPlaying) {
         try {
             sendObjectToClient(TURN + SPLITTER + isPlaying);
         } catch (IOException e) {
             getLog().log(Level.SEVERE, "[SOCKET]: Could not send turn indicator to the client", e);
         }
+    }
+
+    void askClientServants(int minimum) {
+        try {
+            sendObjectToClient(SERVANT + SPLITTER + minimum);
+        } catch (IOException e) {
+            getLog().log(Level.SEVERE, "[SOCKET]: Could not ask how many servants the client wants", e);
+        }
+
     }
 
     /**
@@ -126,45 +134,54 @@ public class SocketClientHandler implements Runnable {
             try {
                 Object command = objToServer.readObject();
                 clientCommandHandler.requestHandler(command);
-            }catch (IOException | ClassNotFoundException e) {
-                getLog().log(Level.SEVERE,"[SOCKET]: Could not receive object from client, " +
-                        "maybe client is offline?  \n Retrying "+(2-tries)+" times.");
+            } catch (IOException | ClassNotFoundException e) {
+                getLog().log(Level.SEVERE, "[SOCKET]: Could not receive object from client, " +
+                        "maybe client is offline?  \n Retrying " + (2 - tries) + " times.");
                 tries++;
-                if (tries == 3) { this.user.hasDied(); return; }
-            }
-            catch (ClientNetworkException e){
-                e.printStackTrace();
-                //todo redo login
+                if (tries == 3) {
+                    this.user.hasDied();
+                    return;
+                }
             }
         }
     }
 
-    public void login(String username, String password, SocketClientHandler handlerCallback) throws LoginFailedException {
+    void manageLogin(String username, String password, SocketClientHandler handlerCallback) {
+        boolean response;
+        try {
+            response = login(username, password, handlerCallback);
+        } catch (LoginFailedException e) {
+            response = LOGIN_FAILED;
+        }
+
+        try {
+            sendObjectToClient(LOGIN_RESPONSE + SPLITTER + response);
+        } catch (IOException e) {
+            getLog().log(Level.SEVERE, "[SOCKET]: Could not send message to the client", e);
+        }
+    }
+
+    public boolean login(String username, String password, SocketClientHandler handlerCallback) throws LoginFailedException {
         try {
             if (MainServer.getJDBC().isAlreadySelectedUserName(username)) {
                 if (MainServer.getJDBC().isUserContained(username, password)) {
-                    Log.getLog().info("[LOGIN]: success login. welcome back".concat(username));
-                    this.user = new SocketUser(username, handlerCallback);
-                    addUserToRoom(this.user);
-                    return;
+                    addUserToRoom(new SocketUser(username, handlerCallback));
+                    Log.getLog().log(Level.INFO, "[LOGIN]: Success login. Welcome back ".concat(username));
+                } else {
+                    Log.getLog().log(Level.SEVERE, "[LOGIN]: Bad password or username ".concat(username).concat("already selected?"));
+                    throw new LoginFailedException("[LOGIN]: Bad password or username already selected");
                 }
-                else {
-                    Log.getLog().info("[LOGIN]: bad password or username ".concat(username).concat("already selected?"));
-                    throw new LoginFailedException("bad password or username already selected");
-                }
-            }
-            else{
+            } else {
                 MainServer.getJDBC().insertRecord(username, password);
                 this.user = new SocketUser(username, handlerCallback);
-                user.setRoom(addUserToRoom(this.user));
-                Log.getLog().info("[LOGIN]: success login");
+                addUserToRoom(this.user);
+                Log.getLog().log(Level.INFO, "[LOGIN]: Success login");
             }
+        } catch (SQLException e) {
+            Log.getLog().log(Level.SEVERE, "[SQL]: Login failed");
+            throw new LoginFailedException("[SQL]: Login failed");
         }
-        catch (SQLException e){
-            e.printStackTrace();
-            Log.getLog().severe("[SQL]: fail to do login");
-            throw new LoginFailedException("fail to do login");
-        }
+        return LOGIN_SUCCESSFUL;
     }
 
     /**
@@ -177,7 +194,7 @@ public class SocketClientHandler implements Runnable {
             objFromServer.flush();
             this.objToServer = new ObjectInputStream(socketClient.getInputStream());
         } catch (IOException e) {
-            getLog().log(Level.SEVERE, "Could not create I/O stream", e);
+            getLog().log(Level.SEVERE, "[SOCKET]: Could not create I/O stream", e);
         }
     }
 

@@ -17,6 +17,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
+import static it.polimi.ingsw.lim.network.ServerConstants.LOGIN_SUCCESSFUL;
 import static it.polimi.ingsw.lim.network.server.MainServer.addUserToRoom;
 
 /**
@@ -37,12 +38,16 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
      * @param rmiClient the client's reference.
      * @throws RemoteException
      */
-    public static void sendGameToClient(Board board, ArrayList<Player> players, RMIClientInterf rmiClient) throws RemoteException {
+    static void sendGameToClient(Board board, ArrayList<Player> players, RMIClientInterf rmiClient) throws RemoteException {
         rmiClient.updateClientGame(board, players);
     }
 
-    public static void setPlayerTurn(Boolean state, RMIClientInterf rmiClient) throws RemoteException {
+    static void setPlayerTurn(Boolean state, RMIClientInterf rmiClient) throws RemoteException {
         rmiClient.isUserPlaying(state);
+    }
+
+    static int askClientServants(int minimum, RMIClientInterf rmiClient) throws RemoteException {
+        return rmiClient.askUserServants(minimum);
     }
 
     /**
@@ -50,9 +55,9 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
      * @param sender
      * @param message
      */
-    public static void chatMessageToClient(String sender, String message, RMIClientInterf rmiClient) throws RemoteException {
+     static void chatMessageToClient(String sender, String message, RMIClientInterf rmiClient) throws RemoteException {
         rmiClient.chatMessageFromServer(sender, message);
-    }
+     }
 
     /**
      * Broadcast the chat message to all roommates.
@@ -72,31 +77,28 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
      * @throws RemoteException
      */
     @Override
-    public void login(String username, String password, RMIClientInterf rmiClient) throws RemoteException, LoginFailedException {
+    public boolean login(String username, String password, RMIClientInterf rmiClient) throws RemoteException, LoginFailedException {
         try {
             if (MainServer.getJDBC().isAlreadySelectedUserName(username)) {
                 if (MainServer.getJDBC().isUserContained(username, password)) {
-                    Log.getLog().info("[LOGIN]: success login. welcome back".concat(username));
                     addUserToRoom(new RMIUser(username, rmiClient));
-                    return;
+                    Log.getLog().log(Level.INFO, "[LOGIN]: Success login. Welcome back ".concat(username));
+                } else {
+                    Log.getLog().log(Level.SEVERE, "[LOGIN]: Bad password or username ".concat(username).concat("already selected?"));
+                    throw new LoginFailedException("[LOGIN]: Bad password or username already selected");
                 }
-                else {
-                    Log.getLog().info("[LOGIN]: bad password or username ".concat(username).concat("already selected?"));
-                    throw new LoginFailedException("bad password or username already selected");
-                }
-            }
-            else{
+            } else {
                 MainServer.getJDBC().insertRecord(username, password);
                 User user = new RMIUser(username, rmiClient);
                 user.setRoom(addUserToRoom(user));
-                Log.getLog().info("[LOGIN]: success login");
+                Log.getLog().log(Level.INFO, "[LOGIN]: Success login");
             }
-        }
-        catch (SQLException e){
+        } catch (SQLException e){
             e.printStackTrace();
-            Log.getLog().severe("[SQL]: fail to do login");
-            throw new LoginFailedException("fail to do login");
+            Log.getLog().log(Level.SEVERE, "[SQL]: Login failed");
+            throw new LoginFailedException("[SQL]: Fail to do login");
         }
+        return LOGIN_SUCCESSFUL;
     }
 
     /**

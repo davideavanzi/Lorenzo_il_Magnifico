@@ -9,8 +9,6 @@ import java.util.Scanner;
 
 import static it.polimi.ingsw.lim.ui.UIController.*;
 import static it.polimi.ingsw.lim.ui.UIController.UIConstant.*;
-import static it.polimi.ingsw.lim.ui.UIController.UIConstant.INFO;
-import static it.polimi.ingsw.lim.ui.UIController.UIConstant.TURN;
 
 /**
  * Created by nico.
@@ -27,6 +25,11 @@ public class CLI extends AbsUI {
      * This contain the input command.
      */
     private String input;
+
+    /**
+     * If the input is a int it'll store here.
+     */
+    private int inputNum;
 
     private UIController uiCallback;
 
@@ -46,8 +49,17 @@ public class CLI extends AbsUI {
     /**
      * Simply print on stdout a string.
      */
-    public void turnForm() {
+    private void turnForm() {
         printMessageln("Turn order: ");
+    }
+
+    @Override
+    public int sendServantsToServer(int minimum) {
+        printMessageln("How many servants do you want to use in this action? Minimum: " + minimum);
+        while(!userInput.hasNextInt()) {
+            userInput.next();
+        }
+        return inputNum = userInput.nextInt();
     }
 
     /**
@@ -55,9 +67,16 @@ public class CLI extends AbsUI {
      * @param sender the sender's username.
      * @param message the chat message.
      */
+    @Override
     public void printChatMessage(String sender, String message) {
         printMessageln("[CHAT]: message from "+sender+": "+message);
     }
+
+    /*@Override
+    public void printLoginResult(boolean isLogged) {
+        if (isLogged) printMessageln(("[LOGIN]: ").concat(LOGIN_SUCCESSFUL));
+        if (!isLogged) printMessageln(("[LOGIN]: ").concat(LOGIN_FAILED));
+    }*/
 
     private void personalInformation() {
 
@@ -68,7 +87,7 @@ public class CLI extends AbsUI {
      */
     private void turnOrder() {
         turnForm();
-        for (Player pl : uiCallback.getLocalPlayers())
+        for (Player pl : getLocalPlayers())
             printMessageln(pl.getNickname());
     }
 
@@ -81,10 +100,13 @@ public class CLI extends AbsUI {
         input = userInput.nextLine().trim();
         uiCallback.sendChatMessage(input);
         lock.unlock();
+    }
+
+    public void cmdManager(String command) {
 
     }
 
-    private void cmdManager(String command) throws InvalidInputException {
+    private void cmdExecutor(String command) throws InvalidInputException {
         if (cmdDescr.get(command) == null)
             throw new InvalidInputException(("[COMMAND_LINE]: Command not found: ").concat(command));
         if (availableCmdList.get(command) == null)
@@ -99,13 +121,14 @@ public class CLI extends AbsUI {
         printMessage("");
     }
 
+    @Override
     public void waitForRequest() {
         while (true) {
             printCmd();
             printMessage("Enter a command: ");
             input = userInput.next().toLowerCase().trim();
             try {
-                cmdManager(input);
+                cmdExecutor(input);
             } catch (InvalidInputException e) {
                 printMessageln(e.getMessage());
             }
@@ -123,6 +146,7 @@ public class CLI extends AbsUI {
         cmdDescr.put(INFO, INFO_DESCR);
         cmdDescr.put(FAMILY_MEMBER, FAMILY_MEMBER_DESCR);
         cmdDescr.put(LEADER_CARD, LEADER_CARD_DESCR);
+        cmdDescr.put(EXCOMMUNICATION, EXCOMMUNICATION_DESCR);
         cmdDescr.put(CHOOSE_FAVOR, CHOOSE_FAVOR_DESCR);
         cmdDescr.put(CHOOSE_TOWER,CHOOSE_TOWER_DESCR);
         cmdDescr.put(CHOOSE_FLOOR, CHOOSE_FLOOR_DESCR);
@@ -133,7 +157,7 @@ public class CLI extends AbsUI {
         availableCmdList.put(TURN, () -> turnOrder());
         availableCmdList.put(INFO, () -> personalInformation());
 
-        if(true/*isMyTurn*/) {
+        if(uiCallback.getIsMyTurn()) {
             //availableCmdList.put(FAMILY_MEMBER, () -> );
             //availableCmdList.put(LEADER_CARD, () -> );
         }
@@ -143,9 +167,9 @@ public class CLI extends AbsUI {
      * Enter the login information.
      * @return the login information.
      */
+    @Override
     public String loginForm(String command) {
-        printMessageln("Enter a ".concat(command).concat(": "));
-        printMessage("$ ");
+        printMessage("Enter a ".concat(command).concat(": "));
         input = userInput.nextLine().toLowerCase().trim();
         return input;
     }
@@ -153,6 +177,7 @@ public class CLI extends AbsUI {
     /**
      * Choose the connection protocol and connect to the server
      */
+    @Override
     public String setNetworkSettings() {
         printMessage("Please select the network protocol: (socket/rmi): ");
         while (true) {
@@ -174,6 +199,7 @@ public class CLI extends AbsUI {
      * Print on stdout a message
      * @param message
      */
+    @Override
     public void printMessageln(String message) {
         System.out.println(message);
     }
@@ -182,6 +208,7 @@ public class CLI extends AbsUI {
      * Print on stdout a message
      * @param message
      */
+    @Override
     public void printMessage(String message) {
         System.out.print(message);
     }

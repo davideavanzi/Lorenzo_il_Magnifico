@@ -67,12 +67,10 @@ public class MainServer {
         connectedUsers = new ArrayList<>();
         try {
             jdbc = new JDBC();
-        }
-        catch (SQLException e){
+        } catch (SQLException e){
             getLog().severe("[SQL]: Some errors in SQL query ");
             e.printStackTrace();
-        }
-        catch (ClassNotFoundException e){
+        } catch (ClassNotFoundException e){
             getLog().severe("[SQL]: Can't locate driver for SQLite ");
             e.printStackTrace();
         }
