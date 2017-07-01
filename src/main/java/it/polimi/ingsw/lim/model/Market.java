@@ -44,8 +44,17 @@ public class Market implements Serializable {
         return this.bonuses[marketPos];
     }
 
+    public Assets[] getBonus(){
+        return bonuses;
+    }
+
+    public FamilyMember[] getSlots() {
+        return slots;
+    }
+
+
     public boolean isPositionOccupied(int position){
-        if(this.slots != null)
+        if(this.slots[position] != null)
             return true;
         return false;
     }

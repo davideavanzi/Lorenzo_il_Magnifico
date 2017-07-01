@@ -84,6 +84,10 @@ public class UIController {
         }
     }
 
+    public Board getLocalBoard(){
+        return localBoard;
+    }
+
     /**
      * @return the abstract UI of client.
      */

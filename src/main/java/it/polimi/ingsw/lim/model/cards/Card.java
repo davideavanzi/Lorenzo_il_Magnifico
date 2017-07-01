@@ -65,21 +65,6 @@ public abstract class Card implements Serializable {
      */
     public Card(){}
 
-    /**
-     * Temporary method to print the card
-     */
-    public void printCard(){
-        System.out.println("___________________________________________________");
-        System.out.println("[CARD PRINT]:\n Name:"+name+"\nAge:"+age);
-        if (cost != null){
-            System.out.println("PRINTING COST");
-        }
-        //TODO:print effect
-        if (immediateEffects != null)
-            for (ImmediateEffect ie : immediateEffects) {
-                ie.printEffect();
-            }
-    }
 
     public Assets getCost () { return this.cost; }
 

@@ -28,12 +28,13 @@ public class Game {
         getLog().info("Creating game instance");
         this.board = new Board();
         this.board.setAge(1);
-        this.board.setTurn(1);
+        this.board.setTurn(0); //it is updated by one as soon as the game starts.
         this.players = new ArrayList<>();
         this.cardsDeck = new CardsDeck();
         this.availablePlayerColors = new ArrayList<>(PLAYER_COLORS);
         this.dice = new HashMap<>();
         this.controllerCallback = controllerCallback;
+        this.randomGenerator = new Random();
         dice.put(NEUTRAL_COLOR, NEUTRAL_FM_STRENGTH);
     }
 
@@ -67,6 +68,8 @@ public class Game {
      */
     private GameController controllerCallback;
 
+    private Random randomGenerator;
+
     // ############################################################# METHODS AHEAD
 
     /**
@@ -81,7 +84,6 @@ public class Game {
      */
     public void rollDices(){
         //For every dice, generates a random number between 1 and 6.
-        Random randomGenerator = new Random();
         DICE_COLORS.forEach(color -> this.dice.replace(color, randomGenerator.nextInt(6)+1));
     }
 
@@ -113,8 +115,11 @@ public class Game {
         int i = 0;
         for (Assets bonus : parsedGame.getFaithTrackBonuses())
             this.board.getFaithTrack()[i] = bonus;
-
-        //TODO: Get a random excommunication for every age
+        /*TODO: write excomm
+        for (i = 1; i <= AGES_NUMBER; i++) {
+            this.board.addExcommunication(parsedGame.getExcommunications().get(i)
+                    .get(randomGenerator.nextInt(parsedGame.getExcommunications().get(i).size())));
+        } */
         //TODO: When we allot leadercards?
         /*
          * Distribute initial resources starting from the first player,
@@ -153,7 +158,7 @@ public class Game {
                 getLog().info("Clearing "+color+" tower");
                 this.board.getTowers().get(color).clear();
                 getLog().log(Level.INFO,"Adding cards to "+color+" tower");
-                this.board.getTowers().get(color).addCards(cardsDeck.getCardsForTower(color, this.board.getAge()));
+                this.board.getTowers().get(color).addCards(cardsDeck.pullCardsForTower(color, this.board.getAge()));
             });
         getLog().info("Allotting family members to players");
         this.players.forEach(player ->
@@ -213,6 +218,14 @@ public class Game {
             this.board.setTurn(this.board.getTurn()+1);
             getLog().log(Level.INFO, () -> "Advancing into new turn, number: " + this.board.getTurn());
         }
+    }
+
+    /**
+     * Tells if it's time to excommunicate players
+     * @return true if the game is in the last turn of the age.
+     */
+    public boolean excommunicationTime() {
+        return this.board.getTurn() >= TURNS_PER_AGE;
     }
 
     /**
@@ -454,7 +467,8 @@ public class Game {
         ArrayList<FamilyMember> fms = this.board.getCouncil().getFamilyMembers();
         ArrayList<String> councilPlayers = new ArrayList<>();
         for (FamilyMember fm : fms) {
-            councilPlayers.add(players.stream().filter(pl -> pl.getColor().equals(fm.getOwnerColor())).findFirst().orElse(null).getNickname());
+            councilPlayers.add(players.stream().filter(pl -> pl.getColor().equals(fm.getOwnerColor()))
+                    .findFirst().orElse(null).getNickname());
         }
         for (Player pl : this.players) {
             if (!councilPlayers.contains(pl.getNickname()))
@@ -491,6 +505,9 @@ public class Game {
         return (servants > 0) ? -servants : 0;
     }
 
+    public Board getBoard() {
+        return board;
+    }
 
     // ------------------------------------------------------------------------ Excommunications
 
@@ -501,6 +518,11 @@ public class Game {
      */
     public boolean isNotExcommunicable(Player pl) {
         return pl.getResources().getFaithPoints() > FIRST_EXCOMM_FP+this.board.getAge()-1;
+    }
+
+    public Excommunication getExcommunicationByAge(int age) {
+        return this.board.getExcommunications().stream().filter(excomm -> excomm.getAge() == age)
+                .findFirst().orElse(null);
     }
 
     /**

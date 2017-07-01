@@ -7,6 +7,8 @@ public abstract class AbsUI {
 
     AbsUI() {}
 
+    public abstract void printBoard();
+
     public abstract void printChatMessage(String sender, String message);
 
     //public abstract void printLoginResult(boolean isLogged);

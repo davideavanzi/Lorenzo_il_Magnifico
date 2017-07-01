@@ -19,7 +19,8 @@
     <orderEntry type="library" name="org.ops4j.pax.jdbc:pax-jdbc-mysql:1.1.0" level="project" />
     <orderEntry type="library" name="src" level="project" />
     <orderEntry type="library" name="org.xerial:sqlite-jdbc:3.15.1" level="project" />
-    <orderEntry type="library" name="Maven: org.xerial:sqlite-jdbc:3.15.1" level="project" />
+    <orderEntry type="library" name="org.kie.modules:org-apache-commons-lang3:6.5.0.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.0" level="project" />
     <orderEntry type="library" name="Maven: junit:junit:4.12" level="project" />
     <orderEntry type="library" name="Maven: org.hamcrest:hamcrest-core:1.3" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.9.9" level="project" />
@@ -32,5 +33,6 @@
     <orderEntry type="library" name="Maven: com.diogonunes:JCDP:2.0.3.1" level="project" />
     <orderEntry type="library" name="Maven: org.fusesource.jansi:jansi:1.15" level="project" />
     <orderEntry type="library" name="Maven: org.xerial:sqlite-jdbc:3.15.1" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.0" level="project" />
   </component>
 </module>

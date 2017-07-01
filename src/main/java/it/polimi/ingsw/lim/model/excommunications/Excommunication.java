@@ -28,4 +28,11 @@ public abstract class Excommunication implements Serializable {
      */
     private ArrayList<Player> excommunicated;
 
+    public int getAge() {
+        return age;
+    }
+
+    public ArrayList<Player> getExcommunicated() {
+        return excommunicated;
+    }
 }

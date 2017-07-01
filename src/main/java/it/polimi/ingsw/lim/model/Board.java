@@ -6,6 +6,7 @@ import static it.polimi.ingsw.lim.Settings.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by ava on 12/06/17.
@@ -33,9 +34,9 @@ public class Board implements Serializable {
     private int turn;
 
     /**
-     * This maps the three excommunication with an int representing it's age
+     * This holds excommunications
      */
-    private HashMap<Integer, Excommunication> Excommunications;
+    private ArrayList<Excommunication> excommunications;
 
     /**
      * This list holds slots for the production site.
@@ -68,11 +69,13 @@ public class Board implements Serializable {
      */
     private Market market;
 
-    // GETTERS
+    // GETTERS & SETTERS
 
-    public HashMap<Integer, Excommunication> getExcommunications() {
-        return this.Excommunications;
+    public List<Excommunication> getExcommunications() {
+        return this.excommunications;
     }
+
+    public void addExcommunication(Excommunication ex) { this.excommunications.add(ex); }
 
     public ArrayList<FamilyMember> getProduction() { return this.production; }
 
