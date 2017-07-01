@@ -39,9 +39,10 @@ class ServerCommandHandler {
         if (obj instanceof String) {
             ArrayList<String> command = new ArrayList<>(Arrays.asList(((String) obj).split(SPLITTER_REGEX)));
             String commandIdentifier = command.get(0);
-            if (commandIdentifier.equalsIgnoreCase(LOGIN_RESPONSE)) {
-                if (!Boolean.valueOf(command.get(1)))
-                    throw new LoginFailedException("[LOGIN]: Username or password are incorrect");
+            if (commandIdentifier.equalsIgnoreCase(LOGIN_REQUEST)) {
+                uiCallback.sendLoginInfo();
+            } else if (commandIdentifier.equalsIgnoreCase(LOGIN_RESPONSE)) {
+                uiCallback.startGame();
             } else if (commandIdentifier.equalsIgnoreCase(TURN)) {
                 uiCallback.setIsMyTurn(Boolean.valueOf(command.get(1)));
             } else if (commandIdentifier.equalsIgnoreCase(CHAT)) {

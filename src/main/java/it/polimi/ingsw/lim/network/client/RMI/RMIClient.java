@@ -99,12 +99,12 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
     }
 
     /**
-     * Send the login information to the server.
+     * Send the sendLoginInfo information to the server.
      * @param username
      * @throws ClientNetworkException
      */
     @Override
-    public void sendLogin(String username, String password) throws ClientNetworkException {
+    public void login(String username, String password) throws ClientNetworkException {
         try {
             UnicastRemoteObject.exportObject(this, 0);
             rmiServer.login(username, password, this);

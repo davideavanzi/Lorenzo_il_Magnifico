@@ -152,17 +152,13 @@ public class UIController {
     /**
      * Until the user doesn't log in correctly keep on asking to enter the credential (username and password).
      */
-    public void login() {
-        while (!amILogged) {
-            String username = clientUI.loginForm(USERNAME);
-            String password = clientUI.loginForm(PASSWORD);
-            this.username = username;
-            try {
-                clientProtocol.sendLogin(username, password);
-                setAmILogged(LOGIN_SUCCESSFUL);
-            } catch (ClientNetworkException | LoginFailedException e) {
-                clientUI.printMessageln(e.getMessage());
-            }
+    public void sendLoginInfo() {
+        String[] loginInformation = clientUI.loginForm();
+        this.username = loginInformation[0];
+        try {
+            clientProtocol.login(username, loginInformation[1]);
+        } catch (ClientNetworkException | LoginFailedException e) {
+            clientUI.printMessageln(e.getMessage());
         }
     }
 

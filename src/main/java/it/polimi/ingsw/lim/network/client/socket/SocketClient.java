@@ -92,22 +92,15 @@ public class SocketClient implements Runnable, ServerInterface {
     }
 
     /**
-     * Send login information to server.
+     * Send sendLoginInfo information to server.
      * @param username
      * @throws ClientNetworkException
      */
-    public void sendLogin(String username, String password) throws ClientNetworkException, LoginFailedException {
+    public void login(String username, String password) throws ClientNetworkException, LoginFailedException {
         try {
             sendObjToServer(LOGIN + SPLITTER + username + SPLITTER + password);
         } catch (IOException e) {
-            throw new ClientNetworkException("[SOCKET]: Could not send login information to server", e);
-        }
-
-        try {
-            command = objToClient.readObject();
-            commandHandler.requestHandler(command);
-        } catch (IOException | ClassNotFoundException e) {
-            throw new ClientNetworkException("[SOCKET]: Could not get response from server", e);
+            throw new ClientNetworkException("[SOCKET]: Could not send sendLoginInfo information to server", e);
         }
     }
 
@@ -126,7 +119,7 @@ public class SocketClient implements Runnable, ServerInterface {
      * Wait forever for object from server.
      * @throws ClientNetworkException
      */
-    private void waitFromServer() throws ClientNetworkException {
+    private void waitRequest() throws ClientNetworkException {
         lock.lock();
         while(true) {
             try {
@@ -157,7 +150,7 @@ public class SocketClient implements Runnable, ServerInterface {
 
     public void run() {
         try {
-            waitFromServer();
+            waitRequest();
         } catch (ClientNetworkException e) {
             uiController.getClientUI().printMessageln(e.getMessage());
         }

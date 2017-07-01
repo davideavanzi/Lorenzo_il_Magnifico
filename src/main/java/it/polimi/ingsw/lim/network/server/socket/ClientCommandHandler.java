@@ -34,9 +34,7 @@ class ClientCommandHandler {
             ArrayList<String> command = new ArrayList<>(Arrays.asList(((String) obj).split(SPLITTER_REGEX)));
             String commandIdentifier = command.get(0);
             getLog().log(Level.INFO,() -> "[C-H]: Handling command: "+obj);
-            if (commandIdentifier.equals(LOGIN)) {
-                handlerCallback.manageLogin(command.get(1), command.get(2), handlerCallback);
-            } else if(commandIdentifier.equals("")) {
+            if(commandIdentifier.equals("")) {
 
             } else if (commandIdentifier.equals(CHAT)) {
                 handlerCallback.getUser().getRoom().chatMessageToRoom(command.get(1), command.get(2));

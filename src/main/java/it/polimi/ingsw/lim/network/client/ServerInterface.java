@@ -23,11 +23,11 @@ public interface ServerInterface {
     void chatMessageToServer(String sender, String message) throws ClientNetworkException;
 
     /**
-     * This method is used for send the login information to the server.
+     * This method is used for send the sendLoginInfo information to the server.
      * @param username
      * @throws ClientNetworkException
      */
-    void sendLogin(String username, String password) throws ClientNetworkException, LoginFailedException;
+    void login(String username, String password) throws ClientNetworkException, LoginFailedException;
 
     /**
      * Calling this method the client will try to connect to the server.

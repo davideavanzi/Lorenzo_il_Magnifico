@@ -11,8 +11,8 @@ public class ServerConstants {
 
     public final static String LOGIN = "LOGIN";
     public final static String LOGIN_RESPONSE = "LOGIN_RESPONSE";
-    public final static boolean LOGIN_SUCCESSFUL = true;
-    public final static boolean LOGIN_FAILED = false;
+    public final static String LOGIN_REQUEST = "LOGIN_REQUEST";
+    public final static Boolean LOGIN_SUCCESSFUL = true;
 
     public final static String CHAT = "CHAT";
     public final static String TURN = "TURN";

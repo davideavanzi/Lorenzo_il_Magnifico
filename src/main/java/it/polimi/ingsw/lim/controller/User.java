@@ -13,7 +13,7 @@ import static it.polimi.ingsw.lim.Log.getLog;
 
 /**
  * Created by Davide on 26/05/2017.
- * This class represent the person playing the game. It has a unique username picked from the db upon login.
+ * This class represent the person playing the game. It has a unique username picked from the db upon sendLoginInfo.
  * It has also a reference to the corresponding client.
  * It will be used as a gateway between the room/game controller and the communication services
  */

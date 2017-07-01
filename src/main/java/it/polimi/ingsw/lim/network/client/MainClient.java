@@ -18,8 +18,6 @@ public class MainClient {
         splashScreen();
         UIController client = new UIController(setUI());
         client.setNetworkProtocol();
-        client.login();
-        client.startGame();
     }
 
     private static void splashScreen() {

@@ -3,9 +3,7 @@ package it.polimi.ingsw.lim.ui;
 import it.polimi.ingsw.lim.Lock;
 import it.polimi.ingsw.lim.exceptions.InvalidInputException;
 import it.polimi.ingsw.lim.model.*;
-import it.polimi.ingsw.lim.model.cards.*;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.SystemUtils;
 
 import java.io.Console;
 import java.util.HashMap;
@@ -47,10 +45,6 @@ public class CLI extends AbsUI {
         lock.lock();
         this.uiCallback = uiCallback;
         initializeCommandLine();
-    }
-
-    public Lock getLock() {
-        return lock;
     }
 
     /**
@@ -166,29 +160,25 @@ public class CLI extends AbsUI {
     }
 
     /**
-     * Enter the login information.
-     * @return the login information.
+     * Enter the sendLoginInfo information.
+     * @return the sendLoginInfo information.
      */
     @Override
-    public String loginForm(String command) {
-        printMessage("Enter a ".concat(command).concat(": "));
-        input = userInput.nextLine().toLowerCase().trim();
-        printMessageln("Enter a ".concat(command).concat(": "));
-        printMessage("$ ");
-        if(command.equals("username")) {
-            input = userInput.nextLine().trim();
-        }else if(command.equals("password")){
-            Console console;
-            char[] passwd;
-            if((console = System.console()) != null) {
-                if ((passwd = console.readPassword()) != null) {
-                    input = String.valueOf(passwd);
-                }
-            }else{
-                input = userInput.nextLine().trim();
+    public String[] loginForm() {
+        String[] loginInfo = new String[1];
+        printMessage("Enter a username: ");
+        loginInfo[0] = userInput.nextLine().trim();
+        printMessage("Enter a password: ");
+        Console console;
+        char[] passwd;
+        if((console = System.console()) != null) {
+            if ((passwd = console.readPassword()) != null) {
+                loginInfo[1] = String.valueOf(passwd);
             }
+        } else {
+            loginInfo[1] = userInput.nextLine().trim();
         }
-        return input;
+        return loginInfo;
     }
 
     /**
