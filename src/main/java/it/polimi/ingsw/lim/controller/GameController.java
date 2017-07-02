@@ -312,6 +312,7 @@ public class GameController {
         HashMap<String, Integer> availableTowers = new HashMap<>(activeBonuses);
         String targetTower;
         int targetFloor;
+        //TODO: ask for servants to deploy!
         do {
             targetTower = actor.chooseTower(availableTowers);
             targetFloor = actor.chooseFloor();
@@ -325,6 +326,10 @@ public class GameController {
         pickedCard.getImmediateEffects().stream().filter(ie -> ie instanceof ActionEffect)
                 .forEach(ie -> EffectHandler.activateImmediateEffect(ie, actor));
         if (pickedCard instanceof BlueCard) CardHandler.activateBlueCard((BlueCard)pickedCard, actor.getPlayer());
+    }
+
+    public void moveInMarket(FamilyMember fm, User actor) {
+
     }
 
 

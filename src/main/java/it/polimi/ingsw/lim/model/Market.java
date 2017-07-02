@@ -12,7 +12,7 @@ public class Market implements Serializable {
     /**
      * Constructor, it creates a market of the proper size based on the number of players in the game
      */
-    public Market(int playersNumber, Assets[] marketBonuses) {
+    public Market(int playersNumber, Object[] marketBonuses) {
         //TODO: exception for wrong player number or wrong bonuses number?
         getLog().info("Creating market instance");
         int slotsNumber = 2;
@@ -31,20 +31,20 @@ public class Market implements Serializable {
     /**
      * 
      */
-    private Assets[] bonuses;
+    private Object[] bonuses;
 
     public void addFamilyMember(FamilyMember fm, int position){
-        //Position are 1 to 5, in the array are 0 to 4
+        //Positions are 1 to 5, in the array are 0 to 4
         int marketPos = position - 1;
         this.slots[marketPos] = fm;
     }
 
-    public Assets getBonus(int position){
+    public Object getBonus(int position){
         int marketPos = position - 1;
         return this.bonuses[marketPos];
     }
 
-    public Assets[] getBonus(){
+    public Object[] getBonus(){
         return bonuses;
     }
 

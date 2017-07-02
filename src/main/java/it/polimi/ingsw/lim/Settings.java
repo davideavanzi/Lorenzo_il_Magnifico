@@ -13,8 +13,10 @@ public class Settings {
     public static final int FAITH_TRACK_LENGTH = 30;
     public static final int TOWER_HEIGHT = 4;
     public static final int[] FLOORS_ACTION_COSTS = {1, 3, 5, 7};
+    public static final int[] PLAYER_TERRITORIES_REQ = {0, 0, 1, 4, 10, 20};
     public static final int COUNCIL_FAVUORS_TYPES = 5;
     public static final int MARKET_MAX_SIZE = 5;
+    public static final int MARKET_ACTION_COST = 1;
     public static final int NEUTRAL_FM_STRENGTH = 0;
     public static final int DEPLOYABLE_FM_PER_TURN = 1;
 
@@ -23,7 +25,6 @@ public class Settings {
     public static final int FIRST_EXCOMM_FP = 3;
     public static final int COINS_TO_ENTER_OCCUPIED_TOWER = 3;
 
-    //We can add more cards and decide how long will the game be
     public static final int TURNS_PER_AGE = 2;
     public static final int AGES_NUMBER = 3;
 

@@ -241,10 +241,10 @@ public class Game {
         Floor destination = this.board.getTowers().get(towerColor).getFloor(floorNumber);
         if (destination.isOccupied()) return false;
         if (!destination.hasCard()) return false;
+        if (!canPickCard(towerColor, fm)) return false;
         FamilyMember slot = null;
         for (int i = 0; i < TOWER_HEIGHT; i++, slot = this.board.getTowers().get(towerColor).getFloor(i).getFamilyMember()) {
-            if (slot != null && slot.getOwnerColor() ==
-                    fm.getOwnerColor() && fm.getDiceColor() != NEUTRAL_COLOR)
+            if (slot != null && slot.getOwnerColor().equals(fm.getOwnerColor()) && !fm.getDiceColor().equals(NEUTRAL_COLOR))
                 return false;
         }
         if(destination.getActionCost() >
@@ -254,7 +254,19 @@ public class Game {
         return true;
     }
 
-
+    /**
+     * this method tells if a player (fot from it's family member) can take one more card
+     * @param fm
+     * @return
+     */
+     private boolean canPickCard(String towerColor, FamilyMember fm) {
+        Player pl = getPlayerFromColor(fm.getOwnerColor());
+        if (pl.getCardsOfColor(towerColor).size() >= 6) return false;
+        if (pl.getResources().getBattlePoints() >=
+                PLAYER_TERRITORIES_REQ[pl.getCardsOfColor(GREEN_COLOR).size()-1])
+            return false;
+        return true;
+     }
 
     /**
      * This method checks if a specified move into a tower is affordable by the player performing the move.
@@ -503,6 +515,13 @@ public class Game {
         int actionCost = this.board.getTowers().get(towerColor).getFloor(floor).getActionCost();
         int servants = actionCost - actionStr;
         return (servants > 0) ? -servants : 0;
+    }
+
+    public int servantsForMarketAction(FamilyMember fm) {
+        int actionStr = dice.get(fm.getDiceColor());
+        int servants = MARKET_ACTION_COST - actionStr;
+        return (servants > 0) ? -servants : 0;
+
     }
 
     public Board getBoard() {
