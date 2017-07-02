@@ -40,7 +40,7 @@ public class SocketUser extends User {
     }
 
     @Override
-    public void isPlayerTurn(Boolean isPlaying) {
+    public void isPlayerTurn(boolean isPlaying) {
         this.sch.sendIfUserPlaying(isPlaying);
     }
 
@@ -56,6 +56,7 @@ public class SocketUser extends User {
 
     @Override
     public int askForServants(int minimumAmount) {
+        this.sch.askClientServants(minimumAmount);
         return 0;
     }
 
@@ -65,17 +66,13 @@ public class SocketUser extends User {
     }
 
     @Override
-    public int chooseFavor(List<Assets> possibleFavors) {
-        return 0;
-    }
+    public int chooseFavor(List<Assets> possibleFavors) {return 0;}
 
     @Override
-    public void broadcastMessage(String message) {
-    }
+    public void broadcastMessage(String message) {}
 
     @Override
-    public void gameMessage(String message) {
-    }
+    public void gameMessage(String message) {}
 
     @Override
     public int chooseFloor() {

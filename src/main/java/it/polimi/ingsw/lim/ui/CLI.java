@@ -3,9 +3,7 @@ package it.polimi.ingsw.lim.ui;
 import it.polimi.ingsw.lim.Lock;
 import it.polimi.ingsw.lim.exceptions.InvalidInputException;
 import it.polimi.ingsw.lim.model.*;
-import it.polimi.ingsw.lim.model.cards.*;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.SystemUtils;
 
 import java.io.Console;
 import java.util.HashMap;
@@ -33,6 +31,11 @@ public class CLI extends AbsUI {
      */
     private String input;
 
+    /**
+     * If the input is a int it'll store here.
+     */
+    private int inputNum;
+
     private UIController uiCallback;
 
     private Lock lock;
@@ -44,15 +47,20 @@ public class CLI extends AbsUI {
         initializeCommandLine();
     }
 
-    public Lock getLock() {
-        return lock;
-    }
-
     /**
      * Simply print on stdout a string.
      */
-    public void turnForm() {
+    private void turnForm() {
         printMessageln("Turn order: ");
+    }
+
+    @Override
+    public int sendServantsToServer(int minimum) {
+        printMessageln("How many servants do you want to use in this action? Minimum: " + minimum);
+        while(!userInput.hasNextInt()) {
+            userInput.next();
+        }
+        return inputNum = userInput.nextInt();
     }
 
     /**
@@ -60,6 +68,7 @@ public class CLI extends AbsUI {
      * @param sender the sender's username.
      * @param message the chat message.
      */
+    @Override
     public void printChatMessage(String sender, String message) {
         printMessageln("[CHAT]: message from "+sender+": "+message);
     }
@@ -73,7 +82,7 @@ public class CLI extends AbsUI {
      */
     private void turnOrder() {
         turnForm();
-        for (Player pl : uiCallback.getLocalPlayers())
+        for (Player pl : getLocalPlayers())
             printMessageln(pl.getNickname());
     }
 
@@ -86,10 +95,13 @@ public class CLI extends AbsUI {
         input = userInput.nextLine().trim();
         uiCallback.sendChatMessage(input);
         lock.unlock();
+    }
+
+    public void cmdManager(String command) {
 
     }
 
-    private void cmdManager(String command) throws InvalidInputException {
+    private void cmdExecutor(String command) throws InvalidInputException {
         if (cmdDescr.get(command) == null)
             throw new InvalidInputException(("[COMMAND_LINE]: Command not found: ").concat(command));
         if (availableCmdList.get(command) == null)
@@ -104,6 +116,7 @@ public class CLI extends AbsUI {
         printMessage("");
     }
 
+    @Override
     public void waitForRequest() {
         while (true) {
             printCmd();
@@ -111,7 +124,7 @@ public class CLI extends AbsUI {
             input = userInput.next().toLowerCase().trim();
             printBoard();
             try {
-                cmdManager(input);
+                cmdExecutor(input);
             } catch (InvalidInputException e) {
                 printMessageln(e.getMessage());
             }
@@ -129,6 +142,7 @@ public class CLI extends AbsUI {
         cmdDescr.put(INFO, INFO_DESCR);
         cmdDescr.put(FAMILY_MEMBER, FAMILY_MEMBER_DESCR);
         cmdDescr.put(LEADER_CARD, LEADER_CARD_DESCR);
+        cmdDescr.put(EXCOMMUNICATION, EXCOMMUNICATION_DESCR);
         cmdDescr.put(CHOOSE_FAVOR, CHOOSE_FAVOR_DESCR);
         cmdDescr.put(CHOOSE_TOWER,CHOOSE_TOWER_DESCR);
         cmdDescr.put(CHOOSE_FLOOR, CHOOSE_FLOOR_DESCR);
@@ -139,7 +153,7 @@ public class CLI extends AbsUI {
         availableCmdList.put(TURN, () -> turnOrder());
         availableCmdList.put(INFO, () -> personalInformation());
 
-        if(true/*isMyTurn*/) {
+        if(uiCallback.getIsMyTurn()) {
             //availableCmdList.put(FAMILY_MEMBER, () -> );
             //availableCmdList.put(LEADER_CARD, () -> );
         }
@@ -149,28 +163,28 @@ public class CLI extends AbsUI {
      * Enter the login information.
      * @return the login information.
      */
-    public String loginForm(String command) {
-        printMessageln("Enter a ".concat(command).concat(": "));
-        printMessage("$ ");
-        if(command.equals("username")) {
-            input = userInput.nextLine().trim();
-        }else if(command.equals("password")){
-            Console console;
-            char[] passwd;
-            if((console = System.console()) != null) {
-                if ((passwd = console.readPassword()) != null) {
-                    input = String.valueOf(passwd);
-                }
-            }else{
-                input = userInput.nextLine().trim();
-            }   
+    @Override
+    public String[] loginForm() {
+        String[] loginInfo = new String[2];
+        printMessage("Enter a username: ");
+        loginInfo[0] = userInput.nextLine().trim();
+        printMessage("Enter a password: ");
+        Console console;
+        char[] passwd;
+        if((console = System.console()) != null) {
+            if ((passwd = console.readPassword()) != null) {
+                loginInfo[1] = String.valueOf(passwd);
+            }
+        } else {
+            loginInfo[1] = userInput.nextLine().trim();
         }
-        return input;
+        return loginInfo;
     }
 
     /**
      * Choose the connection protocol and connect to the server
      */
+    @Override
     public String setNetworkSettings() {
         printMessage("Please select the network protocol: (socket/rmi): ");
         while (true) {
@@ -200,10 +214,11 @@ public class CLI extends AbsUI {
      * Print on stdout a message
      * @param message
      */
+    @Override
     public void printMessage(String message) {
         System.out.print(message);
     }
-    
+
     public void printBoard(){
         this.printTowers();
         this.printMarket();
@@ -316,7 +331,7 @@ public class CLI extends AbsUI {
         printMessageln("");
         printMessageln("");
     }
-    
+
     private void printTowers(){
         this.printTower(GREEN_COLOR);
         printMessageln("");
@@ -374,7 +389,7 @@ public class CLI extends AbsUI {
             printMessageln("");
         }
     }
-    
+
     private void printVictoryPointsTrack(){
         String format = "||%1$-6s|%2$-6s|%3$-6s|%4$-6s|%5$-6s|%6$-6s|%7$-6s|%8$-6s|%9$-6s|%10$-6s|%11$-6s|%12$-6s|%13$-6s|%14$-6s|%15$-6s|%16$-6s|%17$-6s|%18$-6s|%19$-6s|%20$-6s||\n";
         String s = "_______________________________________________________________________________________________________________________________________________";

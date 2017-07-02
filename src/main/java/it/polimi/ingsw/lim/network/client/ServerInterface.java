@@ -1,6 +1,7 @@
 package it.polimi.ingsw.lim.network.client;
 
 import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
+import it.polimi.ingsw.lim.exceptions.LoginFailedException;
 import it.polimi.ingsw.lim.model.Assets;
 import it.polimi.ingsw.lim.model.Player;
 
@@ -26,7 +27,7 @@ public interface ServerInterface {
      * @param username
      * @throws ClientNetworkException
      */
-    void sendLogin(String username, String password) throws ClientNetworkException;
+    void login(String username, String password) throws ClientNetworkException, LoginFailedException;
 
     /**
      * Calling this method the client will try to connect to the server.

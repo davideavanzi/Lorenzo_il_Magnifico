@@ -17,7 +17,7 @@ public class JDBC {
     private Statement statement;
     private String DB_URL = "jdbc:sqlite:src/main/gameData/db/USERS.db/";
 
-    public JDBC () throws SQLException, ClassNotFoundException{
+    public JDBC () throws SQLException, ClassNotFoundException {
         Class.forName(JDBC_DRIVER);
         this.connection = DriverManager.getConnection(DB_URL);
         this.statement = this.connection.createStatement();

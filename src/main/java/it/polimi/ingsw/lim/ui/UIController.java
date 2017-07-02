@@ -1,6 +1,7 @@
 package it.polimi.ingsw.lim.ui;
 
 import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
+import it.polimi.ingsw.lim.exceptions.LoginFailedException;
 import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.Player;
 import it.polimi.ingsw.lim.network.client.RMI.RMIClient;
@@ -8,7 +9,6 @@ import it.polimi.ingsw.lim.network.client.ServerInterface;
 import it.polimi.ingsw.lim.network.client.socket.SocketClient;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -60,9 +60,14 @@ public class UIController {
     static Map<String, String> cmdDescr;
 
     /**
-     * If true it's indicate that it's my turn.
+     * If true it indicates my turn.
      */
     private boolean isMyTurn = false;
+
+    /**
+     * It's show if I'm logged.
+     */
+    private boolean amILogged = false;
 
     /**
      * The first thing to do is create a user interface, then the player must choose
@@ -94,13 +99,15 @@ public class UIController {
         return username;
     }
 
-    public static ArrayList<Player> getLocalPlayers() {
-        return localPlayers;
+    static ArrayList<Player> getLocalPlayers() { return localPlayers; }
+
+    public boolean getIsMyTurn() { return isMyTurn; }
+
+    public void setIsMyTurn(boolean isMyTurn) {
+        this.isMyTurn = isMyTurn;
     }
 
-    public void setIsMyTurn(Boolean bool) {
-        isMyTurn = bool;
-    }
+    public void setAmILogged(boolean amILogged) { this.amILogged = amILogged; }
 
     /**
      * Every turn the board is send to all client.
@@ -126,11 +133,7 @@ public class UIController {
         UIController.clientProtocol = clientProtocol;
     }
 
-    public void startGame() {
-        clientUI.waitForRequest();
-    }
-
-    public void sendChatMessage(String message) {
+    void sendChatMessage(String message) {
         try {
             clientProtocol.chatMessageToServer(username, message);
         } catch (ClientNetworkException e) {
@@ -138,17 +141,23 @@ public class UIController {
         }
     }
 
+    public void manageCmd(String command) {
+        clientUI.cmdManager(command);
+    }
+
+    public void startGame() {
+        clientUI.waitForRequest();
+    }
+
     /**
-     * It required a username and a password for the authentication.
+     * Until the user doesn't log in correctly keep on asking to enter the credential (username and password).
      */
-    public void login() {
-        String username = clientUI.loginForm("username");
-        String password = clientUI.loginForm("password");
-        this.username = username;
+    public void sendLoginInfo() {
+        String[] loginInformation = clientUI.loginForm();
+        this.username = loginInformation[0];
         try {
-            clientProtocol.sendLogin(username, password);
-        } catch (ClientNetworkException e) {
-            //todo redo login and controllare se col comando password quando si usa una console vera funziona l'hiding del testo
+            clientProtocol.login(username, loginInformation[1]);
+        } catch (ClientNetworkException | LoginFailedException e) {
             clientUI.printMessageln(e.getMessage());
         }
     }
@@ -197,6 +206,7 @@ public class UIController {
 
         static final String FAMILY_MEMBER = "putFamilyMember";
         static final String LEADER_CARD = "chooseLeaderCard";
+        static final String EXCOMMUNICATION = "excommunication";
         static final String CHOOSE_FAVOR = "chooseFavor";
         static final String CHOOSE_TOWER = "chooseTower";
         static final String CHOOSE_FLOOR = "chooseFloor";
@@ -209,9 +219,15 @@ public class UIController {
 
         static final String FAMILY_MEMBER_DESCR = "Place a family member on the board";
         static final String LEADER_CARD_DESCR = "Choose and use a leader card";
+        static final String EXCOMMUNICATION_DESCR = "Choose if you want take a excommunication";
         static final String CHOOSE_FAVOR_DESCR = "Choose a favor from council";
         static final String CHOOSE_TOWER_DESCR = "Choose a tower to pick a card from";
         static final String CHOOSE_FLOOR_DESCR = "Choose the tower's floor ";
         static final String CHOOSE_PRODUCTION_DESCR = "Choose what type of production you want activate";
+
+        static final String USERNAME = "username";
+        static final String PASSWORD = "password";
+
+        static final boolean LOGIN_SUCCESSFUL = true;
     }
 }

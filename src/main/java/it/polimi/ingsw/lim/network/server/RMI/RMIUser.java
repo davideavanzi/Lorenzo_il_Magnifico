@@ -1,6 +1,5 @@
 package it.polimi.ingsw.lim.network.server.RMI;
 
-import com.sun.org.apache.regexp.internal.RE;
 import it.polimi.ingsw.lim.controller.User;
 import it.polimi.ingsw.lim.model.Assets;
 import it.polimi.ingsw.lim.model.Board;
@@ -51,7 +50,7 @@ public class RMIUser extends User {
     }
 
     @Override
-    public void isPlayerTurn(Boolean isPlaying) {
+    public void isPlayerTurn(boolean isPlaying) {
         try {
             RMIServer.setPlayerTurn(isPlaying, this.rci);
         } catch (RemoteException e) {
@@ -70,7 +69,12 @@ public class RMIUser extends User {
 
     @Override
     public int askForServants(int minimumAmount) {
-        return 0; //TODO: implement
+        try {
+            return RMIServer.askClientServants(minimumAmount, this.rci);
+        } catch (RemoteException e) {
+            getLog().log(Level.SEVERE, "[RMI]: Remote error sending chat message to client.");
+        }
+        return -2;
     }
 
     @Override
@@ -79,9 +83,7 @@ public class RMIUser extends User {
     }
 
     @Override
-    public int chooseFavor(List<Assets> possibleFavors) {
-        return 0;
-    }
+    public int chooseFavor(List<Assets> possibleFavors) {return 0;}
 
     @Override
     public void broadcastMessage(String message) {
@@ -111,14 +113,14 @@ public class RMIUser extends User {
         return false;
     }
 
-    public void ping() throws RemoteException {
+    private void ping() throws RemoteException {
       this.rci.isAlive();
     }
 
     private class RMIAliveness implements Runnable{
         private RMIUser user;
 
-        public RMIAliveness(RMIUser user) {
+        RMIAliveness(RMIUser user) {
             this.user = user;
         }
 
