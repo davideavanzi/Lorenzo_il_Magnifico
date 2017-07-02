@@ -1,4 +1,5 @@
 package it.polimi.ingsw.lim.model.excommunications;
+import it.polimi.ingsw.lim.Log;
 import it.polimi.ingsw.lim.model.Assets;
 
 /**
@@ -33,6 +34,52 @@ public class EndGameExcommunication extends Excommunication {
      */
     private Assets[] onAssetsMalus;
 
+    public String getBlockedCardColor(){
+        return blockedCardColor;
+    }
+
+    public Assets getProductionCardCostMalus(){
+        return productionCardCostMalus;
+    }
+
+    public Assets getOnAssetsMalus(int i){
+        return onAssetsMalus[i];
+    }
+
+    @Override
+    public boolean equals(Object other){
+        if(other == this){
+            return true;
+        }
+        if (other == null){
+            Log.getLog().info("other = null");
+            return false;
+        }
+        if(!(other instanceof EndGameExcommunication)){
+            Log.getLog().info("other not a EndGameExcomm");
+            return false;
+        }
+        EndGameExcommunication endGameExcommunication = (EndGameExcommunication) other;
+        boolean equals = true;
+        if(!(this.blockedCardColor.equals((endGameExcommunication.getBlockedCardColor())))){
+            Log.getLog().info("blockedColorCard not equal");
+            equals = false;
+        }
+        if(!(this.productionCardCostMalus.equals((endGameExcommunication.getProductionCardCostMalus())))){
+            Log.getLog().info("productionCostMalus not equal");
+            equals = false;
+        }
+        for(int i = 0; i < 2; i++){
+            if(!(this.onAssetsMalus[i].equals((endGameExcommunication.getOnAssetsMalus(i))))){
+                Log.getLog().info("onAssets not equal");
+                equals = false;
+            }
+        }
+        if(equals){
+            Log.getLog().info("EndGameExcomm equals!");
+        }
+        return equals;
+    }
 
 
 }

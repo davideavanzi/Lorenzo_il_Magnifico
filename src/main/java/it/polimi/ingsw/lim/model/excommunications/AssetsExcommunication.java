@@ -1,4 +1,5 @@
 package it.polimi.ingsw.lim.model.excommunications;
+import it.polimi.ingsw.lim.Log;
 import it.polimi.ingsw.lim.model.Assets;
 
 /**
@@ -21,6 +22,31 @@ public class AssetsExcommunication extends Excommunication {
 
     public Assets getMalus(){
         return this.malus;
+    }
+
+    @Override
+    public boolean equals(Object other){
+        if(other == this){
+            return true;
+        }
+        if (other == null){
+            Log.getLog().info("other = null");
+            return false;
+        }
+        if(!(other instanceof AssetsExcommunication)){
+            Log.getLog().info("other not a AssetsExcomm");
+            return false;
+        }
+        AssetsExcommunication assetsExcommunication = (AssetsExcommunication) other;
+        boolean equals = true;
+        if(!(this.malus.equals((assetsExcommunication.getMalus())))){
+            Log.getLog().info("malus not equals");
+            equals = false;
+        }
+        if (equals){
+            Log.getLog().info("AssetsExcomm equals");
+        }
+        return equals;
     }
 
 }

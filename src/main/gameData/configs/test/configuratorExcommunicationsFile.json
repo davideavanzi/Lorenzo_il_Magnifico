@@ -26,7 +26,10 @@
         "excommunicationType":"endGameExcommunication",
         "endGameExcommunication":"YELLOW",
         "productionCardCostMalus":{"coin":1},
-        "onAssetsMalus":{"wood":1}
+        "onAssetsMalus":[
+          {"wood":1},
+          {"stone":2}
+        ]
       }
     ]
   ]

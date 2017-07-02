@@ -38,8 +38,8 @@ public class Strengths implements Serializable {
         this.harvestBonus = harvest;
         this.productionBonus = production;
         this.towerStrengths.put(GREEN_COLOR, green);
-        this.towerStrengths.put(YELLOW_COLOR, yellow);
         this.towerStrengths.put(BLUE_COLOR, blue);
+        this.towerStrengths.put(YELLOW_COLOR, yellow);
         this.towerStrengths.put(PURPLE_COLOR, purple);
         this.towerStrengths.put(BLACK_COLOR, black);
     }

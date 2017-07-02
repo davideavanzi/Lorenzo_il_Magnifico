@@ -746,7 +746,7 @@ public class Parser {
                 Assets tmpProductionCardCostMalus = parseAssets
                         (excommunicationNode.path(PRODUCTION_CARD_COST_MALUS));
                 Assets[] tmpOnAssetsMalus = parseArrayAssets
-                        (excommunicationNode.path(ON_ASSETS_MALUS),1);//TODO modificare il numero di slot dell'array
+                        (excommunicationNode.path(ON_ASSETS_MALUS),2);//TODO modificare il numero di slot dell'array
                 return new EndGameExcommunication(tmpBlockedCardColor, tmpProductionCardCostMalus, tmpOnAssetsMalus);
             default:
                 throw new InvalidExcommunicationException("Excommunication Type is not recognized");
@@ -925,7 +925,7 @@ public class Parser {
         getLog().info("[PARSER]: Try to parse Excommunication from file: ".concat(pathToDirectory).concat(CONFIGURATOR_EXCOMMUNICATION_FILE_NAME));
         this.setExcommunications(parseExcommunications(pathToDirectory.concat(CONFIGURATOR_EXCOMMUNICATION_FILE_NAME)));
         getLog().info("[PARSER]: Excommunications parsed.");
-        this.setTimers(parseTimerStartGame(pathToDirectory.concat(CONFIGURATOR_TIMERS_FILE_NAME)), parseTimerPlayMove(pathToDirectory.concat(CONFIGURATOR_TIMERS_FILE_NAME)));
+        //this.setTimers(parseTimerStartGame(pathToDirectory.concat(CONFIGURATOR_TIMERS_FILE_NAME)), parseTimerPlayMove(pathToDirectory.concat(CONFIGURATOR_TIMERS_FILE_NAME)));
         return this;
     }
 }

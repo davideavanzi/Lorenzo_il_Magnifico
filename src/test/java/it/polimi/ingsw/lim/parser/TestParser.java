@@ -1,5 +1,6 @@
 package it.polimi.ingsw.lim.parser;
 
+import it.polimi.ingsw.lim.Log;
 import it.polimi.ingsw.lim.exceptions.InvalidCardException;
 import it.polimi.ingsw.lim.exceptions.InvalidExcommunicationException;
 import it.polimi.ingsw.lim.exceptions.InvalidTimerException;
@@ -20,7 +21,7 @@ import static junit.framework.TestCase.assertEquals;
 /**
  * Created by FabCars. The task of this test class is to test if card parser work as expected
  */
-public class TestParser {
+public class TestParser{
 
     private static GreenCard createGreenCardExpected() {
         String nameExpected = "testGreenCard";
@@ -221,7 +222,7 @@ public class TestParser {
         ArrayList<Excommunication> firstAgeExcommExpected = new ArrayList<>();
         AssetsExcommunication e1Expected = new AssetsExcommunication(new Assets(0,0,1,0,0,0,0));
         firstAgeExcommExpected.add(e1Expected);
-        StrengthsExcommunication e2Expected = new StrengthsExcommunication(new Strengths(0,0,0,1,0,0,0));
+        StrengthsExcommunication e2Expected = new StrengthsExcommunication(new Strengths(0,0,0,0,1,0,0));
         firstAgeExcommExpected.add(e2Expected);
         return firstAgeExcommExpected;
     }
@@ -239,8 +240,9 @@ public class TestParser {
         ArrayList<Excommunication> firtAgeExcommExpected = new ArrayList<>();
         ServantsExcommunication e1Expected = new ServantsExcommunication();
         firtAgeExcommExpected.add(e1Expected);
-        Assets[] onAssetsMalus = new Assets[1];
+        Assets[] onAssetsMalus = new Assets[2];
         onAssetsMalus[0] = new Assets(0,1,0,0,0,0,0);
+        onAssetsMalus[1] = new Assets(0,0,2,0,0,0,0);
         EndGameExcommunication e2Expected = new EndGameExcommunication(YELLOW_COLOR, new Assets(1,0,0,0,0,0,0), onAssetsMalus);
         firtAgeExcommExpected.add(e2Expected);
         return firtAgeExcommExpected;
@@ -264,21 +266,28 @@ public class TestParser {
     private static void testExcommunicationParser(Parser testParser){
         try{
             try {
+                Log.getLog().info("***First age excomm testing equals***");
                 testFirstAgeExcommunication(testParser);
+                Log.getLog().info("***First age excomm equals***");
             }
             catch (AssertionFailedError e) {
                 e.printStackTrace();
                 getLog().info("firstAgeExcommunicationNotEqual");
             }
             try {
+                Log.getLog().info("***Second age excomm testing equals***");
                 testSecondAgeExcommunication(testParser);
+                Log.getLog().info("***Second age excomm equals***");
             }
             catch (AssertionFailedError e) {
                 e.printStackTrace();
                 getLog().info("SecondAgeExcommunicationNotEqual");
             }
             try {
+
+                Log.getLog().info("***Third age excomm testing equals***");
                 testThirdAgeExcommunication(testParser);
+                Log.getLog().info("***Third age excomm equals***");
             }
             catch (AssertionFailedError e) {
                 e.printStackTrace();
@@ -290,8 +299,8 @@ public class TestParser {
             getLog().info("InvalidExcommunicationException");
         }
     }
-    @Test
-    public void testParser() {
+
+    public static void testParser() {
         try {
             Parser testParser = new Parser();
             testParser.parser(CONFIGS_PATH.concat("test/"));
@@ -314,5 +323,9 @@ public class TestParser {
             e.printStackTrace();
             getLog().info("InvalidExcommunicationException");
         }
+    }
+
+    public static void main (String args[]){
+        testParser();
     }
 }
