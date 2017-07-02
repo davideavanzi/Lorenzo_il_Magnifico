@@ -40,9 +40,12 @@ class ServerCommandHandler {
             ArrayList<String> command = new ArrayList<>(Arrays.asList(((String) obj).split(SPLITTER_REGEX)));
             String commandIdentifier = command.get(0);
             if (commandIdentifier.equalsIgnoreCase(LOGIN_REQUEST)) {
-                uiCallback.sendLoginInfo();
-            } else if (commandIdentifier.equalsIgnoreCase(LOGIN_RESPONSE)) {
+                String[] loginInfo = uiCallback.sendLoginInfo();
+                clientCallback.login(loginInfo[0], loginInfo[1]);
+            } else if (commandIdentifier.equalsIgnoreCase(LOGIN_SUCCESSFUL)) {
                 uiCallback.startGame();
+            } else if (commandIdentifier.equalsIgnoreCase(LOGIN_FAILED)) {
+                uiCallback.getClientUI().printError(command.get(1));
             } else if (commandIdentifier.equalsIgnoreCase(TURN)) {
                 uiCallback.setIsMyTurn(Boolean.valueOf(command.get(1)));
             } else if (commandIdentifier.equalsIgnoreCase(CHAT)) {

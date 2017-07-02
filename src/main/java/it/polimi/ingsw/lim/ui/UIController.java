@@ -107,8 +107,6 @@ public class UIController {
         this.isMyTurn = isMyTurn;
     }
 
-    public void setAmILogged(boolean amILogged) { this.amILogged = amILogged; }
-
     /**
      * Every turn the board is send to all client.
      * @param board
@@ -137,7 +135,7 @@ public class UIController {
         try {
             clientProtocol.chatMessageToServer(username, message);
         } catch (ClientNetworkException e) {
-            clientUI.printMessageln(e.getMessage());
+            clientUI.printError(e.getMessage());
         }
     }
 
@@ -152,14 +150,10 @@ public class UIController {
     /**
      * Until the user doesn't log in correctly keep on asking to enter the credential (username and password).
      */
-    public void sendLoginInfo() {
+    public String[] sendLoginInfo() {
         String[] loginInformation = clientUI.loginForm();
         this.username = loginInformation[0];
-        try {
-            clientProtocol.login(username, loginInformation[1]);
-        } catch (ClientNetworkException | LoginFailedException e) {
-            clientUI.printMessageln(e.getMessage());
-        }
+        return loginInformation;
     }
 
     /**
@@ -180,7 +174,7 @@ public class UIController {
                 break;
             } catch (ClientNetworkException e) {
                 failedRetry++;
-                clientUI.printMessageln(e.getMessage());
+                clientUI.printError(e.getMessage());
             }
         }
     }
@@ -195,7 +189,7 @@ public class UIController {
     }
 
     /**
-     * Constants used by UI controller.
+     * Constants used by UI.
      */
     class UIConstant {
 
@@ -224,10 +218,5 @@ public class UIController {
         static final String CHOOSE_TOWER_DESCR = "Choose a tower to pick a card from";
         static final String CHOOSE_FLOOR_DESCR = "Choose the tower's floor ";
         static final String CHOOSE_PRODUCTION_DESCR = "Choose what type of production you want activate";
-
-        static final String USERNAME = "username";
-        static final String PASSWORD = "password";
-
-        static final boolean LOGIN_SUCCESSFUL = true;
     }
 }

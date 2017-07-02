@@ -1,7 +1,6 @@
 package it.polimi.ingsw.lim.network.client.RMI;
 
 import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
-import it.polimi.ingsw.lim.exceptions.LoginFailedException;
 import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.Player;
 import it.polimi.ingsw.lim.network.client.ServerInterface;
@@ -98,18 +97,22 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
         return uiCallback.getClientUI().sendServantsToServer(minimum);
     }
 
-    /**
-     * Send the sendLoginInfo information to the server.
-     * @param username
-     * @throws ClientNetworkException
-     */
     @Override
-    public void login(String username, String password) throws ClientNetworkException {
+    public void startListen() throws RemoteException {
+        uiCallback.startGame();
+    }
+
+    @Override
+    public String[] askLogin(String errorMsg) throws RemoteException {
+        if(errorMsg != null) uiCallback.getClientUI().printError(errorMsg);
+        return uiCallback.sendLoginInfo();
+    }
+
+    private void exportObject() throws ClientNetworkException {
         try {
             UnicastRemoteObject.exportObject(this, 0);
-            rmiServer.login(username, password, this);
-        } catch (RemoteException | LoginFailedException e) {
-            throw new ClientNetworkException("[RMI]: Login Failed", e);
+        } catch (RemoteException e) {
+            throw new ClientNetworkException(e.getMessage(), e);
         }
     }
 
@@ -123,8 +126,12 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
             LocateRegistry.getRegistry(getAddress(), getPort());
             rmiServer = (RMIServerInterf)Naming.lookup("rmi://" + getAddress() + "/lim");
             UnicastRemoteObject.exportObject(rmiServer, 0);
-        } catch(NotBoundException | RemoteException | MalformedURLException e) {
+            exportObject();
+            rmiServer.initializeConnection(this);
+        } catch (NotBoundException | RemoteException e) {
             throw new ClientNetworkException("[RMI]: Could not connect to RMI server", e);
+        } catch (MalformedURLException e) {
+            throw new ClientNetworkException("[RMI]: URL not correct", e);
         }
     }
 

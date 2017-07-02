@@ -123,7 +123,7 @@ public class SocketClientHandler implements Runnable {
                     Log.getLog().log(Level.INFO, "[LOGIN]: Login successful. Welcome back ".concat(username));
                 } else {
                     Log.getLog().log(Level.SEVERE, "[LOGIN]: Bad password or username ".concat(username).concat("already selected?"));
-                    throw new LoginFailedException("[LOGIN]: Bad password or username already selected");
+                    return;
                 }
             } else {
                 MainServer.getJDBC().insertRecord(username, password);
@@ -133,7 +133,7 @@ public class SocketClientHandler implements Runnable {
             }
         } catch (SQLException e) {
             Log.getLog().log(Level.SEVERE, "[SQL]: Login failed");
-            throw new LoginFailedException("[SQL]: Login failed");
+            return;
         }
     }
 
@@ -158,7 +158,7 @@ public class SocketClientHandler implements Runnable {
         }
     }
 
-    private void loginRequest() {
+    private boolean loginRequest() {
         int loginFailed = 0;
         while (true) {
             sendObjectToClient(LOGIN_REQUEST);
@@ -167,20 +167,18 @@ public class SocketClientHandler implements Runnable {
                 ArrayList<String> command = new ArrayList<>(Arrays.asList(((String) loginInfo).split(SPLITTER_REGEX)));
                 if (command.get(0).equals(LOGIN)) {
                     login(command.get(1), command.get(2), this);
-                    sendObjectToClient(LOGIN_RESPONSE + SPLITTER + LOGIN_SUCCESSFUL);
-                    isClientLogged = true;
-                    break;
+                    sendObjectToClient(LOGIN_SUCCESSFUL);
+                    return isClientLogged = true;
                 }
             } catch (IOException | ClassNotFoundException e) {
                 getLog().log(Level.SEVERE, ("[SOCKET]: Could not receive login information from client, retrying "
-                        + (2 - loginFailed) + "times"), e);
+                        + (2 - loginFailed) + " times"), e);
                 loginFailed++;
                 if (loginFailed == 3) {
-                    isClientLogged = false;
-                    return;
+                    return false;
                 }
             } catch (LoginFailedException e) {
-                getLog().log(Level.SEVERE, ("[SOCKET]: ").concat(e.getMessage()), e);
+                sendObjectToClient(LOGIN_FAILED + SPLITTER + e.getMessage());
             }
         }
     }
@@ -205,8 +203,7 @@ public class SocketClientHandler implements Runnable {
      */
     public void run() {
         createStream();
-        loginRequest();
-        if (isClientLogged)
+        if (loginRequest())
             waitRequest();
     }
 }

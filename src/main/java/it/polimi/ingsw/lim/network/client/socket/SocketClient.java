@@ -8,7 +8,9 @@ import it.polimi.ingsw.lim.ui.UIController;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.logging.Level;
 
+import static it.polimi.ingsw.lim.Log.getLog;
 import static it.polimi.ingsw.lim.network.ServerConstants.*;
 
 /**
@@ -84,11 +86,7 @@ public class SocketClient implements Runnable, ServerInterface {
      * @throws ClientNetworkException
      */
     public void chatMessageToServer(String sender, String message) throws ClientNetworkException {
-        try {
-            sendObjToServer(CHAT + SPLITTER + sender + SPLITTER + message);
-        } catch (IOException e) {
-            throw new ClientNetworkException("[SOCKET]: Could not send chat message to server", e);
-        }
+        sendObjToServer(CHAT + SPLITTER + sender + SPLITTER + message);
     }
 
     /**
@@ -96,12 +94,8 @@ public class SocketClient implements Runnable, ServerInterface {
      * @param username
      * @throws ClientNetworkException
      */
-    public void login(String username, String password) throws ClientNetworkException, LoginFailedException {
-        try {
-            sendObjToServer(LOGIN + SPLITTER + username + SPLITTER + password);
-        } catch (IOException e) {
-            throw new ClientNetworkException("[SOCKET]: Could not send login information to server", e);
-        }
+    public void login(String username, String password) {
+        sendObjToServer(LOGIN + SPLITTER + username + SPLITTER + password);
     }
 
     /**
@@ -109,10 +103,14 @@ public class SocketClient implements Runnable, ServerInterface {
      * @param obj to send
      * @throws IOException
      */
-    private void sendObjToServer(Object obj) throws IOException {
-        objFromClient.writeObject(obj);
-        objFromClient.flush();
-        objFromClient.reset();
+    private void sendObjToServer(Object obj) {
+        try {
+            objFromClient.writeObject(obj);
+            objFromClient.flush();
+            objFromClient.reset();
+        } catch (IOException e) {
+            getLog().log(Level.SEVERE, "[SOCKET]: Could not send object to server", e);
+        }
     }
 
     /**
@@ -152,7 +150,7 @@ public class SocketClient implements Runnable, ServerInterface {
         try {
             waitRequest();
         } catch (ClientNetworkException e) {
-            uiController.getClientUI().printMessageln(e.getMessage());
+            uiController.getClientUI().printError(e.getMessage());
         }
     }
 }

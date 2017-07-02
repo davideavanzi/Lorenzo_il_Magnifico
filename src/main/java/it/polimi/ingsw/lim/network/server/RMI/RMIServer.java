@@ -71,34 +71,45 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
     }
 
     /**
-     * The rmi sendLoginInfo method. It's used for users authentication.
+     * The rmi login method. It's used for users authentication.
      * @param username
      * @param rmiClient
      * @throws RemoteException
      */
-    @Override
-    public boolean login(String username, String password, RMIClientInterf rmiClient) throws RemoteException, LoginFailedException {
+    public void login(String username, String password, RMIClientInterf rmiClient) throws RemoteException, LoginFailedException {
         try {
             if (MainServer.getJDBC().isAlreadySelectedUserName(username)) {
                 if (MainServer.getJDBC().isUserContained(username, password)) {
                     addUserToRoom(new RMIUser(username, rmiClient));
-                    Log.getLog().log(Level.INFO, "[LOGIN]: Success sendLoginInfo. Welcome back ".concat(username));
+                    Log.getLog().log(Level.INFO, "[LOGIN]: Success login. Welcome back ".concat(username));
                 } else {
                     Log.getLog().log(Level.SEVERE, "[LOGIN]: Bad password or username ".concat(username).concat("already selected?"));
-                    throw new LoginFailedException("[LOGIN]: Bad password or username already selected");
+                    return;
                 }
             } else {
                 MainServer.getJDBC().insertRecord(username, password);
                 User user = new RMIUser(username, rmiClient);
                 user.setRoom(addUserToRoom(user));
-                Log.getLog().log(Level.INFO, "[LOGIN]: Success sendLoginInfo");
+                Log.getLog().log(Level.INFO, "[LOGIN]: Success login");
             }
-        } catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
             Log.getLog().log(Level.SEVERE, "[SQL]: Login failed");
-            throw new LoginFailedException("[SQL]: Fail to do sendLoginInfo");
         }
-        return LOGIN_SUCCESSFUL;
+    }
+
+    @Override
+    public void initializeConnection(RMIClientInterf rmiClient) throws RemoteException {
+        String[] loginInformation = rmiClient.askLogin(null);
+        while (true) {
+            try {
+                login(loginInformation[0], loginInformation[1], rmiClient);
+                rmiClient.startListen();
+                return;
+            } catch (LoginFailedException e) {
+                loginInformation = rmiClient.askLogin(e.getMessage());
+            }
+        }
     }
 
     /**

@@ -10,7 +10,7 @@ import java.rmi.*;
  */
 public interface RMIServerInterf extends Remote {
 
-    boolean login(String username, String password, RMIClientInterf rci) throws RemoteException, LoginFailedException;
-
     void chatMessageFromClient(String sender, String message) throws RemoteException;
+
+    void initializeConnection(RMIClientInterf rci) throws RemoteException;
 }

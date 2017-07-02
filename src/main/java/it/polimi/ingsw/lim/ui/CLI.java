@@ -126,7 +126,7 @@ public class CLI extends AbsUI {
             try {
                 cmdExecutor(input);
             } catch (InvalidInputException e) {
-                printMessageln(e.getMessage());
+                printError(e.getMessage());
             }
             lock.lock();
         }
@@ -197,15 +197,21 @@ public class CLI extends AbsUI {
                 case "r":
                     return "rmi";
                 default:
-                    printMessageln("Not a valid choice!");
+                    printError("Not a valid choice!");
             }
         }
+    }
+
+    @Override
+    public void printError(String errorMessage) {
+        System.out.println(errorMessage);
     }
 
     /**
      * Print on stdout a message
      * @param message
      */
+    @Override
     public void printMessageln(String message) {
         System.out.println(message);
     }

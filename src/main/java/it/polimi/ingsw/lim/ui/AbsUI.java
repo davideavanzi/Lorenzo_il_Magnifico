@@ -26,6 +26,8 @@ public abstract class AbsUI {
      */
     public abstract String setNetworkSettings();
 
+    public abstract void printError(String errorMessage);
+
     /**
      * It's called when the client has a message for the player
      */
