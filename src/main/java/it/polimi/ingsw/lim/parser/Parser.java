@@ -925,7 +925,7 @@ public class Parser {
         getLog().info("[PARSER]: Try to parse Excommunication from file: ".concat(pathToDirectory).concat(CONFIGURATOR_EXCOMMUNICATION_FILE_NAME));
         this.setExcommunications(parseExcommunications(pathToDirectory.concat(CONFIGURATOR_EXCOMMUNICATION_FILE_NAME)));
         getLog().info("[PARSER]: Excommunications parsed.");
-        //this.setTimers(parseTimerStartGame(pathToDirectory.concat(CONFIGURATOR_TIMERS_FILE_NAME)), parseTimerPlayMove(pathToDirectory.concat(CONFIGURATOR_TIMERS_FILE_NAME)));
+        this.setTimers(parseTimerStartGame(pathToDirectory.concat(CONFIGURATOR_TIMERS_FILE_NAME)), parseTimerPlayMove(pathToDirectory.concat(CONFIGURATOR_TIMERS_FILE_NAME)));
         return this;
     }
 }

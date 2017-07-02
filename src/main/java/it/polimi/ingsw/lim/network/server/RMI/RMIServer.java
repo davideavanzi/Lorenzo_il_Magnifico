@@ -17,6 +17,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
+import static it.polimi.ingsw.lim.network.ServerConstants.LOGIN_SUCCESSFUL;
 import static it.polimi.ingsw.lim.network.server.MainServer.addUserToRoom;
 
 /**

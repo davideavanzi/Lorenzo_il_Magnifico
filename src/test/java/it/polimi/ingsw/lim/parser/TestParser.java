@@ -300,12 +300,26 @@ public class TestParser{
         }
     }
 
+    private static void testTimerParser(Parser testParser){
+        try{
+            getLog().info("***Test timer parser***");
+            assertEquals(testParser.getTimerPlayMove(), 64);
+            assertEquals(testParser.getTimerStartGame(), 62);
+            getLog().info("***Timer equals***");
+        }catch (AssertionFailedError e) {
+            e.printStackTrace();
+            getLog().info("TimerNotEquals");
+        }
+
+    }
+
     public static void testParser() {
         try {
             Parser testParser = new Parser();
             testParser.parser(CONFIGS_PATH.concat("test/"));
             testCardParser(testParser);
             testExcommunicationParser(testParser);
+            testTimerParser(testParser);
         }
         catch (IOException e) {
             e.printStackTrace();
