@@ -35,6 +35,7 @@ public class Parser {
     private Assets startingGameBonus;
     private int timerStartGame;
     private int timerPlayMove;
+    private Object[] marketBonuses = new Object[MARKET_MAX_SIZE];;
 
     //setters
     public void setTimers(int timerStartGame, int timerPlayMove){
@@ -78,6 +79,10 @@ public class Parser {
         this.boardPlayersHarvestBonus = boardPlayersHarvestBonus;
     }
 
+    public void setMarketBonuses (Object[] marketBonuses){
+        this.marketBonuses = marketBonuses;
+    }
+
     //getters
     public int getTimerStartGame(){
         return this.timerStartGame;
@@ -103,8 +108,8 @@ public class Parser {
         return this.boardAssetsBonuses.get(key);
     }
 
-    public Assets[] getMarketBonuses() {
-        return this.boardAssetsBonuses.get(MARKET);
+    public Object[] getMarketBonuses() {
+        return this.marketBonuses;
     }
 
     public Assets[] getFaithTrackBonuses() {
@@ -235,10 +240,37 @@ public class Parser {
         bonuses.put(YELLOW_COLOR, parseArrayAssets(bonusesNode.path(TOWER_BONUS).path(YELLOW_TOWER_BONUS), TOWER_HEIGHT));
         bonuses.put(PURPLE_COLOR, parseArrayAssets(bonusesNode.path(TOWER_BONUS).path(PURPLE_TOWER_BONUS), TOWER_HEIGHT));
         bonuses.put(BLACK_COLOR, parseArrayAssets(bonusesNode.path(TOWER_BONUS).path(BLACK_TOWER_BONUS), TOWER_HEIGHT));
-        bonuses.put(MARKET, parseArrayAssets(bonusesNode.path(MARKET_BONUS), MARKET_MAX_SIZE));
         bonuses.put(FAITH_TRACK, parseArrayAssets(bonusesNode.path(FAITH_BONUS), FAITH_TRACK_LENGTH));
         bonuses.put(COUNCIL_FAVOUR, parseArrayAssets(bonusesNode.path(COUNCIL_FAVOUR_BONUS), COUNCIL_FAVUORS_TYPES));
         return bonuses;
+    }
+
+    private static Object[] marketBonusParser(String pathToConfiguratorBonusesAssetsFile)
+            throws IOException{
+        Object[] market;
+        byte[] jsonData = Files.readAllBytes(Paths.get(pathToConfiguratorBonusesAssetsFile));
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(jsonData);
+        JsonNode bonusesNode = rootNode.path(BONUSES);
+        market = parseArrayMarketBonuses(bonusesNode.path(MARKET_BONUS), MARKET_MAX_SIZE);
+        return market;
+    }
+
+    private static Object[] parseArrayMarketBonuses(JsonNode marketToParse, int marketSize){
+        Object[] market = new Object[marketSize];
+        Iterator<JsonNode> arrayMarketIterator = marketToParse.getElements();
+        int i = 0;
+        while (arrayMarketIterator.hasNext()) {
+            marketToParse = arrayMarketIterator.next();
+            if(marketToParse.isInt()){
+                market[i] = marketToParse.asInt();
+            }
+            else {
+                market[i] = parseAssets(marketToParse);
+            }
+            i++;
+        }
+        return market;
     }
 
     /**
@@ -921,6 +953,7 @@ public class Parser {
         this.setStartingGameBonus(parseStartingGameBonus(pathToDirectory.concat(CONFIGURATOR_BONUS_ASSETS_FILE_NAME)));
         this.setBoardPlayersProductionBonus(parseBoardPlayerProductionBonus(pathToDirectory.concat(CONFIGURATOR_BONUS_ASSETS_FILE_NAME)));
         this.setBoardPlayersHarvestBonus(parseBoardPlayerHarvestBonus(pathToDirectory.concat(CONFIGURATOR_BONUS_ASSETS_FILE_NAME)));
+        this.setMarketBonuses(marketBonusParser(pathToDirectory.concat(CONFIGURATOR_BONUS_ASSETS_FILE_NAME)));
         getLog().info("[PARSER]: Assets Bonuses parsed.");
         getLog().info("[PARSER]: Try to parse Excommunication from file: ".concat(pathToDirectory).concat(CONFIGURATOR_EXCOMMUNICATION_FILE_NAME));
         this.setExcommunications(parseExcommunications(pathToDirectory.concat(CONFIGURATOR_EXCOMMUNICATION_FILE_NAME)));

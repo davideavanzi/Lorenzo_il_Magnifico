@@ -1,18 +1,7 @@
 {
 	"card":[
       {
-        "cardName": "Citta",
-        "cardAge": 1,
-        "cardType": "greenCard",
-        "greenHarvestResult": {
-          "coin": 3
-        },
-        "greenActionStrengths": {
-          "harvestBonus": 1
-        }
-      },
-      {
-        "cardName": "Avamposto Commerciale",
+        "cardName": "Commercial Hub",
         "cardAge": 1,
         "cardType": "greenCard",
         "greenHarvestResult": {
@@ -23,25 +12,7 @@
         }
       },
       {
-        "cardName": "Foresta",
-        "cardAge": 1,
-        "cardType": "greenCard",
-        "cardImmediateEffect": {
-          "assetsEffect": {
-            "assetsEffectBonus": {
-              "wood": 1
-            }
-          }
-        },
-        "greenHarvestResult": {
-          "wood": 3
-        },
-        "greenActionStrengths": {
-          "harvestBonus": 5
-        }
-      },
-      {
-        "cardName": "Bosco",
+        "cardName": "Woods",
         "cardAge": 1,
         "cardType": "greenCard",
         "cardImmediateEffect": {
@@ -59,7 +30,55 @@
         }
       },
       {
-        "cardName": "Monastero",
+        "cardName": "Village",
+        "cardAge": 1,
+        "cardType": "greenCard",
+        "greenHarvestResult": {
+          "coin": 1,
+          "servants": 1
+        },
+        "greenActionStrengths": {
+          "harvestBonus": 3
+        }
+      },
+      {
+        "cardName": "Gravel Pit",
+        "cardAge": 1,
+        "cardType": "greenCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "assetsEffectBonus": {
+              "stone": 2
+            }
+          }
+        },
+        "greenHarvestResult": {
+          "stone": 2
+        },
+        "greenActionStrengths": {
+          "harvestBonus": 4
+        }
+      },
+      {
+        "cardName": "Forest",
+        "cardAge": 1,
+        "cardType": "greenCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "assetsEffectBonus": {
+              "wood": 1
+            }
+          }
+        },
+        "greenHarvestResult": {
+          "wood": 3
+        },
+        "greenActionStrengths": {
+          "harvestBonus": 5
+        }
+      },
+      {
+        "cardName": "Monastery",
         "cardAge": 1,
         "cardType": "greenCard",
         "cardImmediateEffect": {
@@ -79,37 +98,7 @@
         }
       },
       {
-        "cardName": "Cava di Ghiaia",
-        "cardAge": 1,
-        "cardType": "greenCard",
-        "cardImmediateEffect": {
-          "assetsEffect": {
-            "assetsEffectBonus": {
-              "stone": 2
-            }
-          }
-        },
-        "greenHarvestResult": {
-          "stone": 2
-        },
-        "greenActionStrengths": {
-          "harvestBonus": 4
-        }
-      },
-      {
-        "cardName": "Borgo",
-        "cardAge": 1,
-        "cardType": "greenCard",
-        "greenHarvestResult": {
-          "coin": 1,
-          "servants": 1
-        },
-        "greenActionStrengths": {
-          "harvestBonus": 3
-        }
-      },
-      {
-        "cardName": "Rocca",
+        "cardName": "Citadel",
         "cardAge": 1,
         "cardType": "greenCard",
         "greenHarvestResult": {
@@ -120,6 +109,697 @@
           "harvestBonus": 5
         }
       },
+      {
+        "cardName": "City",
+        "cardAge": 1,
+        "cardType": "greenCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "assetsEffectBonus": {
+              "coin": 3
+            }
+          }
+        } //dubbio fotonico vfav del consiglio
+      },
+      {
+        "cardName":"Gold Mine",
+        "cardAge": 2,
+        "cardType":"greenCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "assetsEffectBonus": {
+              "coin": 1
+            }
+          }
+        },
+        "greenHarvestResult": {
+          "coin": 2
+        },
+        "greenActionStrengths": {
+          "harvestBonus": 1
+        }
+      },
+      {
+        "cardName":"Mountain Town",
+        "cardAge": 2,
+        "cardType":"greenCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "assetsEffectBonus": {
+              "servants": 1
+            }
+          }
+        },
+        "greenHarvestResult": {
+          "wood": 2,
+          "battlePoints":1
+        },
+        "greenActionStrengths": {
+          "harvestBonus": 3
+        }
+      },
+      {
+        "cardName":"Mining Town",
+        "cardAge": 2,
+        "cardType":"greenCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "assetsEffectBonus": {
+              "stone": 1,
+              "servants":2
+            }
+          }
+        },
+        "greenHarvestResult": {
+          "stone": 2,
+          "servants":1
+        },
+        "greenActionStrengths": {
+          "harvestBonus": 4
+        }
+      },
+      {
+        "cardName":"Rock Pit",
+        "cardAge": 2,
+        "cardType":"greenCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "assetsEffectBonus": {
+              "wood": 1
+            }
+          }
+        },
+        "greenHarvestResult": {
+          "stone": 3
+        },
+        "greenActionStrengths": {
+          "harvestBonus": 3
+        }
+      },
+      {
+        "cardName":"Estate",
+        "cardAge": 2,
+        "cardType":"greenCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "assetsEffectBonus": {
+              "wood": 1,
+              "servants":2
+            }
+          }
+        },
+        "greenHarvestResult": {
+          "wood": 2,
+          "coin":1
+        },
+        "greenActionStrengths": {
+          "harvestBonus": 4
+        }
+      },
+      {
+        "cardName":"Hermitage",
+        "cardAge": 2,
+        "cardType":"greenCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "assetsEffectBonus": {
+              "faithPoints": 1
+            }
+          }
+        },
+        "greenHarvestResult": {
+          "faithPoints": 1
+        },
+        "greenActionStrengths": {
+          "harvestBonus": 2
+        }
+      },
+      {
+        "cardName":"Manor House",
+        "cardAge": 2,
+        "cardType":"greenCard",
+        "greenHarvestResult": {
+          "servants":2,
+          "battlePoints":2
+        },
+        "greenActionStrengths": {
+          "harvestBonus": 5
+        }
+      },
+      {
+        "cardName":"Dukedom",
+        "cardAge": 3,
+        "cardType":"greenCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "assetsEffectBonus": {
+              "stone": 4
+            }
+          }
+        },
+        "greenHarvestResult": {
+          "coin":1,
+          "stone": 1,
+          "servants":2
+        },
+        "greenActionStrengths": {
+          "harvestBonus": 6
+        }
+      },
+      {
+        "cardName":"Trading Town",
+        "cardAge": 3,
+        "cardType":"greenCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "assetsEffectBonus": {
+              "coin": 1,
+              "servants": 1
+            }
+          }
+        },
+        "greenHarvestResult": {
+          "coin":3
+        },
+        "greenActionStrengths": {
+          "harvestBonus": 1
+        }
+      },
+      {
+        "cardName":"Dukedom",
+        "cardAge": 3,
+        "cardType":"greenCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "assetsEffectBonus": {
+              "wood": 1,
+              "victoryPoints": 1
+            }
+          }
+        },
+        "greenHarvestResult": {
+          "victoryPoints":2,
+          "wood": 2
+        },
+        "greenActionStrengths": {
+          "harvestBonus": 3
+        }
+      },
+      {
+        "cardName":"Colony",
+        "cardAge": 3,
+        "cardType":"greenCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "assetsEffectBonus": {
+              "battlePoints": 2
+            }
+          }
+        },
+        "greenHarvestResult": {
+          "victoryPoints":4,
+          "wood":1
+        },
+        "greenActionStrengths": {
+          "harvestBonus": 5
+        }
+      },
+      {
+        "cardName":"Marble Pit",
+        "cardAge": 3,
+        "cardType":"greenCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "assetsEffectBonus": {
+              "victoryPoints": 3
+            }
+          }
+        },
+        "greenHarvestResult": {
+          "victoryPoints":1,
+          "stone": 2
+        },
+        "greenActionStrengths": {
+          "harvestBonus": 2
+        }
+      },
+      {
+        "cardName":"Province",
+        "cardAge": 3,
+        "cardType":"greenCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "assetsEffectBonus": {
+              "stone": 1
+            },
+            "councilFavorsEffectAmount": 1
+          }
+        },
+        "greenHarvestResult": {
+          "victoryPoints":4,
+          "stone": 1
+        },
+        "greenActionStrengths": {
+          "harvestBonus": 6
+        }
+      },
+      {
+        "cardName":"Sanctuary",
+        "cardAge": 3,
+        "cardType":"greenCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "assetsEffectBonus": {
+              "faithPoints": 1
+            }
+          }
+        },
+        "greenHarvestResult": {
+          "faithPoints":1,
+          "coin": 1
+        },
+        "greenActionStrengths": {
+          "harvestBonus": 1
+        }
+      },
+      {
+        "cardName":"Castle",
+        "cardAge": 3,
+        "cardType":"greenCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "assetsEffectBonus": {
+              "victoryPoints": 2,
+              "coin":2
+            }
+          }
+        },
+        "greenHarvestResult": {
+          "battlePoints":3,
+          "servants": 1
+        },
+        "greenActionStrengths": {
+          "harvestBonus": 4
+        }
+      },
+      {
+        "cardName":"Fortified Town",
+        "cardAge": 3,
+        "cardType":"greenCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "assetsEffectBonus": {
+              "battlePoints": 3,
+              "servants": 1
+            }
+          }
+        },
+        "greenHarvestResult": {
+          "battlePoints":1,
+          "servants": 2
+        },
+        "greenActionStrengths": {
+          "harvestBonus": 2
+        }
+      },
+      {
+        "cardName": "Mint",
+        "cardAge": 1,
+        "cardAssetsCost": {
+          "wood": 1,
+          "stone": 3
+        },
+        "cardType": "yellowCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "victoryPoints": 5
+          }
+        },
+        "yellowProductionResult": [
+          {
+            "coin": 1
+          }
+        ],
+        "yellowBonusMultiplier": "YELLOW",
+        "yellowActionStrengths":
+        {
+          "productionBonus": 5
+        }
+      },
+      {
+        "cardName": "Tax Office",
+        "cardAge": 1,
+        "cardAssetsCost": {
+          "wood": 3,
+          "stone": 1
+        },
+        "cardType": "yellowCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "victoryPoints": 5
+          }
+        },
+        "yellowProductionResult": [
+          {
+            "coin": 1
+          }
+        ],
+        "yellowBonusMultiplier": "GREEN",
+        "yellowActionStrengths":
+        {
+          "productionBonus": 5
+        }
+      },
+      {
+        "cardName": "Triumphal Arch",
+        "cardAge": 1,
+        "cardAssetsCost": {
+          "coin": 1,
+          "stone": 2
+        },
+        "cardType": "yellowCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "victoryPoints": 6
+          }
+        },
+        "yellowProductionResult": [
+          {
+            "victoryPoints": 1
+          }
+        ],
+        "yellowBonusMultiplier": "PURPLE",
+        "yellowActionStrengths":
+        {
+          "productionBonus": 6
+        }
+      },
+      {
+        "cardName": "Theater",
+        "cardAge": 1,
+        "cardAssetsCost": {
+          "coin": 2,
+          "wood": 2
+        },
+        "cardType": "yellowCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "victoryPoints": 6
+          }
+        },
+        "yellowProductionResult": [
+          {
+            "victoryPoints": 1
+          }
+        ],
+        "yellowBonusMultiplier": "BLUE",
+        "yellowActionStrengths":
+        {
+          "productionBonus": 6
+        }
+      },
+      {
+        "cardName": "Carpenter's Shop",
+        "cardAge": 1,
+        "cardAssetsCost": {
+          "coin": 1,
+          "wood": 2
+        },
+        "cardType": "yellowCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "victoryPoints": 3
+          }
+        },
+        "yellowProductionCost": [
+          {
+            "wood": 1
+          },
+          {
+            "wood": 2
+          }
+        ],
+        "yellowProductionResult": [
+          {
+            "coin": 3
+          },
+          {
+            "coin": 5
+          }
+        ],
+        "yellowActionStrengths":
+        {
+          "productionBonus": 4
+        }
+      },
+      {
+        "cardName": "Stonemason's Shop",
+        "cardAge": 1,
+        "cardAssetsCost": {
+          "coin": 1,
+          "stone": 2
+        },
+        "cardType": "yellowCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "victoryPoints": 2
+          }
+        },
+        "yellowProductionCost": [
+          {
+            "stone": 1
+          },
+          {
+            "stone": 2
+          }
+        ],
+        "yellowProductionResult": [
+          {
+            "coin": 3
+          },
+          {
+            "coin": 5
+          }
+        ],
+        "yellowActionStrengths":
+        {
+          "productionBonus": 3
+        }
+      },
+      {
+        "cardName": "Chapel",
+        "cardAge": 1,
+        "cardAssetsCost": {
+          "coin": 1,
+          "stone": 2
+        },
+        "cardType": "yellowCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "faithPoints": 1
+          }
+        },
+        "yellowProductionCost": [
+          {
+            "coin": 1
+          }
+        ],
+        "yellowProductionResult": [
+          {
+            "faithPoints": 1
+          }
+        ],
+        "yellowActionStrengths":
+        {
+          "productionBonus": 2
+        }
+      },
+      {
+        "cardName": "Residence",
+        "cardAge": 1,
+        "cardAssetsCost": {
+          "stone": 2
+        },
+        "cardType": "yellowCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "victoryPoints": 1
+          }
+        },
+        "yellowProductionCost": [
+          {
+            "coin": 1
+          }
+        ],
+        "yellowActionStrengths":
+        {
+          "productionBonus": 1
+        }
+      },
+      {
+        "cardName": "Marketplace",
+        "cardAge": 2,
+        "cardAssetsCost": {
+          "wood": 2,
+          "stone": 1
+        },
+        "cardType": "yellowCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "victoryPoints": 3
+          }
+        },
+        "yellowProductionCost": [
+          {
+            "coin": 3
+          }
+        ],
+        "yellowProductionResult": [
+          {
+            "wood": 2,
+            "stone": 2
+          }
+        ],
+        "yellowActionStrengths":
+        {
+          "productionBonus": 3
+        }
+      },
+      {
+        "cardName": "Treasury",
+        "cardAge": 2,
+        "cardAssetsCost": {
+          "wood": 3
+        },
+        "cardType": "yellowCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "victoryPoints": 4
+          }
+        },
+        "yellowProductionCost": [
+          {
+            "coin": 1
+          },
+          {
+            "coin": 2
+          }
+        ],
+        "yellowProductionResult": [
+          {
+            "victoryPoints": 3
+          },
+          {
+            "victoryPoints": 5
+          }
+        ],
+        "yellowActionStrengths":
+        {
+          "productionBonus": 3
+        }
+      },
+      {
+        "cardName": "Painters' Guild",
+        "cardAge": 2,
+        "cardAssetsCost": {
+          "wood": 4
+        },
+        "cardType": "yellowCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "victoryPoints": 5
+          }
+        },
+        "yellowProductionCost": [
+          {
+            "wood": 1
+          },
+          {
+            "wood": 3
+          }
+        ],
+        "yellowProductionResult": [
+          {
+            "victoryPoints": 3
+          },
+          {
+            "victoryPoints": 7
+          }
+        ],
+        "yellowActionStrengths":
+        {
+          "productionBonus": 4
+        }
+      },
+      {
+        "cardName": "Sculptors' Guild",
+        "cardAge": 2,
+        "cardAssetsCost": {
+          "stone": 4
+        },
+        "cardType": "yellowCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "victoryPoints": 6
+          }
+        },
+        "yellowProductionCost": [
+          {
+            "stone": 1
+          },
+          {
+            "stone": 3
+          }
+        ],
+        "yellowProductionResult": [
+          {
+            "victoryPoints": 3
+          },
+          {
+            "victoryPoints": 7
+          }
+        ],
+        "yellowActionStrengths":
+        {
+          "productionBonus": 5
+        }
+      },
+      {
+        "cardName": "Stonemasons' ",
+        "cardAge": 2,
+        "cardAssetsCost": {
+          "wood": 3
+        },
+        "cardType": "yellowCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "victoryPoints": 4
+          }
+        },
+        "yellowProductionCost": [
+          {
+            "coin": 1
+          },
+          {
+            "coin": 2
+          }
+        ],
+        "yellowProductionResult": [
+          {
+            "victoryPoints": 3
+          },
+          {
+            "victoryPoints": 5
+          }
+        ],
+        "yellowActionStrengths":
+        {
+          "productionBonus": 3
+        }
+      },
+
+
+
       {
         "cardName": "Contadino",
         "cardAge": 1,
@@ -238,220 +918,12 @@
           "stone": 1
         }
       },
-      {
-        "cardName": "Tagliapietre",
-        "cardAge": 1,
-        "cardAssetsCost": {
-          "coin": 1,
-          "stone": 2
-        },
-        "cardType": "yellowCard",
-        "cardImmediateEffect": {
-          "assetsEffect": {
-            "victoryPoints": 2
-          }
-        },
-        "yellowProductionCost": [
-          {
-            "stone": 1
-          },
-          {
-            "stone": 2
-          }
-        ],
-        "yellowProductionResult": [
-          {
-            "coin": 3
-          },
-          {
-            "coin": 5
-          }
-        ],
-        "yellowActionStrengths":
-        {
-          "productionBonus": 3
-        }
-      },
-      {
-        "cardName": "Zecca",
-        "cardAge": 1,
-        "cardAssetsCost": {
-          "wood": 1,
-          "stone": 3
-        },
-        "cardType": "yellowCard",
-        "cardImmediateEffect": {
-          "assetsEffect": {
-            "victoryPoints": 5
-          }
-        },
-        "yellowProductionResult": [
-          {
-            "coin": 1
-          }
-        ],
-        "yellowBonusMultiplier": "YELLOW",
-        "yellowActionStrengths":
-        {
-          "productionBonus": 5
-        }
-      },
-      {
-        "cardName": "Teatro",
-        "cardAge": 1,
-        "cardAssetsCost": {
-          "coin": 2,
-          "wood": 2
-        },
-        "cardType": "yellowCard",
-        "cardImmediateEffect": {
-          "assetsEffect": {
-            "victoryPoints": 6
-          }
-        },
-        "yellowProductionResult": [
-          {
-            "victoryPoints": 1
-          }
-        ],
-        "yellowBonusMultiplier": "BLUE",
-        "yellowActionStrengths":
-        {
-          "productionBonus": 6
-        }
-      },
-      {
-        "cardName": "Esattoria",
-        "cardAge": 1,
-        "cardAssetsCost": {
-          "wood": 3,
-          "stone": 1
-        },
-        "cardType": "yellowCard",
-        "cardImmediateEffect": {
-          "assetsEffect": {
-            "victoryPoints": 5
-          }
-        },
-        "yellowProductionResult": [
-          {
-            "coin": 1
-          }
-        ],
-        "yellowBonusMultiplier": "GREEN",
-        "yellowActionStrengths":
-        {
-          "productionBonus": 5
-        }
-      },
-      {
-        "cardName": "Arco di Trionfo",
-        "cardAge": 1,
-        "cardAssetsCost": {
-          "coin": 1,
-          "stone": 2
-        },
-        "cardType": "yellowCard",
-        "cardImmediateEffect": {
-          "assetsEffect": {
-            "victoryPoints": 6
-          }
-        },
-        "yellowProductionResult": [
-          {
-            "victoryPoints": 1
-          }
-        ],
-        "yellowBonusMultiplier": "PURPLE",
-        "yellowActionStrengths":
-        {
-          "productionBonus": 6
-        }
-      },
-      {
-        "cardName": "Falegnameria",
-        "cardAge": 1,
-        "cardAssetsCost": {
-          "coin": 1,
-          "wood": 2
-        },
-        "cardType": "yellowCard",
-        "cardImmediateEffect": {
-          "assetsEffect": {
-            "victoryPoints": 3
-          }
-        },
-        "yellowProductionCost": [
-          {
-            "wood": 1
-          },
-          {
-            "wood": 2
-          }
-        ],
-        "yellowProductionResult": [
-          {
-            "coin": 3
-          },
-          {
-            "coin": 5
-          }
-        ],
-        "yellowActionStrengths":
-        {
-          "productionBonus": 4
-        }
-      },
-      {
-        "cardName": "Cappella",
-        "cardAge": 1,
-        "cardAssetsCost": {
-          "coin": 1,
-          "stone": 2
-        },
-        "cardType": "yellowCard",
-        "cardImmediateEffect": {
-          "assetsEffect": {
-            "faithPoints": 1
-          }
-        },
-        "yellowProductionCost": [
-          {
-            "coin": 1
-          }
-        ],
-        "yellowProductionResult": [
-          {
-            "faithPoints": 1
-          }
-        ],
-        "yellowActionStrengths":
-        {
-          "productionBonus": 2
-        }
-      },
-      {
-        "cardName": "Residenza",
-        "cardAge": 1,
-        "cardAssetsCost": {
-          "stone": 2
-        },
-        "cardType": "yellowCard",
-        "cardImmediateEffect": {
-          "assetsEffect": {
-            "victoryPoints": 1
-          }
-        },
-        "yellowProductionCost": [
-          {
-            "coin": 1
-          }
-        ],
-        "yellowActionStrengths":
-        {
-          "productionBonus": 1
-        }
-      },
+
+
+
+
+
+
       {
         "cardName": "Ingaggiare Reclute",
         "cardAge": 1,
