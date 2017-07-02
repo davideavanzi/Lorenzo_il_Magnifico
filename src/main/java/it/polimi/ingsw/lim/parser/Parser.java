@@ -35,7 +35,7 @@ public class Parser {
     private Assets startingGameBonus;
     private int timerStartGame;
     private int timerPlayMove;
-    private Object[] marketBonuses = new Object[MARKET_MAX_SIZE];;
+    private Object[] marketBonuses = new Object[MARKET_MAX_SIZE];
 
     //setters
     public void setTimers(int timerStartGame, int timerPlayMove){
@@ -262,12 +262,13 @@ public class Parser {
         int i = 0;
         while (arrayMarketIterator.hasNext()) {
             marketToParse = arrayMarketIterator.next();
-            if(marketToParse.isInt()){
-                market[i] = marketToParse.asInt();
+            if(marketToParse.path(COUNCIL_BONUS).isInt()){
+                market[i] = marketToParse.path(COUNCIL_BONUS).asInt();
             }
             else {
                 market[i] = parseAssets(marketToParse);
             }
+            System.out.println(market[i]);
             i++;
         }
         return market;

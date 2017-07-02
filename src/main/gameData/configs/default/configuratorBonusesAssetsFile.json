@@ -8,7 +8,7 @@
       "blackTowerBonus": [ {}, {}, { "faithPoints": 1 }, { "faithPoints": 2 }]
     },
     "marketBonus": [
-      {"coin": 5}, {"servants": 5}, {"coin": 2, "battlePoints": 3}, {}, {"faithPoints": 5}
+      {"coin": 5}, {"servants": 5}, {"coin": 2, "battlePoints": 3}, {"councilBonus":2}, {"faithPoints": 5}
     ],
     "faithBonus": [
       {}, {"victoryPoints": 1}, {"victoryPoints": 2}, {"victoryPoints": 3}, {"victoryPoints": 4},

@@ -307,7 +307,7 @@ public class CLI extends AbsUI {
     }
 
     private void printMarket(){
-        Assets [] assets = this.uiCallback.getLocalBoard().getMarket().getBonus();
+        Object [] market = this.uiCallback.getLocalBoard().getMarket().getBonus();
         FamilyMember[] familyMembers = this.uiCallback.getLocalBoard().getMarket().getSlots();
         String format = "||%-20s||\n";
         String s = "________________________";
@@ -317,7 +317,12 @@ public class CLI extends AbsUI {
             System.out.format(format, StringUtils.center(("MARKET " + i), 20));
             System.out.format(format, "_  _  _  _  _  _  _ ");
             System.out.format(format, "");
-            printAsset(assets[i]);
+            if(market[i] instanceof Assets){
+                printAsset((Assets)market[i]);
+            }
+            else{
+                System.out.format(format, StringUtils.center((" " + ((int)market[i])), 20));
+            }
             System.out.format(format, "");
             printMessageln(s);
             if(this.uiCallback.getLocalBoard().getMarket().isPositionOccupied(i)){
