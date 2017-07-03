@@ -10,6 +10,10 @@ import java.rmi.RemoteException;
  */
 public interface ServerInteface {
 
+    void placeFM(String color, ArrayList<String> position, String servants, String username) throws ClientNetworkException;
+
+    void placeFM(String color, ArrayList<String> position, String servants, String username) throws ClientNetworkException;
+
     /**
      * Calling this method the client will try to connect to the server.
      * @throws ClientNetworkException

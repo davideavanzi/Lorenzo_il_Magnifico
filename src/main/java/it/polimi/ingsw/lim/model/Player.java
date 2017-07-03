@@ -1,5 +1,8 @@
 package it.polimi.ingsw.lim.model;
 
+import it.polimi.ingsw.lim.model.cards.Card;
+
+import java.io.Serializable;
 import java.util.*;
 import java.util.logging.Level;
 
@@ -10,7 +13,7 @@ import static it.polimi.ingsw.lim.Settings.*;
  * Player are indexed by nickname, which corresponds to he user that is playing, and that username is unique
  * TODO: map family members with an hashmap?
  */
-public class Player {
+public class Player implements Serializable{
 
     /**
      * Creating an empty player with a nickname.
@@ -75,7 +78,7 @@ public class Player {
     private HashMap<String, ArrayList<Card>> cards;
 
     /**
-     * TODO: Is it better to store them with an hashmap?
+     *
      */
     private ArrayList<FamilyMember> familyMembers;
 
@@ -97,6 +100,12 @@ public class Player {
 
     public void addFamilyMember(FamilyMember fm){
         this.familyMembers.add(fm);
+    }
+
+    public ArrayList<FamilyMember> getFamilyMembers() { return this.familyMembers; }
+
+    public FamilyMember getFamilyMember(String color) {
+        return this.familyMembers.stream().filter(fm -> fm.getDiceColor().equals(color)).findFirst().orElse(null);
     }
 
     public String getColor(){
@@ -129,6 +138,11 @@ public class Player {
 
     public FamilyMember pullFamilyMember(String color) {
         return this.familyMembers.stream().filter(fm -> fm.getDiceColor().equals(color)).findFirst().orElse(null);
+        /* TODO: does this really works? (Pulls fm)
+        for (FamilyMember fm : familyMembers)
+            if (fm.getDiceColor().equals(color))
+                return familyMembers.remove(familyMembers.indexOf(fm));
+        return null; */
     }
 
     public boolean isTowerBonusAllowed() {
@@ -154,6 +168,11 @@ public class Player {
         return this.cards.get(color).size();
     }
 
+    public Assets getDefaultHarvestBonus() {
+        return defaultHarvestBonus;
+    }
 
-
+    public Assets getDefaultProductionBonus() {
+        return defaultProductionBonus;
+    }
 }
