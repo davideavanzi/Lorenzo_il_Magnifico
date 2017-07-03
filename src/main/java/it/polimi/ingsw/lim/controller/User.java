@@ -82,6 +82,8 @@ public abstract class User {
 
     public abstract int askForServants(int minimumAmount);
 
+    public abstract void askProductionOptions(ArrayList<ArrayList<Assets[]>> options);
+
     /**
      * This method asks the user which production wants to activate. A production option is an array of two
      * Assets objects: the first is the cost, the second is the result.

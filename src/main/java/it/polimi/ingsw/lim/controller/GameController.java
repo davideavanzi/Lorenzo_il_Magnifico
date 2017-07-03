@@ -211,7 +211,7 @@ public class GameController {
         if(tmpStrength != 0 || this.game.isHarvestMoveAllowed(fm)){ //If
             Player actor = this.game.getPlayerFromColor(fm.getOwnerColor());
             int servantsForHarvestAction = this.game.servantsForHarvestAction(fm, 0);
-            actor.setResources(actor.getResources().add(actor.getDefaultHarvestBonus()));
+            this.game.giveAssetsToPlayer(actor.getDefaultHarvestBonus(), actor.getColor());
             int servantsDeployed ;
             do {
                 servantsDeployed = roomCallback.getUser(this.game.getPlayerFromColor(fm.getOwnerColor()).getNickname())
@@ -249,7 +249,7 @@ public class GameController {
                 if (activeCard.getActionStrength().getProductionBonus() <= actionStrength)
                     CardHandler.activateYellowCard(activeCard, actor, bonusAccumulator);
             }
-            actor.getPlayer().setResources(actor.getPlayer().getResources().add(bonusAccumulator));
+            this.game.giveAssetsToPlayer(bonusAccumulator, actor.getPlayer().getColor());
             roomCallback.broadcastMessage
                     ("Player "+actor.getUsername()+" performed an harvest action of value: "+actionStrength);
             roomCallback.fmPlaced();
@@ -267,8 +267,7 @@ public class GameController {
             servantsDeployed = actor.askForServants(servantsForHarvestAction);
         } while (servantsDeployed < servantsForHarvestAction ||
                 servantsDeployed > actor.getPlayer().getResources().getServants());
-        actor.getPlayer().setResources(actor.getPlayer()
-                .getResources().add(actor.getPlayer().getDefaultHarvestBonus()));
+        this.game.giveAssetsToPlayer(actor.getPlayer().getDefaultHarvestBonus(), actor.getPlayer().getColor());
         int actionStrength = game.calcHarvestActionStr(null, servantsDeployed, baseStr);
         for (Card card: actor.getPlayer().getCardsOfColor(GREEN_COLOR)) {
             GreenCard activeCard = (GreenCard) card;
@@ -293,7 +292,7 @@ public class GameController {
             if (activeCard.getActionStrength().getProductionBonus() <= actionStrength)
                 CardHandler.activateYellowCard(activeCard, actor, bonusAccumulator);
         }
-        actor.getPlayer().setResources(actor.getPlayer().getResources().add(bonusAccumulator));
+        this.game.giveAssetsToPlayer(bonusAccumulator, actor.getPlayer().getColor());
     }
 
     public ArrayList<Player> getActualplayingOrder() {
