@@ -35,7 +35,6 @@ public class Council implements Serializable {
     /**
      * The bonus given when a player puts a family member here
      */
-
     private Assets councilBonus;
 
     public int getFavorsAmount(){

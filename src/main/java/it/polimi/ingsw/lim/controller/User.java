@@ -82,15 +82,12 @@ public abstract class User {
 
     public abstract void askForServants(int minimumAmount);
 
-    public abstract void askProductionOptions(ArrayList<ArrayList<Assets[]>> options);
-
     /**
      * This method asks the user which production wants to activate. A production option is an array of two
      * Assets objects: the first is the cost, the second is the result.
      * @param options production options the player can choose from
-     * @return the integer corresponding to the option position in the list.
      */
-    public abstract int chooseProduction(ArrayList<Assets[]> options);
+    public abstract void askProductionOptions(ArrayList<ArrayList<Assets[]>> options);
 
     /**
      * Calling this method the server will send the updated board and the list of the connected user to the client.
@@ -151,4 +148,16 @@ public abstract class User {
      * @return a boolean that indicates if the player wants the excommunication
      */
     public abstract boolean askForExcommunication();
+
+    /**
+     * This method notifies the user that has gained a fast harvest action. It also tells the base strength
+     * of the bonus action
+     * @param baseStr the action strength
+     */
+    public abstract void notifyFastHarvest(int baseStr);
+
+    public abstract void notifyFastProduction(int baseStr);
+
+    public abstract void notifyFastTowerMove(HashMap<String, Integer> baseStr, Assets optionalPickDiscount);
+
 }

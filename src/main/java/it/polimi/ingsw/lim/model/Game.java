@@ -130,7 +130,7 @@ public class Game {
         getLog().log(Level.INFO, () -> "Giving initial resources to"+playersNumber+"players");
         int moreCoin = 0;
         for (Player pl : players) {
-            giveAssetsToPlayer(parsedGame.getStartingGameBonus().addCoins(moreCoin), pl.getColor());
+            giveAssetsToPlayer(parsedGame.getStartingGameBonus().addCoins(moreCoin), pl);
             moreCoin++;
         }
 
@@ -529,19 +529,23 @@ public class Game {
         return board;
     }
 
+    public void removeAssetsFromPlayer(Assets assets, Player pl) {
+        pl.setResources(pl.getResources().subtract(assets));
+    }
+
     /**
      * this method gives an amount of assets to the player, it also applies eventual excommunication maluses
      * @param assets
-     * @param playerColor
+     * @param pl
      */
-    public void giveAssetsToPlayer(Assets assets, String playerColor) {
-        Player pl = getPlayerFromColor(playerColor);
-        pl.setResources(pl.getResources().add(apllyExcommMalus(assets, playerColor)));
+    public void giveAssetsToPlayer(Assets assets, Player pl) {
+        //Player pl = getPlayerFromColor(player);
+        pl.setResources(pl.getResources().add(apllyExcommMalus(assets, pl)));
     }
 
-    public Assets apllyExcommMalus(Assets assets, String playerColor) {
+    public Assets apllyExcommMalus(Assets assets, Player pl) {
         Excommunication firstAgeExcomm = board.getExcommunications().get(0);
-        if (firstAgeExcomm instanceof AssetsExcommunication && firstAgeExcomm.getExcommunicated().contains(playerColor))
+        if (firstAgeExcomm instanceof AssetsExcommunication && firstAgeExcomm.getExcommunicated().contains(pl.getColor()))
             return assets.subtractToZero(((AssetsExcommunication) firstAgeExcomm).getMalus());
         return assets;
     }

@@ -5,7 +5,9 @@ import it.polimi.ingsw.lim.model.*;
 import it.polimi.ingsw.lim.model.cards.*;
 import it.polimi.ingsw.lim.model.immediateEffects.*;
 import it.polimi.ingsw.lim.parser.Parser;
+import org.codehaus.jackson.annotate.JsonTypeInfo;
 
+import javax.jws.soap.SOAPBinding;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
@@ -25,9 +27,11 @@ public class GameController {
 
     public GameController() {  }
 
-    public ArrayList<ArrayList<Assets[]>> currentProductionOptions;
-    public Assets currentProductionAccumulator;
-
+    private ArrayList<ArrayList<Assets[]>> currentProductionOptions;
+    private Assets currentProductionAccumulator;
+    private Strengths fastActionStr;
+    private Assets optPickDiscount;
+    private User fastActor;
 
     public static void main(String[] args){
 
@@ -39,7 +43,8 @@ public class GameController {
         contr.game.addPlayer("HELLONE");
         contr.game.addPlayer("HOLAONE");
 
-        contr.moveInTower(contr.game.getPlayer("CIAONE").pullFamilyMember(BLACK_COLOR), GREEN_COLOR,1);
+        contr.moveInTower(contr.game.getPlayer("CIAONE").pullFamilyMember(BLACK_COLOR), GREEN_COLOR,1,1);
+        System.out.println("SIZE FM: "+contr.game.getPlayer("CIAONE").getFamilyMember().size());
         //contr.moveInHarvest(contr.game.getPlayer("CIAONE").pullFamilyMember(WHITE_COLOR));
         /*
         Game game = new Game();
@@ -153,7 +158,7 @@ public class GameController {
      * TODO: do we have to split the legality checks from the actual move?
      * TODO: handle max card number and battle points requirements for green card
      */
-    public void moveInTower (FamilyMember fm, String towerColor, int floor) {
+    public void moveInTower (FamilyMember fm, String towerColor, int floor, int servantsDeployed) {
         Strengths strength = new Strengths();
         User actor = roomCallback.getUser(this.game.getPlayerFromColor(fm.getOwnerColor()).getNickname());
         getLog().log(Level.INFO, "Player "+actor.getPlayer().getNickname()+
@@ -168,16 +173,18 @@ public class GameController {
                 if (cardAffordable || purpleAffordable) {
                     boolean useBp = false;
                     int servantsForTowerAction = this.game.servantsForTowerAction(fm, towerColor, floor);
-                    int servantsDeployed;
-                    do {
-                        servantsDeployed = actor.askForServants(servantsForTowerAction);
-                    } while (servantsDeployed != -1 || servantsDeployed < servantsForTowerAction || servantsDeployed >
-                                    this.game.getPlayerFromColor(fm.getOwnerColor()).getResources().getServants());
-                    if (servantsDeployed == -1) return; //the user doesn't want to pay
-                        if (cardAffordable && purpleAffordable) {
-                            //let the client choose
+
+                    if (servantsDeployed < servantsForTowerAction || servantsDeployed >
+                            actor.getPlayer().getResources().getServants()) {
+                        actor.gameMessage("You did not set the right amount of servants to deploy to perform the action");
+                        return;
+                    }
+
+                    if (cardAffordable && purpleAffordable) {
+                            //let the client choose and save the action state.
                             useBp = actor.askForOptionalBpPick(((PurpleCard) card).getOptionalBpRequirement(),
                                     ((PurpleCard) card).getOptionalBpCost());
+
                         } else {
                             //in this case only one of the two paying methods is available
                             if (purpleAffordable) useBp = true;
@@ -210,19 +217,14 @@ public class GameController {
      * It does not require a reference to the remote user as the harvest has not costs to choose.
      * @param fm the family member deployed for the action
      */
-    public void moveInHarvest (FamilyMember fm, int tmpStrength) {
-        if(tmpStrength != 0 || this.game.isHarvestMoveAllowed(fm)){ //If
+    public void moveInHarvest (FamilyMember fm, int servantsDeployed) {
+        if(this.game.isHarvestMoveAllowed(fm)){ //If
             Player actor = this.game.getPlayerFromColor(fm.getOwnerColor());
             int servantsForHarvestAction = this.game.servantsForHarvestAction(fm, 0);
-            this.game.giveAssetsToPlayer(actor.getDefaultHarvestBonus(), actor.getColor());
-            int servantsDeployed ;
-            do {
-                servantsDeployed = roomCallback.getUser(this.game.getPlayerFromColor(fm.getOwnerColor()).getNickname())
-                        .askForServants(servantsForHarvestAction);
-            } while (servantsDeployed < servantsForHarvestAction ||
-                    servantsDeployed > this.game.getPlayerFromColor(fm.getOwnerColor()).getResources().getServants() &&
-                    servantsDeployed != -1);
-            if (servantsDeployed == -1) return;
+            this.game.giveAssetsToPlayer(actor.getDefaultHarvestBonus(), actor);
+
+            if (servantsDeployed < servantsForHarvestAction || //TODO: do better
+                    servantsDeployed > this.game.getPlayerFromColor(fm.getOwnerColor()).getResources().getServants()) return;
             this.game.harvestMove(fm);
             int actionStrength = game.calcHarvestActionStr(fm, servantsDeployed, 0);
             for (Card card: game.getPlayerFromColor(fm.getOwnerColor()).getCardsOfColor(GREEN_COLOR)) {
@@ -259,14 +261,18 @@ public class GameController {
         }
     }
 
-    //TODO: Pull costs from player!!, check for correct player?
     public void confirmProduction(ArrayList<Integer> choices) {
         if (choices.size() != currentProductionOptions.size()) {
             getLog().log(Level.SEVERE, "Wrong amount of player production choices!");
             return;
         }
-        currentProductionOptions.forEach(options ->
-                currentProductionAccumulator.add(options.get(choices.indexOf(options))[2]));
+        currentProductionOptions.forEach(option -> {
+                if (option.get(choices.indexOf(option))[0].isGreaterOrEqual(
+                        roomCallback.getPlayingUser().getPlayer().getResources())){
+                    this.game.removeAssetsFromPlayer(option.get(choices.indexOf(option))[0],
+                            roomCallback.getPlayingUser().getPlayer());
+                    currentProductionAccumulator.add(option.get(choices.indexOf(option))[1]);}
+        });
         roomCallback.broadcastMessage
                 ("Player XXX performed a production action");
         roomCallback.fmPlaced();
@@ -276,49 +282,73 @@ public class GameController {
      * this method adds the available options of a yellow card to choose
      * @param options
      */
-    public void addProductionOptions(ArrayList<Assets[]> options) {
+    void addProductionOptions(ArrayList<Assets[]> options) {
         this.currentProductionOptions.add(options);
     }
 
-    public void addBonusToAccumulator(Assets bonus) {
+    void addBonusToAccumulator(Assets bonus) {
         this.currentProductionAccumulator.add(this.game.apllyExcommMalus(bonus,
-                roomCallback.getPlayingUser().getPlayer().getColor()));
+                roomCallback.getPlayingUser().getPlayer()));
     }
 
     //FAST ACTIONS:
 
-    public void fastHarvestAction(int baseStr, User actor) {
-        int servantsForHarvestAction = this.game.servantsForHarvestAction(null, baseStr);
-        if (servantsForHarvestAction >
-                actor.getPlayer().getResources().getServants()) return;
-        int servantsDeployed;
-        do {
-            servantsDeployed = actor.askForServants(servantsForHarvestAction);
-        } while (servantsDeployed < servantsForHarvestAction ||
-                servantsDeployed > actor.getPlayer().getResources().getServants());
-        this.game.giveAssetsToPlayer(actor.getPlayer().getDefaultHarvestBonus(), actor.getPlayer().getColor());
-        int actionStrength = game.calcHarvestActionStr(null, servantsDeployed, baseStr);
-        for (Card card: actor.getPlayer().getCardsOfColor(GREEN_COLOR)) {
+    void beginFastProduction(Strengths str, User actor) {
+        this.fastActionStr = str;
+        this.fastActor = actor;
+        actor.notifyFastProduction(str.getProductionBonus());
+    }
+
+    void beginFastHarvest(Strengths str, User actor) {
+        this.fastActionStr = str;
+        this.fastActor = actor;
+        actor.notifyFastHarvest(str.getProductionBonus());
+    }
+
+    /**
+     * Tells the user that can perform a fast tower move, telling him all towers that the bonus
+     * allows to enter.
+     * @param str
+     * @param optPickDiscount
+     * @param actor
+     */
+    void beginFastTowerMove(Strengths str, Assets optPickDiscount, User actor) {
+        this.fastActionStr = str;
+        this.optPickDiscount = optPickDiscount;
+        this.fastActor = actor;
+        Map<String, Integer> activeBonuses = str.getTowerStrength().entrySet().stream()
+                .filter(option -> option.getValue() > 0)
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        HashMap<String, Integer> availableTowers = new HashMap<>(activeBonuses);
+        actor.notifyFastTowerMove(availableTowers, optPickDiscount);
+    }
+
+
+    public void performFastHarvest(int servantsDeployed) {
+        int servantsForHarvestAction = this.game.servantsForHarvestAction(null, fastActionStr.getHarvestBonus());
+        if (servantsForHarvestAction > fastActor.getPlayer().getResources().getServants() ||
+                servantsDeployed > fastActor.getPlayer().getResources().getServants() ||
+                servantsDeployed < servantsForHarvestAction) {
+            //TODO: tell user bad entry
+            return;
+        }
+        this.game.giveAssetsToPlayer(fastActor.getPlayer().getDefaultHarvestBonus(), fastActor.getPlayer());
+        int actionStrength = game.calcHarvestActionStr(null, servantsDeployed, fastActionStr.getHarvestBonus());
+        for (Card card: fastActor.getPlayer().getCardsOfColor(GREEN_COLOR)) {
             GreenCard activeCard = (GreenCard) card;
             if (activeCard.getActionStrength().getHarvestBonus() <= actionStrength)
-                CardHandler.activateGreenCard(activeCard, actor.getPlayer());
+                CardHandler.activateGreenCard(activeCard, fastActor.getPlayer());
         }
     }
 
-    //TODO: is there really a minimum amount of servants for a fast tower action?
-    public void fastProductionAction(int baseStr, User actor) {
-        actor.gameMessage("You have been awarded a production action.");
-        actor.askForServants(0);
-    }
 
-
-    public void performFastProduction(int baseStr, int servantsDeployed, User actor) {
+    public void performFastProduction(int servantsDeployed, User actor) {
         if (servantsDeployed > actor.getPlayer().getResources().getServants()) {
             getLog().log(Level.SEVERE, "Trying to deploy too many servants!");
             return;
         }
         this.currentProductionAccumulator = new Assets(actor.getPlayer().getDefaultProductionBonus());
-        int actionStrength = game.calcProductionActionStr(null, servantsDeployed, baseStr);
+        int actionStrength = game.calcProductionActionStr(null, servantsDeployed, fastActionStr.getProductionBonus());
         for (Card card: actor.getPlayer().getCardsOfColor(YELLOW_COLOR)) {
             YellowCard activeCard = (YellowCard) card;
             if (activeCard.getActionStrength().getProductionBonus() <= actionStrength)
@@ -332,29 +362,20 @@ public class GameController {
         }
     }
 
-    public ArrayList<Player> getActualplayingOrder() {
+    public ArrayList<Player> getActualPlayingOrder() {
         return this.game.getPlayers();
     }
 
     /**
      * This method handles the whole logic to perform a fast tower action, activated by an immediate effect
-     * @param optionalBaseStr
+     * @param
      * @param actor
      */
-    public void fastTowerAction(HashMap<String, Integer> optionalBaseStr, Assets optionalDiscount, User actor) {
-        Map<String, Integer> activeBonuses = optionalBaseStr.entrySet().stream()
-                .filter(option -> option.getValue() > 0)
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-        HashMap<String, Integer> availableTowers = new HashMap<>(activeBonuses);
-        String targetTower;
-        int targetFloor;
-        //TODO: ask for servants to deploy!
-        do {
-            targetTower = actor.chooseTower(availableTowers);
-            targetFloor = actor.chooseFloor();
-        } while (this.game.isFastTowerMoveAllowed(targetTower,targetFloor,actor.getPlayer()));
-        Card pickedCard = this.game.getTower(targetTower).getFloor(targetFloor).pullCard();
-        actor.getPlayer().addCard(pickedCard, targetTower);
+    public void performFastTowerMove(int servantsDeployed, String towerColor, int floor, User actor) {
+
+        if (this.game.isFastTowerMoveAllowed(towerColor, floor,actor.getPlayer()));
+        Card pickedCard = this.game.getTower(towerColor).getFloor(floor).pullCard();
+        actor.getPlayer().addCard(pickedCard, towerColor);
         pickedCard.getImmediateEffects().stream().filter(ie -> ie instanceof AssetsEffect
                 || ie instanceof AssetsMultipliedEffect || ie instanceof CardMultipliedEffect
                 || ie instanceof CouncilFavorsEffect)
