@@ -73,6 +73,7 @@ public class SocketServer {
                 } catch (IOException ioe) {
                     getLog().log(Level.SEVERE, "[SOCKET]: Could not create a new thread", ioe);
                 }
+                Thread.currentThread().interrupt();
             }
         }
     }

@@ -1,40 +1,63 @@
 package it.polimi.ingsw.lim.network.client.socket;
 
-import it.polimi.ingsw.lim.network.client.MainClient;
+import it.polimi.ingsw.lim.exceptions.LoginFailedException;
+import it.polimi.ingsw.lim.model.Board;
+import it.polimi.ingsw.lim.model.Player;
+import it.polimi.ingsw.lim.ui.UIController;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.logging.Level;
 
-import static it.polimi.ingsw.lim.network.SocketConstants.*;
-import static it.polimi.ingsw.lim.network.client.MainClient.getClientUI;
+import static it.polimi.ingsw.lim.network.ServerConstants.*;
 
 /**
  * Created by ava on 20/06/17.
  */
 class ServerCommandHandler {
 
-    ServerCommandHandler(SocketClient handlerCallback, MainClient uiCallback) {
+    /**
+     * Socket client's reference.
+     */
+    private SocketClient clientCallback;
+    private UIController uiCallback;
+
+    /**
+     * Constructor.
+     * @param handlerCallback
+     * @param uiCallback
+     */
+    ServerCommandHandler(SocketClient handlerCallback, UIController uiCallback) {
         this.clientCallback = handlerCallback;
         this.uiCallback = uiCallback;
     }
 
-    private  SocketClient clientCallback;
-    //TODO: do we need this?
-    private MainClient uiCallback;
-
-    void requestHandler(Object obj) {
-        if(obj instanceof String) {
-            ArrayList<String> command = new ArrayList<String>(Arrays.asList(((String) obj).split(" ")));
+    /**
+     * Parse the input object for calling the correspondent method.
+     * @param obj
+     */
+    void requestHandler(Object obj) throws LoginFailedException {
+        if (obj instanceof String) {
+            ArrayList<String> command = new ArrayList<>(Arrays.asList(((String) obj).split(SPLITTER_REGEX)));
             String commandIdentifier = command.get(0);
-            if (commandIdentifier.equals(LOGIN_SUCCESSFUL)) {
-                getClientUI().printMessageln("Login successful!");
-            } else if(commandIdentifier.equals(ASK_SERVANTS_AMOUNT)) {
-
-            } else if (commandIdentifier.equals(CHAT)) {
-                //The server has received a chat message from the client, it has to deliver it to other room mates.
-                getClientUI().printMessageln("[CHAT] message from "+command.get(1)+": "+command.get(2));
+            if (commandIdentifier.equalsIgnoreCase(LOGIN_REQUEST)) {
+                String[] loginInfo = uiCallback.sendLoginInfo();
+                clientCallback.login(loginInfo[0], loginInfo[1]);
+            } else if (commandIdentifier.equalsIgnoreCase(LOGIN_SUCCESSFUL)) {
+                uiCallback.startWaitRequest();
+            } else if (commandIdentifier.equalsIgnoreCase(LOGIN_FAILED)) {
+                uiCallback.getClientUI().printError(command.get(1));
+            } else if (commandIdentifier.equalsIgnoreCase(TURN)) {
+                uiCallback.setIsMyTurn(Boolean.valueOf(command.get(1)));
+            } else if (commandIdentifier.equalsIgnoreCase(CHAT)) {
+                uiCallback.getClientUI().printChatMessage(command.get(1), command.get(2));
             }
+        } else if (obj instanceof Board) {
+            Board board = (Board)obj;
+            uiCallback.updateBoard(board);
+
+        } else if (obj instanceof Player) {
+            ArrayList<Player> players = new ArrayList<>(); //TODO: how can i convert obj in an arrayList of player
+            uiCallback.updatePlayers(players);
         }
     }
 }

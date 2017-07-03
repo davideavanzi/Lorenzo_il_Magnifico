@@ -1,20 +1,28 @@
 package it.polimi.ingsw.lim.network.server.socket;
 
+import it.polimi.ingsw.lim.Log;
 import it.polimi.ingsw.lim.controller.User;
-import it.polimi.ingsw.lim.network.server.ClientInterface;
+import it.polimi.ingsw.lim.exceptions.LoginFailedException;
+import it.polimi.ingsw.lim.model.Board;
+import it.polimi.ingsw.lim.model.Player;
+import it.polimi.ingsw.lim.network.server.MainServer;
 
 import static it.polimi.ingsw.lim.Log.*;
+import static it.polimi.ingsw.lim.network.ServerConstants.*;
 import static it.polimi.ingsw.lim.network.server.MainServer.addUserToRoom;
 
 import java.io.*;
 import java.net.Socket;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Level;
 
 /**
  * Created by Nico.
  * This class handles the connection to a socket client.
  */
-public class SocketClientHandler implements Runnable, ClientInterface {
+public class SocketClientHandler implements Runnable {
 
     /**
      * Socket for communicate with client.
@@ -22,9 +30,14 @@ public class SocketClientHandler implements Runnable, ClientInterface {
     private Socket socketClient;
 
     /**
-     *
+     * User's reference.
      */
     private User user = null;
+
+    /**
+     * Show if the client is logged.
+     */
+    private boolean isClientLogged = false;
 
     /**
      * Input and output stream for the client-server communication.
@@ -35,7 +48,7 @@ public class SocketClientHandler implements Runnable, ClientInterface {
     /**
      * Socket client command handler.
      */
-    private ClientCommandHandler commandHandler;
+    private ClientCommandHandler clientCommandHandler;
 
     /**
      * Default constructor.
@@ -43,32 +56,132 @@ public class SocketClientHandler implements Runnable, ClientInterface {
      */
     SocketClientHandler(Socket socketClient) {
         this.socketClient = socketClient;
-        commandHandler = new ClientCommandHandler(this);
+        clientCommandHandler = new ClientCommandHandler(this);
     }
 
-    /*private void waitRequest() {
+    /**
+     * @return the user.
+     */
+    public User getUser() { return user; }
+
+    void sendIfUserPlaying(boolean isPlaying) {
+        sendObjectToClient(TURN + SPLITTER + isPlaying);
+    }
+
+    void askClientServants(int minimum) {
+        sendObjectToClient(SERVANT + SPLITTER + minimum);
+    }
+
+    /**
+     * It's used for the updated board and ArrayList of connected (to the server) users.
+     * @param board
+     * @param players
+     */
+    void sendGameToClient(Board board, ArrayList<Player> players) {
+        sendObjectToClient(board);
+        sendObjectToClient(players);
+    }
+
+    /**
+     * This method sends a chat message to the user
+     * @param sender
+     * @param message
+     */
+    void chatMessageToClient(String sender, String message) {
+        sendObjectToClient(CHAT + SPLITTER + sender + SPLITTER + message);
+    }
+
+    /**
+     * Print notification to the client.
+     * @param message
+     */
+    public void printToClient(String message) {
+        sendObjectToClient(message);
+    }
+
+    /**
+     * This method is the only that write object to the socket client.
+     * @param obj
+     * @throws IOException
+     */
+    private void sendObjectToClient(Object obj) {
+        try {
+            objFromServer.writeObject(obj);
+            objFromServer.flush();
+            objFromServer.reset();
+        } catch (IOException e) {
+            getLog().log(Level.SEVERE, "[SOCKET]: Could not send object to the client", e);
+        }
+    }
+
+    public void login(String username, String password, SocketClientHandler handlerCallback) throws LoginFailedException {
+        try {
+            if (MainServer.getJDBC().isAlreadySelectedUserName(username)) {
+                if (MainServer.getJDBC().isUserContained(username, password)) {
+                    addUserToRoom(new SocketUser(username, handlerCallback));
+                    Log.getLog().log(Level.INFO, "[LOGIN]: Login successful. Welcome back ".concat(username));
+                } else {
+                    Log.getLog().log(Level.SEVERE, "[LOGIN]: Bad password or username ".concat(username).concat("already selected?"));
+                    return;
+                }
+            } else {
+                MainServer.getJDBC().insertRecord(username, password);
+                this.user = new SocketUser(username, handlerCallback);
+                addUserToRoom(this.user);
+                Log.getLog().log(Level.INFO, "[LOGIN]: Login successful");
+            }
+        } catch (SQLException e) {
+            Log.getLog().log(Level.SEVERE, "[SQL]: Login failed");
+            return;
+        }
+    }
+
+    /**
+     * Wait for input and pass it to a parser.
+     */
+    private void waitRequest() {
+        int tries = 0;
         while(true) {
             try {
                 Object command = objToServer.readObject();
-                commandHandler.requestHandler(command);
+                clientCommandHandler.requestHandler(command);
             } catch (IOException | ClassNotFoundException e) {
-                getLog().log(Level.SEVERE, "[SOCKET]: Could not receive object from client", e);
+                getLog().log(Level.SEVERE, "[SOCKET]: Could not receive object from client, " +
+                        "maybe client is offline?\nRetrying " + (2 - tries) + " times.", e);
+                tries++;
+                if (tries == 3) {
+                    this.user.hasDied();
+                    return;
+                }
             }
         }
-    }*/
-
-    /**
-     * This is the login method.
-     * @throws IOException
-     * @throws ClassNotFoundException
-     */
-    private void login() throws IOException, ClassNotFoundException {
-        String username = (String)objToServer.readObject();
-        //TODO: sistema di autenticazione (salvare utenti in un file/db, se utente esistente se vuole caricare stat.)
-        user = new User(username, this);
-        addUserToRoom(user);
-        System.out.println("added to room");
     }
+
+    private boolean loginRequest() {
+        int loginFailed = 0;
+        while (true) {
+            sendObjectToClient(LOGIN_REQUEST);
+            try {
+                Object loginInfo = objToServer.readObject();
+                ArrayList<String> command = new ArrayList<>(Arrays.asList(((String) loginInfo).split(SPLITTER_REGEX)));
+                if (command.get(0).equals(LOGIN)) {
+                    login(command.get(1), command.get(2), this);
+                    sendObjectToClient(LOGIN_SUCCESSFUL);
+                    return isClientLogged = true;
+                }
+            } catch (IOException | ClassNotFoundException e) {
+                getLog().log(Level.SEVERE, ("[SOCKET]: Could not receive login information from client, retrying "
+                        + (2 - loginFailed) + " times"), e);
+                loginFailed++;
+                if (loginFailed == 3) {
+                    return isClientLogged = false;
+                }
+            } catch (LoginFailedException e) {
+                sendObjectToClient(LOGIN_FAILED + SPLITTER + e.getMessage());
+            }
+        }
+    }
+
 
     /**
      * Create I/O stream for socket connection.
@@ -76,10 +189,11 @@ public class SocketClientHandler implements Runnable, ClientInterface {
     private void createStream() {
         try {
             // Input and output stream
-            objFromServer = new ObjectOutputStream(socketClient.getOutputStream());
-            objToServer = new ObjectInputStream(socketClient.getInputStream());
+            this.objFromServer = new ObjectOutputStream(socketClient.getOutputStream());
+            objFromServer.flush();
+            this.objToServer = new ObjectInputStream(socketClient.getInputStream());
         } catch (IOException e) {
-            getLog().log(Level.SEVERE, "Could not create I/O stream", e);
+            getLog().log(Level.SEVERE, "[SOCKET]: Could not create I/O stream", e);
         }
     }
 
@@ -88,114 +202,7 @@ public class SocketClientHandler implements Runnable, ClientInterface {
      */
     public void run() {
         createStream();
-        // If the login failed more than 3 times the thread exit
-        while(user == null && loginFailed < 3) {
-            try {
-                login();
-            } catch (IOException | ClassNotFoundException e) {
-                loginFailed++;
-                getLog().log(Level.SEVERE, "[SOCKET]: Could not perform login", e);
-            }
-        }
-        //commandHandler.requestHandler();
-        waitRequest();
-    }
-
-    public void printToClient(String message) {
-        try {
-            objFromServer.writeObject(message);
-        } catch (IOException e) {
-            getLog().log(Level.SEVERE, "[SOCKET]: Could not send String to client", e);
-        }
-
-    }
-
-    public int askForServants(int minimum) {
-        /*
-        try {
-            objFromServer.writeObject();
-        } catch (IOException e) {
-            getLog().log(Level.SEVERE, () -> "[SOCKET] can't send command to server");
-        }*/
-        return 0;
-    }
-
-    /**
-     * This method sends a chat message to the user
-     * @param sender
-     * @param message
-     */
-    public void chatMessage(String sender, String message) {
-        try {
-            getLog().log(Level.INFO, () -> "Sending chat message to user ");
-            objFromServer.writeObject("CHAT "+sender+" "+message);
-            objFromServer.flush();
-        } catch (IOException e) {
-            getLog().log(Level.SEVERE, () -> "[SOCKET] can't send chat message to client");
-        }
-    }
-
-    public User getUser() {
-        return user;
+        if (loginRequest())
+            waitRequest();
     }
 }
-
-/*
-        String commandReceived;
-
-        try {
-            // Input and output stream
-            objFromServer = new ObjectOutputStream(socketClient.getOutputStream());
-            objToServer = new ObjectInputStream(socketClient.getInputStream());
-        } catch (IOException ioe) {
-            getLog().log(Level.SEVERE,"Could not open I/O stream", ioe);
-        }
-
-        while (isClientConnected) {
-            try {
-                printToClient("EXECUTE LOGIN:");
-                // Read incoming command from the client
-                commandReceived = (String)objToServer.readObject();
-                System.out.println("Login from user with name: "+commandReceived);
-
-                // Check if server is still running
-                if (!(SocketServer.getIsServerRunning())) {
-                    getLog().log(Level.INFO,"Server already stopped, killing the client thread");
-                    objFromServer.writeObject("Server already stopped");
-                    isClientConnected = false;
-                }
-
-                // Command List
-                switch (commandReceived.toLowerCase()) {
-                    case "quit":
-                    case "exit":
-                        isClientConnected = false;
-                        getLog().log(Level.INFO,"Quitting from thread");
-                        objFromServer.writeObject("Quitting...");
-                        break;
-
-                    case "help":
-                        objFromServer.writeObject("Help command");
-                        break;
-
-                    default:
-                        objFromServer.writeObject("Command not found: "+commandReceived);
-                }
-            } catch (IOException ioe) {
-                getLog().log(Level.SEVERE,"Could not reading incoming command", ioe);
-            } catch (ClassNotFoundException cnfe) {
-                getLog().log(Level.SEVERE,"ClassNotFoundException raised", cnfe);
-            }
-        }
-
-        // Close the stream and the client socket
-        try {
-            objToServer.close();
-            objFromServer.close();
-            getLog().log(Level.INFO, "The input and output stream are closed");
-            socketClient.close();
-            getLog().log(Level.INFO, "The server socket is closed");
-        } catch (IOException ioe) {
-            getLog().log(Level.SEVERE,"Could not close stream or socket", ioe);
-        }
-*/
