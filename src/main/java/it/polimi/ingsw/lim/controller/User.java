@@ -11,6 +11,11 @@ import java.util.logging.Level;
 
 import static it.polimi.ingsw.lim.Log.getLog;
 
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+
+import static it.polimi.ingsw.lim.Log.getLog;
+
 /**
  * Created by Davide on 26/05/2017.
  * This class represent the person playing the game. It has a unique username picked from the db upon login.
@@ -54,6 +59,7 @@ public abstract class User {
         return username;
     }
 
+<<<<<<< HEAD
     public Room getRoom() {
         return room;
     }
@@ -160,4 +166,23 @@ public abstract class User {
 
     public abstract void notifyFastTowerMove(HashMap<String, Integer> baseStr, Assets optionalPickDiscount);
 
+=======
+    public int askForServants(int minimum) {
+        try {
+            return clientInterf.askForServants(minimum);
+        } catch (RemoteException e) {
+            getLog().log(Level.SEVERE, "[RMI] Connection error asking for servants");
+            return -1; //TODO: wut?
+        }
+
+    }
+
+    public void chatMessage(String sender, String message) {
+        try {
+            clientInterf.chatMessage(sender, message);
+        } catch (RemoteException e) {
+            getLog().log(Level.SEVERE, "[RMI] Connection error Sending message to user");
+        }
+    }
+>>>>>>> sshGithub/tmpnico
 }

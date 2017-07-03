@@ -59,15 +59,6 @@ public class RMIUser extends User {
     }
 
     @Override
-    public void sendChatMessage(String sender, String message) {
-        try {
-            RMIServer.chatMessageToClient(sender, message, this.rci);
-        } catch (RemoteException e) {
-            getLog().log(Level.SEVERE, "[RMI]: Remote error sending chat message to client.");
-        }
-    }
-
-    @Override
     public void askForServants(int minimumAmount) {
         try {
             RMIServer.askClientServants(minimumAmount, this.rci);
@@ -76,13 +67,17 @@ public class RMIUser extends User {
         }
     }
 
-    public void askProductionOptions(ArrayList<ArrayList<Assets[]>> options) {
-
+    @Override
+    public void sendChatMessage(String sender, String message) {
+        try {
+            RMIServer.chatMessageToClient(sender, message, this.rci);
+        } catch (RemoteException e) {
+            getLog().log(Level.SEVERE, "[RMI]: Remote error sending chat message to client.");
+        }
     }
 
-    @Override
-    public int chooseProduction(ArrayList<Assets[]> options) {
-        return 0; //TODO: implement
+    public void askProductionOptions(ArrayList<ArrayList<Assets[]>> options) {
+
     }
 
     @Override

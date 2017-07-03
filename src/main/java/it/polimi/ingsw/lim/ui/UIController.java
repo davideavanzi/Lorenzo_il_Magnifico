@@ -1,7 +1,6 @@
 package it.polimi.ingsw.lim.ui;
 
 import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
-import it.polimi.ingsw.lim.exceptions.LoginFailedException;
 import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.Player;
 import it.polimi.ingsw.lim.network.client.RMI.RMIClient;
@@ -11,8 +10,6 @@ import it.polimi.ingsw.lim.network.client.socket.SocketClient;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
-
-import static it.polimi.ingsw.lim.ui.UIController.UIConstant.*;
 
 /**
  * Created by nico.
@@ -131,8 +128,16 @@ public class UIController {
         UIController.clientProtocol = clientProtocol;
     }
 
-    public Player getPlayer(String nickname) {
-        return getLocalPlayers().stream().filter(pl -> pl.getNickname().equals(nickname)).findFirst().orElse(null);
+    Player getPlayer(String username) {
+        return getLocalPlayers().stream().filter(pl -> pl.getNickname().equals(username)).findFirst().orElse(null);
+    }
+
+    void sendPlaceFM(String color, ArrayList<String> position, String servants) {
+        try {
+            clientProtocol.placeFM(color, position, servants, username);
+        } catch (ClientNetworkException e) {
+            clientUI.printError(e.getMessage());
+        }
     }
 
     void sendChatMessage(String message) {

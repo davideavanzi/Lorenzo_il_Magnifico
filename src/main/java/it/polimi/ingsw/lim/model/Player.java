@@ -102,7 +102,11 @@ public class Player implements Serializable{
         this.familyMembers.add(fm);
     }
 
-    public ArrayList<FamilyMember> getFamilyMember() { return this.familyMembers; }
+    public ArrayList<FamilyMember> getFamilyMembers() { return this.familyMembers; }
+
+    public FamilyMember getFamilyMember(String color) {
+        return this.familyMembers.stream().filter(fm -> fm.getDiceColor().equals(color)).findFirst().orElse(null);
+    }
 
     public String getColor(){
         return this.color;

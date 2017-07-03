@@ -1,9 +1,11 @@
 package it.polimi.ingsw.lim.network.server.RMI;
 
 import it.polimi.ingsw.lim.Log;
+import it.polimi.ingsw.lim.controller.GameController;
 import it.polimi.ingsw.lim.controller.User;
 import it.polimi.ingsw.lim.exceptions.LoginFailedException;
 import it.polimi.ingsw.lim.model.Board;
+import it.polimi.ingsw.lim.model.FamilyMember;
 import it.polimi.ingsw.lim.model.Player;
 import it.polimi.ingsw.lim.network.client.RMI.RMIClientInterf;
 import it.polimi.ingsw.lim.network.server.MainServer;
@@ -17,7 +19,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
-import static it.polimi.ingsw.lim.network.ServerConstants.LOGIN_SUCCESSFUL;
 import static it.polimi.ingsw.lim.network.server.MainServer.addUserToRoom;
 
 /**
@@ -48,6 +49,41 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
 
     static int askClientServants(int minimum, RMIClientInterf rmiClient) throws RemoteException {
         return rmiClient.askUserServants(minimum);
+    }
+
+    @Override
+    public void moveInCouncil(String fmColor, int servants, String username) throws RemoteException {
+        GameController gc = MainServer.getUserFromUsername(username).getRoom().getGameController();
+        FamilyMember fm = MainServer.getUserFromUsername(username).getPlayer().getFamilyMember(fmColor);
+        gc.moveInCouncil(fm, servants);
+    }
+
+    @Override
+    public void moveInHarvest(String fmColor, int servants, String username) throws RemoteException {
+        GameController gc = MainServer.getUserFromUsername(username).getRoom().getGameController();
+        FamilyMember fm = MainServer.getUserFromUsername(username).getPlayer().getFamilyMember(fmColor);
+        gc.moveInHarvest(fm, servants);
+    }
+
+    @Override
+    public void moveInProduction(String fmColor, int servants, String username) throws RemoteException {
+        GameController gc = MainServer.getUserFromUsername(username).getRoom().getGameController();
+        FamilyMember fm = MainServer.getUserFromUsername(username).getPlayer().getFamilyMember(fmColor);
+        gc.moveInProduction(fm, servants);
+    }
+
+    @Override
+    public void moveInMarket(String fmColor, int marketSlot, int servants, String username) throws RemoteException {
+        GameController gc = MainServer.getUserFromUsername(username).getRoom().getGameController();
+        FamilyMember fm = MainServer.getUserFromUsername(username).getPlayer().getFamilyMember(fmColor);
+        gc.moveInMarket(fm, marketSlot, servants);
+    }
+
+    @Override
+    public void moveInTower(String fmColor, String twrColor, int floor, int servants, String username) throws RemoteException {
+        GameController gc = MainServer.getUserFromUsername(username).getRoom().getGameController();
+        FamilyMember fm = MainServer.getUserFromUsername(username).getPlayer().getFamilyMember(fmColor);
+        gc.moveInTower(fm, twrColor, floor, servants);
     }
 
     /**

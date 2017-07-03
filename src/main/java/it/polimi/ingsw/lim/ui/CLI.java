@@ -3,7 +3,6 @@ package it.polimi.ingsw.lim.ui;
 import it.polimi.ingsw.lim.Lock;
 import it.polimi.ingsw.lim.exceptions.InvalidInputException;
 import it.polimi.ingsw.lim.model.*;
-import it.polimi.ingsw.lim.model.cards.Card;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Console;
@@ -36,7 +35,7 @@ public class CLI extends AbsUI {
     /**
      * If the input is a int it'll store here.
      */
-    private int inputNum;
+    private Integer inputNum;
 
     private UIController uiCallback;
 
@@ -58,11 +57,120 @@ public class CLI extends AbsUI {
 
     @Override
     public int sendServantsToServer(int minimum) {
-        printMessageln("How many servants do you want to use in this action? Minimum: " + minimum);
+        printMessageln("How many servants would you like to use in this action? Minimum: " + minimum);
         while(!userInput.hasNextInt()) {
             userInput.next();
         }
         return inputNum = userInput.nextInt();
+    }
+
+    private String fmServant() {
+        printMessageln("How many servants would you like to put here?");
+        do {
+            inputNum = userInput.nextInt();
+        } while (inputNum >= 0);
+        return inputNum.toString();
+    }
+
+    private ArrayList<String> fmPosition() {
+        String[] board4Player =
+                {"Green Tower", "Yellow Tower", "Blue Tower", "Purple Tower", "Council", "Production", "Harvest", "Market"};
+        String[] board5Player =
+                {"Green Tower", "Yellow Tower", "Blue Tower", "Purple Tower", "Black Tower", "Council", "Production", "Harvest", "Market"};
+        ArrayList<String> destination = new ArrayList<>();
+        int count = 1;
+        printMessageln("Where would you like to put it?");
+
+        //Two players
+        if (uiCallback.getLocalPlayers().size() < 3) {
+            for (String pos : board4Player)
+                printMessageln(count + ") " + pos);
+            do {
+                inputNum = userInput.nextInt();
+            } while (inputNum-1 >= 0 && inputNum-1 < 8);
+            destination.add(board4Player[inputNum]);
+            if (inputNum-1 >= 0 && inputNum-1 < 4) { //If tower, select the floor
+                printMessage("Please select the floor: (1/2/3/4) ");
+                do {
+                    inputNum = userInput.nextInt();
+                } while (inputNum-1 >= 0 && inputNum-1 < 4);
+                destination.add(inputNum.toString());
+            } else if (inputNum == 8) { //If market, select the slot
+                printMessageln("Please select the market slot: (1/2) ");
+                do {
+                    inputNum = userInput.nextInt();
+                } while (inputNum-1 >= 0 && inputNum-1 < 2);
+                destination.add(inputNum.toString());
+            }
+            return destination;
+        }
+
+        //Three/Four players
+        if (uiCallback.getLocalPlayers().size() < 5) {
+            for (String pos : board4Player)
+                printMessageln(count + ") " + pos);
+            do {
+                inputNum = userInput.nextInt();
+            } while (inputNum-1 >= 0 && inputNum-1 < 8);
+            destination.add(board4Player[inputNum]);
+            if (inputNum-1 >= 0 && inputNum-1 < 4) { //If tower, select the floor
+                printMessage("Please select the floor: (1/2/3/4) ");
+                do {
+                    inputNum = userInput.nextInt();
+                } while (inputNum-1 >= 0 && inputNum-1 < 4);
+                destination.add(inputNum.toString());
+            } else if (inputNum == 8) { //If market, select the slot
+                printMessageln("Please select the market slot: (1/2/3/4) ");
+                do {
+                    inputNum = userInput.nextInt();
+                } while (inputNum-1 >= 0 && inputNum-1 < 4);
+                destination.add(inputNum.toString());
+            }
+            return destination;
+        }
+
+        //Five players
+        if (uiCallback.getLocalPlayers().size() < 6) {
+            for (String pos : board5Player)
+                printMessageln(count + ") " + pos);
+            do {
+                inputNum = userInput.nextInt();
+            } while (inputNum-1 >= 0 && inputNum-1 < 9);
+            destination.add(board5Player[inputNum]);
+            if (inputNum-1 >= 0 && inputNum-1 < 5) { //If tower, select the floor
+                printMessage("Please select the floor: (1/2/3/4) ");
+                do {
+                    inputNum = userInput.nextInt();
+                } while (inputNum-1 >= 0 && inputNum-1 < 5);
+                destination.add(inputNum.toString());
+            } else if (inputNum == 9) { //If market, select the slot
+                printMessageln("Please select the market slot: (1/2/3/4/5) ");
+                do {
+                    inputNum = userInput.nextInt();
+                } while (inputNum-1 >= 0 && inputNum-1 < 5);
+                destination.add(inputNum.toString());
+            }
+            return destination;
+        }
+        return null;
+    }
+
+    private String fmColor() {
+        printMessageln("What family member would you like to place?");
+        int count = 1;
+        for (FamilyMember fm : uiCallback.getPlayer(uiCallback.getUsername()).getFamilyMembers()) {
+            printMessageln(count + ") " + fm.getDiceColor());
+            count++;
+        }
+        do {
+            inputNum = userInput.nextInt();
+        } while (inputNum > 0 && inputNum <= count);
+        return uiCallback.getPlayer(uiCallback.getUsername()).getFamilyMembers().get(inputNum - 1).getDiceColor();
+    }
+
+    @Override
+    public void placeFamilyMember() {
+        uiCallback.sendPlaceFM(fmColor(), fmPosition(), fmServant());
     }
 
     /**
@@ -84,7 +192,7 @@ public class CLI extends AbsUI {
      */
     private void turnOrder() {
         turnForm();
-        for (Player pl : this.uiCallback.getLocalPlayers())
+        for (Player pl : uiCallback.getLocalPlayers())
             printMessageln(pl.getNickname());
     }
 
@@ -156,7 +264,7 @@ public class CLI extends AbsUI {
         availableCmdList.put(INFO, () -> personalInformation());
 
         if(uiCallback.getIsMyTurn()) {
-            //availableCmdList.put(FAMILY_MEMBER, () -> );
+            availableCmdList.put(FAMILY_MEMBER, () -> placeFamilyMember());
             //availableCmdList.put(LEADER_CARD, () -> );
         }
     }
@@ -230,68 +338,8 @@ public class CLI extends AbsUI {
     public void printBoard(){
         this.printTowers();
         this.printMarket();
-        //this.printFaithPointsTrack();
+        this.printFaithPointsTrack();
         this.printVictoryPointsTrack();
-        this.printPlayerBoard(); //todo remove test;
-    }
-
-    public void printPlayerBoard(){
-        ArrayList<Player> players = this.uiCallback.getLocalPlayers();
-        for(Player player: players){
-                printPlayer(player);
-        }
-    }
-
-    private void printPlayer(Player player){
-        printPlayerCards(GREEN_COLOR, player);
-        printPlayerCards(BLUE_COLOR, player);
-        printPlayerCards(YELLOW_COLOR, player);
-        printPlayerCards(PURPLE_COLOR, player);
-        if(this.uiCallback.getLocalPlayers().size() == 5) {
-            printPlayerCards(BLACK_COLOR, player);
-        }
-        String format = "||%-20s||\n";
-        String s = "________________________";
-        String sRid = "_  _  _  _  _  _  _  _  ";
-        printMessageln(s);
-        printMessageln("");
-        System.out.format(format, StringUtils.center("ASSETS PLAYER: ",20));
-        System.out.format(format, StringUtils.center(player.getNickname(), 20));
-        printMessageln(sRid);
-        printAsset(player.getResources());
-        printMessage("");
-        printMessage(s);
-        printMessageln("");
-        printMessageln("");
-    }
-
-    private void printPlayerCards(String color, Player player){
-        String format = "||%-142s||\n";
-        String s = ("__________________________________________________________________________________________________________________________________________________");
-        String sRid = ("+_  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  +");
-        printMessageln(s);
-        System.out.format(format, "");
-        System.out.format(format, StringUtils.center("PLAYER ".concat(player.getNickname()).concat(": ").concat(color).concat(" CARDS"), 142));
-        System.out.format(format, "");
-        printMessageln(sRid);
-        System.out.format(format, "");
-        if(player.getCardsOfColor(color).size() > 0){
-            format = "|%1$-40s|";
-            int i = 0;
-            for(Card card: player.getCardsOfColor(color)){
-                System.out.format(format, StringUtils.center(card.getName(), 40));
-                i++;
-                if(i % 3 == 0) {
-                    System.out.println("|\n");
-                }
-            }
-        }
-        else{
-            System.out.format(format, StringUtils.center("No cards to show", 142));
-        }
-        printMessageln(s);
-        printMessageln("");
-        printMessageln("");
     }
 
     private void printTower(String color){
@@ -421,7 +469,7 @@ public class CLI extends AbsUI {
             printMessageln(("|| Coins:\t\t\t"+asset.getCoins()).concat(" ||"));
         }
         if(asset.getWood() != 0){
-            printMessageln(("|| Woods:\t\t\t"+asset.getWood()).concat(" ||"));
+            printMessageln(("|| Woods:\t\t\t\t"+asset.getWood()).concat(" ||"));
         }
         if(asset.getStone() != 0){
             printMessageln(("|| Stones:\t\t\t"+asset.getStone()).concat(" ||"));

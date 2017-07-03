@@ -56,7 +56,7 @@ public class Room {
         usersList.forEach(user -> user.sendChatMessage(sender, message));
     }
 
-    public void broadcastMessage(String message) {
+    void broadcastMessage(String message) {
         usersList.forEach(user -> user.broadcastMessage(message));
     }
 
@@ -70,13 +70,13 @@ public class Room {
 
     public boolean isOpen() { return roomOpen; }
 
-    public void fmPlaced() { this.round.decreaseFmAmount(); }
+    void fmPlaced() { this.round.decreaseFmAmount(); }
 
     /**
      * This method is called when a round has ended and switches the round to the next player.
      * TODO: handle disconnected players
      */
-    public void switchTurn(){
+    void switchTurn(){
         int size = playOrder.size();
         int i = 0;
         this.turnNumber++;
@@ -110,11 +110,11 @@ public class Room {
         return new ArrayList<>(usersList.stream().filter(user -> user.isAlive()).collect(Collectors.toList()));
     }
 
-    GameController getGameController() {
+    public GameController getGameController() {
         return gameController;
     }
 
-    public User getPlayingUser() {
+    User getPlayingUser() {
         return getUser(this.round.getUserName());
     }
 

@@ -8,6 +8,7 @@ import it.polimi.ingsw.lim.ui.UIController;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.logging.Level;
 
 import static it.polimi.ingsw.lim.Log.getLog;
@@ -78,6 +79,13 @@ public class SocketClient implements Runnable, ServerInterface {
      * @return the server's socket port
      */
     private int getPort() {return port;}
+
+    public void placeFM(String color, ArrayList<String> position, String servants) {
+        if (position.get(1) == null)
+            sendObjToServer(FAMILY_MEMBER + SPLITTER + color + SPLITTER + position.get(0) + SPLITTER + servants);
+        else
+            sendObjToServer(FAMILY_MEMBER + SPLITTER + color + SPLITTER + position.get(0) + SPLITTER + position.get(1) + SPLITTER + servants);
+    }
 
     /**
      * Send chat message through the client's output stream.

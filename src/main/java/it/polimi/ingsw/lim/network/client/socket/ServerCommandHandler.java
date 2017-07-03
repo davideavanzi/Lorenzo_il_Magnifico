@@ -50,8 +50,6 @@ class ServerCommandHandler {
                 uiCallback.setIsMyTurn(Boolean.valueOf(command.get(1)));
             } else if (commandIdentifier.equalsIgnoreCase(CHAT)) {
                 uiCallback.getClientUI().printChatMessage(command.get(1), command.get(2));
-            } else if (commandIdentifier.equalsIgnoreCase(SERVANT)) {
-                uiCallback.manageCmd(SERVANT);
             }
         } else if (obj instanceof Board) {
             Board board = (Board)obj;

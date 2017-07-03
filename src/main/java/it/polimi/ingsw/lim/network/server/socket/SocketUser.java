@@ -60,10 +60,6 @@ public class SocketUser extends User {
     }
 
     @Override
-    public int chooseProduction(ArrayList<Assets[]> options) {
-        return 0; //TODO: implement
-    }
-
     public void askProductionOptions(ArrayList<ArrayList<Assets[]>> options) {
 
     }

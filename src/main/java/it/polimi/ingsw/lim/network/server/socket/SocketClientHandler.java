@@ -57,7 +57,6 @@ public class SocketClientHandler implements Runnable {
     SocketClientHandler(Socket socketClient) {
         this.socketClient = socketClient;
         clientCommandHandler = new ClientCommandHandler(this);
-
     }
 
     /**
@@ -175,7 +174,7 @@ public class SocketClientHandler implements Runnable {
                         + (2 - loginFailed) + " times"), e);
                 loginFailed++;
                 if (loginFailed == 3) {
-                    return false;
+                    return isClientLogged = false;
                 }
             } catch (LoginFailedException e) {
                 sendObjectToClient(LOGIN_FAILED + SPLITTER + e.getMessage());
