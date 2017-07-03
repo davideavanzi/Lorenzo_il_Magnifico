@@ -46,7 +46,7 @@ public class UIController {
     /**
      * List of player in the same Game, sort by turn order.
      */
-    private ArrayList<Player> localPlayers;
+    private static ArrayList<Player> localPlayers;
 
     /**
      * Map that link a identification string to a method.
@@ -84,10 +84,6 @@ public class UIController {
         }
     }
 
-    public Board getLocalBoard(){
-        return localBoard;
-    }
-
     /**
      * @return the abstract UI of client.
      */
@@ -99,7 +95,11 @@ public class UIController {
         return username;
     }
 
-    ArrayList<Player> getLocalPlayers() { return localPlayers; }
+    public Board getLocalBoard(){
+        return localBoard;
+    }
+
+    public ArrayList<Player> getLocalPlayers() { return localPlayers; }
 
     public boolean getIsMyTurn() { return isMyTurn; }
 
@@ -131,6 +131,10 @@ public class UIController {
         UIController.clientProtocol = clientProtocol;
     }
 
+    public Player getPlayer(String nickname) {
+        return getLocalPlayers().stream().filter(pl -> pl.getNickname().equals(nickname)).findFirst().orElse(null);
+    }
+
     void sendChatMessage(String message) {
         try {
             clientProtocol.chatMessageToServer(username, message);
@@ -143,7 +147,7 @@ public class UIController {
         clientUI.cmdManager(command);
     }
 
-    public void startGame() {
+    public void startWaitRequest() {
         clientUI.waitForRequest();
     }
 
@@ -159,7 +163,7 @@ public class UIController {
     /**
      *  Connect the client to the server with the previously chosen protocol.
      */
-    public void setNetworkProtocol() {
+    public void startGame() {
         String protocol = clientUI.setNetworkSettings();
         if (protocol.equals("socket")) {
             new Thread(new SocketClient(this)).start();

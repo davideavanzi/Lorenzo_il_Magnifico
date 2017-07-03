@@ -24,15 +24,15 @@ public abstract class Excommunication implements Serializable {
 
 
     /**
-     * Excommunicated players will be stored here.
+     * Excommunicated players will be stored here by their color.
      */
-    private ArrayList<Player> excommunicated;
+    private ArrayList<String> excommunicated;
 
     public int getAge() {
         return age;
     }
 
-    public ArrayList<Player> getExcommunicated() {
+    public ArrayList<String> getExcommunicated() {
         return excommunicated;
     }
 }

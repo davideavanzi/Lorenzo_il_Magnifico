@@ -43,7 +43,7 @@ class ServerCommandHandler {
                 String[] loginInfo = uiCallback.sendLoginInfo();
                 clientCallback.login(loginInfo[0], loginInfo[1]);
             } else if (commandIdentifier.equalsIgnoreCase(LOGIN_SUCCESSFUL)) {
-                uiCallback.startGame();
+                uiCallback.startWaitRequest();
             } else if (commandIdentifier.equalsIgnoreCase(LOGIN_FAILED)) {
                 uiCallback.getClientUI().printError(command.get(1));
             } else if (commandIdentifier.equalsIgnoreCase(TURN)) {

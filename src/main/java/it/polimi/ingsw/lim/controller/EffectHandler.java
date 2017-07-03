@@ -26,15 +26,15 @@ public class EffectHandler {
         if (effect.getStrength().getHarvestBonus() > 0) {
             //Perform fast harvest action
             recipient.getRoom().getGameController()
-                    .fastHarvestAction(effect.getStrength().getHarvestBonus(),recipient);
+                    .beginFastHarvest(effect.getStrength(),recipient);
         } else if (effect.getStrength().getProductionBonus() > 0) {
             recipient.getRoom().getGameController()
-                    .fastProductionAction(effect.getStrength().getHarvestBonus(),recipient);
+                    .beginFastProduction(effect.getStrength(),recipient);
         } else {
             /* Parse possible target towers and send them to the gameController */
             HashMap<String, Integer> targetTowers = new HashMap<>();
             recipient.getRoom().getGameController()
-                    .fastTowerAction(effect.getStrength().getTowerStrength(),effect.getDiscount(),recipient);
+                    .beginFastTowerMove(effect.getStrength(), effect.getDiscount(), recipient);
         }
     }
 

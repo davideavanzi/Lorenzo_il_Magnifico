@@ -3,6 +3,7 @@ import it.polimi.ingsw.lim.controller.GameController;
 import it.polimi.ingsw.lim.exceptions.GameSetupException;
 import it.polimi.ingsw.lim.model.cards.Card;
 import it.polimi.ingsw.lim.model.cards.PurpleCard;
+import it.polimi.ingsw.lim.model.excommunications.AssetsExcommunication;
 import it.polimi.ingsw.lim.model.excommunications.Excommunication;
 import it.polimi.ingsw.lim.parser.Parser;
 
@@ -129,7 +130,7 @@ public class Game {
         getLog().log(Level.INFO, () -> "Giving initial resources to"+playersNumber+"players");
         int moreCoin = 0;
         for (Player pl : players) {
-            pl.setResources(pl.getResources().add(parsedGame.getStartingGameBonus()).addCoins(moreCoin));
+            giveAssetsToPlayer(parsedGame.getStartingGameBonus().addCoins(moreCoin), pl);
             moreCoin++;
         }
 
@@ -526,6 +527,27 @@ public class Game {
 
     public Board getBoard() {
         return board;
+    }
+
+    public void removeAssetsFromPlayer(Assets assets, Player pl) {
+        pl.setResources(pl.getResources().subtract(assets));
+    }
+
+    /**
+     * this method gives an amount of assets to the player, it also applies eventual excommunication maluses
+     * @param assets
+     * @param pl
+     */
+    public void giveAssetsToPlayer(Assets assets, Player pl) {
+        //Player pl = getPlayerFromColor(player);
+        pl.setResources(pl.getResources().add(apllyExcommMalus(assets, pl)));
+    }
+
+    public Assets apllyExcommMalus(Assets assets, Player pl) {
+        Excommunication firstAgeExcomm = board.getExcommunications().get(0);
+        if (firstAgeExcomm instanceof AssetsExcommunication && firstAgeExcomm.getExcommunicated().contains(pl.getColor()))
+            return assets.subtractToZero(((AssetsExcommunication) firstAgeExcomm).getMalus());
+        return assets;
     }
 
     // ------------------------------------------------------------------------ Excommunications
