@@ -64,12 +64,21 @@ public class SocketClientHandler implements Runnable {
      */
     public User getUser() { return user; }
 
-    void sendIfUserPlaying(boolean isPlaying) {
-        sendObjectToClient(TURN + SPLITTER + isPlaying);
-    }
-
     void askClientServants(int minimum) {
         sendObjectToClient(SERVANT + SPLITTER + minimum);
+    }
+
+    /**
+     * This method sends a chat message to the user
+     * @param sender
+     * @param message
+     */
+    void chatMessageToClient(String sender, String message) {
+        sendObjectToClient(CHAT + SPLITTER + sender + SPLITTER + message);
+    }
+
+    void gameMessageToClient(String message) {
+        sendObjectToClient(GAME_MSG + SPLITTER + message);
     }
 
     /**
@@ -82,21 +91,8 @@ public class SocketClientHandler implements Runnable {
         sendObjectToClient(players);
     }
 
-    /**
-     * This method sends a chat message to the user
-     * @param sender
-     * @param message
-     */
-    void chatMessageToClient(String sender, String message) {
-        sendObjectToClient(CHAT + SPLITTER + sender + SPLITTER + message);
-    }
-
-    /**
-     * Print notification to the client.
-     * @param message
-     */
-    public void printToClient(String message) {
-        sendObjectToClient(message);
+    void sendIfUserPlaying(boolean isPlaying) {
+        sendObjectToClient(TURN + SPLITTER + isPlaying);
     }
 
     /**

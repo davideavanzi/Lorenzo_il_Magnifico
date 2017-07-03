@@ -48,13 +48,6 @@ public class CLI extends AbsUI {
         initializeCommandLine();
     }
 
-    /**
-     * Simply print on stdout a string.
-     */
-    private void turnForm() {
-        printMessageln("Turn order: ");
-    }
-
     @Override
     public int sendServantsToServer(int minimum) {
         printMessageln("How many servants would you like to use in this action? Minimum: " + minimum);
@@ -168,30 +161,15 @@ public class CLI extends AbsUI {
         return uiCallback.getPlayer(uiCallback.getUsername()).getFamilyMembers().get(inputNum - 1).getDiceColor();
     }
 
-    @Override
-    public void placeFamilyMember() {
+    private void placeFamilyMember() {
         uiCallback.sendPlaceFM(fmColor(), fmPosition(), fmServant());
-    }
-
-    /**
-     * Print to stdout a chat message.
-     * @param sender the sender's username.
-     * @param message the chat message.
-     */
-    @Override
-    public void printChatMessage(String sender, String message) {
-        printMessageln("[CHAT]: message from "+sender+": "+message);
-    }
-
-    private void personalInformation() {
-
     }
 
     /**
      * Print the currently turn order.
      */
     private void turnOrder() {
-        turnForm();
+        printMessageln("Turn order: ");
         for (Player pl : uiCallback.getLocalPlayers())
             printMessageln(pl.getNickname());
     }
@@ -261,7 +239,7 @@ public class CLI extends AbsUI {
         //Command HashMap
         availableCmdList.put(CHAT, () -> chat());
         availableCmdList.put(TURN, () -> turnOrder());
-        availableCmdList.put(INFO, () -> personalInformation());
+        //availableCmdList.put(INFO, () -> );
 
         if(uiCallback.getIsMyTurn()) {
             availableCmdList.put(FAMILY_MEMBER, () -> placeFamilyMember());
@@ -310,6 +288,21 @@ public class CLI extends AbsUI {
                     printError("Not a valid choice!");
             }
         }
+    }
+
+    /**
+     * Print to stdout a chat message.
+     * @param sender the sender's username.
+     * @param message the chat message.
+     */
+    @Override
+    public void printChatMessage(String sender, String message) {
+        printMessageln("[CHAT]: message from "+sender+": "+message);
+    }
+
+    @Override
+    public void printGameMessage(String message) {
+        printMessageln("[GAME]: "+message);
     }
 
     @Override

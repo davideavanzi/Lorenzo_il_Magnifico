@@ -80,7 +80,7 @@ public class SocketClient implements Runnable, ServerInterface {
      */
     private int getPort() {return port;}
 
-    public void placeFM(String color, ArrayList<String> position, String servants) {
+    public void placeFM(String color, ArrayList<String> position, String servants, String username) {
         if (position.get(1) == null)
             sendObjToServer(FAMILY_MEMBER + SPLITTER + color + SPLITTER + position.get(0) + SPLITTER + servants);
         else

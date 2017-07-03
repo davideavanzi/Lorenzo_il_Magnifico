@@ -14,6 +14,7 @@ public class ServerConstants {
     public final static String LOGIN_SUCCESSFUL = "LOGIN_SUCCESSFUL";
     public final static String LOGIN_FAILED = "LOGIN_FAILED";
 
+    public final static String GAME_MSG = "GAME_MSG";
     public final static String CHAT = "CHAT";
     public final static String TURN = "TURN";
     public final static String FAMILY_MEMBER = "FAMILY_MEMBER";

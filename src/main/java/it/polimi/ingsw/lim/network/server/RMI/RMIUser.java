@@ -35,11 +35,79 @@ public class RMIUser extends User {
         new Thread(new RMIAliveness(this)).start();
     }
 
-    /**
-     *
-     * @param board the game board
-     * @param players arrayList of connected player
-     */
+    @Override
+    public void notifyFastTowerMove(HashMap<String, Integer> baseStr, Assets optionalPickDiscount) {
+
+    }
+
+    @Override
+    public void notifyFastProduction(int baseStr) {
+
+    }
+
+    @Override
+    public void notifyFastHarvest(int baseStr) {
+
+    }
+
+    @Override
+    public void askProductionOptions(ArrayList<ArrayList<Assets[]>> options) {
+
+    }
+
+    @Override
+    public void askForOptionalBpPick(int requirement, int cost) {
+
+    }
+
+    @Override
+    public void askForServants(int minimumAmount) {
+        try {
+            RMIServer.askClientServants(minimumAmount, this.rci);
+        } catch (RemoteException e) {
+            getLog().log(Level.SEVERE, "[RMI]: Remote error sending chat message to client.");
+        }
+    }
+
+    @Override
+    public void askForExcommunication() {
+
+    }
+
+    @Override
+    public void chooseFavor(List<Assets> possibleFavors) {}
+
+    @Override
+    public void chooseTower(HashMap<String, Integer> possibleTowers) {
+
+    }
+
+    @Override
+    public void chooseFloor() {
+    }
+
+    @Override
+    public void sendChatMessage(String sender, String message) {
+        try {
+            RMIServer.chatMessageToClient(sender, message, this.rci);
+        } catch (RemoteException e) {
+            getLog().log(Level.SEVERE, "[RMI]: Remote error sending chat message to client.");
+        }
+    }
+
+    @Override
+    public void gameMessage(String message) {
+        try {
+            RMIServer.sendGameMessageToClient(message, this.rci);
+        } catch (RemoteException e) {
+            getLog().log(Level.SEVERE, "[RMI]: Remote error sending game message to client.");
+        }
+    }
+
+    @Override
+    public void broadcastMessage(String message) {
+    }
+
     @Override
     public void sendGameUpdate(Board board, ArrayList<Player> players) {
         try {
@@ -56,59 +124,6 @@ public class RMIUser extends User {
         } catch (RemoteException e) {
             getLog().log(Level.SEVERE, "[RMI]: Remote error sending board and arrayList of player to client.");
         }
-    }
-
-    @Override
-    public void askForServants(int minimumAmount) {
-        try {
-            RMIServer.askClientServants(minimumAmount, this.rci);
-        } catch (RemoteException e) {
-            getLog().log(Level.SEVERE, "[RMI]: Remote error sending chat message to client.");
-        }
-    }
-
-    @Override
-    public void sendChatMessage(String sender, String message) {
-        try {
-            RMIServer.chatMessageToClient(sender, message, this.rci);
-        } catch (RemoteException e) {
-            getLog().log(Level.SEVERE, "[RMI]: Remote error sending chat message to client.");
-        }
-    }
-
-    public void askProductionOptions(ArrayList<ArrayList<Assets[]>> options) {
-
-    }
-
-    @Override
-    public int chooseFavor(List<Assets> possibleFavors) {return 0;}
-
-    @Override
-    public void broadcastMessage(String message) {
-    }
-
-    @Override
-    public void gameMessage(String message) {
-    }
-
-    @Override
-    public String chooseTower(HashMap<String, Integer> possibleTowers) {
-        return null;
-    }
-
-    @Override
-    public int chooseFloor() {
-        return 0;
-    }
-
-    @Override
-    public boolean askForOptionalBpPick(int requirement, int cost) {
-        return false;
-    }
-
-    @Override
-    public boolean askForExcommunication() {
-        return false;
     }
 
     private void ping() throws RemoteException {

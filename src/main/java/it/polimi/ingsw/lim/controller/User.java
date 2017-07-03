@@ -59,7 +59,6 @@ public abstract class User {
         return username;
     }
 
-<<<<<<< HEAD
     public Room getRoom() {
         return room;
     }
@@ -67,40 +66,6 @@ public abstract class User {
     public void setRoom(Room room) {
         this.room = room;
     }
-
-    public void hasDied() {
-        getLog().log(Level.INFO, () -> "User "+this.getUsername()+" has disconnected.");
-        this.isAlive = false;
-    }
-
-    public boolean isAlive() {
-        return this.isAlive;
-    }
-
-    /**
-     * Send chat message to client.
-     * @param sender
-     * @param message
-     */
-    public abstract void sendChatMessage(String sender, String message);
-
-    public abstract void isPlayerTurn(boolean isPlaying);
-
-    public abstract void askForServants(int minimumAmount);
-
-    /**
-     * This method asks the user which production wants to activate. A production option is an array of two
-     * Assets objects: the first is the cost, the second is the result.
-     * @param options production options the player can choose from
-     */
-    public abstract void askProductionOptions(ArrayList<ArrayList<Assets[]>> options);
-
-    /**
-     * Calling this method the server will send the updated board and the list of the connected user to the client.
-     * @param board the game board
-     * @param players arrayList of connected player
-     */
-    public abstract void sendGameUpdate(Board board, ArrayList<Player> players);
 
     /**
      * @return the correspondent player.
@@ -117,43 +82,14 @@ public abstract class User {
         this.player = player;
     }
 
-    /**
-     * This method sends a generic information message coming from the server
-     * @param message
-     */
-    public abstract void broadcastMessage(String message);
+    public void hasDied() {
+        getLog().log(Level.INFO, () -> "User "+this.getUsername()+" has disconnected.");
+        this.isAlive = false;
+    }
 
-    /**
-     * Ask the user which one of the possible favors wants to receive.
-     * @param possibleFavors the list of possible favors to choose from.
-     * @return an integer between 0 and the possibleFavors size
-     */
-    public abstract int chooseFavor(List<Assets> possibleFavors);
-
-    public abstract String chooseTower(HashMap<String, Integer> possibleTowers);
-
-    public abstract int chooseFloor();
-
-    /**
-     * This method sends a message to the user relative to it's gaming state.
-     * @param message the message to send
-     */
-    public abstract void gameMessage(String message);
-
-    /**
-     * This method is called when a player can pick a purple card both paying normal cost and
-     * it's optional cost in terms of battle points.
-     * @param requirement the amount of battle points required to pay this way
-     * @param cost the amount of battle points that the player will pay
-     * @return a boolean that indicates if the player wants to pay with his battle points
-     */
-    public abstract boolean askForOptionalBpPick(int requirement, int cost);
-
-    /**
-     * This method asks a user if he wants to take an excommunication
-     * @return a boolean that indicates if the player wants the excommunication
-     */
-    public abstract boolean askForExcommunication();
+    boolean isAlive() {
+        return this.isAlive;
+    }
 
     /**
      * This method notifies the user that has gained a fast harvest action. It also tells the base strength
@@ -166,23 +102,66 @@ public abstract class User {
 
     public abstract void notifyFastTowerMove(HashMap<String, Integer> baseStr, Assets optionalPickDiscount);
 
-=======
-    public int askForServants(int minimum) {
-        try {
-            return clientInterf.askForServants(minimum);
-        } catch (RemoteException e) {
-            getLog().log(Level.SEVERE, "[RMI] Connection error asking for servants");
-            return -1; //TODO: wut?
-        }
+    /**
+     * This method asks the user which production wants to activate. A production option is an array of two
+     * Assets objects: the first is the cost, the second is the result.
+     * @param options production options the player can choose from
+     */
+    public abstract void askProductionOptions(ArrayList<ArrayList<Assets[]>> options);
 
-    }
+    /**
+     * This method is called when a player can pick a purple card both paying normal cost and
+     * it's optional cost in terms of battle points.
+     * @param requirement the amount of battle points required to pay this way
+     * @param cost the amount of battle points that the player will pay
+     * @return a boolean that indicates if the player wants to pay with his battle points
+     */
+    public abstract void askForOptionalBpPick(int requirement, int cost);
 
-    public void chatMessage(String sender, String message) {
-        try {
-            clientInterf.chatMessage(sender, message);
-        } catch (RemoteException e) {
-            getLog().log(Level.SEVERE, "[RMI] Connection error Sending message to user");
-        }
-    }
->>>>>>> sshGithub/tmpnico
+    public abstract void askForServants(int minimumAmount);
+
+    /**
+     * This method asks a user if he wants to take an excommunication
+     * @return a boolean that indicates if the player wants the excommunication
+     */
+    public abstract void askForExcommunication();
+
+    /**
+     * Ask the user which one of the possible favors wants to receive.
+     * @param possibleFavors the list of possible favors to choose from.
+     * @return an integer between 0 and the possibleFavors size
+     */
+    public abstract void chooseFavor(List<Assets> possibleFavors);
+
+    public abstract void chooseTower(HashMap<String, Integer> possibleTowers);
+
+    public abstract void chooseFloor();
+
+    /**
+     * Send chat message to client.
+     * @param sender
+     * @param message
+     */
+    public abstract void sendChatMessage(String sender, String message);
+
+    /**
+     * This method sends a message to the user relative to it's gaming state.
+     * @param message the message to send
+     */
+    public abstract void gameMessage(String message);
+
+    /**
+     * This method sends a generic information message coming from the server
+     * @param message
+     */
+    public abstract void broadcastMessage(String message);
+
+    /**
+     * Calling this method the server will send the updated board and the list of the connected user to the client.
+     * @param board the game board
+     * @param players arrayList of connected player
+     */
+    public abstract void sendGameUpdate(Board board, ArrayList<Player> players);
+
+    public abstract void isPlayerTurn(boolean isPlaying);
 }

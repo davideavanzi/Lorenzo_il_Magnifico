@@ -1,10 +1,8 @@
 package it.polimi.ingsw.lim.network.server.RMI;
 
-import it.polimi.ingsw.lim.exceptions.LoginFailedException;
 import it.polimi.ingsw.lim.network.client.RMI.RMIClientInterf;
 
 import java.rmi.*;
-import java.util.ArrayList;
 
 /**
  * Created by nico.

@@ -32,21 +32,6 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
      */
     public RMIServer() throws RemoteException {}
 
-    /**
-     * Every turn the updated board and player's ArrayList is broadcast to all roommates.
-     * @param board the game board.
-     * @param players the player ArrayList.
-     * @param rmiClient the client's reference.
-     * @throws RemoteException
-     */
-    static void sendGameToClient(Board board, ArrayList<Player> players, RMIClientInterf rmiClient) throws RemoteException {
-        rmiClient.updateClientGame(board, players);
-    }
-
-    static void setPlayerTurn(Boolean state, RMIClientInterf rmiClient) throws RemoteException {
-        rmiClient.isUserPlaying(state);
-    }
-
     static int askClientServants(int minimum, RMIClientInterf rmiClient) throws RemoteException {
         return rmiClient.askUserServants(minimum);
     }
@@ -104,6 +89,25 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
     @Override
     public void chatMessageFromClient(String sender, String message) throws RemoteException {
         MainServer.getUserFromUsername(sender).getRoom().chatMessageToRoom(sender, message);
+    }
+
+    static void sendGameMessageToClient(String message, RMIClientInterf rmiClient) throws RemoteException {
+        rmiClient.gameMessageFromServer(message);
+    }
+
+    /**
+     * Every turn the updated board and player's ArrayList is broadcast to all roommates.
+     * @param board the game board.
+     * @param players the player ArrayList.
+     * @param rmiClient the client's reference.
+     * @throws RemoteException
+     */
+    static void sendGameToClient(Board board, ArrayList<Player> players, RMIClientInterf rmiClient) throws RemoteException {
+        rmiClient.updateClientGame(board, players);
+    }
+
+    static void setPlayerTurn(Boolean state, RMIClientInterf rmiClient) throws RemoteException {
+        rmiClient.isUserPlaying(state);
     }
 
     /**

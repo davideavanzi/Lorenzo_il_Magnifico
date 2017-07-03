@@ -140,6 +140,11 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
     }
 
     @Override
+    public void gameMessageFromServer(String message) throws RemoteException {
+        uiCallback.getClientUI().printGameMessage(message);
+    }
+
+    @Override
     public void startListen() throws RemoteException {
         uiCallback.startWaitRequest();
     }

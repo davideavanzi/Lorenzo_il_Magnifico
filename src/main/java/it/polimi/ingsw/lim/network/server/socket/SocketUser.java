@@ -29,19 +29,54 @@ public class SocketUser extends User {
         this.sch = sch;
     }
 
-    /**
-     * Send the Game board and the player List to client.
-     * @param board the game board.
-     * @param players arrayList of connected player.
-     */
     @Override
-    public void sendGameUpdate(Board board, ArrayList<Player> players) {
-        this.sch.sendGameToClient(board, players);
+    public void notifyFastHarvest(int baseStr) {
+
     }
 
     @Override
-    public void isPlayerTurn(boolean isPlaying) {
-        this.sch.sendIfUserPlaying(isPlaying);
+    public void notifyFastProduction(int baseStr) {
+
+    }
+
+    @Override
+    public void notifyFastTowerMove(HashMap<String, Integer> baseStr, Assets optionalPickDiscount) {
+
+    }
+
+    @Override
+    public void askProductionOptions(ArrayList<ArrayList<Assets[]>> options) {
+
+    }
+
+    @Override
+    public void askForOptionalBpPick(int requirement, int cost) {
+
+    }
+
+    @Override
+    public void askForServants(int minimumAmount) {
+        this.sch.askClientServants(minimumAmount);
+    }
+
+    @Override
+    public void askForExcommunication() {
+
+    }
+
+    @Override
+    public void chooseFavor(List<Assets> possibleFavors) {
+
+    }
+
+    @Override
+    public void chooseTower(HashMap<String, Integer> possibleTowers) {
+
+    }
+
+    @Override
+    public void chooseFloor() {
+
     }
 
     /**
@@ -55,41 +90,27 @@ public class SocketUser extends User {
     }
 
     @Override
-    public void askForServants(int minimumAmount) {
-        this.sch.askClientServants(minimumAmount);
+    public void gameMessage(String message) {
+        this.sch.gameMessageToClient(message);
     }
 
     @Override
-    public void askProductionOptions(ArrayList<ArrayList<Assets[]>> options) {
+    public void broadcastMessage(String message) {
 
     }
 
+    /**
+     * Send the Game board and the player List to client.
+     * @param board the game board.
+     * @param players arrayList of connected player.
+     */
     @Override
-    public int chooseFavor(List<Assets> possibleFavors) {return 0;}
-
-    @Override
-    public void broadcastMessage(String message) {}
-
-    @Override
-    public void gameMessage(String message) {}
-
-    @Override
-    public int chooseFloor() {
-        return 0;
+    public void sendGameUpdate(Board board, ArrayList<Player> players) {
+        this.sch.sendGameToClient(board, players);
     }
 
     @Override
-    public String chooseTower(HashMap<String, Integer> possibleTowers) {
-        return null;
-    }
-
-    @Override
-    public boolean askForOptionalBpPick(int requirement, int cost) {
-        return false;
-    }
-
-    @Override
-    public boolean askForExcommunication() {
-        return false;
+    public void isPlayerTurn(boolean isPlaying) {
+        this.sch.sendIfUserPlaying(isPlaying);
     }
 }
