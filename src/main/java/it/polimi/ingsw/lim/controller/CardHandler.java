@@ -25,15 +25,14 @@ public class CardHandler {
      * @param card the card to activate
      * @param actor the user performing the action
      */
-    public static void activateYellowCard (YellowCard card, User actor, Assets bonusAccumulator) {
+    public static void activateYellowCard (YellowCard card, User actor, GameController controllerCallback) {
         Log.getLog().log(Level.INFO, () ->
                 "activating production card "+card.getName()+" for player "+actor.getPlayer().getNickname());
-        ArrayList<Assets> productionResults = card.getProductionResults();
         if (card.getCardMultiplier() != null) {
-            actor.getPlayer().setResources(actor.getPlayer().getResources().add(productionResults.get(0)
-                    .multiply(actor.getPlayer().getCardsAmount(card.getCardMultiplier()))));
+            controllerCallback.addBonusToAccumulator(card.getProductionResults().get(0)
+                    .multiply(actor.getPlayer().getCardsAmount(card.getCardMultiplier())));
         } else if (card.getProductionCosts().size() == 0) {
-            actor.getPlayer().setResources(actor.getPlayer().getResources().add(card.getProductionResults().get(0)));
+            controllerCallback.addBonusToAccumulator(card.getProductionResults().get(0));
         } else {
             ArrayList<Assets[]> availableOptions = new ArrayList<>();
             for (int i = 0; i < card.getProductionCosts().size(); i++)
@@ -41,11 +40,14 @@ public class CardHandler {
                     availableOptions.add(new Assets[]{card.getProductionCosts().get(i),
                             card.getProductionResults().get(i)});
                 }
+
             if (availableOptions.size() > 0) {
+                controllerCallback.addProductionOptions(availableOptions);
+                /*
                 int chosenOption = actor.chooseProduction(availableOptions);
                 actor.getPlayer().setResources(actor.getPlayer().getResources()
                         .subtract(availableOptions.get(chosenOption)[1]));
-                bonusAccumulator.add(availableOptions.get(chosenOption)[2]);
+                controllerCallback.add(availableOptions.get(chosenOption)[2]); */
             }
         }
     }

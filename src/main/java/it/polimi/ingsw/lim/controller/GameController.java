@@ -25,6 +25,9 @@ public class GameController {
 
     public GameController() {  }
 
+    public ArrayList<ArrayList<Assets[]>> currentProductionOptions;
+    public Assets currentProductionAccumulator;
+
 
     public static void main(String[] args){
 
@@ -233,27 +236,53 @@ public class GameController {
         }
     }
 
-    public void moveInProduction (FamilyMember fm, User actor) {
+    public void moveInProduction (FamilyMember fm, User actor, int servantsDeployed) {
         if(this.game.isProductionMoveAllowed(fm)){
             int servantsForProductionAction = this.game.servantsForProductionAction(fm, 0);
-            int servantsDeployed;
-            do {
-                servantsDeployed = actor.askForServants(servantsForProductionAction);
-            } while (servantsDeployed < servantsForProductionAction ||
+
+            if (servantsDeployed < servantsForProductionAction ||
                     servantsDeployed > this.game.getPlayerFromColor(fm.getOwnerColor()).getResources().getServants());
-            this.game.productionMove(fm);
-            Assets bonusAccumulator = new Assets(actor.getPlayer().getDefaultProductionBonus());
+
+            this.currentProductionAccumulator = new Assets(actor.getPlayer().getDefaultProductionBonus());
             int actionStrength = game.calcProductionActionStr(fm, servantsDeployed, 0);
             for (Card card: game.getPlayerFromColor(fm.getOwnerColor()).getCardsOfColor(YELLOW_COLOR)) {
                 YellowCard activeCard = (YellowCard) card;
                 if (activeCard.getActionStrength().getProductionBonus() <= actionStrength)
-                    CardHandler.activateYellowCard(activeCard, actor, bonusAccumulator);
+                    CardHandler.activateYellowCard(activeCard, actor, this);
             }
-            this.game.giveAssetsToPlayer(bonusAccumulator, actor.getPlayer().getColor());
-            roomCallback.broadcastMessage
-                    ("Player "+actor.getUsername()+" performed an harvest action of value: "+actionStrength);
-            roomCallback.fmPlaced();
+            if (this.currentProductionOptions.size() == 0) {
+                //don't ask user, complete directly production skipping excomm malus
+                actor.getPlayer().setResources(actor.getPlayer().getResources().add(currentProductionAccumulator));
+            } else {
+                actor.askProductionOptions(currentProductionOptions);
+            }
         }
+    }
+
+    //TODO: Pull costs from player!!, check for correct player?
+    public void confirmProduction(ArrayList<Integer> choices) {
+        if (choices.size() != currentProductionOptions.size()) {
+            getLog().log(Level.SEVERE, "Wrong amount of player production choices!");
+            return;
+        }
+        currentProductionOptions.forEach(options ->
+                currentProductionAccumulator.add(options.get(choices.indexOf(options))[2]));
+        roomCallback.broadcastMessage
+                ("Player XXX performed a production action");
+        roomCallback.fmPlaced();
+    }
+
+    /**
+     * this method adds the available options of a yellow card to choose
+     * @param options
+     */
+    public void addProductionOptions(ArrayList<Assets[]> options) {
+        this.currentProductionOptions.add(options);
+    }
+
+    public void addBonusToAccumulator(Assets bonus) {
+        this.currentProductionAccumulator.add(this.game.apllyExcommMalus(bonus,
+                roomCallback.getPlayingUser().getPlayer().getColor()));
     }
 
     //FAST ACTIONS:
@@ -276,23 +305,31 @@ public class GameController {
         }
     }
 
+    //TODO: is there really a minimum amount of servants for a fast tower action?
     public void fastProductionAction(int baseStr, User actor) {
-        int servantsForProductionAction = this.game.servantsForProductionAction(null, baseStr);
-        if (servantsForProductionAction >
-                actor.getPlayer().getResources().getServants()) return;
-        int servantsDeployed;
-        do {
-            servantsDeployed = actor.askForServants(servantsForProductionAction);
-        } while (servantsDeployed < servantsForProductionAction ||
-                servantsDeployed > actor.getPlayer().getResources().getServants());
-        Assets bonusAccumulator = new Assets(actor.getPlayer().getDefaultProductionBonus());
+        actor.gameMessage("You have been awarded a production action.");
+        actor.askForServants(0);
+    }
+
+
+    public void performFastProduction(int baseStr, int servantsDeployed, User actor) {
+        if (servantsDeployed > actor.getPlayer().getResources().getServants()) {
+            getLog().log(Level.SEVERE, "Trying to deploy too many servants!");
+            return;
+        }
+        this.currentProductionAccumulator = new Assets(actor.getPlayer().getDefaultProductionBonus());
         int actionStrength = game.calcProductionActionStr(null, servantsDeployed, baseStr);
         for (Card card: actor.getPlayer().getCardsOfColor(YELLOW_COLOR)) {
             YellowCard activeCard = (YellowCard) card;
             if (activeCard.getActionStrength().getProductionBonus() <= actionStrength)
-                CardHandler.activateYellowCard(activeCard, actor, bonusAccumulator);
+                CardHandler.activateYellowCard(activeCard, actor, this);
         }
-        this.game.giveAssetsToPlayer(bonusAccumulator, actor.getPlayer().getColor());
+        if (this.currentProductionOptions.size() == 0) {
+            //don't ask user, complete directly production skipping excomm malus
+            actor.getPlayer().setResources(actor.getPlayer().getResources().add(currentProductionAccumulator));
+        } else {
+            actor.askProductionOptions(currentProductionOptions);
+        }
     }
 
     public ArrayList<Player> getActualplayingOrder() {

@@ -532,16 +532,16 @@ public class Game {
     /**
      * this method gives an amount of assets to the player, it also applies eventual excommunication maluses
      * @param assets
-     * @param color
+     * @param playerColor
      */
-    public void giveAssetsToPlayer(Assets assets, String color) {
-        Player pl = getPlayerFromColor(color);
-        pl.setResources(pl.getResources().add(apllyExcommMalus(assets, color)));
+    public void giveAssetsToPlayer(Assets assets, String playerColor) {
+        Player pl = getPlayerFromColor(playerColor);
+        pl.setResources(pl.getResources().add(apllyExcommMalus(assets, playerColor)));
     }
 
-    public Assets apllyExcommMalus(Assets assets, String color) {
+    public Assets apllyExcommMalus(Assets assets, String playerColor) {
         Excommunication firstAgeExcomm = board.getExcommunications().get(0);
-        if (firstAgeExcomm instanceof AssetsExcommunication && firstAgeExcomm.getExcommunicated().contains(color))
+        if (firstAgeExcomm instanceof AssetsExcommunication && firstAgeExcomm.getExcommunicated().contains(playerColor))
             return assets.subtractToZero(((AssetsExcommunication) firstAgeExcomm).getMalus());
         return assets;
     }

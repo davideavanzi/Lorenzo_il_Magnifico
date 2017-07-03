@@ -114,6 +114,10 @@ public class Room {
         return gameController;
     }
 
+    public User getPlayingUser() {
+        return getUser(this.round.getUserName());
+    }
+
     /**
      * This method is called upon the end of a turn and handles the creation of the next one.
      * If it is the right time, it also triggers the activation of the excommunication round
