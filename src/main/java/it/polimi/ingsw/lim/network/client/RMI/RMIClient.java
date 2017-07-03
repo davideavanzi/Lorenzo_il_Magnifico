@@ -99,7 +99,7 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
 
     @Override
     public void startListen() throws RemoteException {
-        uiCallback.startGame();
+        uiCallback.startWaitRequest();
     }
 
     @Override

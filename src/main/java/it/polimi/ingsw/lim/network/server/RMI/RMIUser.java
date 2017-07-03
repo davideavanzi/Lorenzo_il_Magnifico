@@ -68,13 +68,16 @@ public class RMIUser extends User {
     }
 
     @Override
-    public int askForServants(int minimumAmount) {
+    public void askForServants(int minimumAmount) {
         try {
-            return RMIServer.askClientServants(minimumAmount, this.rci);
+            RMIServer.askClientServants(minimumAmount, this.rci);
         } catch (RemoteException e) {
             getLog().log(Level.SEVERE, "[RMI]: Remote error sending chat message to client.");
         }
-        return -2;
+    }
+
+    public void askProductionOptions(ArrayList<ArrayList<Assets[]>> options) {
+
     }
 
     @Override

@@ -80,7 +80,7 @@ public abstract class User {
 
     public abstract void isPlayerTurn(boolean isPlaying);
 
-    public abstract int askForServants(int minimumAmount);
+    public abstract void askForServants(int minimumAmount);
 
     public abstract void askProductionOptions(ArrayList<ArrayList<Assets[]>> options);
 

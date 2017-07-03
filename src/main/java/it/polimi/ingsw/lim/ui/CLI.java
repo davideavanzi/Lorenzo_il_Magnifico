@@ -6,6 +6,7 @@ import it.polimi.ingsw.lim.model.*;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Console;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -34,7 +35,7 @@ public class CLI extends AbsUI {
     /**
      * If the input is a int it'll store here.
      */
-    private int inputNum;
+    private Integer inputNum;
 
     private UIController uiCallback;
 
@@ -56,11 +57,76 @@ public class CLI extends AbsUI {
 
     @Override
     public int sendServantsToServer(int minimum) {
-        printMessageln("How many servants do you want to use in this action? Minimum: " + minimum);
+        printMessageln("How many servants would you like to use in this action? Minimum: " + minimum);
         while(!userInput.hasNextInt()) {
             userInput.next();
         }
         return inputNum = userInput.nextInt();
+    }
+
+    private String fmServant() {
+        printMessageln("How many servants would you like to put here?");
+        do {
+            inputNum = userInput.nextInt();
+        } while (inputNum >= 0);
+        return inputNum.toString();
+    }
+
+    private String fmPosition() {
+        String[] position2Player =
+                {"Green Tower", "Yellow Tower", "Blue Tower", "Purple Tower", "Council", "Production", "Harvest", "Market (Coins)", "Market (Servants)"};
+        String[] position4Player =
+                {"Green Tower", "Yellow Tower", "Blue Tower", "Purple Tower", "Council", "Production", "Harvest", "Market (5 Coins)", "Market (5 Servants)", "Market (3 Military points + 2 coins)", "Market (2 Privileges)"};
+        String[] position5Player =
+                {"Green Tower", "Yellow Tower", "Blue Tower", "Purple Tower", "Black Tower", "Council", "Production", "Harvest", "Market (5 Coins)", "Market (5 Servants)", "Market (3 Military points + 2 coins)", "Market (2 Privileges), Market (BlackBonus)"};
+        int count = 1;
+        printMessageln("Where would you like to put it?");
+        if (uiCallback.getLocalPlayers().size() < 3) {
+            for (String pos : position2Player)
+                printMessageln(count + ") " + pos);
+            do {
+                inputNum = userInput.nextInt();
+            } while (inputNum > 0 && inputNum <= 9);
+            return position2Player[inputNum];
+        }
+        if (uiCallback.getLocalPlayers().size() < 5) {
+            for (String pos : position4Player)
+                printMessageln(count + ") " + pos);
+            do {
+                inputNum = userInput.nextInt();
+            } while (inputNum > 0 && inputNum <= 11);
+            return position4Player[inputNum];
+        }
+        if (uiCallback.getLocalPlayers().size() < 6) {
+            for (String pos : position5Player)
+                printMessageln(count + ") " + pos);
+            do {
+                inputNum = userInput.nextInt();
+            } while (inputNum > 0 && inputNum <= 13);
+            return position5Player[inputNum];
+        }
+    }
+
+    private String fmColor() {
+        printMessageln("What family member would you like to place?");
+        int count = 1;
+        for (FamilyMember fm : uiCallback.getPlayer(uiCallback.getUsername()).getFamilyMember()) {
+            printMessageln(count + ") " + fm.getDiceColor());
+            count++;
+        }
+        do {
+            inputNum = userInput.nextInt();
+        } while (inputNum > 0 && inputNum <= count);
+        return uiCallback.getPlayer(uiCallback.getUsername()).getFamilyMember().get(inputNum - 1).getDiceColor();
+    }
+
+    @Override
+    public void placeFamilyMember() {
+        ArrayList<String> fmInfo = new ArrayList<>();
+        fmInfo.add(fmColor());
+        fmInfo.add(fmPosition());
+        fmInfo.add(fmServant());
+
     }
 
     /**
@@ -82,7 +148,7 @@ public class CLI extends AbsUI {
      */
     private void turnOrder() {
         turnForm();
-        for (Player pl : getLocalPlayers())
+        for (Player pl : uiCallback.getLocalPlayers())
             printMessageln(pl.getNickname());
     }
 
@@ -120,6 +186,7 @@ public class CLI extends AbsUI {
     public void waitForRequest() {
         while (true) {
             printCmd();
+            placeFamilyMember();
             printMessage("Enter a command: ");
             input = userInput.next().toLowerCase().trim();
             printBoard();
@@ -154,7 +221,7 @@ public class CLI extends AbsUI {
         availableCmdList.put(INFO, () -> personalInformation());
 
         if(uiCallback.getIsMyTurn()) {
-            //availableCmdList.put(FAMILY_MEMBER, () -> );
+            availableCmdList.put(FAMILY_MEMBER, () -> placeFamilyMember());
             //availableCmdList.put(LEADER_CARD, () -> );
         }
     }

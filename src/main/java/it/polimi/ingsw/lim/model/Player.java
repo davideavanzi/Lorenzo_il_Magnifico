@@ -78,7 +78,7 @@ public class Player implements Serializable{
     private HashMap<String, ArrayList<Card>> cards;
 
     /**
-     * TODO: Is it better to store them with an hashmap?
+     *
      */
     private ArrayList<FamilyMember> familyMembers;
 
@@ -100,6 +100,12 @@ public class Player implements Serializable{
 
     public void addFamilyMember(FamilyMember fm){
         this.familyMembers.add(fm);
+    }
+
+    public ArrayList<FamilyMember> getFamilyMember() { return this.familyMembers; }
+
+    public FamilyMember pullFamilyMember(String color) {
+        return this.familyMembers.stream().filter(fm -> fm.getDiceColor().equals(color)).findFirst().orElse(null);
     }
 
     public String getColor(){
@@ -129,10 +135,6 @@ public class Player implements Serializable{
     }
 
     public void setColor(String color) { this.color = color; }
-
-    public FamilyMember pullFamilyMember(String color) {
-        return this.familyMembers.stream().filter(fm -> fm.getDiceColor().equals(color)).findFirst().orElse(null);
-    }
 
     public boolean isTowerBonusAllowed() {
         return this.towerBonusAllowed;
