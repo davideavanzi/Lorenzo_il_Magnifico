@@ -13,7 +13,7 @@ public abstract class AbsUI {
 
     public abstract int sendServantsToServer(int minimum);
 
-    public abstract void placeFamilyMember();
+   // public abstract void placeFamilyMember();
 
     public abstract void cmdManager(String command);
 

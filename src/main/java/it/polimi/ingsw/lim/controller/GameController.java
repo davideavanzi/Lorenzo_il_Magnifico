@@ -33,6 +33,10 @@ public class GameController {
     private Assets optPickDiscount;
     private User fastActor;
 
+    public Game getGame(){
+        return this.game;
+    }
+
     public static void main(String[] args){
 
         createLogFile();

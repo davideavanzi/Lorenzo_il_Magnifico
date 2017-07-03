@@ -76,7 +76,7 @@ public class Game {
     /**
      * @return an excommunication based on the game's age
      */
-    public Excommunication GetExcommunication(){
+    public Excommunication getExcommunication(){
         return this.board.getExcommunications().get(this.board.getAge());
     }
 

@@ -3,6 +3,8 @@ package it.polimi.ingsw.lim.controller;
 import it.polimi.ingsw.lim.Lock;
 import it.polimi.ingsw.lim.Log;
 import it.polimi.ingsw.lim.model.Player;
+import it.polimi.ingsw.lim.model.excommunications.Excommunication;
+import it.polimi.ingsw.lim.model.excommunications.TurnExcommunication;
 import it.polimi.ingsw.lim.network.server.RMI.RMIUser;
 
 import static it.polimi.ingsw.lim.Log.getLog;
@@ -78,10 +80,8 @@ public class Room {
         int size = playOrder.size();
         int i = 0;
         this.turnNumber++;
-        System.out.println("FUORI IF CON VALORE: "+turnNumber);
         if(turnNumber == 4*size){
             turnNumber = 0;
-            System.out.println("DENTRO IF!");
             startNewTurn();
             return;
         }
@@ -130,18 +130,24 @@ public class Room {
 
         this.playOrder = gameController.getPlayOrder();
         if(this.gameController.getTime()[1] >= TURNS_PER_AGE) {
-            System.out.println("TIME TO EXCOMMUNICATE");
             excommLock.lock();
             new Thread(new ExcommunicationRound(this,10000,excommLock)).start();
         }
-        System.out.println("BEFORE LOCK NEW TURN");
         if (excommLock.isLocked()) excommLock.lock();
-        System.out.println("AFTER");
         this.gameController.startNewTurn();
         for (String username : this.playOrder)
             if (this.getUser(username).isAlive()) {
-                this.round = new PlayerRound(this.getUser(username));
-                return;
+                Excommunication excommunications = this.getGameController().getGame().getExcommunicationByAge(2);
+                if (excommunications instanceof TurnExcommunication) {
+                    for (int i = 0; i < this.playOrder.size(); i++) {
+                        if (this.getUser(username).equals(excommunications.getExcommunicated().get(i))){
+                            //todo equals is implemented?
+                            //todo set the turn to the next player
+                        }
+                    }
+                    this.round = new PlayerRound(this.getUser(username));
+                    return;
+                }
             }
     }
 

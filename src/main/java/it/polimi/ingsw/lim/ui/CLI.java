@@ -261,6 +261,8 @@ public class CLI extends AbsUI {
         printAsset(player.getResources());
         printMessage("");
         printMessage(s);
+        printMessageln("");
+        printMessageln("");
     }
 
     private void printPlayerCards(String color, Player player){
@@ -288,6 +290,7 @@ public class CLI extends AbsUI {
             System.out.format(format, StringUtils.center("No cards to show", 142));
         }
         printMessageln(s);
+        printMessageln("");
         printMessageln("");
     }
 
