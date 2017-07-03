@@ -268,7 +268,6 @@ public class Parser {
             else {
                 market[i] = parseAssets(marketToParse);
             }
-            System.out.println(market[i]);
             i++;
         }
         return market;
@@ -411,7 +410,7 @@ public class Parser {
      */
     private static BlueCard parseBlueCard
             (String cardName, int cardAge, Assets tmpCardAssetsCost, ArrayList<ImmediateEffect> immediateEffects, JsonNode cardNode) {
-        Strengths tmpBluePermanentBonus = new Strengths();//TODO modificato
+        Strengths tmpBluePermanentBonus = new Strengths();
         if (cardNode.path(BLUE_PERMANENT_BONUS).isContainerNode()) {
             JsonNode bluePermanentBonus = cardNode.path(BLUE_PERMANENT_BONUS);
             tmpBluePermanentBonus = parseStrengths(bluePermanentBonus);

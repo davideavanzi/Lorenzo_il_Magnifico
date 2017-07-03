@@ -46,7 +46,7 @@ public class UIController {
     /**
      * List of player in the same Game, sort by turn order.
      */
-    private static ArrayList<Player> localPlayers;
+    private ArrayList<Player> localPlayers;
 
     /**
      * Map that link a identification string to a method.
@@ -99,7 +99,7 @@ public class UIController {
         return username;
     }
 
-    static ArrayList<Player> getLocalPlayers() { return localPlayers; }
+    ArrayList<Player> getLocalPlayers() { return localPlayers; }
 
     public boolean getIsMyTurn() { return isMyTurn; }
 

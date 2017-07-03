@@ -794,61 +794,306 @@
           "productionBonus": 4
         }
       },
-
-
-
       {
-        "cardName": "Contadino",
-        "cardAge": 1,
+        "cardName": "Baptistery",
+        "cardAge": 2,
         "cardAssetsCost": {
-          "coin": 3
+          "stone": 3
         },
-        "cardType": "blueCard",
-        "bluePermanentBonus": {
-          "harvestBonus": 2
-        }
-      },
-      {
-        "cardName": "Dama",
-        "cardAge": 1,
-        "cardAssetsCost": {
-          "coin": 4
+        "cardType": "yellowCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "victoryPoints": 2,
+            "faithPoints":1
+          }
         },
-        "cardType": "blueCard",
-        "bluePermanentBonus": {
-          "blueBonus": 2
-        },
-        "blueBlueDiscount": {
-          "coin":1
-        }
-      },
-      {
-        "cardName": "Artigiano",
-        "cardAge": 1,
-        "cardAssetsCost": {
-          "coin": 3
-        },
-        "cardType": "blueCard",
-        "bluePermanentBonus": {
+        "yellowProductionCost": [
+          {
+            "faithPoints": 1
+          }
+        ],
+        "yellowProductionResult": [
+          {
+            "victoryPoints": 2,
+            "coin":2
+          }
+        ],
+        "yellowActionStrengths":
+        {
           "productionBonus": 2
         }
       },
       {
-        "cardName": "Cavaliere",
-        "cardAge": 1,
+        "cardName": "Barracks",
+        "cardAge": 2,
         "cardAssetsCost": {
-          "coin": 2
+          "wood": 1,
+          "stone": 1
         },
-        "cardType": "blueCard",
+        "cardType": "yellowCard",
         "cardImmediateEffect": {
-          "councilFavorsEffectAmount": 1
+          "assetsEffect": {
+            "victoryPoints": 3
+          }
         },
-        "bluePermanentBonus": {
-          "purpleBonus": 2
+        "yellowProductionCost": [
+          {
+            "servants":1
+          }
+        ],
+        "yellowProductionResult": [
+          {
+            "battlePoints": 3
+          }
+        ],
+        "yellowActionStrengths":
+        {
+          "productionBonus": 1
         }
       },
       {
-        "cardName": "Condottiero",
+        "cardName": "Stronghold",
+        "cardAge": 3,
+        "cardAssetsCost": {
+          "coin":2,
+          "wood": 2,
+          "stone": 2
+        },
+        "cardType": "yellowCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "victoryPoints": 8
+          }
+        },
+        "yellowProductionResult": [
+          {
+            "victoryPoints": 2,
+            "battlePoints": 2
+          }
+        ],
+        "yellowActionStrengths":
+        {
+          "productionBonus": 6
+        }
+      },
+      {
+        "cardName": "Bank",
+        "cardAge": 3,
+        "cardAssetsCost": {
+          "coin":3,
+          "wood": 1,
+          "stone": 3
+        },
+        "cardType": "yellowCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "victoryPoints": 7
+          }
+        },
+        "yellowProductionResult": [
+          {
+            "coin": 5
+          }
+        ],
+        "yellowActionStrengths":
+        {
+          "productionBonus": 2
+        }
+      },
+      {
+        "cardName": "Fair",
+        "cardAge": 3,
+        "cardAssetsCost": {
+          "wood": 3,
+          "coin": 4
+        },
+        "cardType": "yellowCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "victoryPoints": 8
+          }
+        },
+        "yellowProductionCost": [
+          {
+            "coin":4
+          }
+        ],
+        "yellowProductionResult": [
+          {
+            "stone": 3,
+            "wood":3
+          }
+        ],
+        "yellowActionStrengths":
+        {
+          "productionBonus": 4
+        }
+      },
+      {
+        "cardName": "Garden",
+        "cardAge": 3,
+        "cardAssetsCost": {
+          "wood": 4,
+          "stone": 2,
+          "servants": 2
+        },
+        "cardType": "yellowCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "victoryPoints": 10
+          }
+        },
+        "yellowProductionResult": [
+          {
+            "victoryPoints": 3
+          }
+        ],
+        "yellowActionStrengths":
+        {
+          "productionBonus": 1
+        }
+      },
+      {
+        "cardName": "Fortess",
+        "cardAge": 3,
+        "cardAssetsCost": {
+          "wood": 2,
+          "coin": 2,
+          "stone": 4
+        },
+        "cardType": "yellowCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "victoryPoints": 9
+          }
+        },
+        "yellowProductionResult": [
+          {
+            "victoryPoints": 2
+          }
+        ],
+        "yellowActionStrengths":
+        {
+          "productionBonus": 5
+        }
+      },
+      {
+        "cardName": "Palace",
+        "cardAge": 3,
+        "cardAssetsCost": {
+          "wood": 3,
+          "coin": 3,
+          "stone":1
+        },
+        "cardType": "yellowCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "victoryPoints": 9
+          }
+        },
+        "yellowProductionCost": [
+          {
+            "coin":1
+          }
+        ],
+        "yellowProductionResult": [
+          {
+            "servants": 2,
+            "victoryPoints":4
+          }
+        ],
+        "yellowActionStrengths":
+        {
+          "productionBonus": 6
+        }
+      },
+      {
+        "cardName": "Church",
+        "cardAge": 3,
+        "cardAssetsCost": {
+          "wood": 1,
+          "stone": 4
+        },
+        "cardType": "yellowCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "victoryPoints": 5,
+            "faithPoints": 1
+          }
+        },
+        "yellowProductionCost": [
+          {
+            "wood":1
+          },{
+            "stone":1
+          }
+        ],
+        "yellowProductionResult": [
+          {
+            "faithPoints": 2
+          }
+        ],
+        "yellowActionStrengths":
+        {
+          "productionBonus": 1
+        }
+      },
+      {
+        "cardName": "Military Academy",
+        "cardAge": 3,
+        "cardAssetsCost": {
+          "servants": 1,
+          "wood":2,
+          "stone":2
+        },
+        "cardType": "yellowCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "victoryPoints": 7
+          }
+        },
+        "yellowProductionCost": [
+          {
+            "servants":1
+          }
+        ],
+        "yellowProductionResult": [
+          {
+            "battlePoints": 3,
+            "victoryPoints":1
+          }
+        ],
+        "yellowActionStrengths":
+        {
+          "productionBonus": 3
+        }
+      },
+      {
+        "cardName": "Cathedral",
+        "cardAge": 3,
+        "cardAssetsCost": {
+          "wood": 4,
+          "stone": 4
+        },
+        "cardType": "yellowCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "victoryPoints": 7,
+            "faithPoints":3
+          }
+        },
+        "yellowProductionResult": [
+          {
+            "victoryPoints": 1
+          }
+        ],
+        "yellowActionStrengths":
+        {
+          "productionBonus": 2
+        }
+      },
+      {
+        "cardName": "Warlord",
         "cardAge": 1,
         "cardAssetsCost": {
           "coin": 2
@@ -864,7 +1109,73 @@
         }
       },
       {
-        "cardName": "Predicatore",
+        "cardName": "Stonemason",
+        "cardAge": 1,
+        "cardAssetsCost": {
+          "coin": 4
+        },
+        "cardType": "blueCard",
+        "bluePermanentBonus": {
+          "yellowBonus": 2
+        },
+        "blueYellowDiscount":
+        {
+          "wood": 1,
+          "stone": 1
+        }
+      },
+      {
+        "cardName": "Dame",
+        "cardAge": 1,
+        "cardAssetsCost": {
+          "coin": 4
+        },
+        "cardType": "blueCard",
+        "bluePermanentBonus": {
+          "blueBonus": 2
+        },
+        "blueBlueDiscount": {
+          "coin":1
+        }
+      },
+      {
+        "cardName": "Knight",
+        "cardAge": 1,
+        "cardAssetsCost": {
+          "coin": 2
+        },
+        "cardType": "blueCard",
+        "cardImmediateEffect": {
+          "councilFavorsEffectAmount": 1
+        },
+        "bluePermanentBonus": {
+          "purpleBonus": 2
+        }
+      },
+      {
+        "cardName": "Farmer",
+        "cardAge": 1,
+        "cardAssetsCost": {
+          "coin": 3
+        },
+        "cardType": "blueCard",
+        "bluePermanentBonus": {
+          "harvestBonus": 2
+        }
+      },
+      {
+        "cardName": "Artisan",
+        "cardAge": 1,
+        "cardAssetsCost": {
+          "coin": 3
+        },
+        "cardType": "blueCard",
+        "bluePermanentBonus": {
+          "productionBonus": 2
+        }
+      },
+      {
+        "cardName": "Preacher",
         "cardAge": 1,
         "cardAssetsCost": {
           "coin": 2
@@ -878,7 +1189,7 @@
         "blueTowerBonusAllowed": false
       },
       {
-        "cardName": "Badessa",
+        "cardName": "Abbess",
         "cardAge": 1,
         "cardAssetsCost": {
           "coin": 3
@@ -900,29 +1211,245 @@
         }
       },
       {
-        "cardName": "Costruttore",
-        "cardAge": 1,
+        "cardName": "Captain",
+        "cardAge": 2,
         "cardAssetsCost": {
           "coin": 4
         },
         "cardType": "blueCard",
-        "bluePermanentBonus": {
-          "yellowBonus": 2
-        },
-        "blueYellowDiscount":
-        {
-          "wood": 1,
-          "stone": 1
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "battlePoints": 2
+          },
+          "actionEffect":{
+            "actionEffectStrength":{
+              "greenBonus":6
+            }
+          }
         }
       },
-
-
-
-
-
-
       {
-        "cardName": "Ingaggiare Reclute",
+        "cardName": "Architect",
+        "cardAge": 2,
+        "cardAssetsCost": {
+          "coin": 3
+        },
+        "cardType": "blueCard",
+        "cardImmediateEffect": {
+          "actionEffect":{
+            "actionEffectStrength":{
+              "yellowBonus":6
+            },
+            "actionEffectAssets":{
+              "stone":1,
+              "wood":1
+            }
+          }
+        }
+      },
+      {
+        "cardName": "Patron",
+        "cardAge": 2,
+        "cardAssetsCost": {
+          "coin": 3
+        },
+        "cardType": "blueCard",
+        "cardImmediateEffect": {
+          "actionEffect":{
+            "actionEffectStrength":{
+              "blueBonus":6
+            },
+            "actionEffectAssets":{
+              "coin":2
+            }
+          }
+        }
+      },
+      {
+        "cardName": "Peasant",
+        "cardAge": 2,
+        "cardAssetsCost": {
+          "coin": 4
+        },
+        "cardType": "blueCard",
+        "bluePermanentBonus":{
+          "harvestBonus": 3
+        }
+      },
+      {
+        "cardName": "Scholar",
+        "cardAge": 2,
+        "cardAssetsCost": {
+          "coin": 4
+        },
+        "cardType": "blueCard",
+        "bluePermanentBonus":{
+          "productionBonus": 3
+        }
+      },
+      {
+        "cardName": "Papal Messenger",
+        "cardAge": 2,
+        "cardAssetsCost": {
+          "coin": 5
+        },
+        "cardType": "blueCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "faithPoints": 3
+          }
+        }
+      },
+      {
+        "cardName": "Royal Messenger",
+        "cardAge": 3,
+        "cardAssetsCost": {
+          "coin": 5
+        },
+        "cardType": "blueCard",
+        "cardImmediateEffect": {
+          "councilFavorsEffectAmount": 3
+        }
+      },
+      {
+        "cardName": "Noble",
+        "cardAge": 3,
+        "cardAssetsCost": {
+          "coin": 6
+        },
+        "cardType": "blueCard",
+        "cardImmediateEffect": {
+          "cardMultipliedEffect":{
+            "cardMultipliedEffectBonus":{
+              "victoryPoints": 2
+            },
+            "cardMultipliedEffectMultiplierColor":"GREEN"
+          }
+        }
+      },
+      {
+        "cardName": "Governor",
+        "cardAge": 3,
+        "cardAssetsCost": {
+          "coin": 6
+        },
+        "cardType": "blueCard",
+        "cardImmediateEffect": {
+          "cardMultipliedEffect":{
+            "cardMultipliedEffectBonus":{
+              "victoryPoints": 2
+            },
+            "cardMultipliedEffectMultiplierColor":"YELLOW"
+          }
+        }
+      },
+      {
+        "cardName": "Paramour",
+        "cardAge": 3,
+        "cardAssetsCost": {
+          "coin": 7
+        },
+        "cardType": "blueCard",
+        "cardImmediateEffect": {
+          "cardMultipliedEffect":{
+            "cardMultipliedEffectBonus":{
+              "victoryPoints": 2
+            },
+            "cardMultipliedEffectMultiplierColor":"BLUE"
+          }
+        }
+      },
+      {
+        "cardName": "Herald",
+        "cardAge": 3,
+        "cardAssetsCost": {
+          "coin": 6
+        },
+        "cardType": "blueCard",
+        "cardImmediateEffect": {
+          "cardMultipliedEffect":{
+            "cardMultipliedEffectBonus":{
+              "victoryPoints": 2
+            },
+            "cardMultipliedEffectMultiplierColor":"PURPLE"
+          }
+        }
+      },
+      {
+        "cardName": "Cardinal",
+        "cardAge": 3,
+        "cardAssetsCost": {
+          "coin": 4
+        },
+        "cardType": "blueCard",
+        "cardImmediateEffect": {
+          "assetsEffect":{
+            "faithPoints":2
+          },
+          "actionEffect":{
+            "actionEffectStrength":{
+              "harvestBonus": 4
+            }
+          }
+        }
+      },
+      {
+        "cardName": "Bishop",
+        "cardAge": 3,
+        "cardAssetsCost": {
+          "coin": 5
+        },
+        "cardType": "blueCard",
+        "cardImmediateEffect": {
+          "assetsEffect":{
+            "faithPoints":1
+          },
+          "actionEffect":{
+            "actionEffectStrength":{
+              "productionBonus": 4
+            }
+          }
+        }
+      },
+      {
+        "cardName": "General",
+        "cardAge": 3,
+        "cardAssetsCost": {
+          "coin": 5
+        },
+        "cardType": "blueCard",
+        "cardImmediateEffect": {
+          "assetsMultipliedEffect":{
+            "assetsMultipliedEffectBonus":{
+              "victoryPoints":1
+            },
+            "assetsMultipliedEffectMultiplier":{
+              "battlePoints":2
+            }
+          }
+        }
+      },
+      {
+        "cardName": "Ambassador",
+        "cardAge": 3,
+        "cardType": "blueCard",
+        "cardAssetsCost":{
+          "coin": 6
+        },
+        "cardImmediateEffect": {
+          "actionEffect":{
+            "actionEffectStrength": {
+              "greenBonus": 7,
+              "blueBonus": 7,
+              "yellowBonus": 7,
+              "purpleBonus": 7
+            }
+          },
+          "councilFavoursEffectAmount": 1
+        }
+      },
+      {
+        "cardName": "Hiring Recruits",
         "cardAge": 1,
         "cardAssetsCost": {
           "coin": 4
@@ -938,7 +1465,7 @@
         }
       },
       {
-        "cardName": "Riparare la Chiesa",
+        "cardName": "Repairing the Church",
         "cardAge": 1,
         "cardAssetsCost": {
           "coin": 1,
@@ -956,7 +1483,7 @@
         }
       },
       {
-        "cardName": "Costruire le Mura",
+        "cardName": "Building the Walls",
         "cardAge": 1,
         "cardAssetsCost": {
           "stone": 3
@@ -973,7 +1500,7 @@
         }
       },
       {
-        "cardName": "Innalzare una Statua",
+        "cardName": "Raising a Statue",
         "cardAge": 1,
         "cardAssetsCost": {
           "wood": 2,
@@ -988,7 +1515,7 @@
         }
       },
       {
-        "cardName": "Campagna Militare",
+        "cardName": "Military Campaign",
         "cardAge": 1,
         "cardAssetsCost": {
           "battlePoints": 2
@@ -1003,8 +1530,25 @@
         "purpleEndGameBonus": {
           "victoryPoints": 5
         }
-      },{
-        "cardName": "Combattere le Eresie",
+      },
+      {
+        "cardName": "Hosting Panhandlers",
+        "cardAge": 1,
+        "cardAssetsCost": {
+          "wood": 3
+        },
+        "cardType": "purpleCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "servants": 4
+          }
+        },
+        "purpleEndGameBonus": {
+          "victoryPoints": 4
+        }
+      },
+      {
+        "cardName": "Fighting Heresies",
         "cardAge": 1,
         "cardAssetsCost": {
           "battlePoints": 3
@@ -1021,19 +1565,19 @@
         }
       },
       {
-        "cardName": "Campagna Militare",
+        "cardName": "Support to the Bishop",
         "cardAge": 1,
         "cardAssetsCost": {
-          "coin": 2,
           "wood": 1,
-          "stone": 1
+          "stone":1,
+          "coin":2
         },
         "cardType": "purpleCard",
         "purpleOptionalBattlePointsRequirement": 4,
-        "purpleOptionalBattlePointsCost": 2,
+        "purpleOptionalBattlePointsCost":2,
         "cardImmediateEffect": {
           "assetsEffect": {
-            "fairhPoints": 3
+            "faithPoints": 3
           }
         },
         "purpleEndGameBonus": {
@@ -1041,19 +1585,297 @@
         }
       },
       {
-        "cardName": "Ospitare i Mendicanti",
-        "cardAge": 1,
+        "cardName": "Hiring Soldiers",
+        "cardAge": 2,
         "cardAssetsCost": {
-          "wood": 3
+          "coin":6
         },
         "cardType": "purpleCard",
         "cardImmediateEffect": {
           "assetsEffect": {
-            "servants": 4
+            "battlePoints": 6
+          }
+        },
+        "purpleEndGameBonus": {
+          "victoryPoints": 5
+        }
+      },
+      {
+        "cardName": "Repairing the Abbey",
+        "cardAge": 2,
+        "cardAssetsCost": {
+          "wood": 2,
+          "stone":2,
+          "coin":2
+        },
+        "cardType": "purpleCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "faithPoints": 2
+          }
+        },
+        "purpleEndGameBonus": {
+          "victoryPoints": 6
+        }
+      },
+      {
+        "cardName": "Building the Bastions",
+        "cardAge": 2,
+        "cardAssetsCost": {
+          "stone":4
+        },
+        "cardType": "purpleCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "battlePoints": 3
+          },
+          "councilFavourEffectAmount":1
+        },
+        "purpleEndGameBonus": {
+          "victoryPoints": 2
+        }
+      },
+      {
+        "cardName": "Support to the King",
+        "cardAge": 2,
+        "cardAssetsCost": {
+          "battlePoints":3
+        },
+        "cardType": "purpleCard",
+        "purpleOptionalBattlePointsRequirement": 6,
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "coin": 5
+          },
+          "councilFavourEffectAmount":1
+        },
+        "purpleEndGameBonus": {
+          "victoryPoints": 3
+        }
+      },
+      {
+        "cardName": "Improving the Canals",
+        "cardAge": 2,
+        "cardAssetsCost": {
+          "servants": 2,
+          "coin":3
+        },
+        "cardType": "purpleCard",
+        "cardImmediateEffect": {
+          "actionEffect": {
+            "actionEffectStrength": {
+              "harvestBonus": 4
+            }
+          }
+        },
+        "purpleEndGameBonus": {
+          "victoryPoints": 5
+        }
+      },
+      {
+        "cardName": "Hosting Foreigners",
+        "cardAge": 2,
+        "cardAssetsCost": {
+          "wood": 4
+        },
+        "cardType": "purpleCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "servants": 5
           }
         },
         "purpleEndGameBonus": {
           "victoryPoints": 4
+        }
+      },
+      {
+        "cardName": "Crusade",
+        "cardAge": 2,
+        "cardAssetsCost": {
+          "battlePoints":4
+        },
+        "cardType": "purpleCard",
+        "purpleOptionalBattlePointsRequirement": 8,
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "faithPoints": 1,
+            "coin":5
+          }
+        },
+        "purpleEndGameBonus": {
+          "victoryPoints": 5
+        }
+      },
+      {
+        "cardName": "Support to the Cardinal",
+        "cardAge": 2,
+        "cardAssetsCost": {
+          "wood": 2,
+          "stone":2,
+          "coin":3
+        },
+        "cardType": "purpleCard",
+        "purpleOptionalBattlePointsRequirement": 7,
+        "purpleOptionalBattlePointsCost":4,
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "faithPoints": 3
+          }
+        },
+        "purpleEndGameBonus": {
+          "victoryPoints": 4
+        }
+      },
+      {
+        "cardName": "Hiring Mercenaries",
+        "cardAge": 3,
+        "cardAssetsCost": {
+          "coin":8
+        },
+        "cardType": "purpleCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "battlePoints": 7
+          }
+        },
+        "purpleEndGameBonus": {
+          "victoryPoints": 6
+        }
+      },
+      {
+        "cardName": "Repairing the Cathedral",
+        "cardAge": 3,
+        "cardAssetsCost": {
+          "wood": 3,
+          "stone":3,
+          "coin":3
+        },
+        "cardType": "purpleCard",
+        "purpleOptionalBattlePointsRequirement": 4,
+        "purpleOptionalBattlePointsCost":2,
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "faithPoints": 1
+          },
+          "actionEffect":{
+            "actionEffectStrength": {
+              "greenBonus": 7,
+              "blueBonus": 7,
+              "yellowBonus": 7,
+              "purpleBonus": 7
+            }
+          }
+        },
+        "purpleEndGameBonus": {
+          "victoryPoints": 5
+        }
+      },
+      {
+        "cardName": "Building the Towers",
+        "cardAge": 3,
+        "cardAssetsCost": {
+          "stone":6
+        },
+        "cardType": "purpleCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "battlePoints": 4
+          },
+          "councilFavourEffectAmount":1
+        },
+        "purpleEndGameBonus": {
+          "victoryPoints": 4
+        }
+      },
+      {
+        "cardName": "Promoting Sacred Art",
+        "cardAge": 3,
+        "cardAssetsCost": {
+          "wood":6
+        },
+        "cardType": "purpleCard",
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "faithPoints": 3
+          }
+        },
+        "purpleEndGameBonus": {
+          "victoryPoints": 3
+        }
+      },
+      {
+        "cardName": "Military Conquest",
+        "cardAge": 3,
+        "cardAssetsCost": {
+          "battlePoints":6
+        },
+        "cardType": "purpleCard",
+        "purpleOptionalBattlePointsRequirement":12,
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "wood": 3,
+            "stone": 3,
+            "coin": 3
+          }
+        },
+        "purpleEndGameBonus": {
+          "victoryPoints": 7
+        }
+      },
+      {
+        "cardName": "Improving the Roads",
+        "cardAge": 3,
+        "cardAssetsCost": {
+          "servants":3,
+          "coin": 4
+        },
+        "cardType": "purpleCard",
+        "cardImmediateEffect": {
+          "actionEffect": {
+            "actionEffectStrength": {
+              "harvestBonus":3
+            }
+          }
+        },
+        "purpleEndGameBonus": {
+          "victoryPoints": 5
+        }
+      },
+      {
+        "cardName": "Sacred War",
+        "cardAge": 3,
+        "cardAssetsCost": {
+          "battlePoints":8
+        },
+        "cardType": "purpleCard",
+        "purpleOptionalBattlePointsRequirement":15,
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "faithPoints":4
+          }
+        },
+        "purpleEndGameBonus": {
+          "victoryPoints": 8
+        }
+      },
+      {
+        "cardName": "Support to the Pope",
+        "cardAge": 3,
+        "cardAssetsCost": {
+          "wood":3,
+          "stone":3,
+          "coin":4
+        },
+        "cardType": "purpleCard",
+        "purpleOptionalBattlePointsRequirement":10,
+        "purpleOptionalBattlePointsCost":5,
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "faithPoints":2
+          }
+        },
+        "purpleEndGameBonus": {
+          "victoryPoints": 10
         }
       },
       {
