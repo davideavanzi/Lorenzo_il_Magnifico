@@ -81,11 +81,6 @@ public class RMIUser extends User {
     }
 
     @Override
-    public int chooseProduction(ArrayList<Assets[]> options) {
-        return 0; //TODO: implement
-    }
-
-    @Override
     public int chooseFavor(List<Assets> possibleFavors) {return 0;}
 
     @Override
@@ -114,6 +109,26 @@ public class RMIUser extends User {
     @Override
     public boolean askForExcommunication() {
         return false;
+    }
+
+    @Override
+    public void notifyFastTowerMove(HashMap<String, Integer> baseStr, Assets optionalPickDiscount) {
+
+    }
+
+    @Override
+    public void notifyFastProduction(int baseStr) {
+
+    }
+
+    @Override
+    public void notifyFastHarvest(int baseStr) {
+
+    }
+
+    @Override
+    public void gameError(String message) {
+
     }
 
     private void ping() throws RemoteException {

@@ -347,8 +347,11 @@ public class GameController {
 
 
     public void performFastProduction(int servantsDeployed, User actor) {
-        if (servantsDeployed > actor.getPlayer().getResources().getServants()) {
-            getLog().log(Level.SEVERE, "Trying to deploy too many servants!");
+        int servantsForProductionAction = this.game.servantsForProductionAction(null, fastActionStr.getHarvestBonus());
+        if (servantsForProductionAction > fastActor.getPlayer().getResources().getServants() ||
+                servantsDeployed > fastActor.getPlayer().getResources().getServants() ||
+                servantsDeployed < servantsForProductionAction) {
+            //TODO: tell user bad entry
             return;
         }
         this.currentProductionAccumulator = new Assets(actor.getPlayer().getDefaultProductionBonus());
@@ -377,7 +380,21 @@ public class GameController {
      */
     public void performFastTowerMove(int servantsDeployed, String towerColor, int floor, User actor) {
 
-        if (this.game.isFastTowerMoveAllowed(towerColor, floor,actor.getPlayer()));
+        int servantsForTowerAction = this.game.servantsForFastTowerAction(fastActionStr
+                .getTowerStrength(towerColor), towerColor, floor, actor.getPlayer());
+        if (servantsForTowerAction > fastActor.getPlayer().getResources().getServants() ||
+                servantsDeployed > fastActor.getPlayer().getResources().getServants() ||
+                servantsDeployed < servantsForTowerAction) {
+            //TODO: tell user bad entry
+            return;
+        }
+        //TODO: join these two ifs?
+        if (!this.game.isFastTowerMoveAllowed(towerColor, floor,actor.getPlayer(), optPickDiscount) ||
+                !fastActor.getUsername().equals(actor.getUsername())) {
+            actor.gameError("Fast action not valid");
+            return;
+        }
+        //fast tower move!
         Card pickedCard = this.game.getTower(towerColor).getFloor(floor).pullCard();
         actor.getPlayer().addCard(pickedCard, towerColor);
         pickedCard.getImmediateEffects().stream().filter(ie -> ie instanceof AssetsEffect

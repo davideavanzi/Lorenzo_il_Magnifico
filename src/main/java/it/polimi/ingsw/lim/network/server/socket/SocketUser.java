@@ -59,10 +59,6 @@ public class SocketUser extends User {
         this.sch.askClientServants(minimumAmount);
     }
 
-    @Override
-    public int chooseProduction(ArrayList<Assets[]> options) {
-        return 0; //TODO: implement
-    }
 
     public void askProductionOptions(ArrayList<ArrayList<Assets[]>> options) {
 
@@ -96,4 +92,25 @@ public class SocketUser extends User {
     public boolean askForExcommunication() {
         return false;
     }
+
+    @Override
+    public void notifyFastHarvest(int baseStr) {
+
+    }
+
+    @Override
+    public void notifyFastProduction(int baseStr) {
+
+    }
+
+    @Override
+    public void notifyFastTowerMove(HashMap<String, Integer> baseStr, Assets optionalPickDiscount) {
+
+    }
+
+    @Override
+    public void gameError(String message) {
+
+    }
 }
+

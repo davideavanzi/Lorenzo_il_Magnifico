@@ -134,6 +134,8 @@ public abstract class User {
      */
     public abstract void gameMessage(String message);
 
+    public abstract void gameError(String message);
+
     /**
      * This method is called when a player can pick a purple card both paying normal cost and
      * it's optional cost in terms of battle points.
