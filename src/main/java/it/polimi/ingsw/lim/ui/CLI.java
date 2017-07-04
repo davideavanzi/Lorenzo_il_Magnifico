@@ -259,7 +259,24 @@ public class CLI extends AbsUI {
         System.out.format(format, StringUtils.center("ASSETS PLAYER: ",20));
         System.out.format(format, StringUtils.center(player.getNickname(), 20));
         printMessageln(sRid);
-        printAsset(player.getResources());
+        if(player.getResources().isNotNull()) {
+            printAsset(player.getResources());
+        }
+        else{
+            System.out.format(format, StringUtils.center("No Assets", 20));
+        }
+        printMessage("");
+        printMessageln(sRid);
+        printMessageln("");
+        System.out.format(format, StringUtils.center("STRENGTHS PLAYER: ",20));
+        System.out.format(format, StringUtils.center(player.getNickname(), 20));
+        printMessageln(sRid);
+        if(player.getStrengths().isNotNull()) {
+            printStrengths(player.getStrengths());
+        }
+        else{
+            System.out.format(format, StringUtils.center("No Strengths", 20));
+        }
         printMessage("");
         printMessage(s);
         printMessageln("");
@@ -295,7 +312,40 @@ public class CLI extends AbsUI {
         printMessageln("");
     }
 
-    public void printTowerFloor(String color, int floor){
+    private void printPlayerSingleCard(String name, Player player){
+        for(Card card: player.getCardsOfColor(GREEN_COLOR)){
+            if(card.getName().equalsIgnoreCase(name)){
+                printCard(card);
+                return;
+            }
+        }
+        for(Card card: player.getCardsOfColor(BLUE_COLOR)){
+            if(card.getName().equalsIgnoreCase(name)){
+                printCard(card);
+                return;
+            }
+        }
+        for(Card card: player.getCardsOfColor(YELLOW_COLOR)){
+            if(card.getName().equalsIgnoreCase(name)){
+                printCard(card);
+                return;
+            }
+        }
+        for(Card card: player.getCardsOfColor(PURPLE_COLOR)){
+            if(card.getName().equalsIgnoreCase(name)){
+                printCard(card);
+                return;
+            }
+        }
+        for(Card card: player.getCardsOfColor(BLACK_COLOR)){
+            if(card.getName().equalsIgnoreCase(name)){
+                printCard(card);
+                return;
+            }
+        }
+    }
+
+    public void printCardInTower(String color, int floor){
         if(this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(floor).hasCard()) {
             printCard(this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(floor).getCard());
         }
@@ -635,7 +685,7 @@ public class CLI extends AbsUI {
         printMessageln("");
     }
 
-    public void printStrengths(Strengths strengths){
+    private void printStrengths(Strengths strengths){
         String format = "||%-17s%-20s||\n";  //todo 20 o 19
         if(strengths.getTowerStrength(GREEN_COLOR) != 0 ){
             System.out.format(format, GREEN_COLOR.concat(" Tower:"), "" + strengths.getTowerStrength(GREEN_COLOR));
@@ -667,7 +717,7 @@ public class CLI extends AbsUI {
         }
     }
 
-    public void printAsset(Assets asset){
+    private void printAsset(Assets asset){
         if(asset.getCoins() != 0){
             printMessageln(("|| Coins:\t\t\t"+asset.getCoins()).concat(" ||"));
         }
