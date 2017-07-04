@@ -234,8 +234,17 @@ public class CLI extends AbsUI {
         //this.printFaithPointsTrack();
         this.printVictoryPointsTrack();
         this.printPlayerBoard();
-        for(int i = 0; i < 4; i++ ) {
+        for(int i = 1; i < 5; i++ ) {
             this.printCard(this.uiCallback.getLocalBoard().getTowers().get(GREEN_COLOR).getFloor(i).getCard());
+        }
+        for(int i = 1; i < 5; i++ ) {
+            this.printCard(this.uiCallback.getLocalBoard().getTowers().get(BLUE_COLOR).getFloor(i).getCard());
+        }
+        for(int i = 1; i < 5; i++ ) {
+            this.printCard(this.uiCallback.getLocalBoard().getTowers().get(YELLOW_COLOR).getFloor(i).getCard());
+        }
+        for(int i = 1; i < 5; i++ ) {
+            this.printCard(this.uiCallback.getLocalBoard().getTowers().get(PURPLE_COLOR).getFloor(i).getCard());
         }
     }
 
@@ -269,7 +278,9 @@ public class CLI extends AbsUI {
             System.out.format(format, StringUtils.center("No Assets", 20));
         }
         printMessage("");
-        printMessageln(sRid);
+        printMessage("");
+        printMessage("");
+        printMessageln(s);
         printMessageln("");
         System.out.format(format, StringUtils.center("STRENGTHS PLAYER: ",20));
         System.out.format(format, StringUtils.center(player.getNickname(), 20));
@@ -360,17 +371,17 @@ public class CLI extends AbsUI {
     private void printCard(Card card){
         String format = "||%-20s||\n";
         String s = "________________________";
-        String sRid = "_  _  _  _  _  _  _  _  ";
+        String sRid = "||_  _  _  _  _  _  _ ||";
         printMessageln(s);
         System.out.format(format, "");
-        System.out.format(format, card.getName());
-        System.out.format(format, "" + card.getAge());
-        printMessageln(sRid);
+        System.out.format(format, StringUtils.center(card.getName(), 20));
+        System.out.format(format, "");
+        System.out.format(format, StringUtils.center("Age: " + card.getAge(), 20));
         if(card.hasCost()){
+            printMessageln(sRid);
             System.out.format(format, "");
             System.out.format(format, StringUtils.center("Card cost:", 20));
             printAsset(card.getCost());
-            printMessageln(sRid);
         }
         if(!(card.getImmediateEffects().isEmpty())){
             for(ImmediateEffect immediateEffect: card.getImmediateEffects()){
@@ -378,29 +389,29 @@ public class CLI extends AbsUI {
             }
         }
         if (card instanceof GreenCard) {
+            printMessageln(sRid);
             System.out.format(format, "");
             System.out.format(format, StringUtils.center(("Green Card"), 20));
-            printMessageln(sRid);
             printCard((GreenCard) card);
         }else if (card instanceof BlueCard) {
+            printMessageln(sRid);
             System.out.format(format, "");
             System.out.format(format, StringUtils.center(("Blue Card"), 20));
-            printMessageln(sRid);
             printCard((BlueCard) card);
         }else if (card instanceof YellowCard) {
+            printMessageln(sRid);
             System.out.format(format, "");
             System.out.format(format, StringUtils.center(("Yellow Card"), 20));
-            printMessageln(sRid);
             printCard((YellowCard) card);
         }else if (card instanceof PurpleCard) {
+            printMessageln(sRid);
             System.out.format(format, "");
             System.out.format(format, StringUtils.center(("Purple Card"), 20));
-            printMessageln(sRid);
             printCard((PurpleCard) card);
         } else if (card instanceof BlackCard) {
+            printMessageln(sRid);
             System.out.format(format, "");
             System.out.format(format, StringUtils.center(("Black Card"), 20));
-            printMessageln(sRid);
         }
         printMessageln(s);
         printMessageln("");
@@ -409,49 +420,60 @@ public class CLI extends AbsUI {
 
     private void printImmediateEffct(ImmediateEffect immediateEffect){
         String format = "||%-20s||\n";
-        String sRid = "_  _  _  _  _  _  _  _  ";
+        String sRid = "||_  _  _  _  _  _  _ ||";
         if(immediateEffect instanceof AssetsEffect){
-            printMessageln(sRid);
-            System.out.format(format, "");
-            System.out.format(format, StringUtils.center("Immediate Bonus:", 20));
-            printAsset(((AssetsEffect)immediateEffect).getBonus());
-        }else if(immediateEffect instanceof ActionEffect){
-            printMessageln(sRid);
-            System.out.format(format, "");
-            System.out.format(format, StringUtils.center("Immediate Bonus:", 20));
-            printStrengths(((ActionEffect)immediateEffect).getStrength());
-            if(((ActionEffect)immediateEffect).hasDiscount()){
+            if(((AssetsEffect)immediateEffect).getBonus().isNotNull()) {
                 printMessageln(sRid);
                 System.out.format(format, "");
-                System.out.format(format, StringUtils.center("Immediate Discount:", 20));
-                printAsset(((ActionEffect)immediateEffect).getDiscount());
+                System.out.format(format, StringUtils.center("Immediate Bonus:", 20));
+                printAsset(((AssetsEffect) immediateEffect).getBonus());
+            }
+        }else if(immediateEffect instanceof ActionEffect){
+            if(((ActionEffect)immediateEffect).getStrength().isNotNull()) {
+                printMessageln(sRid);
+                System.out.format(format, "");
+                System.out.format(format, StringUtils.center("Immediate Bonus:", 20));
+                printStrengths(((ActionEffect) immediateEffect).getStrength());
+                if (((ActionEffect) immediateEffect).hasDiscount()) {
+                    printMessageln(sRid);
+                    System.out.format(format, "");
+                    System.out.format(format, StringUtils.center("Immediate Discount:", 20));
+                    printAsset(((ActionEffect) immediateEffect).getDiscount());
+                }
             }
         }else if(immediateEffect instanceof AssetsMultipliedEffect){
-            printMessageln(sRid);
-            System.out.format(format, "");
-            System.out.format(format, StringUtils.center("For Each:", 20));
-            printAsset(((AssetsMultipliedEffect)immediateEffect).getMultiplier());
-            System.out.format(format, "");
-            System.out.format(format, StringUtils.center("You Will Have:", 20));
-            printAsset(((AssetsMultipliedEffect)immediateEffect).getBonus());
+            if(((AssetsMultipliedEffect)immediateEffect).getMultiplier().isNotNull() &&
+                    ((AssetsMultipliedEffect)immediateEffect).getBonus().isNotNull()) {
+                printMessageln(sRid);
+                System.out.format(format, "");
+                System.out.format(format, StringUtils.center("For Each:", 20));
+                printAsset(((AssetsMultipliedEffect) immediateEffect).getMultiplier());
+                System.out.format(format, "");
+                System.out.format(format, StringUtils.center("You Will Have:", 20));
+                printAsset(((AssetsMultipliedEffect) immediateEffect).getBonus());
+            }
         }else if(immediateEffect instanceof CardMultipliedEffect){
-            printMessageln(sRid);
-            System.out.format(format, "");
-            System.out.format(format, StringUtils.center("For Each:", 20));
-            System.out.format(format, ((CardMultipliedEffect)immediateEffect).getMultiplierColor().concat(" cards"));
-            System.out.format(format, "");
-            printAsset(((CardMultipliedEffect)immediateEffect).getBonus());
+            if(((CardMultipliedEffect)immediateEffect).getBonus().isNotNull()) {
+                printMessageln(sRid);
+                System.out.format(format, "");
+                System.out.format(format, StringUtils.center("For Each:", 20));
+                System.out.format(format, ((CardMultipliedEffect) immediateEffect).getMultiplierColor().concat(" cards"));
+                System.out.format(format, "");
+                printAsset(((CardMultipliedEffect) immediateEffect).getBonus());
+            }
         }else if(immediateEffect instanceof CouncilFavorsEffect){
-            printMessageln(sRid);
-            System.out.format(format, "");
-            System.out.format(format, StringUtils.center("Council Favours:", 20));
-            System.out.format(format, StringUtils.center("" + ((CouncilFavorsEffect)immediateEffect).getAmount(), 20));
+            if(((CouncilFavorsEffect)immediateEffect).getAmount() != 0) {
+                printMessageln(sRid);
+                System.out.format(format, "");
+                System.out.format(format, StringUtils.center("Council Favours:", 20));
+                System.out.format(format, StringUtils.center("" + ((CouncilFavorsEffect) immediateEffect).getAmount(), 20));
+            }
         }
     }
 
     private void printCard(GreenCard greenCard){
         String format = "||%-20s||\n";
-        String sRid = "_  _  _  _  _  _  _  _  ";
+        String sRid = "||_  _  _  _  _  _  _ ||";
         if(greenCard.getHarvestResult().isNotNull()){
             printMessageln(sRid);
             System.out.format(format, "");
@@ -461,14 +483,14 @@ public class CLI extends AbsUI {
         if(greenCard.getActionStrength().isNotNull()){
             printMessageln(sRid);
             System.out.format(format, "");
-            System.out.format(format, StringUtils.center(("Action Strengths"), 20));
-            printStrengths(greenCard.getActionStrength());
+            System.out.format(format, StringUtils.center(("Action Cost"), 20));
+            printStrengthsCost(greenCard.getActionStrength());
         }
     }
 
     private void printCard(BlueCard blueCard){
         String format = "||%-20s||\n";
-        String sRid = "_  _  _  _  _  _  _  _  ";
+        String sRid = "||_  _  _  _  _  _  _ ||";
         if (blueCard.getPermanentBonus().isNotNull()){
             printMessageln(sRid);
             System.out.format(format, "");
@@ -511,7 +533,7 @@ public class CLI extends AbsUI {
 
     private void printCard(YellowCard yellowCard){
         String format = "||%-20s||\n";
-        String sRid = "_  _  _  _  _  _  _  _  ";
+        String sRid = "||_  _  _  _  _  _  _ ||";
         if(!(yellowCard.getProductionCosts().isEmpty())){
             for(Assets a: yellowCard.getProductionCosts()){
                 printMessageln(sRid);
@@ -531,8 +553,8 @@ public class CLI extends AbsUI {
         if(yellowCard.getActionStrength().isNotNull()){
             printMessageln(sRid);
             System.out.format(format, "");
-            System.out.format(format, StringUtils.center(("Action Strengths:"), 20));
-            printStrengths(yellowCard.getActionStrength());
+            System.out.format(format, StringUtils.center(("Action Cost:"), 20));
+            printStrengthsCost(yellowCard.getActionStrength());
         }
         if(!yellowCard.getCardMultiplier().isEmpty()){
             printMessageln(sRid);
@@ -544,7 +566,7 @@ public class CLI extends AbsUI {
 
     private void printCard(PurpleCard purpleCard){
         String format = "||%-20s||\n";
-        String sRid = "_  _  _  _  _  _  _  _  ";
+        String sRid = "||_  _  _  _  _  _  _ ||";
         if(purpleCard.getEndgameBonus().isNotNull()){
             printMessageln(sRid);
             System.out.format(format, "");
@@ -689,7 +711,7 @@ public class CLI extends AbsUI {
     }
 
     private void printStrengths(Strengths strengths){
-        String format = "||%-17s%-20s||\n";  //todo 20 o 19
+        String format = "|| %-17s%-2s||\n";  //todo 20 o 19
         if(strengths.getTowerStrength(GREEN_COLOR) != 0 ){
             System.out.format(format, GREEN_COLOR.concat(" Tower:"), "" + strengths.getTowerStrength(GREEN_COLOR));
         }
@@ -720,6 +742,38 @@ public class CLI extends AbsUI {
         }
     }
 
+    private void printStrengthsCost(Strengths strengths){
+        String format = "|| %-17s%-2s||\n";  //todo 20 o 19
+        if(strengths.getTowerStrength(GREEN_COLOR) != 0 ){
+            System.out.format(format, GREEN_COLOR.concat(" Tower:"), "" + strengths.getTowerStrength(GREEN_COLOR));
+        }
+        if(strengths.getTowerStrength(BLUE_COLOR) != 0 ){
+            System.out.format(format, BLUE_COLOR.concat(" Tower:"), "" + strengths.getTowerStrength(BLUE_COLOR));
+        }
+        if(strengths.getTowerStrength(YELLOW_COLOR) != 0 ){
+            System.out.format(format, YELLOW_COLOR.concat(" Tower:"), "" + strengths.getTowerStrength(YELLOW_COLOR));
+        }
+        if(strengths.getTowerStrength(PURPLE_COLOR) != 0 ){
+            System.out.format(format, PURPLE_COLOR.concat(" Tower:"), "" + strengths.getTowerStrength(PURPLE_COLOR));
+        }
+
+        if(strengths.getHarvestBonus() != 0){
+            System.out.format(format, "Harvest:", "" + strengths.getHarvestBonus());
+        }
+        if(strengths.getProductionBonus() != 0){
+            System.out.format(format, "Production:", "" + strengths.getProductionBonus());
+        }
+        if(strengths.getDiceBonus().get(ORANGE_COLOR) != 0){
+            System.out.format(format, ORANGE_COLOR.concat(" dice:"), "+" + strengths.getDiceBonus().get(ORANGE_COLOR));
+        }
+        if(strengths.getDiceBonus().get(BLACK_COLOR) != 0){
+            System.out.format(format, BLACK_COLOR.concat(" dice:"), "+" + strengths.getDiceBonus().get(BLACK_COLOR));
+        }
+        if(strengths.getDiceBonus().get(WHITE_COLOR) != 0){
+            System.out.format(format, WHITE_COLOR.concat(" dice:"), "+" + strengths.getDiceBonus().get(WHITE_COLOR));
+        }
+    }
+
     private void printAsset(Assets asset){
         if(asset.getCoins() != 0){
             printMessageln(("|| Coins:\t\t\t"+asset.getCoins()).concat(" ||"));
@@ -734,13 +788,13 @@ public class CLI extends AbsUI {
             printMessageln(("|| Servants:\t\t"+asset.getServants()).concat(" ||"));
         }
         if(asset.getFaithPoints() != 0){
-            printMessageln(("|| Faith Points:\t\t"+asset.getFaithPoints()).concat(" ||"));
+            printMessageln(("|| Faith Points:\t"+asset.getFaithPoints()).concat(" ||"));
         }
         if(asset.getBattlePoints() != 0){
             printMessageln(("|| Battle Points:\t"+asset.getBattlePoints()).concat(" ||"));
         }
         if(asset.getVictoryPoints() != 0){
-            printMessageln(("| Victory Points:\t"+asset.getVictoryPoints()).concat(" ||"));
+            printMessageln(("|| Victory Points:\t"+asset.getVictoryPoints()).concat(" ||"));
         }
     }
 
