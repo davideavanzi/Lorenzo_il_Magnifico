@@ -84,6 +84,7 @@ public class Assets implements Serializable {
      * @param operand is the second operand.
      */
     public Assets add(Assets operand) {
+        if (operand == null) return new Assets(this);
         Assets sum = new Assets();
         sum.coins = this.coins + operand.getCoins();
         sum.wood = this.wood + operand.getWood();
