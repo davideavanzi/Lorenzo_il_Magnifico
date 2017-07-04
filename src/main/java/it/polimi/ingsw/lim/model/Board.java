@@ -21,6 +21,7 @@ public class Board implements Serializable {
         this.production = new ArrayList<>();
         this.harvest = new ArrayList<>();
         this.faithTrack = new Assets[FAITH_TRACK_LENGTH];
+        this.excommunications = new ArrayList<>();
     }
 
     /**

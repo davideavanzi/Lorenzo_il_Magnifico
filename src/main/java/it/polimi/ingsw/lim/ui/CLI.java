@@ -7,7 +7,6 @@ import it.polimi.ingsw.lim.model.cards.*;
 import it.polimi.ingsw.lim.model.immediateEffects.*;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.swing.*;
 import java.io.Console;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -234,6 +233,10 @@ public class CLI extends AbsUI {
         this.printMarket();
         //this.printFaithPointsTrack();
         this.printVictoryPointsTrack();
+        this.printPlayerBoard();
+        for(int i = 0; i < 4; i++ ) {
+            this.printCard(this.uiCallback.getLocalBoard().getTowers().get(GREEN_COLOR).getFloor(i).getCard());
+        }
     }
 
     public void printPlayerBoard(){
@@ -293,7 +296,7 @@ public class CLI extends AbsUI {
         System.out.format(format, "");
         printMessageln(sRid);
         System.out.format(format, "");
-        if(player.getCardsOfColor(color).size() > 0){
+        if(!(player.getCardsOfColor(color).isEmpty())){
             format = "|%1$-40s|";
             int i = 0;
             for(Card card: player.getCardsOfColor(color)){
@@ -369,7 +372,7 @@ public class CLI extends AbsUI {
             printAsset(card.getCost());
             printMessageln(sRid);
         }
-        if(card.getImmediateEffects().size() > 0){
+        if(!(card.getImmediateEffects().isEmpty())){
             for(ImmediateEffect immediateEffect: card.getImmediateEffects()){
                 printImmediateEffct(immediateEffect);
             }
@@ -509,7 +512,7 @@ public class CLI extends AbsUI {
     private void printCard(YellowCard yellowCard){
         String format = "||%-20s||\n";
         String sRid = "_  _  _  _  _  _  _  _  ";
-        if(yellowCard.getProductionCosts().size() > 0){
+        if(!(yellowCard.getProductionCosts().isEmpty())){
             for(Assets a: yellowCard.getProductionCosts()){
                 printMessageln(sRid);
                 System.out.format(format, "");
@@ -517,7 +520,7 @@ public class CLI extends AbsUI {
                 printAsset(a);
             }
         }
-        if(yellowCard.getProductionResults().size() > 0){
+        if(!(yellowCard.getProductionResults().isEmpty())){
             for(Assets a: yellowCard.getProductionResults()){
                 printMessageln(sRid);
                 System.out.format(format, "");

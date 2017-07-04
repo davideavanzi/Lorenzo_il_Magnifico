@@ -21,6 +21,7 @@ public class Strengths implements Serializable {
         this.towerStrengths.put(BLUE_COLOR, 0);
         this.towerStrengths.put(PURPLE_COLOR, 0);
         this.towerStrengths.put(BLACK_COLOR, 0);
+        this.diceBonus = new HashMap<>();
         this.diceBonus.put(WHITE_COLOR, 0);
         this.diceBonus.put(BLACK_COLOR, 0);
         this.diceBonus.put(ORANGE_COLOR, 0);
@@ -45,6 +46,7 @@ public class Strengths implements Serializable {
         this.towerStrengths.put(YELLOW_COLOR, yellow);
         this.towerStrengths.put(PURPLE_COLOR, purple);
         this.towerStrengths.put(BLACK_COLOR, black);
+        this.diceBonus = new HashMap<>();
         this.diceBonus.put(WHITE_COLOR, 0);
         this.diceBonus.put(BLACK_COLOR, 0);
         this.diceBonus.put(ORANGE_COLOR, 0);
@@ -59,6 +61,7 @@ public class Strengths implements Serializable {
         this.towerStrengths.put(YELLOW_COLOR, yellow);
         this.towerStrengths.put(PURPLE_COLOR, purple);
         this.towerStrengths.put(BLACK_COLOR, black);
+        this.diceBonus = new HashMap<>();
         this.diceBonus.put(WHITE_COLOR, whiteDice);
         this.diceBonus.put(BLACK_COLOR, blackDice);
         this.diceBonus.put(ORANGE_COLOR, orangeDice);

@@ -116,11 +116,10 @@ public class Game {
         int i = 0;
         for (Assets bonus : parsedGame.getFaithTrackBonuses())
             this.board.getFaithTrack()[i] = bonus;
-        /*TODO: write excomm
         for (i = 1; i <= AGES_NUMBER; i++) {
             this.board.addExcommunication(parsedGame.getExcommunications().get(i)
                     .get(randomGenerator.nextInt(parsedGame.getExcommunications().get(i).size())));
-        } */
+        }
         //TODO: When we allot leadercards?
         /*
          * Distribute initial resources starting from the first player,
