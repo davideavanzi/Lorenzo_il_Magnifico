@@ -336,14 +336,15 @@ public class Game {
      * @return
      */
     public boolean isFastTowerMoveAllowed(String towerColor, int floor, Player pl, Assets optionalPickDiscount) {
-        //TODO : WAAAT
         Floor destination = this.board.getTowers().get(towerColor).getFloor(floor);
         if (!destination.hasCard()) return false;
         Assets actionCost = destination.getCard().getCost();
         if (this.isTowerOccupied(towerColor) && pl.getResources().getCoins() > COINS_TO_ENTER_OCCUPIED_TOWER)
             actionCost.addCoins(COINS_TO_ENTER_OCCUPIED_TOWER);
         else return false;
-        if (actionCost.isGreaterOrEqual(pl.getResources().add(pl.getPickDiscount(towerColor))))
+        Assets availableAssets = new Assets(pl.getResources()
+                .add(pl.getPickDiscount(towerColor).add(optionalPickDiscount)));
+        if (actionCost.isGreaterOrEqual(availableAssets))
             return false;
         return true;
     }

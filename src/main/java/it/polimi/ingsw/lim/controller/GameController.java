@@ -265,6 +265,10 @@ public class GameController {
         }
     }
 
+    public void moveInMarket(FamilyMember fm, User actor) {
+
+    }
+
     public void confirmProduction(ArrayList<Integer> choices) {
         if (choices.size() != currentProductionOptions.size()) {
             getLog().log(Level.SEVERE, "Wrong amount of player production choices!");
@@ -379,7 +383,6 @@ public class GameController {
      * @param actor
      */
     public void performFastTowerMove(int servantsDeployed, String towerColor, int floor, User actor) {
-
         int servantsForTowerAction = this.game.servantsForFastTowerAction(fastActionStr
                 .getTowerStrength(towerColor), towerColor, floor, actor.getPlayer());
         if (servantsForTowerAction > fastActor.getPlayer().getResources().getServants() ||
@@ -388,13 +391,12 @@ public class GameController {
             //TODO: tell user bad entry
             return;
         }
-        //TODO: join these two ifs?
         if (!this.game.isFastTowerMoveAllowed(towerColor, floor,actor.getPlayer(), optPickDiscount) ||
                 !fastActor.getUsername().equals(actor.getUsername())) {
             actor.gameError("Fast action not valid");
             return;
         }
-        //fast tower move!
+
         Card pickedCard = this.game.getTower(towerColor).getFloor(floor).pullCard();
         actor.getPlayer().addCard(pickedCard, towerColor);
         pickedCard.getImmediateEffects().stream().filter(ie -> ie instanceof AssetsEffect
@@ -405,11 +407,6 @@ public class GameController {
                 .forEach(ie -> EffectHandler.activateImmediateEffect(ie, actor));
         if (pickedCard instanceof BlueCard) CardHandler.activateBlueCard((BlueCard)pickedCard, actor.getPlayer());
     }
-
-    public void moveInMarket(FamilyMember fm, User actor) {
-
-    }
-
 
     /**
      * This method has to be called at the beginning of the game,
