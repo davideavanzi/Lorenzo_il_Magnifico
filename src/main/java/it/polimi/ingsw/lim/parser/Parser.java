@@ -212,7 +212,10 @@ public class Parser {
                 strengthsToParse.path(BLUE_BONUS).asInt(),
                 strengthsToParse.path(YELLOW_BONUS).asInt(),
                 strengthsToParse.path(PURPLE_BONUS).asInt(),
-                strengthsToParse.path(BLACK_BONUS).asInt()
+                strengthsToParse.path(BLACK_BONUS).asInt(),
+                strengthsToParse.path(WHITE_DICE_BONUS).asInt(),
+                strengthsToParse.path(BLACK_DICE_BONUS).asInt(),
+                strengthsToParse.path(ORANGE_DICE_BONUS).asInt()
         );
     }
 

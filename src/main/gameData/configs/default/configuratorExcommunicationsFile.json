@@ -3,22 +3,86 @@
     [
       {
         "excommunicationType":"assetsMalusExcommunication",
+        "assetsMalusExcommunicationType":{"battlePoints":1}
+      },
+      {
+        "excommunicationType":"assetsMalusExcommunication",
         "assetsMalusExcommunicationType":{"coin":1}
       },
       {
-        "excommunicationType": "strengthMalusExcommunication",
-        "strengthMalusExcommunication":{"blueBonus":4}
-      }
-    ],
-    [
+        "excommunicationType":"assetsMalusExcommunication",
+        "assetsMalusExcommunicationType":{"servants":1}
+      },
       {
         "excommunicationType":"assetsMalusExcommunication",
-        "assetsMalusExcommunicationType":{"coin":1, "wood":2}
+        "assetsMalusExcommunicationType":{"wood":1,"stone":1}
+      },
+      {
+        "excommunicationType": "strengthMalusExcommunication",
+        "strengthMalusExcommunication":{"harvestBonus":-3}
+      },
+      {
+        "excommunicationType": "strengthMalusExcommunication",
+        "strengthMalusExcommunication":{"productionBonus":-3}
+      },
+      {
+        "excommunicationType": "strengthMalusExcommunication",
+        "strengthMalusExcommunication":{"witheDiceBonus":-1,"blackDiceBonus":1,"orangeDiceBonus":1 }
       }
     ],
     [
       {
-
+        "excommunicationType": "strengthMalusExcommunication",
+        "strengthMalusExcommunication":{"greenBonus":-4}
+      },
+      {
+        "excommunicationType": "strengthMalusExcommunication",
+        "strengthMalusExcommunication":{"yellowBonus":-4}
+      },
+      {
+        "excommunicationType": "strengthMalusExcommunication",
+        "strengthMalusExcommunication":{"blueBonus":-4}
+      },
+      {
+        "excommunicationType": "strengthMalusExcommunication",
+        "strengthMalusExcommunication":{"purpleBonus":-4}
+      },
+      {
+        "excommunicationType":"marketExcommunication"
+      },
+      {
+        "excommunicationType":"servantsExcommunication"
+      },
+      {
+        "excommunicationType":"turnExcommunication"
+      }
+    ],
+    [
+      {
+        "excommunicationType":"endGameExcommunication",
+        "endGameExcommunication":"BLUE"
+      },
+      {
+        "excommunicationType":"endGameExcommunication",
+        "endGameExcommunication":"PURPLE"
+      },
+      {
+        "excommunicationType":"endGameExcommunication",
+        "onAssetsMalus":[
+          {"victoryPoints":5},{"victoryPoints":1}
+        ]
+      },
+      {
+        "excommunicationType":"endGameExcommunication",
+        "onAssetsMalus":[
+          {"battlePoints":1},{"victoryPoints":1}
+        ]
+      },
+      {
+        "excommunicationType":"endGameExcommunication",
+        "onAssetsMalus":[
+          {"servants":1,"coin":1,"stone":1,"wood":1},{"victoryPoints":1}
+        ]
       }
     ]
   ]

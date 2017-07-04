@@ -21,6 +21,9 @@ public class Strengths implements Serializable {
         this.towerStrengths.put(BLUE_COLOR, 0);
         this.towerStrengths.put(PURPLE_COLOR, 0);
         this.towerStrengths.put(BLACK_COLOR, 0);
+        this.diceBonus.put(WHITE_COLOR, 0);
+        this.diceBonus.put(BLACK_COLOR, 0);
+        this.diceBonus.put(ORANGE_COLOR, 0);
     }
 
     /**
@@ -42,6 +45,23 @@ public class Strengths implements Serializable {
         this.towerStrengths.put(YELLOW_COLOR, yellow);
         this.towerStrengths.put(PURPLE_COLOR, purple);
         this.towerStrengths.put(BLACK_COLOR, black);
+        this.diceBonus.put(WHITE_COLOR, 0);
+        this.diceBonus.put(BLACK_COLOR, 0);
+        this.diceBonus.put(ORANGE_COLOR, 0);
+    }
+
+    public Strengths(int harvest, int production, int green, int yellow, int blue, int purple, int black, int whiteDice, int blackDice, int orangeDice){
+        this.towerStrengths = new HashMap<>();
+        this.harvestBonus = harvest;
+        this.productionBonus = production;
+        this.towerStrengths.put(GREEN_COLOR, green);
+        this.towerStrengths.put(BLUE_COLOR, blue);
+        this.towerStrengths.put(YELLOW_COLOR, yellow);
+        this.towerStrengths.put(PURPLE_COLOR, purple);
+        this.towerStrengths.put(BLACK_COLOR, black);
+        this.diceBonus.put(WHITE_COLOR, whiteDice);
+        this.diceBonus.put(BLACK_COLOR, blackDice);
+        this.diceBonus.put(ORANGE_COLOR, orangeDice);
     }
 
     /**
@@ -133,8 +153,8 @@ public class Strengths implements Serializable {
         Strengths strengths = (Strengths) other;
         return (this.harvestBonus == strengths.getHarvestBonus() &&
                 this.productionBonus == strengths.getProductionBonus() &&
-                this.towerStrengths.equals(strengths.getTowerStrength())
-                //this.diceBonus.equals(strengths.getDiceBonus())
+                this.towerStrengths.equals(strengths.getTowerStrength()) &&
+                this.diceBonus.equals(strengths.getDiceBonus())
         );
     }
     //TODO: check if equals method work between to hashmap
