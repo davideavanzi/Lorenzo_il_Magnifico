@@ -37,16 +37,4 @@ public class Writer {
         return board;
     }
 
-    public static void main (String args[]){
-        GameController gameController = new GameController();
-        gameController.createGame();
-        try {
-            writer(gameController.getBoard());
-            reader(PATH_TO_WRITER_FILE);
-        }
-        catch (IOException e){
-            e.printStackTrace();
-        }
-
-    }
 }

@@ -233,19 +233,6 @@ public class CLI extends AbsUI {
         this.printMarket();
         //this.printFaithPointsTrack();
         this.printVictoryPointsTrack();
-        this.printPlayerBoard();
-        for(int i = 1; i < 5; i++ ) {
-            this.printCard(this.uiCallback.getLocalBoard().getTowers().get(GREEN_COLOR).getFloor(i).getCard());
-        }
-        for(int i = 1; i < 5; i++ ) {
-            this.printCard(this.uiCallback.getLocalBoard().getTowers().get(BLUE_COLOR).getFloor(i).getCard());
-        }
-        for(int i = 1; i < 5; i++ ) {
-            this.printCard(this.uiCallback.getLocalBoard().getTowers().get(YELLOW_COLOR).getFloor(i).getCard());
-        }
-        for(int i = 1; i < 5; i++ ) {
-            this.printCard(this.uiCallback.getLocalBoard().getTowers().get(PURPLE_COLOR).getFloor(i).getCard());
-        }
     }
 
     public void printPlayerBoard(){
@@ -255,7 +242,7 @@ public class CLI extends AbsUI {
         }
     }
 
-    private void printPlayer(Player player){
+    public void printPlayer(Player player){
         printPlayerCards(GREEN_COLOR, player);
         printPlayerCards(BLUE_COLOR, player);
         printPlayerCards(YELLOW_COLOR, player);
@@ -368,7 +355,7 @@ public class CLI extends AbsUI {
         }
     }
 
-    private void printCard(Card card){
+    public void printCard(Card card){
         String format = "||%-20s||\n";
         String s = "________________________";
         String sRid = "||_  _  _  _  _  _  _ ||";
@@ -542,6 +529,7 @@ public class CLI extends AbsUI {
                 printAsset(a);
             }
         }
+
         if(!(yellowCard.getProductionResults().isEmpty())){
             for(Assets a: yellowCard.getProductionResults()){
                 printMessageln(sRid);
@@ -743,7 +731,7 @@ public class CLI extends AbsUI {
     }
 
     private void printStrengthsCost(Strengths strengths){
-        String format = "|| %-17s%-2s||\n";  //todo 20 o 19
+        String format = "|| %-17s%-2s||\n";
         if(strengths.getTowerStrength(GREEN_COLOR) != 0 ){
             System.out.format(format, GREEN_COLOR.concat(" Tower:"), "" + strengths.getTowerStrength(GREEN_COLOR));
         }
@@ -763,38 +751,30 @@ public class CLI extends AbsUI {
         if(strengths.getProductionBonus() != 0){
             System.out.format(format, "Production:", "" + strengths.getProductionBonus());
         }
-        if(strengths.getDiceBonus().get(ORANGE_COLOR) != 0){
-            System.out.format(format, ORANGE_COLOR.concat(" dice:"), "+" + strengths.getDiceBonus().get(ORANGE_COLOR));
-        }
-        if(strengths.getDiceBonus().get(BLACK_COLOR) != 0){
-            System.out.format(format, BLACK_COLOR.concat(" dice:"), "+" + strengths.getDiceBonus().get(BLACK_COLOR));
-        }
-        if(strengths.getDiceBonus().get(WHITE_COLOR) != 0){
-            System.out.format(format, WHITE_COLOR.concat(" dice:"), "+" + strengths.getDiceBonus().get(WHITE_COLOR));
-        }
     }
 
     private void printAsset(Assets asset){
+        String format = "|| %-17s%-2s||\n";
         if(asset.getCoins() != 0){
-            printMessageln(("|| Coins:\t\t\t"+asset.getCoins()).concat(" ||"));
+            System.out.format(format, "Coins:", ""+asset.getCoins());
         }
         if(asset.getWood() != 0){
-            printMessageln(("|| Woods:\t\t\t"+asset.getWood()).concat(" ||"));
+            System.out.format(format, "Woods:", ""+asset.getWood());
         }
         if(asset.getStone() != 0){
-            printMessageln(("|| Stones:\t\t\t"+asset.getStone()).concat(" ||"));
+            System.out.format(format, "Stone:", ""+asset.getStone());
         }
         if(asset.getServants() != 0){
-            printMessageln(("|| Servants:\t\t"+asset.getServants()).concat(" ||"));
+            System.out.format(format, "Servants:", ""+asset.getServants());
         }
         if(asset.getFaithPoints() != 0){
-            printMessageln(("|| Faith Points:\t"+asset.getFaithPoints()).concat(" ||"));
+            System.out.format(format, "Faith Points:", ""+asset.getFaithPoints());
         }
         if(asset.getBattlePoints() != 0){
-            printMessageln(("|| Battle Points:\t"+asset.getBattlePoints()).concat(" ||"));
+            System.out.format(format, "Battle Points:", ""+asset.getBattlePoints());
         }
         if(asset.getVictoryPoints() != 0){
-            printMessageln(("|| Victory Points:\t"+asset.getVictoryPoints()).concat(" ||"));
+            System.out.format(format, "Victory Points:", ""+asset.getVictoryPoints());
         }
     }
 

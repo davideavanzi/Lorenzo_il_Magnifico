@@ -435,9 +435,11 @@
             "victoryPoints": 5
           }
         },
-        "yellowProductionResult": [
+        "yellowProduction":[
           {
-            "coin": 1
+            "yellowProductionResult": {
+              "coin": 1
+            }
           }
         ],
         "yellowBonusMultiplier": "YELLOW",
@@ -459,9 +461,11 @@
             "victoryPoints": 5
           }
         },
-        "yellowProductionResult": [
+        "yellowProduction":[
           {
-            "coin": 1
+            "yellowProductionResult": {
+              "coin": 1
+            }
           }
         ],
         "yellowBonusMultiplier": "GREEN",
@@ -483,9 +487,11 @@
             "victoryPoints": 6
           }
         },
-        "yellowProductionResult": [
+        "yellowProduction":[
           {
-            "victoryPoints": 1
+            "yellowProductionResult": {
+              "victoryPoints": 1
+            }
           }
         ],
         "yellowBonusMultiplier": "PURPLE",
@@ -507,9 +513,11 @@
             "victoryPoints": 6
           }
         },
-        "yellowProductionResult": [
+        "yellowProduction":[
           {
-            "victoryPoints": 1
+            "yellowProductionResult": {
+              "victoryPoints": 1
+            }
           }
         ],
         "yellowBonusMultiplier": "BLUE",
@@ -531,20 +539,22 @@
             "victoryPoints": 3
           }
         },
-        "yellowProductionCost": [
+        "yellowProduction":[
           {
-            "wood": 1
+            "yellowProductionResult": {
+              "coin": 3
+            },
+            "yellowProductionCost":{
+              "wood": 1
+            }
           },
           {
-            "wood": 2
-          }
-        ],
-        "yellowProductionResult": [
-          {
-            "coin": 3
-          },
-          {
-            "coin": 5
+            "yellowProductionResult": {
+              "coin": 5
+            },
+            "yellowProductionCost":{
+              "wood": 2
+            }
           }
         ],
         "yellowActionStrengths":
@@ -565,20 +575,22 @@
             "victoryPoints": 2
           }
         },
-        "yellowProductionCost": [
+        "yellowProduction":[
           {
+            "yellowProductionResult": {
+              "coin": 3
+            },
+            "yellowProductionCost":{
             "stone": 1
+            }
           },
           {
-            "stone": 2
-          }
-        ],
-        "yellowProductionResult": [
-          {
-            "coin": 3
-          },
-          {
-            "coin": 5
+            "yellowProductionResult": {
+              "coin": 5
+            },
+            "yellowProductionCost":{
+              "stone": 2
+            }
           }
         ],
         "yellowActionStrengths":
@@ -599,14 +611,14 @@
             "faithPoints": 1
           }
         },
-        "yellowProductionCost": [
+        "yellowProduction":[
           {
-            "coin": 1
-          }
-        ],
-        "yellowProductionResult": [
-          {
-            "faithPoints": 1
+            "yellowProductionResult": {
+              "faithPoints": 1
+            },
+            "yellowProductionCost":{
+              "coin": 1
+            }
           }
         ],
         "yellowActionStrengths":
@@ -626,9 +638,11 @@
             "victoryPoints": 1
           }
         },
-        "yellowProductionCost": [
+        "yellowProduction":[
           {
-            "coin": 1
+            "yellowProductionCost": {
+              "coin": 1
+            }
           }
         ],
         "yellowActionStrengths":
@@ -649,15 +663,15 @@
             "victoryPoints": 3
           }
         },
-        "yellowProductionCost": [
+        "yellowProduction":[
           {
-            "coin": 3
-          }
-        ],
-        "yellowProductionResult": [
-          {
-            "wood": 2,
-            "stone": 2
+            "yellowProductionResult": {
+              "wood": 2,
+              "stone":2
+            },
+            "yellowProductionCost":{
+              "coin": 3
+            }
           }
         ],
         "yellowActionStrengths":
@@ -677,20 +691,22 @@
             "victoryPoints": 4
           }
         },
-        "yellowProductionCost": [
+        "yellowProduction":[
           {
-            "coin": 1
+            "yellowProductionResult": {
+              "victoryPoints": 3
+            },
+            "yellowProductionCost":{
+              "coin": 1
+            }
           },
           {
-            "coin": 2
-          }
-        ],
-        "yellowProductionResult": [
-          {
-            "victoryPoints": 3
-          },
-          {
-            "victoryPoints": 5
+            "yellowProductionResult": {
+              "victoryPoints": 5
+            },
+            "yellowProductionCost":{
+              "coin": 2
+            }
           }
         ],
         "yellowActionStrengths":
@@ -710,20 +726,22 @@
             "victoryPoints": 5
           }
         },
-        "yellowProductionCost": [
+        "yellowProduction":[
           {
-            "wood": 1
+            "yellowProductionResult": {
+              "victoryPoints": 3
+            },
+            "yellowProductionCost":{
+              "wood": 1
+            }
           },
           {
-            "wood": 3
-          }
-        ],
-        "yellowProductionResult": [
-          {
-            "victoryPoints": 3
-          },
-          {
-            "victoryPoints": 7
+            "yellowProductionResult": {
+              "victoryPoints": 7
+            },
+            "yellowProductionCost":{
+              "wood": 3
+            }
           }
         ],
         "yellowActionStrengths":
@@ -743,20 +761,22 @@
             "victoryPoints": 6
           }
         },
-        "yellowProductionCost": [
+        "yellowProduction":[
           {
-            "stone": 1
+            "yellowProductionResult": {
+              "victoryPoints": 3
+            },
+            "yellowProductionCost":{
+              "stone": 1
+            }
           },
           {
-            "stone": 3
-          }
-        ],
-        "yellowProductionResult": [
-          {
-            "victoryPoints": 3
-          },
-          {
-            "victoryPoints": 7
+            "yellowProductionResult": {
+              "victoryPoints": 7
+            },
+            "yellowProductionCost":{
+              "stone": 3
+            }
           }
         ],
         "yellowActionStrengths":
@@ -777,16 +797,16 @@
             "victoryPoints": 4
           }
         },
-        "yellowProductionCost": [
+        "yellowProduction":[
           {
-            "stone": 1,
-            "wood":1,
-            "servants":1
-          }
-        ],
-        "yellowProductionResult": [
-          {
-            "victoryPoints": 6
+            "yellowProductionResult": {
+              "victoryPoints": 6
+            },
+            "yellowProductionCost":{
+              "stone": 1,
+              "wood":1,
+              "servants":1
+            }
           }
         ],
         "yellowActionStrengths":
@@ -807,15 +827,15 @@
             "faithPoints":1
           }
         },
-        "yellowProductionCost": [
+        "yellowProduction":[
           {
-            "faithPoints": 1
-          }
-        ],
-        "yellowProductionResult": [
-          {
-            "victoryPoints": 2,
-            "coin":2
+            "yellowProductionResult": {
+              "victoryPoints": 2,
+              "coin": 2
+            },
+            "yellowProductionCost": {
+              "faithPoints": 1
+            }
           }
         ],
         "yellowActionStrengths":
@@ -836,14 +856,14 @@
             "victoryPoints": 3
           }
         },
-        "yellowProductionCost": [
+        "yellowProduction":[
           {
-            "servants":1
-          }
-        ],
-        "yellowProductionResult": [
-          {
-            "battlePoints": 3
+            "yellowProductionResult": {
+              "battlePoints": 3
+            },
+            "yellowProductionCost":{
+              "servants": 1
+            }
           }
         ],
         "yellowActionStrengths":
@@ -865,10 +885,12 @@
             "victoryPoints": 8
           }
         },
-        "yellowProductionResult": [
+        "yellowProduction":[
           {
-            "victoryPoints": 2,
-            "battlePoints": 2
+            "yellowProductionResult": {
+              "victoryPoints": 2,
+              "battlePoints": 2
+            }
           }
         ],
         "yellowActionStrengths":
@@ -890,9 +912,11 @@
             "victoryPoints": 7
           }
         },
-        "yellowProductionResult": [
+        "yellowProduction":[
           {
-            "coin": 5
+            "yellowProductionResult": {
+              "coin":5
+            }
           }
         ],
         "yellowActionStrengths":
@@ -913,15 +937,15 @@
             "victoryPoints": 8
           }
         },
-        "yellowProductionCost": [
+        "yellowProduction":[
           {
-            "coin":4
-          }
-        ],
-        "yellowProductionResult": [
-          {
-            "stone": 3,
-            "wood":3
+            "yellowProductionResult": {
+              "stone": 3,
+              "wood":3
+            },
+            "yellowProductionCost":{
+              "coin": 4
+            }
           }
         ],
         "yellowActionStrengths":
@@ -943,9 +967,11 @@
             "victoryPoints": 10
           }
         },
-        "yellowProductionResult": [
+        "yellowProduction":[
           {
-            "victoryPoints": 3
+            "yellowProductionResult": {
+              "victoryPoints": 3
+            }
           }
         ],
         "yellowActionStrengths":
@@ -967,9 +993,11 @@
             "victoryPoints": 9
           }
         },
-        "yellowProductionResult": [
+        "yellowProduction":[
           {
-            "victoryPoints": 2
+            "yellowProductionResult": {
+              "victoryPoints": 2
+            }
           }
         ],
         "yellowActionStrengths":
@@ -991,15 +1019,15 @@
             "victoryPoints": 9
           }
         },
-        "yellowProductionCost": [
+        "yellowProduction":[
           {
-            "coin":1
-          }
-        ],
-        "yellowProductionResult": [
-          {
-            "servants": 2,
-            "victoryPoints":4
+            "yellowProductionResult": {
+              "servants": 2,
+              "victoryPoints":4
+            },
+            "yellowProductionCost":{
+              "coin": 1
+            }
           }
         ],
         "yellowActionStrengths":
@@ -1021,16 +1049,15 @@
             "faithPoints": 1
           }
         },
-        "yellowProductionCost": [
+        "yellowProduction":[
           {
-            "wood":1
-          },{
-            "stone":1
-          }
-        ],
-        "yellowProductionResult": [
-          {
-            "faithPoints": 2
+            "yellowProductionResult": {
+              "faithPoints":2
+            },
+            "yellowProductionCost":{
+              "wood": 1,
+              "stone":1
+            }
           }
         ],
         "yellowActionStrengths":
@@ -1052,15 +1079,15 @@
             "victoryPoints": 7
           }
         },
-        "yellowProductionCost": [
+        "yellowProduction":[
           {
-            "servants":1
-          }
-        ],
-        "yellowProductionResult": [
-          {
-            "battlePoints": 3,
-            "victoryPoints":1
+            "yellowProductionResult": {
+              "battlePoints": 3,
+              "victoryPoints":1
+            },
+            "yellowProductionCost":{
+              "servants": 1
+            }
           }
         ],
         "yellowActionStrengths":
@@ -1082,9 +1109,11 @@
             "faithPoints":3
           }
         },
-        "yellowProductionResult": [
+        "yellowProduction":[
           {
-            "victoryPoints": 1
+            "yellowProductionResult": {
+              "victoryPoints":1
+            }
           }
         ],
         "yellowActionStrengths":
