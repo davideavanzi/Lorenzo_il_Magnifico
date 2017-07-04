@@ -17,15 +17,17 @@ public interface RMIClientInterf extends Remote {
 
     int askUserServants(int minimum) throws RemoteException;
 
+    void commandValidator(String command, String message, boolean outcome) throws RemoteException;
+
     void isUserPlaying(Boolean state) throws RemoteException;
 
-    void chatMessageFromServer(String sender, String message) throws RemoteException;
+    void receiveChatMessageFromServer(String sender, String message) throws RemoteException;
 
-    void gameMessageFromServer(String message) throws RemoteException;
+    void receiveGameMessageFromServer(String message) throws RemoteException;
 
     String[] askLogin(String errorMsg) throws RemoteException;
 
-    void startListen() throws RemoteException;
+    void startListenToInput() throws RemoteException;
 
     void isAlive() throws RemoteException;
 }

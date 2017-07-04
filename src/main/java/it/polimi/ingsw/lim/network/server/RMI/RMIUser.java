@@ -36,7 +36,7 @@ public class RMIUser extends User {
     }
 
     @Override
-    public void notifyFastTowerMove(HashMap<String, Integer> baseStr, Assets optionalPickDiscount) {
+    public void notifyFastHarvest(int baseStr) {
 
     }
 
@@ -46,7 +46,7 @@ public class RMIUser extends User {
     }
 
     @Override
-    public void notifyFastHarvest(int baseStr) {
+    public void notifyFastTowerMove(HashMap<String, Integer> baseStr, Assets optionalPickDiscount) {
 
     }
 
@@ -75,7 +75,9 @@ public class RMIUser extends User {
     }
 
     @Override
-    public void chooseFavor(List<Assets> possibleFavors) {}
+    public void chooseFavor(List<Assets> possibleFavors) {
+
+    }
 
     @Override
     public void chooseTower(HashMap<String, Integer> possibleTowers) {
@@ -87,9 +89,18 @@ public class RMIUser extends User {
     }
 
     @Override
+    public void isLegalCommand(String command, String message, boolean outcome) {
+        try {
+            RMIServer.commandValidator(command, message, outcome, this.rci);
+        } catch (RemoteException e) {
+            getLog().log(Level.SEVERE, "[RMI]: Remote error sending chat message to client.");
+        }
+    }
+
+    @Override
     public void sendChatMessage(String sender, String message) {
         try {
-            RMIServer.chatMessageToClient(sender, message, this.rci);
+            RMIServer.sendChatMessageToClient(sender, message, this.rci);
         } catch (RemoteException e) {
             getLog().log(Level.SEVERE, "[RMI]: Remote error sending chat message to client.");
         }

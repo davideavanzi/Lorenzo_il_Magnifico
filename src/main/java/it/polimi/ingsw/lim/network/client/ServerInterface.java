@@ -22,7 +22,7 @@ public interface ServerInterface {
      * @param message the chat message
      * @throws ClientNetworkException
      */
-    void chatMessageToServer(String sender, String message) throws ClientNetworkException;
+    void sendChatMessageToServer(String sender, String message) throws ClientNetworkException;
 
     /**
      * Calling this method the client will try to connect to the server.

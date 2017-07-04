@@ -1,12 +1,12 @@
 package it.polimi.ingsw.lim.network.server.socket;
 
 import it.polimi.ingsw.lim.controller.GameController;
+import it.polimi.ingsw.lim.exceptions.BadRequestException;
 import it.polimi.ingsw.lim.model.FamilyMember;
 
 import static it.polimi.ingsw.lim.Log.getLog;
-import static it.polimi.ingsw.lim.network.ServerConstants.*;
+import static it.polimi.ingsw.lim.network.CommunicationConstants.*;
 
-import java.net.Inet4Address;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Level;
@@ -57,19 +57,24 @@ class ClientCommandHandler {
         GameController gc = handlerCallback.getUser().getRoom().getGameController();
         FamilyMember fm = handlerCallback.getUser().getPlayer().getFamilyMember(command.get(1));
         int servants = Integer.parseInt(command.get(4));
-        if (command.get(2).contains(TOWER)) {
-            String twrColor = command.get(2).replace(" Tower", "");
-            int floor = Integer.parseInt(command.get(3));
-            gc.moveInTower(fm, twrColor, floor, servants); //familyMember, towerColor, floorNum, servants
-        } else if (command.get(2).equalsIgnoreCase(MARKET)) {
-            int marketSlot = Integer.parseInt(command.get(3));
-            gc.moveInMarket(fm, marketSlot, servants);
-        } else if (command.get(2).equalsIgnoreCase(PRODUCTION)) {
-            gc.moveInProduction(fm, servants);
-        } else if (command.get(2).equalsIgnoreCase(HARVEST)) {
-            gc.moveInHarvest(fm, servants);
-        }else if (command.get(2).equalsIgnoreCase(COUNCIL)) {
-            gc.moveInCouncil(fm, servants);
+        try {
+            if (command.get(2).contains(TOWER)) {
+                String twrColor = command.get(2).replace(" Tower", "");
+                int floor = Integer.parseInt(command.get(3));
+                gc.moveInTower(fm, twrColor, floor, servants);
+            } else if (command.get(2).equalsIgnoreCase(MARKET)) {
+                int marketSlot = Integer.parseInt(command.get(3));
+                gc.moveInMarket(fm, marketSlot, servants);
+            } else if (command.get(2).equalsIgnoreCase(PRODUCTION)) {
+                gc.moveInProduction(fm, servants);
+            } else if (command.get(2).equalsIgnoreCase(HARVEST)) {
+                gc.moveInHarvest(fm, servants);
+            } else if (command.get(2).equalsIgnoreCase(COUNCIL)) {
+                gc.moveInCouncil(fm, servants);
+            }
+            handlerCallback.commandValidator(FAMILY_MEMBER, FAMILY_MEMBER_OK , true);
+        } catch (BadRequestException e) {
+            handlerCallback.commandValidator(FAMILY_MEMBER, e.getMessage(), false);
         }
     }
 }

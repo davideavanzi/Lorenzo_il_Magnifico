@@ -138,6 +138,11 @@ public abstract class User {
     public abstract void chooseFloor();
 
     /**
+     * This method indicate to the user the outcome of the command.
+     */
+    public abstract void isLegalCommand(String message, String command, boolean outcome);
+    
+    /**
      * Send chat message to client.
      * @param sender
      * @param message

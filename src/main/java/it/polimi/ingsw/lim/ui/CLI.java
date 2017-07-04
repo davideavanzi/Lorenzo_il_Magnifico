@@ -162,6 +162,7 @@ public class CLI extends AbsUI {
     }
 
     private void placeFamilyMember() {
+
         uiCallback.sendPlaceFM(fmColor(), fmPosition(), fmServant());
     }
 
@@ -185,8 +186,8 @@ public class CLI extends AbsUI {
         lock.unlock();
     }
 
-    public void cmdManager(String command) {
-
+    public void commandRemover(String command, String message, boolean outcome) {
+        printMessageln(("[").concat(command).concat("]: ").concat(message));
     }
 
     private void cmdExecutor(String command) throws InvalidInputException {
@@ -220,6 +221,34 @@ public class CLI extends AbsUI {
         }
     }
 
+    private void addChooseHarvestCmd() {
+        //availableCmdList.put(LEADER_CARD, () -> );
+    }
+
+    private void addChooseProductionCmd() {
+        //availableCmdList.put(LEADER_CARD, () -> );
+    }
+
+    private void addChooseTowerCmd() {
+        //availableCmdList.put(LEADER_CARD, () -> );
+    }
+
+    private void addChooseFavorCmd() {
+        //availableCmdList.put(CHOOSE_FAVOR, () -> );
+    }
+
+    private void addExcommunicationCmd() {
+        //availableCmdList.put(EXCOMMUNICATION, () -> );
+    }
+
+    private void addLeaderCardCmd() {
+        //availableCmdList.put(LEADER_CARD, () -> );
+    }
+
+    private void addFamilyMemberCmd() {
+        availableCmdList.put(FAMILY_MEMBER, () -> placeFamilyMember());
+    }
+
     private void initializeCommandLine() {
         cmdDescr = new HashMap<>();
         availableCmdList = new HashMap<>();
@@ -233,7 +262,6 @@ public class CLI extends AbsUI {
         cmdDescr.put(EXCOMMUNICATION, EXCOMMUNICATION_DESCR);
         cmdDescr.put(CHOOSE_FAVOR, CHOOSE_FAVOR_DESCR);
         cmdDescr.put(CHOOSE_TOWER,CHOOSE_TOWER_DESCR);
-        cmdDescr.put(CHOOSE_FLOOR, CHOOSE_FLOOR_DESCR);
         cmdDescr.put(CHOOSE_PRODUCTION, CHOOSE_PRODUCTION_DESCR);
 
         //Command HashMap
@@ -242,8 +270,8 @@ public class CLI extends AbsUI {
         //availableCmdList.put(INFO, () -> );
 
         if(uiCallback.getIsMyTurn()) {
-            availableCmdList.put(FAMILY_MEMBER, () -> placeFamilyMember());
-            //availableCmdList.put(LEADER_CARD, () -> );
+            addFamilyMemberCmd();
+            addLeaderCardCmd();
         }
     }
 

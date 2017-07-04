@@ -9,17 +9,17 @@ import java.rmi.*;
  */
 public interface RMIServerInterf extends Remote {
 
-    void moveInCouncil(String fmColor, int servants, String username) throws RemoteException;
+    void moveInCouncil(String fmColor, int servants, String username, RMIClientInterf rci) throws RemoteException;
 
-    void moveInHarvest(String fmColor, int servants, String username) throws RemoteException;
+    void moveInHarvest(String fmColor, int servants, String username, RMIClientInterf rci) throws RemoteException;
 
-    void moveInProduction(String fmColor, int servants, String username) throws RemoteException;
+    void moveInProduction(String fmColor, int servants, String username, RMIClientInterf rci) throws RemoteException;
 
-    void moveInMarket(String fmColor, int marketSlot, int servants, String username) throws RemoteException;
+    void moveInMarket(String fmColor, int marketSlot, int servants, String username, RMIClientInterf rci) throws RemoteException;
 
-    void moveInTower(String fmColor, String twrColor, int floor, int servants, String username) throws RemoteException;
+    void moveInTower(String fmColor, String twrColor, int floor, int servants, String username, RMIClientInterf rci) throws RemoteException;
 
-    void chatMessageFromClient(String sender, String message) throws RemoteException;
+    void receiveChatMessageFromClient(String sender, String message) throws RemoteException;
 
     void initializeConnection(RMIClientInterf rci) throws RemoteException;
 }

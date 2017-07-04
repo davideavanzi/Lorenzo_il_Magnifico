@@ -9,7 +9,7 @@ public abstract class AbsUI {
 
     public abstract int sendServantsToServer(int minimum);
 
-    public abstract void cmdManager(String command);
+    public abstract void commandRemover(String command, String message, boolean outcome);
 
     public abstract void waitForRequest();
 

@@ -54,7 +54,7 @@ public class UIController {
     /**
      * Map that link a identification string to a description of the command.
      */
-    static Map<String, String> cmdDescr;
+    static  Map<String, String> cmdDescr;
 
     /**
      * If true it indicates my turn.
@@ -142,18 +142,10 @@ public class UIController {
 
     void sendChatMessage(String message) {
         try {
-            clientProtocol.chatMessageToServer(username, message);
+            clientProtocol.sendChatMessageToServer(username, message);
         } catch (ClientNetworkException e) {
             clientUI.printError(e.getMessage());
         }
-    }
-
-    public void manageCmd(String command) {
-        clientUI.cmdManager(command);
-    }
-
-    public void startWaitRequest() {
-        clientUI.waitForRequest();
     }
 
     /**
@@ -212,7 +204,6 @@ public class UIController {
         static final String EXCOMMUNICATION = "excommunication";
         static final String CHOOSE_FAVOR = "chooseFavor";
         static final String CHOOSE_TOWER = "chooseTower";
-        static final String CHOOSE_FLOOR = "chooseFloor";
         static final String CHOOSE_PRODUCTION = "chooseProduction";
 
         //Command description
@@ -225,7 +216,6 @@ public class UIController {
         static final String EXCOMMUNICATION_DESCR = "Choose if you want take a excommunication";
         static final String CHOOSE_FAVOR_DESCR = "Choose a favor from council";
         static final String CHOOSE_TOWER_DESCR = "Choose a tower to pick a card from";
-        static final String CHOOSE_FLOOR_DESCR = "Choose the tower's floor ";
         static final String CHOOSE_PRODUCTION_DESCR = "Choose what type of production you want activate";
     }
 }

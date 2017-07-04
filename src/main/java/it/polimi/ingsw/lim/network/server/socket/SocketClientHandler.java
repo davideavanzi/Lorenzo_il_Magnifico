@@ -8,7 +8,7 @@ import it.polimi.ingsw.lim.model.Player;
 import it.polimi.ingsw.lim.network.server.MainServer;
 
 import static it.polimi.ingsw.lim.Log.*;
-import static it.polimi.ingsw.lim.network.ServerConstants.*;
+import static it.polimi.ingsw.lim.network.CommunicationConstants.*;
 import static it.polimi.ingsw.lim.network.server.MainServer.addUserToRoom;
 
 import java.io.*;
@@ -66,6 +66,10 @@ public class SocketClientHandler implements Runnable {
 
     void askClientServants(int minimum) {
         sendObjectToClient(SERVANT + SPLITTER + minimum);
+    }
+
+    public void commandValidator(String command, String message, boolean outcome) {
+        sendObjectToClient(CMD_VALIDATOR + SPLITTER + command + SPLITTER + message + SPLITTER + outcome);
     }
 
     /**
