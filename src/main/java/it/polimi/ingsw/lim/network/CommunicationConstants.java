@@ -22,6 +22,7 @@ public class CommunicationConstants {
     public static final String FAMILY_MEMBER = "FAMILY_MEMBER";
     public static final String FAMILY_MEMBER_OK = "Family member has been correctly place";
 
+    public static final String EXCOMMUNICATION = "EXCOMMUNICATION";
 
     public static final String TOWER = "Tower";
     public static final String PRODUCTION = "Production";

@@ -80,12 +80,12 @@ public class SocketClient implements Runnable, ServerInterface {
      */
     private int getPort() {return port;}
 
-    public void placeFM(String color, ArrayList<String> position, String servants, String username) {
+    public void placeFM(String color, ArrayList<String> destination, String servants, String username) {
         try {
-            if (position.get(1) == null)
-                sendObjToServer(FAMILY_MEMBER + SPLITTER + color + SPLITTER + position.get(0) + SPLITTER + servants);
+            if (destination.get(1) == null)
+                sendObjToServer(FAMILY_MEMBER + SPLITTER + color + SPLITTER + destination.get(0) + SPLITTER + servants);
             else
-                sendObjToServer(FAMILY_MEMBER + SPLITTER + color + SPLITTER + position.get(0) + SPLITTER + position.get(1) + SPLITTER + servants);
+                sendObjToServer(FAMILY_MEMBER + SPLITTER + color + SPLITTER + destination.get(0) + SPLITTER + destination.get(1) + SPLITTER + servants);
         } catch (IOException e) {
             getLog().log(Level.SEVERE, "[SOCKET]: Could not send FamilyMember command to server", e);
         }

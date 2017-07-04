@@ -57,7 +57,7 @@ class ServerCommandHandler {
             } else if (commandIdentifier.equalsIgnoreCase(GAME_MSG)) {
                 uiCallback.getClientUI().printGameMessage(command.get(1));
             } else if (commandIdentifier.equalsIgnoreCase(CMD_VALIDATOR)) {
-                uiCallback.getClientUI().commandRemover(command.get(1), command.get(2), Boolean.valueOf(command.get(3)));
+                uiCallback.getClientUI().commandManager(command.get(1), command.get(2), Boolean.valueOf(command.get(3)));
             }
         } else if (obj instanceof Board) {
             Board board = (Board)obj;

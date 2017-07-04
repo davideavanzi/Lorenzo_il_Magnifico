@@ -64,12 +64,12 @@ public class SocketClientHandler implements Runnable {
      */
     public User getUser() { return user; }
 
-    void askClientServants(int minimum) {
-        sendObjectToClient(SERVANT + SPLITTER + minimum);
+    void commandValidator(String command, String message, boolean outcome) {
+        sendObjectToClient(CMD_VALIDATOR + SPLITTER + command + SPLITTER + message + SPLITTER + outcome);
     }
 
-    public void commandValidator(String command, String message, boolean outcome) {
-        sendObjectToClient(CMD_VALIDATOR + SPLITTER + command + SPLITTER + message + SPLITTER + outcome);
+    void askClientForExcommunication() {
+        sendObjectToClient(EXCOMMUNICATION);
     }
 
     /**

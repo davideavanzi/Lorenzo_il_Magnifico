@@ -48,15 +48,6 @@ public class CLI extends AbsUI {
         initializeCommandLine();
     }
 
-    @Override
-    public int sendServantsToServer(int minimum) {
-        printMessageln("How many servants would you like to use in this action? Minimum: " + minimum);
-        while(!userInput.hasNextInt()) {
-            userInput.next();
-        }
-        return inputNum = userInput.nextInt();
-    }
-
     private String fmServant() {
         printMessageln("How many servants would you like to put here?");
         do {
@@ -65,7 +56,7 @@ public class CLI extends AbsUI {
         return inputNum.toString();
     }
 
-    private ArrayList<String> fmPosition() {
+    private ArrayList<String> fmDestination() {
         String[] board4Player =
                 {"Green Tower", "Yellow Tower", "Blue Tower", "Purple Tower", "Council", "Production", "Harvest", "Market"};
         String[] board5Player =
@@ -162,8 +153,9 @@ public class CLI extends AbsUI {
     }
 
     private void placeFamilyMember() {
-
-        uiCallback.sendPlaceFM(fmColor(), fmPosition(), fmServant());
+        uiCallback.sendPlaceFM(fmColor(), fmDestination(), fmServant());
+        availableCmdList.remove(FAMILY_MEMBER);
+        lock.unlock();
     }
 
     /**
@@ -186,8 +178,9 @@ public class CLI extends AbsUI {
         lock.unlock();
     }
 
-    public void commandRemover(String command, String message, boolean outcome) {
+    public void commandManager(String command, String message, boolean outcome) {
         printMessageln(("[").concat(command).concat("]: ").concat(message));
+        if (!outcome) availableCmdList.put(command, cmdList.get(command));
     }
 
     private void cmdExecutor(String command) throws InvalidInputException {
@@ -222,15 +215,15 @@ public class CLI extends AbsUI {
     }
 
     private void addChooseHarvestCmd() {
-        //availableCmdList.put(LEADER_CARD, () -> );
+        //availableCmdList.put(CHOOSE_HARVEST, () -> );
     }
 
     private void addChooseProductionCmd() {
-        //availableCmdList.put(LEADER_CARD, () -> );
+        //availableCmdList.put(CHOOSE_PRODUCTION, () -> );
     }
 
     private void addChooseTowerCmd() {
-        //availableCmdList.put(LEADER_CARD, () -> );
+        //availableCmdList.put(CHOOSE_TOWER, () -> );
     }
 
     private void addChooseFavorCmd() {
@@ -249,11 +242,23 @@ public class CLI extends AbsUI {
         availableCmdList.put(FAMILY_MEMBER, () -> placeFamilyMember());
     }
 
-    private void initializeCommandLine() {
-        cmdDescr = new HashMap<>();
-        availableCmdList = new HashMap<>();
+    private void initializeAvailableCmdList() {
+        availableCmdList.put(CHAT, () -> chat());
+        availableCmdList.put(TURN, () -> turnOrder());
+        //availableCmdList.put(INFO, () -> );
+    }
 
-        //Description HashMap
+    private void initializeCmdList() {
+        cmdList.put(FAMILY_MEMBER, () -> placeFamilyMember());
+        //cmdList.put(LEADER_CARD, () -> );
+        //cmdList.put(EXCOMMUNICATION, () -> );
+        //cmdList.put(CHOOSE_FAVOR, () -> );
+        //cmdList.put(CHOOSE_TOWER, () -> );
+        //cmdList.put(CHOOSE_PRODUCTION, () -> );
+        //cmdList.put(CHOOSE_HARVEST, () -> );
+    }
+
+    private void initializeCmdDescr() {
         cmdDescr.put(CHAT, CHAT_DESCR);
         cmdDescr.put(TURN, TURN_DESCR);
         cmdDescr.put(INFO, INFO_DESCR);
@@ -263,12 +268,18 @@ public class CLI extends AbsUI {
         cmdDescr.put(CHOOSE_FAVOR, CHOOSE_FAVOR_DESCR);
         cmdDescr.put(CHOOSE_TOWER,CHOOSE_TOWER_DESCR);
         cmdDescr.put(CHOOSE_PRODUCTION, CHOOSE_PRODUCTION_DESCR);
+    }
 
-        //Command HashMap
-        availableCmdList.put(CHAT, () -> chat());
-        availableCmdList.put(TURN, () -> turnOrder());
-        //availableCmdList.put(INFO, () -> );
-
+    private void initializeCommandLine() {
+        cmdDescr = new HashMap<>();
+        availableCmdList = new HashMap<>();
+        cmdList = new HashMap<>();
+        //Populate Description HashMap
+        initializeCmdDescr();
+        //Populate Command HashMap
+        initializeCmdList();
+        //Populate Available Command HashMap
+        initializeAvailableCmdList();
         if(uiCallback.getIsMyTurn()) {
             addFamilyMemberCmd();
             addLeaderCardCmd();

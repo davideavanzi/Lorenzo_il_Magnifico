@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 public interface ServerInterface {
 
-    void placeFM(String color, ArrayList<String> position, String servants, String username) throws ClientNetworkException;
+    void placeFM(String color, ArrayList<String> destination, String servants, String username) throws ClientNetworkException;
 
     /**
      * Send a chat message to the server.

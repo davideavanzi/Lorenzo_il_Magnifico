@@ -35,10 +35,6 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
      */
     public RMIServer() throws RemoteException {}
 
-    static int askClientServants(int minimum, RMIClientInterf rmiClient) throws RemoteException {
-        return rmiClient.askUserServants(minimum);
-    }
-
     static void commandValidator(String command, String message, boolean outcome, RMIClientInterf rmiClient) throws RemoteException {
         rmiClient.commandValidator(command, message, outcome);
     }

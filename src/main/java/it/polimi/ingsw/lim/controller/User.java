@@ -118,8 +118,6 @@ public abstract class User {
      */
     public abstract void askForOptionalBpPick(int requirement, int cost);
 
-    public abstract void askForServants(int minimumAmount);
-
     /**
      * This method asks a user if he wants to take an excommunication
      * @return a boolean that indicates if the player wants the excommunication

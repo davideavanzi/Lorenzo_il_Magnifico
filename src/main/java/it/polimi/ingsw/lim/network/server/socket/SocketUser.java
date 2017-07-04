@@ -55,13 +55,8 @@ public class SocketUser extends User {
     }
 
     @Override
-    public void askForServants(int minimumAmount) {
-        this.sch.askClientServants(minimumAmount);
-    }
-
-    @Override
     public void askForExcommunication() {
-
+        this.sch.askClientForExcommunication();
     }
 
     @Override

@@ -47,7 +47,13 @@ public class UIController {
 
     /**
      * Map that link a identification string to a method.
-     * Only available commands are in this hashMap.
+     * All command are stored here.
+     */
+    static Map<String, Runnable> cmdList;
+
+    /**
+     * Map that link a identification string to a method.
+     * Only available commands are stored in this hashMap.
      */
     static Map<String, Runnable> availableCmdList;
 
@@ -60,11 +66,6 @@ public class UIController {
      * If true it indicates my turn.
      */
     private boolean isMyTurn = false;
-
-    /**
-     * It's show if I'm logged.
-     */
-    private boolean amILogged = false;
 
     /**
      * The first thing to do is create a user interface, then the player must choose
@@ -132,9 +133,9 @@ public class UIController {
         return getLocalPlayers().stream().filter(pl -> pl.getNickname().equals(username)).findFirst().orElse(null);
     }
 
-    void sendPlaceFM(String color, ArrayList<String> position, String servants) {
+    void sendPlaceFM(String color, ArrayList<String> destination, String servants) {
         try {
-            clientProtocol.placeFM(color, position, servants, username);
+            clientProtocol.placeFM(color, destination, servants, username);
         } catch (ClientNetworkException e) {
             clientUI.printError(e.getMessage());
         }

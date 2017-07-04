@@ -70,13 +70,8 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
     }
 
     @Override
-    public int askUserServants(int minimum) throws RemoteException {
-        return uiCallback.getClientUI().sendServantsToServer(minimum);
-    }
-
-    @Override
     public void commandValidator(String command, String message, boolean outcome) throws RemoteException {
-        uiCallback.getClientUI().commandRemover(command, message, outcome);
+        uiCallback.getClientUI().commandManager(command, message, outcome);
     }
 
     @Override

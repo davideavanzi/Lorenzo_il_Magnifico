@@ -7,9 +7,7 @@ public abstract class AbsUI {
 
     public abstract void printBoard();
 
-    public abstract int sendServantsToServer(int minimum);
-
-    public abstract void commandRemover(String command, String message, boolean outcome);
+    public abstract void commandManager(String command, String message, boolean outcome);
 
     public abstract void waitForRequest();
 
