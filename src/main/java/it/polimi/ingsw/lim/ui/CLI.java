@@ -3,9 +3,11 @@ package it.polimi.ingsw.lim.ui;
 import it.polimi.ingsw.lim.Lock;
 import it.polimi.ingsw.lim.exceptions.InvalidInputException;
 import it.polimi.ingsw.lim.model.*;
-import it.polimi.ingsw.lim.model.cards.Card;
+import it.polimi.ingsw.lim.model.cards.*;
+import it.polimi.ingsw.lim.model.immediateEffects.*;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.swing.*;
 import java.io.Console;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -232,7 +234,6 @@ public class CLI extends AbsUI {
         this.printMarket();
         //this.printFaithPointsTrack();
         this.printVictoryPointsTrack();
-        this.printPlayerBoard(); //todo remove test;
     }
 
     public void printPlayerBoard(){
@@ -292,6 +293,224 @@ public class CLI extends AbsUI {
         printMessageln(s);
         printMessageln("");
         printMessageln("");
+    }
+
+    public void printTowerFloor(String color, int floor){
+        if(this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(floor).hasCard()) {
+            printCard(this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(floor).getCard());
+        }
+        else {
+            printMessageln(StringUtils.center(("N o    C a r d    t o    S h o w"), 140));
+        }
+    }
+
+    private void printCard(Card card){
+        String format = "||%-20s||\n";
+        String s = "________________________";
+        String sRid = "_  _  _  _  _  _  _  _  ";
+        printMessageln(s);
+        System.out.format(format, "");
+        System.out.format(format, card.getName());
+        System.out.format(format, "" + card.getAge());
+        printMessageln(sRid);
+        if(card.hasCost()){
+            System.out.format(format, "");
+            System.out.format(format, StringUtils.center("Card cost:", 20));
+            printAsset(card.getCost());
+            printMessageln(sRid);
+        }
+        if(card.getImmediateEffects().size() > 0){
+            for(ImmediateEffect immediateEffect: card.getImmediateEffects()){
+                printImmediateEffct(immediateEffect);
+            }
+        }
+        if (card instanceof GreenCard) {
+            System.out.format(format, "");
+            System.out.format(format, StringUtils.center(("Green Card"), 20));
+            printMessageln(sRid);
+            printCard((GreenCard) card);
+        }else if (card instanceof BlueCard) {
+            System.out.format(format, "");
+            System.out.format(format, StringUtils.center(("Blue Card"), 20));
+            printMessageln(sRid);
+            printCard((BlueCard) card);
+        }else if (card instanceof YellowCard) {
+            System.out.format(format, "");
+            System.out.format(format, StringUtils.center(("Yellow Card"), 20));
+            printMessageln(sRid);
+            printCard((YellowCard) card);
+        }else if (card instanceof PurpleCard) {
+            System.out.format(format, "");
+            System.out.format(format, StringUtils.center(("Purple Card"), 20));
+            printMessageln(sRid);
+            printCard((PurpleCard) card);
+        } else if (card instanceof BlackCard) {
+            System.out.format(format, "");
+            System.out.format(format, StringUtils.center(("Black Card"), 20));
+            printMessageln(sRid);
+        }
+        printMessageln(s);
+        printMessageln("");
+        printMessageln("");
+    }
+
+    private void printImmediateEffct(ImmediateEffect immediateEffect){
+        String format = "||%-20s||\n";
+        String sRid = "_  _  _  _  _  _  _  _  ";
+        if(immediateEffect instanceof AssetsEffect){
+            printMessageln(sRid);
+            System.out.format(format, "");
+            System.out.format(format, StringUtils.center("Immediate Bonus:", 20));
+            printAsset(((AssetsEffect)immediateEffect).getBonus());
+        }else if(immediateEffect instanceof ActionEffect){
+            printMessageln(sRid);
+            System.out.format(format, "");
+            System.out.format(format, StringUtils.center("Immediate Bonus:", 20));
+            printStrengths(((ActionEffect)immediateEffect).getStrength());
+            if(((ActionEffect)immediateEffect).hasDiscount()){
+                printMessageln(sRid);
+                System.out.format(format, "");
+                System.out.format(format, StringUtils.center("Immediate Discount:", 20));
+                printAsset(((ActionEffect)immediateEffect).getDiscount());
+            }
+        }else if(immediateEffect instanceof AssetsMultipliedEffect){
+            printMessageln(sRid);
+            System.out.format(format, "");
+            System.out.format(format, StringUtils.center("For Each:", 20));
+            printAsset(((AssetsMultipliedEffect)immediateEffect).getMultiplier());
+            System.out.format(format, "");
+            System.out.format(format, StringUtils.center("You Will Have:", 20));
+            printAsset(((AssetsMultipliedEffect)immediateEffect).getBonus());
+        }else if(immediateEffect instanceof CardMultipliedEffect){
+            printMessageln(sRid);
+            System.out.format(format, "");
+            System.out.format(format, StringUtils.center("For Each:", 20));
+            System.out.format(format, ((CardMultipliedEffect)immediateEffect).getMultiplierColor().concat(" cards"));
+            System.out.format(format, "");
+            printAsset(((CardMultipliedEffect)immediateEffect).getBonus());
+        }else if(immediateEffect instanceof CouncilFavorsEffect){
+            printMessageln(sRid);
+            System.out.format(format, "");
+            System.out.format(format, StringUtils.center("Council Favours:", 20));
+            System.out.format(format, StringUtils.center("" + ((CouncilFavorsEffect)immediateEffect).getAmount(), 20));
+        }
+    }
+
+    private void printCard(GreenCard greenCard){
+        String format = "||%-20s||\n";
+        String sRid = "_  _  _  _  _  _  _  _  ";
+        if(greenCard.getHarvestResult().isNotNull()){
+            printMessageln(sRid);
+            System.out.format(format, "");
+            System.out.format(format, StringUtils.center(("Harvest Result"), 20));
+            printAsset(greenCard.getHarvestResult());
+        }
+        if(greenCard.getActionStrength().isNotNull()){
+            printMessageln(sRid);
+            System.out.format(format, "");
+            System.out.format(format, StringUtils.center(("Action Strengths"), 20));
+            printStrengths(greenCard.getActionStrength());
+        }
+    }
+
+    private void printCard(BlueCard blueCard){
+        String format = "||%-20s||\n";
+        String sRid = "_  _  _  _  _  _  _  _  ";
+        if (blueCard.getPermanentBonus().isNotNull()){
+            printMessageln(sRid);
+            System.out.format(format, "");
+            System.out.format(format, StringUtils.center(("Permanent Bonus:"), 20));
+            printStrengths(blueCard.getPermanentBonus());
+        }
+        //todo fallisce perche getPick puo ritornare null?
+        if(blueCard.getPickDiscount(BLUE_COLOR).isNotNull()){
+            printMessageln(sRid);
+            System.out.format(format, "");
+            System.out.format(format, StringUtils.center(("Blue Discount:"), 20));
+            printAsset(blueCard.getPickDiscount(BLUE_COLOR));
+        }
+        if(blueCard.getPickDiscount(YELLOW_COLOR).isNotNull()){
+            printMessageln(sRid);
+            System.out.format(format, "");
+            System.out.format(format, StringUtils.center(("Yellow Discount:"), 20));
+            printAsset(blueCard.getPickDiscount(YELLOW_COLOR));
+        }
+        if(blueCard.getPickDiscount(PURPLE_COLOR).isNotNull()){
+            printMessageln(sRid);
+            System.out.format(format, "");
+            System.out.format(format, StringUtils.center(("Purple Discount:"), 20));
+            printAsset(blueCard.getPickDiscount(PURPLE_COLOR));
+        }
+        if(blueCard.getPickDiscount(BLACK_COLOR).isNotNull()){
+            printMessageln(sRid);
+            System.out.format(format, "");
+            System.out.format(format, StringUtils.center(("Black Discount:"), 20));
+            printAsset(blueCard.getPickDiscount(BLACK_COLOR));
+        }
+        if(!blueCard.getTowerBonusAllowed()){
+            printMessageln(sRid);
+            System.out.format(format, "");
+            System.out.format(format, StringUtils.center(("Tower Bonus"), 20));
+            System.out.format(format, StringUtils.center(("not Allowed"), 20));
+        }
+
+    }
+
+    private void printCard(YellowCard yellowCard){
+        String format = "||%-20s||\n";
+        String sRid = "_  _  _  _  _  _  _  _  ";
+        if(yellowCard.getProductionCosts().size() > 0){
+            for(Assets a: yellowCard.getProductionCosts()){
+                printMessageln(sRid);
+                System.out.format(format, "");
+                System.out.format(format, StringUtils.center(("Production Cost:"), 20));
+                printAsset(a);
+            }
+        }
+        if(yellowCard.getProductionResults().size() > 0){
+            for(Assets a: yellowCard.getProductionResults()){
+                printMessageln(sRid);
+                System.out.format(format, "");
+                System.out.format(format, StringUtils.center(("Production Result:"), 20));
+                printAsset(a);
+            }
+        }
+        if(yellowCard.getActionStrength().isNotNull()){
+            printMessageln(sRid);
+            System.out.format(format, "");
+            System.out.format(format, StringUtils.center(("Action Strengths:"), 20));
+            printStrengths(yellowCard.getActionStrength());
+        }
+        if(!yellowCard.getCardMultiplier().isEmpty()){
+            printMessageln(sRid);
+            System.out.format(format, "");
+            System.out.format(format, StringUtils.center(("Card Multiplier:"), 20));
+            System.out.format(format, StringUtils.center((yellowCard.getCardMultiplier().concat(" cards")), 20));
+        }
+    }
+
+    private void printCard(PurpleCard purpleCard){
+        String format = "||%-20s||\n";
+        String sRid = "_  _  _  _  _  _  _  _  ";
+        if(purpleCard.getEndgameBonus().isNotNull()){
+            printMessageln(sRid);
+            System.out.format(format, "");
+            System.out.format(format, StringUtils.center(("End Game Bonus:"), 20));
+            printAsset(purpleCard.getEndgameBonus());
+        }
+        if(purpleCard.getOptionalBpRequirement() != 0){
+            printMessageln(sRid);
+            System.out.format(format, "");
+            System.out.format(format, StringUtils.center(("Battle Point"), 20));
+            System.out.format(format, StringUtils.center(("Requirement:"), 20));
+            System.out.format(format, StringUtils.center(("" + purpleCard.getOptionalBpRequirement()), 20));
+        }
+        if(purpleCard.getOptionalBpCost() != 0){
+            printMessageln(sRid);
+            System.out.format(format, "");
+            System.out.format(format, StringUtils.center(("Battle Point Cost:"), 20));
+            System.out.format(format, StringUtils.center(("" + purpleCard.getOptionalBpRequirement()), 20));
+        }
     }
 
     private void printTower(String color){
@@ -414,6 +633,38 @@ public class CLI extends AbsUI {
         printMessageln("");
         this.printTower(PURPLE_COLOR);
         printMessageln("");
+    }
+
+    public void printStrengths(Strengths strengths){
+        String format = "||%-17s%-20s||\n";  //todo 20 o 19
+        if(strengths.getTowerStrength(GREEN_COLOR) != 0 ){
+            System.out.format(format, GREEN_COLOR.concat(" Tower:"), "" + strengths.getTowerStrength(GREEN_COLOR));
+        }
+        if(strengths.getTowerStrength(BLUE_COLOR) != 0 ){
+            System.out.format(format, BLUE_COLOR.concat(" Tower:"), "" + strengths.getTowerStrength(BLUE_COLOR));
+        }
+        if(strengths.getTowerStrength(YELLOW_COLOR) != 0 ){
+            System.out.format(format, YELLOW_COLOR.concat(" Tower:"), "" + strengths.getTowerStrength(YELLOW_COLOR));
+        }
+        if(strengths.getTowerStrength(PURPLE_COLOR) != 0 ){
+            System.out.format(format, PURPLE_COLOR.concat(" Tower:"), "" + strengths.getTowerStrength(PURPLE_COLOR));
+        }
+
+        if(strengths.getHarvestBonus() != 0){
+            System.out.format(format, "Harvest Bonus:", "" + strengths.getHarvestBonus());
+        }
+        if(strengths.getProductionBonus() != 0){
+            System.out.format(format, "Production Bonus:", "" + strengths.getProductionBonus());
+        }
+        if(strengths.getDiceBonus().get(ORANGE_COLOR) != 0){
+            System.out.format(format, ORANGE_COLOR.concat(" dice:"), "+" + strengths.getDiceBonus().get(ORANGE_COLOR));
+        }
+        if(strengths.getDiceBonus().get(BLACK_COLOR) != 0){
+            System.out.format(format, BLACK_COLOR.concat(" dice:"), "+" + strengths.getDiceBonus().get(BLACK_COLOR));
+        }
+        if(strengths.getDiceBonus().get(WHITE_COLOR) != 0){
+            System.out.format(format, WHITE_COLOR.concat(" dice:"), "+" + strengths.getDiceBonus().get(WHITE_COLOR));
+        }
     }
 
     public void printAsset(Assets asset){

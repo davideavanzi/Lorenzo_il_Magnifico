@@ -80,6 +80,10 @@
       },
       {
         "excommunicationType":"endGameExcommunication",
+        "productionCardCostMalus":{"wood":1,"stone":1}
+      },
+      {
+        "excommunicationType":"endGameExcommunication",
         "onAssetsMalus":[
           {"servants":1,"coin":1,"stone":1,"wood":1},{"victoryPoints":1}
         ]

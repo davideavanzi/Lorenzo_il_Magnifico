@@ -65,12 +65,12 @@ public class Strengths implements Serializable {
     }
 
     /**
-     * 
+     *
      */
     private int harvestBonus;
 
     /**
-     * 
+     *
      */
     private int productionBonus;
 
@@ -78,7 +78,7 @@ public class Strengths implements Serializable {
     private HashMap<String, Integer> towerStrengths;
 
     /**
-     * 
+     *
      */
     private HashMap<String, Integer> diceBonus;
 
@@ -116,18 +116,38 @@ public class Strengths implements Serializable {
         return productionBonus;
     }
 
-    public void printStrengths(){
-        System.out.println("[strengths PRINT]");
-        System.out.println("    - Harvest:          "+harvestBonus);
-        System.out.println("    - Production:       "+productionBonus);
-        System.out.println("    - Green Bonus:      "+ towerStrengths.get(GREEN_COLOR));
-        System.out.println("    - Blue Bonus:       "+ towerStrengths.get(BLUE_COLOR));
-        System.out.println("    - Yellow Bonus:     "+ towerStrengths.get(YELLOW_COLOR));
-        System.out.println("    - Purple Bonus:     "+ towerStrengths.get(PURPLE_COLOR));
-        System.out.println("    - Black Bonus:      "+ towerStrengths.get(BLACK_COLOR));
-        //TODO: print dices bonuses
-        System.out.println("[END strengths PRINT]");
+    public boolean isNotNull(){
+        boolean exist = false;
+        if(this.getTowerStrength(GREEN_COLOR) != 0 ){
+            exist = true;
+        }
+        if(this.getTowerStrength(BLUE_COLOR) != 0 ){
+            exist = true;
+        }
+        if(this.getTowerStrength(YELLOW_COLOR) != 0 ){
+            exist = true;
+        }
+        if(this.getTowerStrength(PURPLE_COLOR) != 0 ){
+            exist = true;
+        }
+        if(this.getHarvestBonus() != 0){
+            exist = true;
+        }
+        if(this.getProductionBonus() != 0){
+            exist = true;
+        }
+        if(this.getDiceBonus().get(ORANGE_COLOR) != 0){
+            exist = true;
+        }
+        if(this.getDiceBonus().get(BLACK_COLOR) != 0){
+            exist = true;
+        }
+        if(this.getDiceBonus().get(WHITE_COLOR) != 0){
+            exist = true;
+        }
+        return exist;
     }
+
 
     public void setTowerStrength(String color, int value) {
         this.towerStrengths.replace(color, value);

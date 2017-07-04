@@ -209,6 +209,31 @@ public class Assets implements Serializable {
     public int getBattlePoints(){ return this.battlePoints; }
     public int getVictoryPoints(){ return this.victoryPoints; }
 
+    public boolean isNotNull(){
+        if(this.getCoins() != 0){
+            return true;
+        }
+        if(this.getWood() != 0){
+            return true;
+        }
+        if(this.getWood() != 0){
+            return true;
+        }
+        if(this.getServants() != 0){
+            return true;
+        }
+        if(this.getBattlePoints() != 0){
+            return true;
+        }
+        if(this.getFaithPoints() != 0){
+            return true;
+        }
+        if(this.getVictoryPoints() != 0){
+            return true;
+        }
+        return false;
+    }
+
     /**
      * Single adders. At the moment we don't need direct setters
      * Write here more adders if needed.

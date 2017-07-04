@@ -41,16 +41,8 @@ public class ActionEffect extends ImmediateEffect {
         return this.discount;
     }
 
-    public void printEffect(){
-        System.out.println("[IMMEDIATE EFFECT PRINT]");
-        System.out.println("      ---- Effect type ----      ");
-        System.out.println("            New Action");
-        System.out.println("    ---- Action Strenght ----      ");
-        strength.printStrengths();
-        if (discount != null){
-            System.out.println("    ---- Action Discount ----      ");
-            //discount.printAssets();
-        }
+    public boolean hasDiscount(){
+        return this.discount.isNotNull();
     }
 
     @Override

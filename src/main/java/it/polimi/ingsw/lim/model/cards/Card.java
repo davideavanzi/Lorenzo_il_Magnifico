@@ -68,6 +68,10 @@ public abstract class Card implements Serializable {
 
     public Assets getCost () { return this.cost; }
 
+    public boolean hasCost(){
+        return this.cost.isNotNull();
+    }
+
     /**
      * the task of this method is to compare name, age, cost, immediateEffect of two card and return true if they are
      * equals false otherwise
