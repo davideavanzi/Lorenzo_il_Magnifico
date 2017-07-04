@@ -84,6 +84,7 @@ public class Assets implements Serializable {
      * @param operand is the second operand.
      */
     public Assets add(Assets operand) {
+        if (operand == null) return new Assets(this);
         Assets sum = new Assets();
         sum.coins = this.coins + operand.getCoins();
         sum.wood = this.wood + operand.getWood();
@@ -96,6 +97,7 @@ public class Assets implements Serializable {
     }
 
     public Assets subtract(Assets operand) {
+        if (operand == null) return new Assets(this);
         Assets diff = new Assets();
         diff.coins = this.coins - operand.getCoins();
         diff.wood = this.wood - operand.getWood();
@@ -134,6 +136,7 @@ public class Assets implements Serializable {
      * @return the result
      */
     public Assets subtractToZero(Assets operand) {
+        if (operand == null) return new Assets(this);
         Assets diff = new Assets();
         diff.coins = (this.coins - operand.getCoins() >= 0) ? this.coins - operand.getCoins() : 0;
         diff.wood = (this.wood - operand.getWood() >= 0) ? this.wood - operand.getWood() : 0;
@@ -208,6 +211,31 @@ public class Assets implements Serializable {
     public int getFaithPoints(){ return this.faithPoints; }
     public int getBattlePoints(){ return this.battlePoints; }
     public int getVictoryPoints(){ return this.victoryPoints; }
+
+    public boolean isNotNull(){
+        if(this.getCoins() != 0){
+            return true;
+        }
+        if(this.getWood() != 0){
+            return true;
+        }
+        if(this.getWood() != 0){
+            return true;
+        }
+        if(this.getServants() != 0){
+            return true;
+        }
+        if(this.getBattlePoints() != 0){
+            return true;
+        }
+        if(this.getFaithPoints() != 0){
+            return true;
+        }
+        if(this.getVictoryPoints() != 0){
+            return true;
+        }
+        return false;
+    }
 
     /**
      * Single adders. At the moment we don't need direct setters

@@ -18,5 +18,4 @@ public abstract class ImmediateEffect implements Serializable {
     public ImmediateEffect() {
     }
 
-    public abstract void printEffect();
 }

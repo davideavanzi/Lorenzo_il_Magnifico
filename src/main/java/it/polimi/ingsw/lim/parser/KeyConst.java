@@ -25,7 +25,10 @@ class KeyConst {
     protected static final String YELLOW_BONUS = "yellowBonus";
     protected static final String PURPLE_BONUS = "purpleBonus";
     protected static final String BLACK_BONUS = "blackBonus";
-    
+    protected static final String WHITE_DICE_BONUS = "witheDiceBonus";
+    protected static final String BLACK_DICE_BONUS = "blackDiceBonus";
+    protected static final String ORANGE_DICE_BONUS = "orangeDiceBonus";
+
     protected static final String BONUSES = "bonuses";
     protected static final String TOWER_BONUS = "towerBonus";
     protected static final String GREEN_TOWER_BONUS = "greenTowerBonus";

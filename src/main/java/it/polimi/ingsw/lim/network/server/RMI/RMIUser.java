@@ -66,18 +66,8 @@ public class RMIUser extends User {
     }
 
     @Override
-    public void chooseFavor(List<Assets> possibleFavors) {
+    public void chooseFavor(List<Assets> possibleFavors) {}
 
-    }
-
-    @Override
-    public void chooseTower(HashMap<String, Integer> possibleTowers) {
-
-    }
-
-    @Override
-    public void chooseFloor() {
-    }
 
     @Override
     public void isLegalCommand(String command, String message, boolean outcome) {
@@ -110,6 +100,11 @@ public class RMIUser extends User {
     public void broadcastMessage(String message) {
     }
 
+    /**
+     *
+     * @param board the game board
+     * @param players arrayList of connected player
+     */
     @Override
     public void sendGameUpdate(Board board, ArrayList<Player> players) {
         try {
@@ -126,6 +121,11 @@ public class RMIUser extends User {
         } catch (RemoteException e) {
             getLog().log(Level.SEVERE, "[RMI]: Remote error sending board and arrayList of player to client.");
         }
+    }
+
+    @Override
+    public void gameError(String message) {
+
     }
 
     private void ping() throws RemoteException {

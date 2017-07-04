@@ -116,6 +116,13 @@ public abstract class User {
      * @param cost the amount of battle points that the player will pay
      * @return a boolean that indicates if the player wants to pay with his battle points
      */
+
+    /**
+     * This method tells the user that can pick a purple card in both ways, then asks him if he wants to use his
+     * battle points
+     * @param requirement
+     * @param cost
+     */
     public abstract void askForOptionalBpPick(int requirement, int cost);
 
     /**
@@ -131,10 +138,6 @@ public abstract class User {
      */
     public abstract void chooseFavor(List<Assets> possibleFavors);
 
-    public abstract void chooseTower(HashMap<String, Integer> possibleTowers);
-
-    public abstract void chooseFloor();
-
     /**
      * This method indicate to the user the outcome of the command.
      */
@@ -146,6 +149,8 @@ public abstract class User {
      * @param message
      */
     public abstract void sendChatMessage(String sender, String message);
+
+    public abstract void gameError(String message);
 
     /**
      * This method sends a message to the user relative to it's gaming state.

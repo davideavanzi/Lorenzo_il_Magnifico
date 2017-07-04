@@ -93,19 +93,19 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
             }
         } else if (destination.get(0).equalsIgnoreCase(PRODUCTION)) {
             try {
-                rmiServer.moveInProduction(fmColor, destArgs, servantsNum, username, this) ;
+                rmiServer.moveInProduction(fmColor, servantsNum, username, this) ;
             } catch (RemoteException e) {
                 throw new ClientNetworkException("[RMI]: Could not send production command to server", e);
             }
         } else if (destination.get(0).equalsIgnoreCase(HARVEST)) {
             try {
-                rmiServer.moveInHarvest(fmColor, destArgs, servantsNum, username, this);
+                rmiServer.moveInHarvest(fmColor, servantsNum, username, this);
             } catch (RemoteException e) {
                 throw new ClientNetworkException("[RMI]: Could not send harvest command to server", e);
             }
         } else if (destination.get(0).equalsIgnoreCase(COUNCIL)) {
             try {
-                rmiServer.moveInCouncil(fmColor, destArgs, servantsNum, username, this);
+                rmiServer.moveInCouncil(fmColor, servantsNum, username, this);
             } catch (RemoteException e) {
                 throw new ClientNetworkException("[RMI]: Could not send move to council command to server", e);
             }

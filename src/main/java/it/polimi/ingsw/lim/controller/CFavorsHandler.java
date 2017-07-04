@@ -35,8 +35,8 @@ public class CFavorsHandler {
         if (amount < possibleFavors.size()) throw new ControllerException("Can't give more favors than favors size!");
         List<Assets> tmpFavors = new ArrayList<>(possibleFavors);
         for (int i = amount; i < 0; i--) {
-            int choice = recipient.chooseFavor(tmpFavors);
-            activateFavor(recipient.getPlayer(), tmpFavors.remove(choice)); //TODO: !
+            recipient.chooseFavor(tmpFavors);
+            //activateFavor(recipient.getPlayer(), tmpFavors.remove(choice)); //TODO: !
         }
     }
 

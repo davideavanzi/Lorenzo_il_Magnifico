@@ -51,6 +51,14 @@ public class BlueCard extends Card {
      */
     private boolean towerBonusAllowed;
 
+    public Assets getPickDiscount(String color){
+        if(this.pickDiscounts.containsKey(color)){
+            return this.pickDiscounts.get(color);
+        }
+        else
+            return null;
+    }
+
     /**
      * the task of this method is to compare if two BlueCard are equal and return true if they are
      * equals false otherwise.

@@ -35,16 +35,6 @@ public class AssetsMultipliedEffect extends ImmediateEffect {
         return this.multiplier;
     }
 
-    public void printEffect(){
-        System.out.println("[IMMEDIATE EFFECT PRINT]");
-        System.out.println("      ---- Effect type ----      ");
-        System.out.println("        Multiplied Assets");
-        System.out.println("      ---- Base bonus ----      ");
-        //bonus.printAssets();
-        System.out.println("   ---- Bonus Multiplier ----      ");
-        //multiplier.printAssets();
-    }
-
     /**
      * the task of this method is to compare if two AssetsMultipliedEffect are equal and return true if they are
      * equals false otherwise.

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.lim.network.client.RMI;
 
-import com.sun.org.apache.regexp.internal.RE;
 import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.Player;
 

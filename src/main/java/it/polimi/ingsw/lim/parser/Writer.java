@@ -1,7 +1,11 @@
 package it.polimi.ingsw.lim.parser;
 
-
+import it.polimi.ingsw.lim.controller.GameController;
+import it.polimi.ingsw.lim.model.Board;
+import it.polimi.ingsw.lim.model.Game;
+import it.polimi.ingsw.lim.model.cards.Card;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.ObjectReader;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,5 +23,30 @@ public class Writer {
         if (file.createNewFile());
         mapper.writeValue(file, ob);
         return pathToWriterFile;
+    }
+
+    public static Board reader(String pathToWriterFile){
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectReader reader = mapper.reader(Board.class);
+        Board board = null;
+        try {
+            board = reader.readValue(new File(pathToWriterFile));
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        return board;
+    }
+
+    public static void main (String args[]){
+        GameController gameController = new GameController();
+        gameController.createGame();
+        try {
+            writer(gameController.getBoard());
+            reader(PATH_TO_WRITER_FILE);
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+
     }
 }

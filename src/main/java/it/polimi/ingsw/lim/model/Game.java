@@ -116,11 +116,10 @@ public class Game {
         int i = 0;
         for (Assets bonus : parsedGame.getFaithTrackBonuses())
             this.board.getFaithTrack()[i] = bonus;
-        /*TODO: write excomm
         for (i = 1; i <= AGES_NUMBER; i++) {
             this.board.addExcommunication(parsedGame.getExcommunications().get(i)
                     .get(randomGenerator.nextInt(parsedGame.getExcommunications().get(i).size())));
-        } */
+        }
         //TODO: When we allot leadercards?
         /*
          * Distribute initial resources starting from the first player,
@@ -297,9 +296,9 @@ public class Game {
         return false;
     }
 
-    public boolean isCardAffordable(Card card, Player actor, String towerColor) {
+    public boolean isCardAffordable(Card card, Player actor, String towerColor, Assets optionalPickDiscount) {
         Assets cardCost = card.getCost().subtractToZero
-                (actor.getPickDiscount(towerColor));
+                (actor.getPickDiscount(towerColor).subtractToZero(optionalPickDiscount));
         return (actor.getResources().isGreaterOrEqual(cardCost));
     }
 
@@ -314,8 +313,9 @@ public class Game {
      * @param fm
      * @param servantsDeployed
      * @param useBp
+     * @return the picked card
      */
-    public void towerMove(String towerColor, int floorNumber, FamilyMember fm, int servantsDeployed, boolean useBp) {
+    public Card towerMove(String towerColor, int floorNumber, FamilyMember fm, int servantsDeployed, boolean useBp) {
         Player actor = this.getPlayerFromColor(fm.getOwnerColor());
         Floor destination = this.board.getTowers().get(towerColor).getFloor(floorNumber);
         Card card = destination.pullCard();
@@ -326,8 +326,25 @@ public class Game {
             actionCost.addCoins(COINS_TO_ENTER_OCCUPIED_TOWER);
         destination.setFamilyMemberSlot(actor.pullFamilyMember(fm.getDiceColor()));
         actionCost.subtractToZero(actor.getPickDiscount(towerColor));
+        giveAssetsToPlayer(destination.getInstantBonus(), actor);
         actor.getResources().subtract(actionCost);
         actor.addCard(card, towerColor);
+        return card;
+    }
+
+    public Card fastTowerMove(String towerColor, int floorNumber, int servantsDeployed, boolean useBp, Player actor,
+                              Assets optionalPickDiscount) {
+        Floor destination = this.board.getTowers().get(towerColor).getFloor(floorNumber);
+        Card card = destination.pullCard();
+        //Action cost is different whether the player wants to pay the card's cost or the purple's card bp cost.
+        Assets actionCost = (useBp) ? new Assets().addServants(((PurpleCard)card).getOptionalBpCost()) :
+                new Assets(card.getCost()).addServants(servantsDeployed);
+        if(this.isTowerOccupied(towerColor))
+            actionCost.addCoins(COINS_TO_ENTER_OCCUPIED_TOWER);
+        actionCost.subtractToZero(actor.getPickDiscount(towerColor).subtractToZero(optionalPickDiscount));
+        actor.getResources().subtract(actionCost);
+        actor.addCard(card, towerColor);
+        return card;
     }
 
     /**
@@ -336,10 +353,16 @@ public class Game {
      * @param floor
      * @return
      */
-    public boolean isFastTowerMoveAllowed(String towerColor, int floor, Player pl) {
+    public boolean isFastTowerMoveAllowed(String towerColor, int floor, Player pl, Assets optionalPickDiscount) {
         Floor destination = this.board.getTowers().get(towerColor).getFloor(floor);
         if (!destination.hasCard()) return false;
-        if (destination.getCard().getCost().isGreaterOrEqual(pl.getResources().add(pl.getPickDiscount(towerColor))))
+        Assets actionCost = destination.getCard().getCost();
+        if (this.isTowerOccupied(towerColor) && pl.getResources().getCoins() > COINS_TO_ENTER_OCCUPIED_TOWER)
+            actionCost.addCoins(COINS_TO_ENTER_OCCUPIED_TOWER);
+        else return false;
+        Assets availableAssets = new Assets(pl.getResources()
+                .add(pl.getPickDiscount(towerColor).add(optionalPickDiscount).add(destination.getInstantBonus())));
+        if (actionCost.isGreaterOrEqual(availableAssets))
             return false;
         return true;
     }

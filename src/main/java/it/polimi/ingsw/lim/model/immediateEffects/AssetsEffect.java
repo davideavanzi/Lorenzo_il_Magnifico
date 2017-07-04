@@ -23,14 +23,6 @@ public class AssetsEffect extends ImmediateEffect {
         return this.bonus;
     }
 
-    public void printEffect(){
-        System.out.println("[IMMEDIATE EFFECT PRINT]");
-        System.out.println("      ---- Effect type ----      ");
-        System.out.println("          Assets bonus");
-        System.out.println("        ---- Bonus ----      ");
-        //bonus.printAssets();
-
-    }
 
     /**
      * the task of this method is to compare if two AssetsEffect are equal and return true if they are

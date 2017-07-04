@@ -64,15 +64,6 @@ public class SocketUser extends User {
 
     }
 
-    @Override
-    public void chooseTower(HashMap<String, Integer> possibleTowers) {
-
-    }
-
-    @Override
-    public void chooseFloor() {
-
-    }
 
     @Override
     public void isLegalCommand(String command, String message, boolean outcome) {
@@ -113,4 +104,10 @@ public class SocketUser extends User {
     public void isPlayerTurn(boolean isPlaying) {
         this.sch.sendIfUserPlaying(isPlaying);
     }
+
+    @Override
+    public void gameError(String message) {
+
+    }
 }
+
