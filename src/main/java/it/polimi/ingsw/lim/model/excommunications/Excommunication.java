@@ -1,5 +1,8 @@
 package it.polimi.ingsw.lim.model.excommunications;
 import it.polimi.ingsw.lim.model.Player;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonSubTypes;
+import org.codehaus.jackson.annotate.JsonTypeInfo;
 
 import java.io.Serializable;
 import java.util.*;

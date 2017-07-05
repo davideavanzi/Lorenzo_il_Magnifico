@@ -90,6 +90,22 @@ public abstract class Card implements Serializable {
         return this.cost.isNotNull();
     }
 
+    public void setName(String name){
+        this.name = name;
+    }
+
+    public void setCost(Assets cost){
+        this.cost = cost;
+    }
+
+    public void setAge(int age){
+        this.age = age;
+    }
+
+    public void setImmediateEffects(ArrayList<ImmediateEffect> immediateEffects){
+        this.immediateEffects = immediateEffects;
+    }
+
     /**
      * the task of this method is to compare name, age, cost, immediateEffect of two card and return true if they are
      * equals false otherwise

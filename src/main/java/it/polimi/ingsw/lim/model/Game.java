@@ -235,7 +235,7 @@ public class Game {
         if (!destination.hasCard()) return false;
         if (!canPickCard(towerColor, fm)) return false;
         FamilyMember slot = null;
-        for (int i = 0; i < TOWER_HEIGHT; i++, slot = this.board.getTowers().get(towerColor).getFloor(i).getFamilyMember()) {
+        for (int i = 0; i < TOWER_HEIGHT; i++, slot = this.board.getTowers().get(towerColor).getFloor(i).getFamilyMemberSlot()) {
             if (slot != null && slot.getOwnerColor().equals(fm.getOwnerColor()) && !fm.getDiceColor().equals(NEUTRAL_COLOR))
                 return false;
         }
@@ -274,7 +274,7 @@ public class Game {
         Player pl = this.getPlayerFromColor(fm.getOwnerColor());
         Floor destination = this.getTower(towerColor).getFloor(floorNumber);
         //Checking Costs
-        Assets cardCost = destination.getCard().getCost().subtractToZero
+        Assets cardCost = destination.getCardSlot().getCost().subtractToZero
                         (pl.getPickDiscount(towerColor));
         Assets additionalCost = new Assets();
         Assets playerAssets = new Assets(pl.getResources());
@@ -355,7 +355,7 @@ public class Game {
     public boolean isFastTowerMoveAllowed(String towerColor, int floor, Player pl, Assets optionalPickDiscount) {
         Floor destination = this.board.getTowers().get(towerColor).getFloor(floor);
         if (!destination.hasCard()) return false;
-        Assets actionCost = destination.getCard().getCost();
+        Assets actionCost = destination.getCardSlot().getCost();
         if (this.isTowerOccupied(towerColor) && pl.getResources().getCoins() > COINS_TO_ENTER_OCCUPIED_TOWER)
             actionCost.addCoins(COINS_TO_ENTER_OCCUPIED_TOWER);
         else return false;

@@ -36,6 +36,42 @@ public class BlueCard extends Card {
         this.towerBonusAllowed = towerBonusAllowed;
     }
 
+    public BlueCard(){
+        super();
+        this.pickDiscounts = new HashMap<>();
+    }
+
+    public void setPermanentBonus(Strengths permanentBonus){
+        this.permanentBonus = permanentBonus;
+    }
+
+    public void setPickDiscounts(HashMap<String, Assets> pickDiscounts){
+        if(pickDiscounts.containsKey(GREEN_COLOR)) {
+            if (pickDiscounts.get(GREEN_COLOR) != null)
+                this.pickDiscounts.put(GREEN_COLOR, pickDiscounts.get(GREEN_COLOR));
+        }
+        if(pickDiscounts.containsKey(BLUE_COLOR)) {
+            if (pickDiscounts.get(BLUE_COLOR) != null)
+                this.pickDiscounts.put(BLUE_COLOR, pickDiscounts.get(BLUE_COLOR));
+        }
+        if(pickDiscounts.containsKey(YELLOW_COLOR)) {
+            if (pickDiscounts.get(YELLOW_COLOR) != null)
+                this.pickDiscounts.put(YELLOW_COLOR, pickDiscounts.get(YELLOW_COLOR));
+        }
+        if(pickDiscounts.containsKey(PURPLE_COLOR)) {
+            if (pickDiscounts.get(PURPLE_COLOR) != null)
+                this.pickDiscounts.put(PURPLE_COLOR, pickDiscounts.get(PURPLE_COLOR));
+        }
+        if(pickDiscounts.containsKey(BLACK_COLOR)) {
+            if (pickDiscounts.get(BLACK_COLOR) != null)
+                this.pickDiscounts.put(BLACK_COLOR, pickDiscounts.get(BLACK_COLOR));
+        }
+    }
+
+    public void setTowerBonusAllowed(boolean towerBonusAllowed){
+        this.towerBonusAllowed = towerBonusAllowed;
+    }
+
     /**
      * 
      */

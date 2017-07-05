@@ -11,9 +11,11 @@ public class CardMultipliedEffect extends ImmediateEffect {
      * Constructor
      */
     public CardMultipliedEffect(Assets bonus, String color) {
-    this.bonus = bonus;
-    this.multiplierColor = color;
+        this.bonus = bonus;
+        this.multiplierColor = color;
     }
+
+    public CardMultipliedEffect (){super();}
 
     /**
      * The bonus
@@ -31,6 +33,14 @@ public class CardMultipliedEffect extends ImmediateEffect {
 
     public String getMultiplierColor(){
         return this.multiplierColor;
+    }
+
+    public void setBonus(Assets bonus){
+        this.bonus = bonus;
+    }
+
+    public void setMultiplierColor(String multiplierColor){
+        this.multiplierColor = multiplierColor;
     }
 
     public void printEffect(){

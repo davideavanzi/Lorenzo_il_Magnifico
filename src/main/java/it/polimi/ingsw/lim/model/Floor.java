@@ -1,5 +1,6 @@
 package it.polimi.ingsw.lim.model;
 import it.polimi.ingsw.lim.model.cards.Card;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 import java.io.Serializable;
 
@@ -47,6 +48,7 @@ public class Floor implements Serializable {
     /**
      * @return
      */
+    @JsonIgnore
     public boolean isOccupied() {
         if(this.familyMemberSlot != null)
             return true;
@@ -54,17 +56,17 @@ public class Floor implements Serializable {
     }
 
     /**
-     * @param familyMember
+     * @param familyMemberSlot
      */
-    public void setFamilyMemberSlot(FamilyMember familyMember) {
-        this.familyMemberSlot = familyMember;
+    public void setFamilyMemberSlot(FamilyMember familyMemberSlot) {
+        this.familyMemberSlot = familyMemberSlot;
     }
 
-    public void setCardSlot(Card card) {
-        this.cardSlot = card;
+    public void setCardSlot(Card cardSlot) {
+        this.cardSlot = cardSlot;
     }
 
-    public void setInstantBonus(Assets bonus) { this.instantBonus = bonus; }
+    public void setInstantBonus(Assets instantBonus) { this.instantBonus = instantBonus; }
 
     public void setActionCost(int actionCost){
         this.actionCost = actionCost;
@@ -72,11 +74,7 @@ public class Floor implements Serializable {
 
     public Assets getInstantBonus() { return this.instantBonus; }
 
-    public FamilyMember getFamilyMember(){
-        return this.familyMemberSlot;
-    }
-
-    public Card getCard(){
+    public Card getCardSlot(){
         return this.cardSlot;
     }
 

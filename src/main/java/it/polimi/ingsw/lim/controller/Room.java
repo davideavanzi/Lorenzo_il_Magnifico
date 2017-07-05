@@ -137,7 +137,7 @@ public class Room {
         this.gameController.startNewTurn();
         for (String username : this.playOrder)
             if (this.getUser(username).isAlive()) {
-                Excommunication excommunications = this.getGameController().getGame().getExcommunicationByAge(2);
+                Excommunication excommunications = this.getGameController().getGame().getExcommunication(2);
                 if (excommunications instanceof TurnExcommunication) {
                     for (int i = 0; i < this.playOrder.size(); i++) {
                         if (this.getUser(username).equals(excommunications.getExcommunicated().get(i))){

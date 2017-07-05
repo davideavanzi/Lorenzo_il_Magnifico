@@ -14,6 +14,8 @@ public class AssetsEffect extends ImmediateEffect {
         this.bonus = bonus;
     }
 
+    public AssetsEffect(){super();}
+
     /**
      * The bouns
      */
@@ -23,6 +25,7 @@ public class AssetsEffect extends ImmediateEffect {
         return this.bonus;
     }
 
+    public void setBonus(Assets bonus){this.bonus = bonus;}
 
     /**
      * the task of this method is to compare if two AssetsEffect are equal and return true if they are

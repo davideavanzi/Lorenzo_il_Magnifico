@@ -1,4 +1,5 @@
 package it.polimi.ingsw.lim.model;
+
 import java.io.Serializable;
 import java.util.*;
 
@@ -23,6 +24,10 @@ public class Market implements Serializable {
         this.bonuses = marketBonuses;
     }
 
+    public Market(){
+
+    }
+
     /**
      * 
      */
@@ -39,17 +44,25 @@ public class Market implements Serializable {
         this.slots[marketPos] = fm;
     }
 
-    public Object getBonus(int position){
+    public Object getBonuses(int position){
         int marketPos = position - 1;
         return this.bonuses[marketPos];
     }
 
-    public Object[] getBonus(){
+    public Object[] getBonuses(){
         return bonuses;
     }
 
     public FamilyMember[] getSlots() {
         return slots;
+    }
+
+    public void setSlots(FamilyMember[] slots){
+        this.slots = slots;
+    }
+
+    public void setBonuses(Object[] bonuses){
+        this.bonuses = bonuses;
     }
 
 

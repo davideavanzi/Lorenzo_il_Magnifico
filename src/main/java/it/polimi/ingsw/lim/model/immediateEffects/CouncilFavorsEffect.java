@@ -13,6 +13,10 @@ public class CouncilFavorsEffect extends ImmediateEffect {
         this.amount = amount;
     }
 
+    public CouncilFavorsEffect(){
+        super();
+    }
+
     /**
      * The amount of council favors.
      */
@@ -22,12 +26,8 @@ public class CouncilFavorsEffect extends ImmediateEffect {
         return this.amount;
     }
 
-    public void printEffect(){
-        System.out.println("[IMMEDIATE EFFECT PRINT]");
-        System.out.println("      ---- Effect type ----      ");
-        System.out.println("           Council favor");
-        System.out.println("     ---- Favors amount ----      ");
-        System.out.println(amount);
+    public void setAmount(int amount){
+        this.amount = amount;
     }
 
     /**

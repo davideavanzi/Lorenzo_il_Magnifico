@@ -1,13 +1,7 @@
 package it.polimi.ingsw.lim.parser;
 
-import com.sun.xml.internal.ws.developer.SerializationFeature;
-import it.polimi.ingsw.lim.controller.GameController;
 import it.polimi.ingsw.lim.model.Board;
-import it.polimi.ingsw.lim.model.Game;
-import it.polimi.ingsw.lim.model.Tower;
-import it.polimi.ingsw.lim.model.cards.Card;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.ObjectReader;
 import org.codehaus.jackson.map.SerializationConfig;
 
 import java.io.File;

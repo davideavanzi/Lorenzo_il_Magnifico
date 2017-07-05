@@ -22,6 +22,10 @@ public class ActionEffect extends ImmediateEffect {
         this.discount = discount;
     }
 
+    public ActionEffect(){
+        super();
+    }
+
     /**
      * Here is stored the strength of the bonus action
      */
@@ -39,6 +43,14 @@ public class ActionEffect extends ImmediateEffect {
 
     public Assets getDiscount(){
         return this.discount;
+    }
+
+    public void setStrength (Strengths strength){
+        this.strength = strength;
+    }
+
+    public void setDiscount (Assets discount){
+        this.discount = discount;
     }
 
     public boolean hasDiscount(){

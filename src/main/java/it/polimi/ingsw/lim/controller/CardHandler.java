@@ -61,7 +61,7 @@ public class CardHandler {
     public static void activateBlueCard (BlueCard card, Player pl) {
         Log.getLog().log(Level.INFO, () -> "activating blue card "+card.getName()+" for player "+pl.getNickname());
         if (card.getTowerBonusAllowed() == true) {
-            pl.notTowerBonusAllowed();
+            // todo pl.notTowerBonusAllowed();
         } else {
             if (card.getPermanentBonus() != null)
                 pl.setStrengths(pl.getStrengths().add(card.getPermanentBonus()));

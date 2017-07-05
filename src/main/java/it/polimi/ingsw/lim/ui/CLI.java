@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 import static it.polimi.ingsw.lim.Settings.*;
+import static it.polimi.ingsw.lim.parser.Writer.*;
 import static it.polimi.ingsw.lim.ui.UIController.*;
 import static it.polimi.ingsw.lim.ui.UIController.UIConstant.*;
 import static it.polimi.ingsw.lim.ui.UIController.UIConstant.INFO;
@@ -367,9 +368,12 @@ public class CLI extends AbsUI {
 
     public void printBoard(){
         this.printTowers();
-        this.printMarket();
+        //this.printMarket();
         //this.printFaithPointsTrack();
         this.printVictoryPointsTrack();
+        String path = boardWriter(this.uiCallback.getLocalBoard());
+        Board tmpBoard = readerBoard(path);
+        System.out.println(tmpBoard.getAge());
     }
 
     public void printPlayerBoard(){
@@ -485,7 +489,7 @@ public class CLI extends AbsUI {
 
     public void printCardInTower(String color, int floor){
         if(this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(floor).hasCard()) {
-            printCard(this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(floor).getCard());
+            printCard(this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(floor).getCardSlot());
         }
         else {
             printMessageln(StringUtils.center(("N o    C a r d    t o    S h o w"), 140));
@@ -740,42 +744,42 @@ public class CLI extends AbsUI {
         String secondString;
         String firstString;
         if(this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(4).hasCard()){
-            fourthString = "Name: ".concat(this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(4).getCard().getName());
+            fourthString = "Name: ".concat(this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(4).getCardSlot().getName());
         }
         else{
             fourthString = "Card Already Selected";
             if (this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(4).isOccupied()){
-                tab4 = this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(4).getFamilyMember().getOwnerColor().substring(0 , 1);/*Taking the first char*/
+                tab4 = this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(4).getFamilyMemberSlot().getOwnerColor().substring(0 , 1);/*Taking the first char*/
                 format = "||%1$-30s|".concat(StringUtils.center(tab4, 4)).concat("|%2$-30s|").concat(tab3).concat("|%3$-30s|").concat(tab2).concat("|%4$-30s|").concat(tab1).concat("||\n");
             }
         }
         if(this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(3).hasCard()){
-            thirdString = "Name: ".concat(this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(3).getCard().getName());
+            thirdString = "Name: ".concat(this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(3).getCardSlot().getName());
         }
         else{
             thirdString = "Card Already Selected";
             if (this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(3).isOccupied()){
-                tab3 = this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(3).getFamilyMember().getOwnerColor().substring(0 , 1);/*Taking the first char*/
+                tab3 = this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(3).getFamilyMemberSlot().getOwnerColor().substring(0 , 1);/*Taking the first char*/
                 format = "||%1$-30s|".concat(tab4).concat("|%2$-30s|").concat(StringUtils.center(tab3, 4)).concat("|%3$-30s|").concat(tab2).concat("|%4$-30s|").concat(tab1).concat("||\n");
             }
         }
         if(this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(2).hasCard()){
-            secondString = "Name: ".concat(this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(2).getCard().getName());
+            secondString = "Name: ".concat(this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(2).getCardSlot().getName());
         }
         else{
             secondString = "Card Already Selected";
             if (this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(24).isOccupied()){
-                tab2 = this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(2).getFamilyMember().getOwnerColor().substring(0 , 1);/*Taking the first char*/
+                tab2 = this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(2).getFamilyMemberSlot().getOwnerColor().substring(0 , 1);/*Taking the first char*/
                 format = "||%1$-30s|".concat(tab4).concat("|%2$-30s|").concat(tab3).concat("|%3$-30s|").concat(StringUtils.center(tab2, 4)).concat("|%4$-30s|").concat(tab1).concat("||\n");
             }
         }
         if(this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(1).hasCard()){
-            firstString = "Name: ".concat(this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(1).getCard().getName());
+            firstString = "Name: ".concat(this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(1).getCardSlot().getName());
         }
         else{
             firstString = "Card Already Selected";
             if (this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(1).isOccupied()){
-                tab1 = this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(1).getFamilyMember().getOwnerColor().substring(0 , 1);/*Taking the first char*/
+                tab1 = this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(1).getFamilyMemberSlot().getOwnerColor().substring(0 , 1);/*Taking the first char*/
                 format = "||%1$-30s|".concat(tab4).concat("|%2$-30s|").concat(tab3).concat("|%3$-30s|").concat(tab2).concat("|%4$-30s|").concat(StringUtils.center(tab1, 4)).concat("||\n");
             }
         }
@@ -794,7 +798,7 @@ public class CLI extends AbsUI {
     }
 
     private void printMarket(){
-        Object [] market = this.uiCallback.getLocalBoard().getMarket().getBonus();
+        Object [] market = this.uiCallback.getLocalBoard().getMarket().getBonuses();
         FamilyMember[] familyMembers = this.uiCallback.getLocalBoard().getMarket().getSlots();
         String format = "||%-20s||\n";
         String s = "________________________";

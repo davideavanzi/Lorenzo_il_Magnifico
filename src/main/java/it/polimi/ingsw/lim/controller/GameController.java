@@ -49,7 +49,7 @@ public class GameController {
         contr.game.addPlayer("HOLAONE");
 
         //contr.moveInTower(contr.game.getPlayer("CIAONE").pullFamilyMember(BLACK_COLOR), GREEN_COLOR,1,1);
-        //System.out.println("SIZE FM: "+contr.game.getPlayer("CIAONE").getFamilyMember().size());
+        //System.out.println("SIZE FM: "+contr.game.getPlayer("CIAONE").getFamilyMemberSlot().size());
         //contr.moveInHarvest(contr.game.getPlayer("CIAONE").pullFamilyMember(WHITE_COLOR));
         /*
         Game game = new Game();
@@ -82,7 +82,7 @@ public class GameController {
             getLog().severe(e.getMessage());
         }
         game.setUpTurn();
-        game.getTower("GREEN").getFloor(1).getCard().printCard();
+        game.getTower("GREEN").getFloor(1).getCardSlot().printCard();
 
         moveInTower(game.getPlayer("CIAONE").pullFamilyMember(BLACK_COLOR), GREEN_COLOR,1);
 
@@ -171,7 +171,7 @@ public class GameController {
                 +fm.getDiceColor()+" family member of value "+this.game.getFmStrength(fm));
         if(this.game.isTowerMoveAllowed(towerColor, floor, fm)){
             if(this.game.isTowerMoveAffordable(towerColor, floor, fm)){
-                Card card = this.game.getTower(towerColor).getFloor(floor).getCard();
+                Card card = this.game.getTower(towerColor).getFloor(floor).getCardSlot();
                 boolean cardAffordable = this.game.isCardAffordable(card, actor.getPlayer(), towerColor, null);
                 boolean purpleAffordable = card instanceof PurpleCard ||
                         this.game.isPurpleCardAffordable((PurpleCard)card, actor.getPlayer());
@@ -423,7 +423,7 @@ public class GameController {
             actor.gameError("Fast action not valid");
             return;
         }
-        Card card = this.game.getTower(towerColor).getFloor(floor).getCard();
+        Card card = this.game.getTower(towerColor).getFloor(floor).getCardSlot();
         boolean cardAffordable = this.game.isCardAffordable(card, actor.getPlayer(), towerColor, optPickDiscount);
         boolean purpleAffordable = card instanceof PurpleCard ||
                 this.game.isPurpleCardAffordable((PurpleCard)card, actor.getPlayer());

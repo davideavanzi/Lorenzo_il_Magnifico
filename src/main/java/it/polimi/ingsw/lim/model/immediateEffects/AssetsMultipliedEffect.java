@@ -17,6 +17,8 @@ public class AssetsMultipliedEffect extends ImmediateEffect {
         this.multiplier = multiplier;
     }
 
+    public AssetsMultipliedEffect(){super();}
+
     /**
      * The bonus
      */
@@ -33,6 +35,12 @@ public class AssetsMultipliedEffect extends ImmediateEffect {
 
     public Assets getMultiplier(){
         return this.multiplier;
+    }
+
+    public void setBonus (Assets bonus){this.bonus = bonus;}
+
+    public void setMultiplier(Assets multiplier){
+        this.multiplier = multiplier;
     }
 
     /**

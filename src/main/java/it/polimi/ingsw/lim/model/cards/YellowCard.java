@@ -35,6 +35,12 @@ public class YellowCard extends Card {
 
     }
 
+    public YellowCard(){
+        super();
+        this.productionCosts = new ArrayList<>();
+        this.productionResults = new ArrayList<>();
+    }
+
     /**
      * 
      */
@@ -54,6 +60,22 @@ public class YellowCard extends Card {
      * 
      */
     private String cardMultiplier;
+
+    public void setProductionCosts(ArrayList<Assets> productionCosts){
+        this.productionCosts = productionCosts;
+    }
+
+    public void setProductionResults(ArrayList<Assets> productionResults){
+        this.productionResults = productionResults;
+    }
+
+    public void setActionStrength (Strengths actionStrength){
+        this.actionStrength = actionStrength;
+    }
+
+    public void setCardMultiplier(String cardMultiplier){
+        this.cardMultiplier = cardMultiplier;
+    }
 
     public String getCardMultiplier() {
         return cardMultiplier;

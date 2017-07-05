@@ -23,6 +23,8 @@ public class GreenCard extends Card {
         this.harvestResult = harvestResult;
     }
 
+    public GreenCard(){super();}
+
     /**
      * This is the bonus given to the player when activates the production turn
      */
@@ -39,6 +41,14 @@ public class GreenCard extends Card {
 
     public Strengths getActionStrength(){
         return this.actionStrength;
+    }
+
+    public void setHarvestResult (Assets harvestResult){
+        this.harvestResult = harvestResult;
+    }
+
+    public void setActionStrength (Strengths actionStrength){
+        this.actionStrength = actionStrength;
     }
 
     /**

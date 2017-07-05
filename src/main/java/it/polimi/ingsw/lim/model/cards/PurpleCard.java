@@ -25,6 +25,8 @@ public class PurpleCard extends Card {
         this.optionalBpCost = optionalBpCost;
     }
 
+    public PurpleCard(){super();}
+
     /**
      * 
      */
@@ -39,6 +41,18 @@ public class PurpleCard extends Card {
      * 
      */
     private int optionalBpCost;
+
+    public void setEndgameBonus(Assets endgameBonus){
+        this.endgameBonus = endgameBonus;
+    }
+
+    public void setOptionalBpRequirement(int optionalBpRequirement){
+        this.optionalBpRequirement = optionalBpRequirement;
+    }
+
+    public void setOptionalBpCost (int optionalBpCost){
+        this.optionalBpCost = optionalBpCost;
+    }
 
     public Assets getEndgameBonus(){
         return endgameBonus;
