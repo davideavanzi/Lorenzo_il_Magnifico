@@ -28,7 +28,6 @@ public class Player implements Serializable{
         this.pickDiscounts = new HashMap<>();
         this.defaultHarvestBonus = new Assets();
         this.defaultProductionBonus = new Assets();
-        this.towerBonusAllowed = true;
         this.color = color;
         this.cards = new HashMap<>();
         DEFAULT_TOWERS_COLORS.forEach(towerColor -> this.pickDiscounts.put(towerColor, new Assets()));
@@ -65,11 +64,6 @@ public class Player implements Serializable{
      * 
      */
     private HashMap<String, Assets> pickDiscounts;
-
-    /**
-     * This boolean indicates if the player is allowed to pick bonuses when entering in towers.
-     */
-    private Boolean towerBonusAllowed;
 
     /**
      * This is a container for all development cards.
@@ -143,14 +137,6 @@ public class Player implements Serializable{
             if (fm.getDiceColor().equals(color))
                 return familyMembers.remove(familyMembers.indexOf(fm));
         return null; */
-    }
-
-    public boolean isTowerBonusAllowed() {
-        return this.towerBonusAllowed;
-    }
-
-    public void notTowerBonusAllowed() {
-        this.towerBonusAllowed = false;
     }
 
     public Strengths getStrengths() {

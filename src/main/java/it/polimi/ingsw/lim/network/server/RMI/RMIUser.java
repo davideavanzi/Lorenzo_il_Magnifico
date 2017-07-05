@@ -82,7 +82,7 @@ public class RMIUser extends User {
     }
 
     @Override
-    public void chooseFavor(List<Assets> possibleFavors) {}
+    public void chooseFavor(int amount) {}
 
     @Override
     public void broadcastMessage(String message) {

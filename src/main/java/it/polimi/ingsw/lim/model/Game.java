@@ -6,6 +6,8 @@ import it.polimi.ingsw.lim.model.cards.Card;
 import it.polimi.ingsw.lim.model.cards.PurpleCard;
 import it.polimi.ingsw.lim.model.excommunications.AssetsExcommunication;
 import it.polimi.ingsw.lim.model.excommunications.Excommunication;
+import it.polimi.ingsw.lim.model.excommunications.ServantsExcommunication;
+import it.polimi.ingsw.lim.model.excommunications.StrengthsExcommunication;
 import it.polimi.ingsw.lim.parser.Parser;
 
 import java.util.*;
@@ -67,12 +69,7 @@ public class Game {
 
     // ############################################################# METHODS AHEAD
 
-    /**
-     * @return an excommunication based on the game's age
-     */
-    public Excommunication getExcommunication(){
-        return this.board.getExcommunications().get(this.board.getAge());
-    }
+
 
     //TODO:implement leadercard effect here
     public int getFmStrength(FamilyMember fm) {
@@ -240,10 +237,12 @@ public class Game {
             if (slot != null && slot.getOwnerColor().equals(fm.getOwnerColor()) && !fm.getDiceColor().equals(NEUTRAL_COLOR))
                 return false;
         }
+        //TODO: useless? add servants in the count?
+        /*
         if (destination.getActionCost() >
                 this.getFmStrength(fm) +
                         getPlayerFromColor(fm.getOwnerColor()).getStrengths().getTowerStrength(towerColor))
-            return false;
+            return false; */
         return true;
     }
 
@@ -264,26 +263,28 @@ public class Game {
     /**
      * This method checks if a specified move into a tower is affordable by the player performing the move.
      * it also checks if is a purple card and has an optional cost to pick the card
-     * TODO: add malus count while entering tower from excomm.
      * @param towerColor
      * @param floorNumber
      * @param fm
-     * @return
+     * @return this.getPlayerFromColor(fm.getOwnerColor()
      */
     public boolean isTowerMoveAffordable(String towerColor, int floorNumber, FamilyMember fm) {
+        Player pl = this.getPlayerFromColor(fm.getOwnerColor());
         Floor destination = this.getTower(towerColor).getFloor(floorNumber);
         //Checking Costs
         Assets cardCost = destination.getCard().getCost().subtractToZero
-                        (this.getPlayerFromColor(fm.getOwnerColor()).getPickDiscount(towerColor));
+                        (pl.getPickDiscount(towerColor));
         Assets additionalCost = new Assets();
-        Assets playerAssets = new Assets(this.getPlayerFromColor(fm.getOwnerColor()).getResources());
-        additionalCost.addCoins(COINS_TO_ENTER_OCCUPIED_TOWER);
+        Assets playerAssets = new Assets(pl.getResources());
+        if (this.isTowerOccupied(towerColor) && pl.getResources().getCoins() > COINS_TO_ENTER_OCCUPIED_TOWER)
+            cardCost.addCoins(COINS_TO_ENTER_OCCUPIED_TOWER);
+        else return false;
         if (this.isTowerOccupied(towerColor) && !playerAssets.isGreaterOrEqual(additionalCost))
             return false;
         if (this.servantsForTowerAction(fm, towerColor, floorNumber) > playerAssets.getServants())
             return false;
-        if (this.getPlayerFromColor(fm.getOwnerColor()).isTowerBonusAllowed())
-            playerAssets.add(destination.getInstantBonus());
+        if (this.isPlayerTowerBonusAllowed(this.getPlayerFromColor(fm.getOwnerColor())))
+            playerAssets.add(this.apllyExcommMalus(destination.getInstantBonus(),pl));
         if (playerAssets.isGreaterOrEqual(cardCost))
             return true;
         return false;
@@ -319,25 +320,28 @@ public class Game {
             actionCost.addCoins(COINS_TO_ENTER_OCCUPIED_TOWER);
         destination.setFamilyMemberSlot(actor.pullFamilyMember(fm.getDiceColor()));
         actionCost.subtractToZero(actor.getPickDiscount(towerColor));
-        giveAssetsToPlayer(destination.getInstantBonus(), actor);
+        if (this.isPlayerTowerBonusAllowed(actor)) giveAssetsToPlayer(destination.getInstantBonus(), actor);
         actor.getResources().subtract(actionCost);
         actor.addCard(card, towerColor);
         return card;
     }
 
-    public Card fastTowerMove(String towerColor, int floorNumber, int servantsDeployed, boolean useBp, Player actor,
+    public void fastTowerMove(String towerColor, int floorNumber, int servantsDeployed, boolean useBp, Player actor,
                               Assets optionalPickDiscount) {
         Floor destination = this.board.getTowers().get(towerColor).getFloor(floorNumber);
         Card card = destination.pullCard();
         //Action cost is different whether the player wants to pay the card's cost or the purple's card bp cost.
+        //TODO: ???? .adds(pp
         Assets actionCost = (useBp) ? new Assets().addServants(((PurpleCard)card).getOptionalBpCost()) :
                 new Assets(card.getCost()).addServants(servantsDeployed);
         if(this.isTowerOccupied(towerColor))
             actionCost.addCoins(COINS_TO_ENTER_OCCUPIED_TOWER);
-        actionCost.subtractToZero(actor.getPickDiscount(towerColor).subtractToZero(optionalPickDiscount));
+        if(this.isPlayerTowerBonusAllowed(actor))
+            actionCost.subtractToZero(actor.getPickDiscount(towerColor).subtractToZero(
+                    this.apllyExcommMalus(optionalPickDiscount, actor)));
         actor.getResources().subtract(actionCost);
         actor.addCard(card, towerColor);
-        return card;
+        //return card;
     }
 
     /**
@@ -354,7 +358,7 @@ public class Game {
             actionCost.addCoins(COINS_TO_ENTER_OCCUPIED_TOWER);
         else return false;
         Assets availableAssets = new Assets(pl.getResources()
-                .add(pl.getPickDiscount(towerColor).add(optionalPickDiscount).add(destination.getInstantBonus())));
+                .add(pl.getPickDiscount(towerColor).add(optionalPickDiscount).add(this.apllyExcommMalus(destination.getInstantBonus(),pl))));
         if (actionCost.isGreaterOrEqual(availableAssets))
             return false;
         return true;
@@ -394,6 +398,7 @@ public class Game {
      * @param fm the family member used in this action
      */
     public void harvestMove(FamilyMember fm) {
+        //TODO: pick deployed family member?
         this.board.getHarvest().add(fm);
         getPlayerFromColor(fm.getOwnerColor()).pullFamilyMember(fm.getDiceColor());
     }
@@ -421,6 +426,8 @@ public class Game {
         int actionStr = baseStrength +
                 getPlayerFromColor(fm.getOwnerColor()).getStrengths().getHarvestBonus();
         int servants = actionCost - actionStr;
+        if (isPlayerServantsExcommunicated(getPlayerFromColor(fm.getOwnerColor())))
+            servants *= 2;
         return (servants > 0) ? -servants : 0;
     }
 
@@ -438,6 +445,8 @@ public class Game {
         int actionStr = baseStrength +
                 getPlayerFromColor(fm.getOwnerColor()).getStrengths().getHarvestBonus();
         int servants = actionCost - actionStr;
+        if (isPlayerServantsExcommunicated(getPlayerFromColor(fm.getOwnerColor())))
+            servants *= 2;
         return (servants > 0) ? -servants : 0;
     }
 
@@ -451,7 +460,9 @@ public class Game {
      */
     public int calcHarvestActionStr(FamilyMember fm, int servantsDeployed, int tmpActionStr) {
         int baseStr = (fm == null) ? tmpActionStr : this.getFmStrength(fm);
-
+        if (isPlayerServantsExcommunicated(getPlayerFromColor(fm.getOwnerColor())))
+            servantsDeployed /= 2; //it should be always a even number, because the client doubled the amount of servants while deploying
+        if (this.board.getHarvest().size() <= HARVEST_DEFAULTSPACE_SIZE) baseStr -= HARVEST_STR_MALUS;
         return baseStr+servantsDeployed+getPlayerFromColor(fm.getOwnerColor()).getStrengths().getHarvestBonus();
     }
 
@@ -465,6 +476,8 @@ public class Game {
      */
     public int calcProductionActionStr(FamilyMember fm, int servantsDeployed, int tmpActionStr) {
         int baseStr = (fm == null) ? tmpActionStr : this.getFmStrength(fm);
+        if (isPlayerServantsExcommunicated(getPlayerFromColor(fm.getOwnerColor())))
+            servantsDeployed /= 2;
         if (this.board.getProduction().size() <= PRODUCTION_DEFAULTSPACE_SIZE) baseStr -= PRODUCTION_STR_MALUS;
         return baseStr+servantsDeployed+getPlayerFromColor(fm.getOwnerColor()).getStrengths().getProductionBonus();
     }
@@ -525,6 +538,8 @@ public class Game {
                 + this.getPlayerFromColor(fm.getOwnerColor()).getStrengths().getTowerStrength(towerColor);
         int actionCost = this.board.getTowers().get(towerColor).getFloor(floor).getActionCost();
         int servants = actionCost - actionStr;
+        if (isPlayerServantsExcommunicated(getPlayerFromColor(fm.getOwnerColor())))
+            servants *= 2;
         return (servants > 0) ? -servants : 0;
     }
 
@@ -533,14 +548,17 @@ public class Game {
                 + pl.getStrengths().getTowerStrength(towerColor);
         int actionCost = this.board.getTowers().get(towerColor).getFloor(floor).getActionCost();
         int servants = actionCost - actionStr;
+        if (isPlayerServantsExcommunicated(pl))
+            servants *= 2;
         return (servants > 0) ? -servants : 0;
     }
 
     public int servantsForMarketAction(FamilyMember fm) {
         int actionStr = this.getFmStrength(fm);
         int servants = MARKET_ACTION_COST - actionStr;
+        if (isPlayerServantsExcommunicated(getPlayerFromColor(fm.getOwnerColor())))
+            servants *= 2;
         return (servants > 0) ? -servants : 0;
-
     }
 
     public Board getBoard() {
@@ -592,10 +610,37 @@ public class Game {
         return pl.getResources().getFaithPoints() > FIRST_EXCOMM_FP+this.board.getAge()-1;
     }
 
-    public Excommunication getExcommunicationByAge(int age) {
+    /**
+     * @return an excommunication based on the game's age
+     */
+    public Excommunication getExcommunication(){
+        return this.board.getExcommunications().get(this.board.getAge());
+    }
+
+    public Excommunication getExcommunication(int age) {
         return this.board.getExcommunications().stream().filter(excomm -> excomm.getAge() == age)
                 .findFirst().orElse(null);
     }
+
+    public void excommunicatePlayer (Player pl) {
+        Excommunication ex = this.board.getExcommunications().get(this.board.getAge());
+        ex.addExcommunicated(pl);
+        if (ex instanceof StrengthsExcommunication) pl.setStrengths(pl.getStrengths()
+                .add(((StrengthsExcommunication) ex).getMalus()));
+    }
+
+    public boolean isPlayerTowerBonusAllowed(Player pl) {
+        Excommunication secondAgeExcomm = board.getExcommunications().get(0);
+        return !(secondAgeExcomm instanceof AssetsExcommunication &&
+                secondAgeExcomm.getExcommunicated().contains(pl.getColor()));
+    }
+
+    public boolean isPlayerServantsExcommunicated(Player pl) {
+        Excommunication secondAgeExcomm = board.getExcommunications().get(0);
+        return !(secondAgeExcomm instanceof ServantsExcommunication &&
+                secondAgeExcomm.getExcommunicated().contains(pl.getColor()));
+    }
+
 
     /**
      * FOLLOWING METHODS ARE USED ONLY FOR TESTING PURPOSES

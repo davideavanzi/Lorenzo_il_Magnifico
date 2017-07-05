@@ -35,4 +35,8 @@ public abstract class Excommunication implements Serializable {
     public ArrayList<String> getExcommunicated() {
         return excommunicated;
     }
+
+    public void addExcommunicated(Player pl) {
+        excommunicated.add(pl.getColor());
+    }
 }
