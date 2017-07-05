@@ -133,10 +133,10 @@ public abstract class User {
 
     /**
      * Ask the user which one of the possible favors wants to receive.
-     * @param possibleFavors the list of possible favors to choose from.
      * @return an integer between 0 and the possibleFavors size
+     * TODO: change name and doc (maybe notify..)!!!
      */
-    public abstract void chooseFavor(List<Assets> possibleFavors);
+    public abstract void chooseFavor(int amount);
     
     /**
      * Send chat message to client.
@@ -152,8 +152,6 @@ public abstract class User {
      * @param message the message to send
      */
     public abstract void gameMessage(String message);
-
-    public abstract void gameError(String message);
 
     /**
      * This method sends a generic information message coming from the server

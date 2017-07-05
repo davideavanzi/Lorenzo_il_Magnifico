@@ -20,6 +20,7 @@ public class Council implements Serializable {
         this.favorsAmount = favorsAmount;
         this.councilBonus = councilBonus;
         this.slots = new ArrayList<>();
+
     }
 
     /**
@@ -36,6 +37,12 @@ public class Council implements Serializable {
      * The bonus given when a player puts a family member here
      */
     private Assets councilBonus;
+
+    /**
+     * here are stored all the options a player can choose from when he receives a favor.
+     */
+    private ArrayList<Assets> favorBonuses;
+
 
     public int getFavorsAmount(){
         return this.favorsAmount;
@@ -58,5 +65,13 @@ public class Council implements Serializable {
     public void clear(){
         getLog().info("Clearing Production space");
         this.slots.clear();
+    }
+
+    public void setFavorBonuses(ArrayList<Assets> favorBonuses) {
+        this.favorBonuses = favorBonuses;
+    }
+
+    public ArrayList<Assets> getFavorBonuses() {
+        return favorBonuses;
     }
 }

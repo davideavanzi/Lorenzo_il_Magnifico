@@ -1,6 +1,7 @@
 package it.polimi.ingsw.lim.controller;
 
 import it.polimi.ingsw.lim.exceptions.BadRequestException;
+import it.polimi.ingsw.lim.exceptions.ControllerException;
 import it.polimi.ingsw.lim.exceptions.GameSetupException;
 import it.polimi.ingsw.lim.model.*;
 import it.polimi.ingsw.lim.model.cards.*;
@@ -228,9 +229,9 @@ public class GameController {
         card.getImmediateEffects().stream().filter(ie -> ie instanceof AssetsEffect
                 || ie instanceof AssetsMultipliedEffect || ie instanceof CardMultipliedEffect
                 || ie instanceof CouncilFavorsEffect)
-                .forEach(ie -> EffectHandler.activateImmediateEffect(ie, actor));
+                .forEach(ie -> EffectHandler.activateImmediateEffect(ie, actor, game));
         card.getImmediateEffects().stream().filter(ie -> ie instanceof ActionEffect)
-                .forEach(ie -> EffectHandler.activateImmediateEffect(ie, actor));
+                .forEach(ie -> EffectHandler.activateImmediateEffect(ie, actor, game));
         if (card instanceof BlueCard) CardHandler.activateBlueCard((BlueCard)card, actor.getPlayer());
     }
 
@@ -446,6 +447,21 @@ public class GameController {
         }
     }
 
+    //------------------------------ COUNCIL
+
+    //TODO:USELESS?
+    public void giveCouncilFavors(int amount) {
+        roomCallback.getPlayingUser().chooseFavor(amount);
+    }
+
+    public void performCfActivation(ArrayList<Integer> choices) throws BadRequestException {
+        try {
+            this.game.giveFavors(roomCallback.getPlayingUser().getPlayer(), choices);
+        } catch (ControllerException e) {
+            throw new BadRequestException("Wrong favors choices", e);
+        }
+
+    }
     /**
      * This method has to be called at the beginning of the game,
      * otherwise it generates an order that might be incorrect

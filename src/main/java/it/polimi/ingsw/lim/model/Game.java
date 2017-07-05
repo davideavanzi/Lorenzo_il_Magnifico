@@ -1,5 +1,6 @@
 package it.polimi.ingsw.lim.model;
 import it.polimi.ingsw.lim.controller.GameController;
+import it.polimi.ingsw.lim.exceptions.ControllerException;
 import it.polimi.ingsw.lim.exceptions.GameSetupException;
 import it.polimi.ingsw.lim.model.cards.Card;
 import it.polimi.ingsw.lim.model.cards.PurpleCard;
@@ -129,6 +130,8 @@ public class Game {
         for (int j = 1; j <= 1; j++) {
             cardsDeck.addDevelopementCardsOfAge(j,parsedGame.getCard(j));
         }
+        ArrayList<Assets> cfBonuses = new ArrayList<>(Arrays.asList(parsedGame.getCouncilFavourBonuses()));
+        this.board.getCouncil().setFavorBonuses(cfBonuses);
 
         getLog().info("[GAME SETUP END]");
     }
@@ -563,6 +566,19 @@ public class Game {
         if (firstAgeExcomm instanceof AssetsExcommunication && firstAgeExcomm.getExcommunicated().contains(pl.getColor()))
             return assets.subtractToZero(((AssetsExcommunication) firstAgeExcomm).getMalus());
         return assets;
+    }
+
+    /**
+     * this method gets the assets chosen by the user as council favors and gives them to the player.
+     * @param pl
+     * @param choices
+     */
+    public void giveFavors(Player pl, ArrayList<Integer> choices) throws ControllerException {
+        if (choices.size() > this.board.getCouncil().getFavorBonuses().size())
+            throw new ControllerException("Error on giving favors to player, maybe too many?");
+        Set<Integer> set = new HashSet<>(choices);
+        if(set.size() < choices.size()) throw new ControllerException("Error on giving favors to player, duplicates!");
+        choices.forEach(choice -> giveAssetsToPlayer(this.board.getCouncil().getFavorBonuses().get(choice),pl));
     }
 
     // ------------------------------------------------------------------------ Excommunications

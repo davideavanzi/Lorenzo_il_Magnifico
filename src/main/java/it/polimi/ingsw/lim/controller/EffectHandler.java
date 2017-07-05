@@ -38,44 +38,37 @@ public class EffectHandler {
         }
     }
 
-    private static void activateAssetsEffect(AssetsEffect effect, User recipient) {
+    private static void activateAssetsEffect(AssetsEffect effect, User recipient, Game game) {
         recipient.gameMessage("An immediate assets bonus is being provided to you from the card you picked.");
         Player pl = recipient.getPlayer();
-        pl.setResources(pl.getResources().add(effect.getBonus()));
+        game.giveAssetsToPlayer(effect.getBonus(), pl);
     }
 
-    private static void activateAssetsMultipliedEffect(AssetsMultipliedEffect effect, User recipient) {
+    private static void activateAssetsMultipliedEffect(AssetsMultipliedEffect effect, User recipient, Game game) {
         recipient.gameMessage("An immediate assets bonus is being provided to you from the card you picked," +
                 "multiplied by your resources.");
         Player pl = recipient.getPlayer();
-        pl.setResources(pl.getResources().add(
-                effect.getBonus().multiply(pl.getResources().divide(effect.getMultiplier()))));
+        game.giveAssetsToPlayer(effect.getBonus().multiply(pl.getResources().divide(effect.getMultiplier())),pl);
     }
 
-    private static void activateCardMultipliedEffect(CardMultipliedEffect effect, User recipient) {
+    private static void activateCardMultipliedEffect(CardMultipliedEffect effect, User recipient, Game game) {
         recipient.gameMessage("An immediate assets bonus is being provided to you from the card you picked," +
                 "multiplied by your amount of "+effect.getMultiplierColor()+" cards.");
         Player pl = recipient.getPlayer();
-        pl.setResources(pl.getResources().add(
-                effect.getBonus().multiply(pl.getCardsAmount(effect.getMultiplierColor()))));
+        game.giveAssetsToPlayer(effect.getBonus().multiply(pl.getCardsAmount(effect.getMultiplierColor())),pl);
     }
 
     private static void activateCouncilFavorsEffect(CouncilFavorsEffect effect, User recipient) {
         recipient.gameMessage("You're about to activate "+effect.getAmount()+" council favors provided to you " +
                 "by the card you picked.");
-        try {
-            CFavorsHandler.giveFavors(recipient, effect.getAmount());
-        } catch (ControllerException e) {
-            Log.getLog().log(Level.SEVERE, "Controller error. Providing more favors than possible.");
-        }
-
+        recipient.chooseFavor(effect.getAmount());
     }
 
-    public static void activateImmediateEffect(ImmediateEffect iEffect, User recipient) {
+    public static void activateImmediateEffect(ImmediateEffect iEffect, User recipient, Game game) {
         if (iEffect instanceof ActionEffect) activateActionEffect((ActionEffect)iEffect, recipient);
-        if (iEffect instanceof AssetsEffect) activateAssetsEffect((AssetsEffect)iEffect, recipient);
-        if (iEffect instanceof AssetsMultipliedEffect) activateAssetsMultipliedEffect((AssetsMultipliedEffect)iEffect, recipient);
-        if (iEffect instanceof CardMultipliedEffect) activateCardMultipliedEffect((CardMultipliedEffect)iEffect, recipient);
+        if (iEffect instanceof AssetsEffect) activateAssetsEffect((AssetsEffect)iEffect, recipient, game);
+        if (iEffect instanceof AssetsMultipliedEffect) activateAssetsMultipliedEffect((AssetsMultipliedEffect)iEffect, recipient, game);
+        if (iEffect instanceof CardMultipliedEffect) activateCardMultipliedEffect((CardMultipliedEffect)iEffect, recipient, game);
         if (iEffect instanceof CouncilFavorsEffect) activateCouncilFavorsEffect((CouncilFavorsEffect)iEffect, recipient);
     }
 }
