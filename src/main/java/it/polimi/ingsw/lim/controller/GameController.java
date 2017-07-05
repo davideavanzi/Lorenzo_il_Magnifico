@@ -6,9 +6,7 @@ import it.polimi.ingsw.lim.model.*;
 import it.polimi.ingsw.lim.model.cards.*;
 import it.polimi.ingsw.lim.model.immediateEffects.*;
 import it.polimi.ingsw.lim.parser.Parser;
-import org.codehaus.jackson.annotate.JsonTypeInfo;
 
-import javax.jws.soap.SOAPBinding;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
@@ -166,12 +164,11 @@ public class GameController {
      */
     public void moveInTower (FamilyMember fm, String towerColor, int floor, int servantsDeployed)
             throws BadRequestException {
-        Strengths strength = new Strengths();
         User actor = roomCallback.getUser(this.game.getPlayerFromColor(fm.getOwnerColor()).getNickname());
         getLog().log(Level.INFO, "Player "+actor.getPlayer().getNickname()+
                 " is trying to enter "+towerColor+" tower at floor number "+floor+" with the "
-                +fm.getDiceColor()+" family member of value "+this.game.getDice().get(fm.getDiceColor()));
-        if(this.game.isTowerMoveAllowed(towerColor, floor, fm, strength)){
+                +fm.getDiceColor()+" family member of value "+this.game.getFmStrength(fm));
+        if(this.game.isTowerMoveAllowed(towerColor, floor, fm)){
             if(this.game.isTowerMoveAffordable(towerColor, floor, fm)){
                 Card card = this.game.getTower(towerColor).getFloor(floor).getCard();
                 boolean cardAffordable = this.game.isCardAffordable(card, actor.getPlayer(), towerColor, null);
@@ -281,7 +278,7 @@ public class GameController {
                     CardHandler.activateYellowCard(activeCard, actor, this);
             }
             if (this.currentProductionOptions.size() == 0) {
-                //don't ask user, complete directly production skipping excomm malus
+                //don't ask user, complete directly production skipping excomm malus (already given)
                 actor.getPlayer().setResources(actor.getPlayer().getResources().add(currentProductionAccumulator));
             } else {
                 actor.askProductionOptions(currentProductionOptions);

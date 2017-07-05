@@ -3,6 +3,8 @@ package it.polimi.ingsw.lim.ui;
 import it.polimi.ingsw.lim.Lock;
 import it.polimi.ingsw.lim.exceptions.InvalidInputException;
 import it.polimi.ingsw.lim.model.*;
+import it.polimi.ingsw.lim.model.cards.*;
+import it.polimi.ingsw.lim.model.immediateEffects.*;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Console;
