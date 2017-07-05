@@ -94,6 +94,11 @@ public class RMIUser extends User {
 
     @Override
     public void askForExcommunication() {
+        try {
+            RMIServer.excommunicationChoice(this.rci);
+        } catch (RemoteException e) {
+            getLog().log(Level.SEVERE, "[RMI]: Remote error sending board and arrayList of player to client.");
+        }
     }
 
     @Override

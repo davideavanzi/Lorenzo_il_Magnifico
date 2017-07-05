@@ -3,6 +3,7 @@ package it.polimi.ingsw.lim.network.server.socket;
 import it.polimi.ingsw.lim.Log;
 import it.polimi.ingsw.lim.controller.User;
 import it.polimi.ingsw.lim.exceptions.LoginFailedException;
+import it.polimi.ingsw.lim.model.Assets;
 import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.Player;
 import it.polimi.ingsw.lim.network.server.MainServer;
@@ -66,6 +67,10 @@ public class SocketClientHandler implements Runnable {
 
     void commandValidator(String command, String message, boolean outcome) {
         sendObjectToClient(CMD_VALIDATOR + SPLITTER + command + SPLITTER + message + SPLITTER + outcome);
+    }
+
+    void askClientForFavor(int favorAmount) {
+        sendObjectToClient(CHOOSE_FAVOR + SPLITTER + favorAmount);
     }
 
     void askClientForExcommunication() {

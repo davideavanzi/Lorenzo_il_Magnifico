@@ -60,8 +60,8 @@ public class SocketUser extends User {
     }
 
     @Override
-    public void chooseFavor(List<Assets> possibleFavors) {
-
+    public void chooseFavor(int favorAmount) {
+        this.sch.askClientForFavor(favorAmount);
     }
 
     /**

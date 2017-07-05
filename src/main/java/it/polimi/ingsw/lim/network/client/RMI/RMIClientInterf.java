@@ -16,6 +16,8 @@ public interface RMIClientInterf extends Remote {
 
     void commandValidator(String command, String message, boolean outcome) throws RemoteException;
 
+    void askUserForExcommunication() throws RemoteException;
+
     void isUserPlaying(Boolean state) throws RemoteException;
 
     void receiveChatMessageFromServer(String sender, String message) throws RemoteException;

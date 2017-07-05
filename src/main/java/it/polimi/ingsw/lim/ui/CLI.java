@@ -175,6 +175,14 @@ public class CLI extends AbsUI {
         lock.unlock();
     }
 
+    private void showPersonalInfo() {
+        printMessageln("Enter the username of the player of which you want to see information: ");
+        do {
+            input = userInput.nextLine().trim();
+        } while (uiCallback.getPlayer(input) != null);
+        printPlayer(uiCallback.getPlayer(input));
+    }
+
     /**
      * Print the currently turn order.
      */
@@ -238,13 +246,13 @@ public class CLI extends AbsUI {
     private void initializeAvailableCmdList() {
         availableCmdList.put(CHAT, () -> chat());
         availableCmdList.put(TURN, () -> turnOrder());
-        //availableCmdList.put(INFO, () -> );
+        availableCmdList.put(INFO, () -> showPersonalInfo());
     }
 
     private void initializeCmdList() {
         cmdList.put(FAMILY_MEMBER, () -> placeFamilyMember());
         //cmdList.put(LEADER_CARD, () -> );
-        //cmdList.put(EXCOMMUNICATION, () -> );
+        cmdList.put(EXCOMMUNICATION, () -> askForExcommunication());
         //cmdList.put(CHOOSE_FAVOR, () -> );
         //cmdList.put(CHOOSE_TOWER, () -> );
         //cmdList.put(CHOOSE_PRODUCTION, () -> );
@@ -267,12 +275,9 @@ public class CLI extends AbsUI {
         cmdDescr = new HashMap<>();
         availableCmdList = new HashMap<>();
         cmdList = new HashMap<>();
-        //Populate Description HashMap
-        initializeCmdDescr();
-        //Populate Command HashMap
-        initializeCmdList();
-        //Populate Available Command HashMap
-        initializeAvailableCmdList();
+        initializeCmdDescr();           //Populate Description HashMap
+        initializeCmdList();            //Populate Command HashMap
+        initializeAvailableCmdList();   //Populate Available Command HashMap
         if(uiCallback.getIsMyTurn()) {
             commandAdder(FAMILY_MEMBER);
             commandAdder(LEADER_CARD);

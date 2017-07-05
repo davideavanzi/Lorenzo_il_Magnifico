@@ -1,11 +1,13 @@
 package it.polimi.ingsw.lim.ui;
 
+import java.util.ArrayList;
+
 /**
  * Created by nico.
  */
 public abstract class AbsUI {
 
-    public abstract void commandAdder(String command);
+    public abstract void commandAdder(String commandr);
 
     public abstract void commandManager(String command, String message, boolean outcome);
 

@@ -84,6 +84,11 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
     }
 
     @Override
+    public void askUserForExcommunication() throws RemoteException {
+        uiCallback.getClientUI().commandAdder(EXCOMMUNICATION);
+    }
+
+    @Override
     public void placeFM(String fmColor, ArrayList<String> destination, String servants, String username) throws ClientNetworkException {
         int destArgs = Integer.parseInt(destination.get(1)); //floor's number or market slot
         int servantsNum = Integer.parseInt(servants);

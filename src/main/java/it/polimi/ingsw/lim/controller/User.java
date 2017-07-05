@@ -6,12 +6,6 @@ import it.polimi.ingsw.lim.model.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.logging.Level;
-
-import static it.polimi.ingsw.lim.Log.getLog;
-
-import java.rmi.RemoteException;
 import java.util.logging.Level;
 
 import static it.polimi.ingsw.lim.Log.getLog;
@@ -133,14 +127,12 @@ public abstract class User {
 
     /**
      * Ask the user which one of the possible favors wants to receive.
-     * @return an integer between 0 and the possibleFavors size
-     * TODO: change name and doc (maybe notify..)!!!
      */
-    public abstract void chooseFavor(int amount);
+    public abstract void chooseFavor(int favorAmount);
     
     /**
      * Send chat message to client.
-     * @param sender
+     * @param sende, ArrayList<Object> argsr
      * @param message
      */
     public abstract void sendChatMessage(String sender, String message);

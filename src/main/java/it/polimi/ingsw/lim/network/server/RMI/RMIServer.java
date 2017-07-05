@@ -35,13 +35,13 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
      */
     public RMIServer() throws RemoteException {}
 
-    static void commandValidator(String command, String message, boolean outcome, RMIClientInterf rmiClient) throws RemoteException {
-        rmiClient.commandValidator(command, message, outcome);
-    }
-
     @Override
     public void excommunicationChoice(boolean choice) throws RemoteException {
         //todo chiamare metodo su gameController
+    }
+
+    static void excommunicationChoice(RMIClientInterf rmiClient) throws RemoteException {
+        rmiClient.askUserForExcommunication();
     }
 
     @Override
