@@ -3,6 +3,12 @@ package it.polimi.ingsw.lim.controller;
 import it.polimi.ingsw.lim.model.Assets;
 import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.Player;
+import it.polimi.ingsw.lim.network.server.RMI.RMIUser;
+import it.polimi.ingsw.lim.network.server.socket.SocketUser;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonSubTypes;
+import org.codehaus.jackson.annotate.JsonTypeInfo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,6 +22,15 @@ import static it.polimi.ingsw.lim.Log.getLog;
  * It has also a reference to the corresponding client.
  * It will be used as a gateway between the room/game controller and the communication services
  */
+
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = RMIUser.class, name = "RMIUser"),
+
+        @JsonSubTypes.Type(value = SocketUser.class, name = "SocketUser"),
+})
 public abstract class User {
 
     /**
@@ -44,6 +59,20 @@ public abstract class User {
      */
     public User(String username) {
         this.username = username;
+    }
+
+    public User(){super();}
+
+    public boolean getIsAlive(){
+        return this.isAlive;
+    }
+
+    public void setUsername(String username){
+        this.username = username;
+    }
+
+    public void setIsAlive(boolean isAlive){
+        this.isAlive = isAlive;
     }
 
     /**
@@ -76,11 +105,13 @@ public abstract class User {
         this.player = player;
     }
 
+    @JsonIgnore
     public void hasDied() {
         getLog().log(Level.INFO, () -> "User "+this.getUsername()+" has disconnected.");
         this.isAlive = false;
     }
 
+    @JsonIgnore
     boolean isAlive() {
         return this.isAlive;
     }
@@ -132,7 +163,7 @@ public abstract class User {
     
     /**
      * Send chat message to client.
-     * @param sende, ArrayList<Object> argsr
+     * @param sender ArrayList<Object> argsr
      * @param message
      */
     public abstract void sendChatMessage(String sender, String message);
@@ -158,5 +189,6 @@ public abstract class User {
      */
     public abstract void sendGameUpdate(Board board, ArrayList<Player> players);
 
+    @JsonIgnore
     public abstract void isPlayerTurn(boolean isPlaying);
 }

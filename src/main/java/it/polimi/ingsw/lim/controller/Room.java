@@ -3,6 +3,8 @@ package it.polimi.ingsw.lim.controller;
 import it.polimi.ingsw.lim.Lock;
 import it.polimi.ingsw.lim.Log;
 import it.polimi.ingsw.lim.model.Player;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 import static it.polimi.ingsw.lim.Log.getLog;
 import static it.polimi.ingsw.lim.Settings.*;
@@ -16,15 +18,21 @@ import java.util.stream.Collectors;
  * This class represents a game room.
  * The room is created with the first user
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
+
 public class Room {
 
+    @JsonIgnore
     private transient GameController gameController;
+    @JsonIgnore
     private boolean roomOpen = true; // room open
+    @JsonIgnore
+    private Lock excommLock;
     private ArrayList<User> usersList;
     private ArrayList<String> playOrder;
     private PlayerRound round;
     private int roundNumber;
-    private Lock excommLock;
+
 
     public Room(User user) {
         usersList = new ArrayList<>();
@@ -33,6 +41,26 @@ public class Room {
         user.setRoom(this);
         excommLock = new Lock();
         getLog().log(Level.INFO, () -> "Room created, adding "+ user.getUsername() +" to room");
+    }
+
+    public Room(){
+        usersList = new ArrayList<>();
+    }
+
+    public void setUsersList(ArrayList<User> usersList){
+        this.usersList = usersList;
+    }
+
+    public void setPlayOrder(ArrayList<String> playOrder){
+        this.playOrder = playOrder;
+    }
+
+    public void setRound(PlayerRound round){
+        this.round = round;
+    }
+
+    public void setRoundNumber(int roundNumber){
+        this.roundNumber = roundNumber;
     }
 
     public void addUser(User user) {
@@ -64,6 +92,7 @@ public class Room {
         return (this.usersList.size() >= MAX_USERS_PER_ROOM);
     }
 
+    @JsonIgnore
     public boolean isOpen() { return roomOpen; }
 
     void fmPlaced() { this.round.decreaseFmAmount(); }

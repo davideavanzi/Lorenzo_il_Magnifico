@@ -9,6 +9,7 @@ import it.polimi.ingsw.lim.model.cards.*;
 import it.polimi.ingsw.lim.model.excommunications.*;
 import it.polimi.ingsw.lim.model.immediateEffects.*;
 import junit.framework.*;
+import org.junit.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ import static junit.framework.TestCase.assertEquals;
 /**
  * Created by FabCars. The task of this test class is to test if card parser work as expected
  */
-public class TestParser extends TestCase{
+public class TestParser{
 
     private static GreenCard createGreenCardExpected() {
         String nameExpected = "testGreenCard";

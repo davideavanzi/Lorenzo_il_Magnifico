@@ -1,6 +1,7 @@
 package it.polimi.ingsw.lim.controller;
 
 import it.polimi.ingsw.lim.Log;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 import java.util.Timer;
 
@@ -25,6 +26,11 @@ public class PlayerRound implements Round {
         Log.getLog().info("player ".concat(this.getUserName()).concat(" has 5 second to play"));
     }
 
+    public PlayerRound(){super();}
+
+    public void setUser(User user){
+        this.user = user;
+    }
     /**
      *
      */
@@ -35,11 +41,12 @@ public class PlayerRound implements Round {
     private int bonusHarvestAction = 0;
     private int bonusProductionAction = 0;
 
+    @JsonIgnore
     public String getUserName(){
         return this.user.getUsername();
     }
 
-    public User getPlayerTurn() {
+    public User getUser() {
         return this.user;
     }
 

@@ -56,4 +56,16 @@ public class Writer {
         }
         return pathToWriterFile;
     }
+
+    public static Room readerRoom(String pathToWriterRoomFile){
+        ObjectMapper mapper = new ObjectMapper();
+        Room room = null;
+        try {
+            room = mapper.readValue(new File(pathToWriterRoomFile), Room.class);
+        }catch (IOException e){
+            Log.getLog().severe("[READER]:Unable to open board writer file");
+            e.printStackTrace();
+        }
+        return room;
+    }
 }

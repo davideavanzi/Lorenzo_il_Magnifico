@@ -29,6 +29,18 @@ public class SocketUser extends User {
         this.sch = sch;
     }
 
+    SocketUser(){
+        super();
+    }
+
+    public void setSch(SocketClientHandler sch){
+        this.sch = sch;
+    }
+
+    public SocketClientHandler getSch(){
+        return sch;
+    }
+
     @Override
     public void notifyFastHarvest(int baseStr) {
 

@@ -235,7 +235,7 @@ public class CLI extends AbsUI {
             printCmd();
             printMessage("Enter a command: ");
             input = userInput.next().toLowerCase().trim();
-            printBoard();
+            printBoard(); //todo only for test
             try {
                 cmdExecutor(input);
             } catch (InvalidInputException e) {

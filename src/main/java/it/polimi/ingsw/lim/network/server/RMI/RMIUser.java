@@ -5,6 +5,7 @@ import it.polimi.ingsw.lim.model.Assets;
 import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.Player;
 import it.polimi.ingsw.lim.network.client.RMI.RMIClientInterf;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -33,6 +34,19 @@ public class RMIUser extends User {
         super(username);
         this.rci = rci;
         new Thread(new RMIAliveness(this)).start();
+    }
+
+    RMIUser(){
+        super();
+        new Thread(new RMIAliveness(this)).start();
+    }
+
+    public void setRci(RMIClientInterf rci){
+        this.rci = rci;
+    }
+
+    public RMIClientInterf getRci(){
+        return rci;
     }
 
 
@@ -68,6 +82,7 @@ public class RMIUser extends User {
         }
     }
 
+    @JsonIgnore
     @Override
     public void isPlayerTurn(boolean isPlaying) {
         try {
