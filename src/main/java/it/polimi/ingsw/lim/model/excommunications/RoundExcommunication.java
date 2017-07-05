@@ -5,12 +5,12 @@ import it.polimi.ingsw.lim.Log;
 /**
  * 
  */
-public class TurnExcommunication extends Excommunication {
+public class RoundExcommunication extends Excommunication {
 
     /**
      * Default constructor
      */
-    public TurnExcommunication() {
+    public RoundExcommunication() {
     }
 
     @Override
@@ -22,7 +22,7 @@ public class TurnExcommunication extends Excommunication {
             Log.getLog().info("other = null");
             return false;
         }
-        if (!(other instanceof TurnExcommunication)) {
+        if (!(other instanceof RoundExcommunication)) {
             Log.getLog().info("other not a TurnExcomm");
             return false;
         }

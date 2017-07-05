@@ -25,7 +25,7 @@ import java.util.*;
 
         @JsonSubTypes.Type(value = StrengthsExcommunication.class, name = "StrengthsExcommunication" ),
 
-        @JsonSubTypes.Type(value = TurnExcommunication.class, name = "TurnExcommunication" )
+        @JsonSubTypes.Type(value = RoundExcommunication.class, name = "RoundExcommunication" )
 })
 
 public abstract class Excommunication implements Serializable {

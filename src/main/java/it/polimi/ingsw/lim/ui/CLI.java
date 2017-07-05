@@ -467,17 +467,6 @@ public class CLI extends AbsUI {
         }
     }
 
-
-
-
-
-
-
-
-
-
-    }
-
     private void printPlayerSingleCard(String name, Player player){
         for(Card card: player.getCardsOfColor(GREEN_COLOR)){
             if(card.getName().equalsIgnoreCase(name)){

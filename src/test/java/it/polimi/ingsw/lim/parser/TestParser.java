@@ -9,7 +9,6 @@ import it.polimi.ingsw.lim.model.cards.*;
 import it.polimi.ingsw.lim.model.excommunications.*;
 import it.polimi.ingsw.lim.model.immediateEffects.*;
 import junit.framework.*;
-import org.junit.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -231,7 +230,7 @@ public class TestParser{
         ArrayList<Excommunication> secondAgeExcommExpected = new ArrayList<>();
         MarketExcommunication e1Expected = new MarketExcommunication();
         secondAgeExcommExpected.add(e1Expected);
-        TurnExcommunication e2Expected = new TurnExcommunication();
+        RoundExcommunication e2Expected = new RoundExcommunication();
         secondAgeExcommExpected.add(e2Expected);
         return secondAgeExcommExpected;
     }

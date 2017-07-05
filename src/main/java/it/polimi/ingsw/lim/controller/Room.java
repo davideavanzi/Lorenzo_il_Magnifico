@@ -3,9 +3,6 @@ package it.polimi.ingsw.lim.controller;
 import it.polimi.ingsw.lim.Lock;
 import it.polimi.ingsw.lim.Log;
 import it.polimi.ingsw.lim.model.Player;
-import it.polimi.ingsw.lim.model.excommunications.Excommunication;
-import it.polimi.ingsw.lim.model.excommunications.TurnExcommunication;
-import it.polimi.ingsw.lim.network.server.RMI.RMIUser;
 
 import static it.polimi.ingsw.lim.Log.getLog;
 import static it.polimi.ingsw.lim.Settings.*;
@@ -137,17 +134,8 @@ public class Room {
         this.gameController.startNewTurn();
         for (String username : this.playOrder)
             if (this.getUser(username).isAlive()) {
-                Excommunication excommunications = this.getGameController().getGame().getExcommunication(2);
-                if (excommunications instanceof TurnExcommunication) {
-                    for (int i = 0; i < this.playOrder.size(); i++) {
-                        if (this.getUser(username).equals(excommunications.getExcommunicated().get(i))){
-                            //todo equals is implemented?
-                            //todo set the turn to the next player
-                        }
-                    }
-                    this.round = new PlayerRound(this.getUser(username));
-                    return;
-                }
+                this.round = new PlayerRound(this.getUser(username));
+                return;
             }
     }
 
