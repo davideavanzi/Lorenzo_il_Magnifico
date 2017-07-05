@@ -367,6 +367,9 @@ public class CLI extends AbsUI {
         System.out.print(message);
     }
 
+    /**
+     * Print all the board info in CLI (Towers, Market, VictoryPointsTrack)
+     */
     public void printBoard(){
         this.printTowers();
         this.printMarket();
@@ -374,6 +377,9 @@ public class CLI extends AbsUI {
         this.printVictoryPointsTrack();
     }
 
+    /**
+     * Print Player Personal Board info (for each player)
+     */
     public void printPlayerBoard(){
         ArrayList<Player> players = this.uiCallback.getLocalPlayers();
         for(Player player: players){
@@ -381,6 +387,11 @@ public class CLI extends AbsUI {
         }
     }
 
+    /**
+     * Print the specific info of a player (all the Card (color by color), the Assets of the Player (like a wallet
+     * of resource), and the Strengths (all the bonuses that the Player takes getting Cards)
+     * @param player is the player to print
+     */
     private void printPlayer(Player player){
         printPlayerCards(GREEN_COLOR, player);
         printPlayerCards(BLUE_COLOR, player);
@@ -423,6 +434,12 @@ public class CLI extends AbsUI {
         printMessageln("");
     }
 
+
+    /**
+     * Print all the name of the Card that a Player have of a specific color
+     * @param color the color Card to print
+     * @param player the player that have these Cards
+     */
     private void printPlayerCards(String color, Player player){
         String format = "||%-142s||\n";
         String s = ("__________________________________________________________________________________________________________________________________________________");
@@ -452,6 +469,9 @@ public class CLI extends AbsUI {
         printMessageln("");
     }
 
+    /**
+     * Print all the Council Favours Bonus
+     */
     public void printCouncilFavours() {
         ArrayList<Assets> councilFavours = this.uiCallback.getLocalBoard().getCouncil().getFavorBonuses();
         String format = "||%-20s||\n";
@@ -467,6 +487,11 @@ public class CLI extends AbsUI {
         }
     }
 
+    /**
+     * Print a specific Card owned by a Player (by the Card's name)
+     * @param name the name of the Card to print
+     * @param player the Player that have this card
+     */
     private void printPlayerSingleCard(String name, Player player){
         for(Card card: player.getCardsOfColor(GREEN_COLOR)){
             if(card.getName().equalsIgnoreCase(name)){
@@ -500,6 +525,11 @@ public class CLI extends AbsUI {
         }
     }
 
+    /**
+     * Print a specific Card in a specific Tower (identified through its color and its floor)
+     * @param color the color of the Tower
+     * @param floor the floor in which the card is
+     */
     public void printCardInTower(String color, int floor){
         if(this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(floor).hasCard()) {
             printCard(this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(floor).getCardSlot());
@@ -509,6 +539,11 @@ public class CLI extends AbsUI {
         }
     }
 
+    /**
+     * Print a specific card (this method print all the general info (name, age, cost, ImmediateEffects, color) and
+     * then call another method that print all the specific info of the color Card
+     * @param card is the card to print
+     */
     public void printCard(Card card){
         String format = "||%-20s||\n";
         String s = "________________________";
@@ -559,6 +594,10 @@ public class CLI extends AbsUI {
         printMessageln("");
     }
 
+    /**
+     * Print one ImmediateEffect of a Card (call the specific method of the ImmediateEffect type
+     * @param immediateEffect the ImmediateEffect to print
+     */
     private void printImmediateEffct(ImmediateEffect immediateEffect){
         String format = "||%-20s||\n";
         String sRid = "||_  _  _  _  _  _  _ ||";
@@ -612,6 +651,12 @@ public class CLI extends AbsUI {
         }
     }
 
+    /**
+     * Print a GreenCard.
+     * The Action Cost is the value (by default Harvest) that the Family Member of the player must afford
+     * The Harvest Result are the bonuses that the Player will take activating the Harvest
+     * @param greenCard is the Green Card to print
+     */
     private void printCard(GreenCard greenCard){
         String format = "||%-20s||\n";
         String sRid = "||_  _  _  _  _  _  _ ||";
@@ -629,6 +674,14 @@ public class CLI extends AbsUI {
         }
     }
 
+    /**
+     * Print a Blue Card.
+     * The Permanent Discount is a discount that the Player will have form the moment that he pick the Card (e.g.
+     * the Discount for pick a specific color Card in a Tower)
+     * The Pick Discount is a discount (in term of Resources) (e.g. a discount of 2 coins in buying a Blue Card)
+     * The Tower Bonus Allowed is a boolean value that said if the player can take the Tower Bonus or not
+     * @param blueCard is the BlueCard to print
+     */
     private void printCard(BlueCard blueCard){
         String format = "||%-20s||\n";
         String sRid = "||_  _  _  _  _  _  _ ||";
@@ -638,7 +691,6 @@ public class CLI extends AbsUI {
             System.out.format(format, StringUtils.center(("Permanent Bonus:"), 20));
             printStrengths(blueCard.getPermanentBonus());
         }
-        //todo fallisce perche getPick puo ritornare null?
         if(blueCard.getPickDiscount(BLUE_COLOR).isNotNull()){
             printMessageln(sRid);
             System.out.format(format, "");
@@ -672,6 +724,18 @@ public class CLI extends AbsUI {
 
     }
 
+    /**
+     * Print a Yellow Card.
+     * The Production Cost is the cost (in term of resource that the player MUST afford (at lest only one if many))
+     * (e.g. 1 coin) to activate the production
+     * The Production Result is the cost (in term of resource that the player will take if he activates the Production)
+     * (e.g. 5 coins)
+     * The Action Strengths is the value (in term of Production by default) that the FamilyMember of the Player should
+     * have
+     * The Card Multiplier is the color of the Cards whose number will be multiplied with a Resources (e.g. if the
+     * player has 4 Purple card and he can take 4x1 victoryPoints)
+     * @param yellowCard
+     */
     private void printCard(YellowCard yellowCard){
         String format = "||%-20s||\n";
         String sRid = "||_  _  _  _  _  _  _ ||";
@@ -706,6 +770,14 @@ public class CLI extends AbsUI {
         }
     }
 
+    /**
+     * Print a Purple Card.
+     * The End Game Bonus is the bonus (by default Victory Points) that the player take in the ending of the game
+     * The Battle Point Requirement is the value of Battle Point that the player MUST have at least to can afford this
+     * card (is an optional value)
+     * The Battle Point Cost is the the cost (in Battle Points)
+     * @param purpleCard the Purple Card to print
+     */
     private void printCard(PurpleCard purpleCard){
         String format = "||%-20s||\n";
         String sRid = "||_  _  _  _  _  _  _ ||";
@@ -730,6 +802,10 @@ public class CLI extends AbsUI {
         }
     }
 
+    /**
+     * Print a specific Tower by its color. (all card and family member slot)
+     * @param color is the color of the tower to print
+     */
     private void printTower(String color){
         String format = "||%-142s||\n";
         String s = ("__________________________________________________________________________________________________________________________________________________");
@@ -810,6 +886,10 @@ public class CLI extends AbsUI {
         printMessageln("");
     }
 
+    /**
+     * Print all the market slot (family Member Slot and bonuses (resources) of this game (depending by the number
+     * of players).
+     */
     private void printMarket(){
         Object [] market = this.uiCallback.getLocalBoard().getMarket().getBonuses();
         FamilyMember[] familyMembers = this.uiCallback.getLocalBoard().getMarket().getSlots();
@@ -841,6 +921,9 @@ public class CLI extends AbsUI {
         printMessageln("");
     }
 
+    /**
+     * Print all the towers (calling the sub method to print one specific tower)
+     */
     private void printTowers(){
         this.printTower(GREEN_COLOR);
         printMessageln("");
@@ -852,6 +935,10 @@ public class CLI extends AbsUI {
         printMessageln("");
     }
 
+    /**
+     * Print the Strengths Bonus (e.g. +3 in the Production move)
+     * @param strengths
+     */
     private void printStrengths(Strengths strengths){
         String format = "|| %-17s%-2s||\n";  //todo 20 o 19
         if(strengths.getTowerStrength(GREEN_COLOR) != 0 ){
@@ -884,6 +971,11 @@ public class CLI extends AbsUI {
         }
     }
 
+
+    /**
+     * Print the Strengths Cost (e.g. Player's family member must have value of 6 to activate the Harvest)
+     * @param strengths
+     */
     private void printStrengthsCost(Strengths strengths){
         String format = "|| %-17s%-2s||\n";
         if(strengths.getTowerStrength(GREEN_COLOR) != 0 ){
@@ -907,6 +999,10 @@ public class CLI extends AbsUI {
         }
     }
 
+    /**
+     * print an Assets (resources or costs)
+     * @param asset
+     */
     private void printAsset(Assets asset){
         String format = "|| %-17s%-2s||\n";
         if(asset.getCoins() != 0){
@@ -932,6 +1028,9 @@ public class CLI extends AbsUI {
         }
     }
 
+    /**
+     * print the faith track (with bonus and family member)
+     */
     private void printFaithPointsTrack(){
         Assets[] assets = this.uiCallback.getLocalBoard().getFaithTrack();
         String format = "||%-20s||\n";
@@ -955,6 +1054,9 @@ public class CLI extends AbsUI {
         }
     }
 
+    /**
+     * print the victory points track (with family member)
+     */
     private void printVictoryPointsTrack(){
         String format = "||%1$-6s|%2$-6s|%3$-6s|%4$-6s|%5$-6s|%6$-6s|%7$-6s|%8$-6s|%9$-6s|%10$-6s|%11$-6s|%12$-6s|%13$-6s|%14$-6s|%15$-6s|%16$-6s|%17$-6s|%18$-6s|%19$-6s|%20$-6s||\n";
         String s = "_______________________________________________________________________________________________________________________________________________";
