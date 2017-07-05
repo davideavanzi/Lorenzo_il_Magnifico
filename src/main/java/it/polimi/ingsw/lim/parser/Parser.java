@@ -775,7 +775,7 @@ public class Parser {
             case SERVANTS_EXCOMMUNICATION:
                 return new ServantsExcommunication();
             case TURN_EXCOMMUNICATION:
-                return new TurnExcommunication();
+                return new RoundExcommunication();
             case END_GAME_EXCOMMUNICATION:
                 String tmpBlockedCardColor = excommunicationNode.path(END_GAME_EXCOMMUNICATION).asText();
                 Assets tmpProductionCardCostMalus = parseAssets

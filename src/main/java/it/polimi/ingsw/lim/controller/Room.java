@@ -3,15 +3,11 @@ package it.polimi.ingsw.lim.controller;
 import it.polimi.ingsw.lim.Lock;
 import it.polimi.ingsw.lim.Log;
 import it.polimi.ingsw.lim.model.Player;
-import it.polimi.ingsw.lim.model.excommunications.Excommunication;
-import it.polimi.ingsw.lim.model.excommunications.TurnExcommunication;
-import it.polimi.ingsw.lim.network.server.RMI.RMIUser;
 
 import static it.polimi.ingsw.lim.Log.getLog;
 import static it.polimi.ingsw.lim.Settings.*;
 
 import java.util.*;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
@@ -27,7 +23,7 @@ public class Room {
     private ArrayList<User> usersList;
     private ArrayList<String> playOrder;
     private PlayerRound round;
-    private int turnNumber;
+    private int roundNumber;
     private Lock excommLock;
 
     public Room(User user) {
@@ -76,30 +72,43 @@ public class Room {
      * This method is called when a round has ended and switches the round to the next player.
      * TODO: handle disconnected players
      */
-    void switchTurn(){
-        int size = playOrder.size();
-        int i = 0;
-        this.turnNumber++;
-        if(turnNumber == 4*size){
-            turnNumber = 0;
+    void switchRound(){
+        if (playOrder.isEmpty()) {
             startNewTurn();
             return;
         }
-        String nextUserName;
-        for (String userName: playOrder){
-            if(userName.equals(round.getUserName())){
-                break;
-            }
-            i++;
-        }
         Log.getLog().info("player ".concat(round.getUserName()).concat(" ending round"));
-        if(i + 1 < size){
-            nextUserName = playOrder.get(i + 1);
-        } else {
-            nextUserName = playOrder.get(0); //take the first
-        }
+        String nextUserName = playOrder.remove(0);
         this.round = new PlayerRound(this.getUser(nextUserName));
-        Log.getLog().info("player ".concat(round.getUserName()).concat(" now can play ").concat("in room" + this.getUser(nextUserName).getRoom().toString()));
+        Log.getLog().info("player ".concat(round.getUserName()).concat(" now can play ")
+                .concat("in room" + this.getUser(nextUserName).getRoom().toString()));
+    }
+
+    /**
+     * This method builds a new turn order, checking also for excommunicated players that will play their first round
+     * at the end of the turn
+     */
+    private void buildTurnOrder() {
+        ArrayList<String> singleSwing = gameController.getPlayOrder();
+        ArrayList<String> firstSwing = new ArrayList<>();
+        ArrayList<String> lastSwing = new ArrayList<>();
+        //filtering a single swing to obtain the first and last swing, not using a lambda to assure order is preserved
+        for (String name : singleSwing) {
+            if (gameController.getGame().isPlayerRoundExcommunicated(getUser(name).getPlayer()))
+                lastSwing.add(name);
+            else firstSwing.add(name);
+        }
+        //building new turn order
+        this.playOrder = new ArrayList<>();
+        if (firstSwing.isEmpty())
+            for (int i = 0; i < ROUNDS_PER_TURN; i++)
+                this.playOrder.addAll(singleSwing);
+        else {
+            this.playOrder.addAll(firstSwing);
+            for (int i = 0; i < ROUNDS_PER_TURN-1; i++)
+                this.playOrder.addAll(singleSwing);
+            this.playOrder.addAll(lastSwing);
+        }
     }
 
     User getUser(String username) {
@@ -123,12 +132,13 @@ public class Room {
      * If it is the right time, it also triggers the activation of the excommunication round
      */
     private void startNewTurn(){
-        //Send game state to players TODO: there's no need to update this everytime
+        //Send game state to players TODO: there's no need to update this everytime?
         ArrayList<Player> players = new ArrayList<>();
         usersList.forEach(user -> players.add(user.getPlayer()));
         getConnectedUsers().forEach(user -> user.sendGameUpdate(this.gameController.getBoard(), players));
 
-        this.playOrder = gameController.getPlayOrder();
+        buildTurnOrder();
+
         if(this.gameController.getTime()[1] >= TURNS_PER_AGE) {
             excommLock.lock();
             new Thread(new ExcommunicationRound(this,10000,excommLock)).start();
@@ -137,17 +147,8 @@ public class Room {
         this.gameController.startNewTurn();
         for (String username : this.playOrder)
             if (this.getUser(username).isAlive()) {
-                Excommunication excommunications = this.getGameController().getGame().getExcommunication(2);
-                if (excommunications instanceof TurnExcommunication) {
-                    for (int i = 0; i < this.playOrder.size(); i++) {
-                        if (this.getUser(username).equals(excommunications.getExcommunicated().get(i))){
-                            //todo equals is implemented?
-                            //todo set the turn to the next player
-                        }
-                    }
-                    this.round = new PlayerRound(this.getUser(username));
-                    return;
-                }
+                this.round = new PlayerRound(this.getUser(username));
+                return;
             }
     }
 

@@ -3,9 +3,8 @@ package it.polimi.ingsw.lim.controller;
 import it.polimi.ingsw.lim.Log;
 
 import java.util.Timer;
-import java.util.TimerTask;
 
-import static it.polimi.ingsw.lim.Settings.DEPLOYABLE_FM_PER_TURN;
+import static it.polimi.ingsw.lim.Settings.DEPLOYABLE_FM_PER_ROUND;
 
 /**
  * Created by ava on 16/06/17.
@@ -29,7 +28,7 @@ public class PlayerRound implements Round {
     /**
      *
      */
-    private int fmToDeploy = DEPLOYABLE_FM_PER_TURN;
+    private int fmToDeploy = DEPLOYABLE_FM_PER_ROUND;
 
     //Do we need them?
     private int bonusTowerAction = 0;
@@ -58,7 +57,7 @@ public class PlayerRound implements Round {
 
     public void endTurn (){
         Log.getLog().info("turn player ".concat(this.getUserName()).concat(" has ended "));
-        this.user.getRoom().switchTurn();
+        this.user.getRoom().switchRound();
     }
 
 

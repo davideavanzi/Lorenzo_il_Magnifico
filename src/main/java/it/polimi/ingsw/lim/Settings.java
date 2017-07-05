@@ -18,13 +18,14 @@ public class Settings {
     public static final int MARKET_MAX_SIZE = 5;
     public static final int MARKET_ACTION_COST = 1;
     public static final int NEUTRAL_FM_STRENGTH = 0;
-    public static final int DEPLOYABLE_FM_PER_TURN = 1;
+    public static final int DEPLOYABLE_FM_PER_ROUND = 1;
 
     //faith points corresponding to the first excommunication.
     //Following excommunications will be at +1 fp from their previous
     public static final int FIRST_EXCOMM_FP = 3;
     public static final int COINS_TO_ENTER_OCCUPIED_TOWER = 3;
 
+    public static final int ROUNDS_PER_TURN = 4;
     public static final int TURNS_PER_AGE = 2;
     public static final int AGES_NUMBER = 3;
 

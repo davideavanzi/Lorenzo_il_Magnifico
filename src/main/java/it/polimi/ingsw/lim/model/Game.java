@@ -4,10 +4,7 @@ import it.polimi.ingsw.lim.exceptions.ControllerException;
 import it.polimi.ingsw.lim.exceptions.GameSetupException;
 import it.polimi.ingsw.lim.model.cards.Card;
 import it.polimi.ingsw.lim.model.cards.PurpleCard;
-import it.polimi.ingsw.lim.model.excommunications.AssetsExcommunication;
-import it.polimi.ingsw.lim.model.excommunications.Excommunication;
-import it.polimi.ingsw.lim.model.excommunications.ServantsExcommunication;
-import it.polimi.ingsw.lim.model.excommunications.StrengthsExcommunication;
+import it.polimi.ingsw.lim.model.excommunications.*;
 import it.polimi.ingsw.lim.parser.Parser;
 
 import java.util.*;
@@ -631,18 +628,23 @@ public class Game {
                 .add(((StrengthsExcommunication) ex).getMalus()));
     }
 
-    public boolean isPlayerTowerBonusAllowed(Player pl) {
+    boolean isPlayerTowerBonusAllowed(Player pl) {
         Excommunication secondAgeExcomm = board.getExcommunications().get(0);
         return !(secondAgeExcomm instanceof AssetsExcommunication &&
                 secondAgeExcomm.getExcommunicated().contains(pl.getColor()));
     }
 
-    public boolean isPlayerServantsExcommunicated(Player pl) {
+    boolean isPlayerServantsExcommunicated(Player pl) {
         Excommunication secondAgeExcomm = board.getExcommunications().get(0);
         return !(secondAgeExcomm instanceof ServantsExcommunication &&
                 secondAgeExcomm.getExcommunicated().contains(pl.getColor()));
     }
 
+    public boolean isPlayerRoundExcommunicated(Player pl) {
+        Excommunication secondAgeExcomm = board.getExcommunications().get(0);
+        return !(secondAgeExcomm instanceof RoundExcommunication &&
+                secondAgeExcomm.getExcommunicated().contains(pl.getColor()));
+    }
 
     /**
      * FOLLOWING METHODS ARE USED ONLY FOR TESTING PURPOSES
