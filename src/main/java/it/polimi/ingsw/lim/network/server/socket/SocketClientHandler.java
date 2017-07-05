@@ -8,7 +8,7 @@ import it.polimi.ingsw.lim.model.Player;
 import it.polimi.ingsw.lim.network.server.MainServer;
 
 import static it.polimi.ingsw.lim.Log.*;
-import static it.polimi.ingsw.lim.network.ServerConstants.*;
+import static it.polimi.ingsw.lim.network.CommunicationConstants.*;
 import static it.polimi.ingsw.lim.network.server.MainServer.addUserToRoom;
 
 import java.io.*;
@@ -57,7 +57,6 @@ public class SocketClientHandler implements Runnable {
     SocketClientHandler(Socket socketClient) {
         this.socketClient = socketClient;
         clientCommandHandler = new ClientCommandHandler(this);
-
     }
 
     /**
@@ -65,12 +64,25 @@ public class SocketClientHandler implements Runnable {
      */
     public User getUser() { return user; }
 
-    void sendIfUserPlaying(boolean isPlaying) {
-        sendObjectToClient(TURN + SPLITTER + isPlaying);
+    void commandValidator(String command, String message, boolean outcome) {
+        sendObjectToClient(CMD_VALIDATOR + SPLITTER + command + SPLITTER + message + SPLITTER + outcome);
     }
 
-    void askClientServants(int minimum) {
-        sendObjectToClient(SERVANT + SPLITTER + minimum);
+    void askClientForExcommunication() {
+        sendObjectToClient(EXCOMMUNICATION);
+    }
+
+    /**
+     * This method sends a chat message to the user
+     * @param sender
+     * @param message
+     */
+    void chatMessageToClient(String sender, String message) {
+        sendObjectToClient(CHAT + SPLITTER + sender + SPLITTER + message);
+    }
+
+    void gameMessageToClient(String message) {
+        sendObjectToClient(GAME_MSG + SPLITTER + message);
     }
 
     /**
@@ -83,21 +95,8 @@ public class SocketClientHandler implements Runnable {
         sendObjectToClient(players);
     }
 
-    /**
-     * This method sends a chat message to the user
-     * @param sender
-     * @param message
-     */
-    void chatMessageToClient(String sender, String message) {
-        sendObjectToClient(CHAT + SPLITTER + sender + SPLITTER + message);
-    }
-
-    /**
-     * Print notification to the client.
-     * @param message
-     */
-    public void printToClient(String message) {
-        sendObjectToClient(message);
+    void sendIfUserPlaying(boolean isPlaying) {
+        sendObjectToClient(TURN + SPLITTER + isPlaying);
     }
 
     /**
@@ -175,7 +174,7 @@ public class SocketClientHandler implements Runnable {
                         + (2 - loginFailed) + " times"), e);
                 loginFailed++;
                 if (loginFailed == 3) {
-                    return false;
+                    return isClientLogged = false;
                 }
             } catch (LoginFailedException e) {
                 sendObjectToClient(LOGIN_FAILED + SPLITTER + e.getMessage());

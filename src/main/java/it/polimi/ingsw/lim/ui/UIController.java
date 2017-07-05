@@ -1,7 +1,6 @@
 package it.polimi.ingsw.lim.ui;
 
 import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
-import it.polimi.ingsw.lim.exceptions.LoginFailedException;
 import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.Player;
 import it.polimi.ingsw.lim.network.client.RMI.RMIClient;
@@ -11,8 +10,6 @@ import it.polimi.ingsw.lim.network.client.socket.SocketClient;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
-
-import static it.polimi.ingsw.lim.ui.UIController.UIConstant.*;
 
 /**
  * Created by nico.
@@ -50,24 +47,25 @@ public class UIController {
 
     /**
      * Map that link a identification string to a method.
-     * Only available commands are in this hashMap.
+     * All command are stored here.
+     */
+    static Map<String, Runnable> cmdList;
+
+    /**
+     * Map that link a identification string to a method.
+     * Only available commands are stored in this hashMap.
      */
     static Map<String, Runnable> availableCmdList;
 
     /**
      * Map that link a identification string to a description of the command.
      */
-    static Map<String, String> cmdDescr;
+    static  Map<String, String> cmdDescr;
 
     /**
      * If true it indicates my turn.
      */
     private boolean isMyTurn = false;
-
-    /**
-     * It's show if I'm logged.
-     */
-    private boolean amILogged = false;
 
     /**
      * The first thing to do is create a user interface, then the player must choose
@@ -131,24 +129,32 @@ public class UIController {
         UIController.clientProtocol = clientProtocol;
     }
 
-    public Player getPlayer(String nickname) {
-        return getLocalPlayers().stream().filter(pl -> pl.getNickname().equals(nickname)).findFirst().orElse(null);
+    Player getPlayer(String username) {
+        return getLocalPlayers().stream().filter(pl -> pl.getNickname().equals(username)).findFirst().orElse(null);
     }
 
-    void sendChatMessage(String message) {
+    void sendExcommunicationChoice(boolean choice) {
         try {
-            clientProtocol.chatMessageToServer(username, message);
+            clientProtocol.excommunicationChoice(choice);
         } catch (ClientNetworkException e) {
             clientUI.printError(e.getMessage());
         }
     }
 
-    public void manageCmd(String command) {
-        clientUI.cmdManager(command);
+    void sendPlaceFM(String color, ArrayList<String> destination, String servants) {
+        try {
+            clientProtocol.placeFM(color, destination, servants, username);
+        } catch (ClientNetworkException e) {
+            clientUI.printError(e.getMessage());
+        }
     }
 
-    public void startWaitRequest() {
-        clientUI.waitForRequest();
+    void sendChatMessage(String message) {
+        try {
+            clientProtocol.sendChatMessageToServer(username, message);
+        } catch (ClientNetworkException e) {
+            clientUI.printError(e.getMessage());
+        }
     }
 
     /**
@@ -207,7 +213,6 @@ public class UIController {
         static final String EXCOMMUNICATION = "excommunication";
         static final String CHOOSE_FAVOR = "chooseFavor";
         static final String CHOOSE_TOWER = "chooseTower";
-        static final String CHOOSE_FLOOR = "chooseFloor";
         static final String CHOOSE_PRODUCTION = "chooseProduction";
 
         //Command description
@@ -220,7 +225,6 @@ public class UIController {
         static final String EXCOMMUNICATION_DESCR = "Choose if you want take a excommunication";
         static final String CHOOSE_FAVOR_DESCR = "Choose a favor from council";
         static final String CHOOSE_TOWER_DESCR = "Choose a tower to pick a card from";
-        static final String CHOOSE_FLOOR_DESCR = "Choose the tower's floor ";
         static final String CHOOSE_PRODUCTION_DESCR = "Choose what type of production you want activate";
     }
 }

@@ -1,9 +1,12 @@
 package it.polimi.ingsw.lim.network.server.RMI;
 
 import it.polimi.ingsw.lim.Log;
+import it.polimi.ingsw.lim.controller.GameController;
 import it.polimi.ingsw.lim.controller.User;
+import it.polimi.ingsw.lim.exceptions.BadRequestException;
 import it.polimi.ingsw.lim.exceptions.LoginFailedException;
 import it.polimi.ingsw.lim.model.Board;
+import it.polimi.ingsw.lim.model.FamilyMember;
 import it.polimi.ingsw.lim.model.Player;
 import it.polimi.ingsw.lim.network.client.RMI.RMIClientInterf;
 import it.polimi.ingsw.lim.network.server.MainServer;
@@ -17,7 +20,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
-import static it.polimi.ingsw.lim.network.ServerConstants.LOGIN_SUCCESSFUL;
+import static it.polimi.ingsw.lim.network.CommunicationConstants.FAMILY_MEMBER;
+import static it.polimi.ingsw.lim.network.CommunicationConstants.FAMILY_MEMBER_OK;
 import static it.polimi.ingsw.lim.network.server.MainServer.addUserToRoom;
 
 /**
@@ -30,6 +34,99 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
      * @throws RemoteException
      */
     public RMIServer() throws RemoteException {}
+
+    static void commandValidator(String command, String message, boolean outcome, RMIClientInterf rmiClient) throws RemoteException {
+        rmiClient.commandValidator(command, message, outcome);
+    }
+
+    @Override
+    public void excommunicationChoice(boolean choice) throws RemoteException {
+        //todo chiamare metodo su gameController
+    }
+
+    @Override
+    public void moveInCouncil(String fmColor, int servants, String username, RMIClientInterf rmiClient) throws RemoteException {
+        GameController gc = MainServer.getUserFromUsername(username).getRoom().getGameController();
+        FamilyMember fm = MainServer.getUserFromUsername(username).getPlayer().getFamilyMember(fmColor);
+        try {
+            gc.moveInCouncil(fm, servants);
+            rmiClient.commandValidator(FAMILY_MEMBER, FAMILY_MEMBER_OK , true);
+        } catch (BadRequestException e) {
+            rmiClient.commandValidator(FAMILY_MEMBER, FAMILY_MEMBER_OK , false);
+        }
+    }
+
+    @Override
+    public void moveInHarvest(String fmColor, int servants, String username, RMIClientInterf rmiClient) throws RemoteException {
+        GameController gc = MainServer.getUserFromUsername(username).getRoom().getGameController();
+        FamilyMember fm = MainServer.getUserFromUsername(username).getPlayer().getFamilyMember(fmColor);
+        try {
+            gc.moveInHarvest(fm, servants);
+            rmiClient.commandValidator(FAMILY_MEMBER, FAMILY_MEMBER_OK , true);
+        } catch (BadRequestException e) {
+            rmiClient.commandValidator(FAMILY_MEMBER, FAMILY_MEMBER_OK , false);
+        }
+    }
+
+    @Override
+    public void moveInProduction(String fmColor, int servants, String username, RMIClientInterf rmiClient) throws RemoteException {
+        GameController gc = MainServer.getUserFromUsername(username).getRoom().getGameController();
+        FamilyMember fm = MainServer.getUserFromUsername(username).getPlayer().getFamilyMember(fmColor);
+        try {
+            gc.moveInProduction(fm, servants);
+            rmiClient.commandValidator(FAMILY_MEMBER, FAMILY_MEMBER_OK , true);
+        } catch (BadRequestException e) {
+            rmiClient.commandValidator(FAMILY_MEMBER, FAMILY_MEMBER_OK , false);
+        }
+    }
+
+    @Override
+    public void moveInMarket(String fmColor, int marketSlot, int servants, String username, RMIClientInterf rmiClient) throws RemoteException {
+        GameController gc = MainServer.getUserFromUsername(username).getRoom().getGameController();
+        FamilyMember fm = MainServer.getUserFromUsername(username).getPlayer().getFamilyMember(fmColor);
+        try {
+            gc.moveInMarket(fm, marketSlot, servants);
+            rmiClient.commandValidator(FAMILY_MEMBER, FAMILY_MEMBER_OK , true);
+        } catch (BadRequestException e) {
+            rmiClient.commandValidator(FAMILY_MEMBER, FAMILY_MEMBER_OK , false);
+        }
+    }
+
+    @Override
+    public void moveInTower(String fmColor, String twrColor, int floor, int servants, String username, RMIClientInterf rmiClient) throws RemoteException {
+        GameController gc = MainServer.getUserFromUsername(username).getRoom().getGameController();
+        FamilyMember fm = MainServer.getUserFromUsername(username).getPlayer().getFamilyMember(fmColor);
+        try {
+            gc.moveInTower(fm, twrColor, floor, servants);
+            rmiClient.commandValidator(FAMILY_MEMBER, FAMILY_MEMBER_OK , true);
+        } catch (BadRequestException e) {
+            rmiClient.commandValidator(FAMILY_MEMBER, FAMILY_MEMBER_OK , false);
+        }
+    }
+
+    /**
+     * This method sends a chat message to the user.
+     * @param sender
+     * @param message
+     */
+     static void sendChatMessageToClient(String sender, String message, RMIClientInterf rmiClient) throws RemoteException {
+        rmiClient.receiveChatMessageFromServer(sender, message);
+     }
+
+    /**
+     * Broadcast the chat message to all roommates.
+     * @param sender who send the chat message.
+     * @param message the chat message.
+     * @throws RemoteException
+     */
+    @Override
+    public void receiveChatMessageFromClient(String sender, String message) throws RemoteException {
+        MainServer.getUserFromUsername(sender).getRoom().chatMessageToRoom(sender, message);
+    }
+
+    static void sendGameMessageToClient(String message, RMIClientInterf rmiClient) throws RemoteException {
+        rmiClient.receiveGameMessageFromServer(message);
+    }
 
     /**
      * Every turn the updated board and player's ArrayList is broadcast to all roommates.
@@ -44,30 +141,6 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
 
     static void setPlayerTurn(Boolean state, RMIClientInterf rmiClient) throws RemoteException {
         rmiClient.isUserPlaying(state);
-    }
-
-    static int askClientServants(int minimum, RMIClientInterf rmiClient) throws RemoteException {
-        return rmiClient.askUserServants(minimum);
-    }
-
-    /**
-     * This method sends a chat message to the user.
-     * @param sender
-     * @param message
-     */
-     static void chatMessageToClient(String sender, String message, RMIClientInterf rmiClient) throws RemoteException {
-        rmiClient.chatMessageFromServer(sender, message);
-     }
-
-    /**
-     * Broadcast the chat message to all roommates.
-     * @param sender who send the chat message.
-     * @param message the chat message.
-     * @throws RemoteException
-     */
-    @Override
-    public void chatMessageFromClient(String sender, String message) throws RemoteException {
-        MainServer.getUserFromUsername(sender).getRoom().chatMessageToRoom(sender, message);
     }
 
     /**
@@ -104,7 +177,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
         while (true) {
             try {
                 login(loginInformation[0], loginInformation[1], rmiClient);
-                rmiClient.startListen();
+                rmiClient.startListenToInput();
                 return;
             } catch (LoginFailedException e) {
                 loginInformation = rmiClient.askLogin(e.getMessage());

@@ -29,70 +29,6 @@ public class SocketUser extends User {
         this.sch = sch;
     }
 
-    /**
-     * Send the Game board and the player List to client.
-     * @param board the game board.
-     * @param players arrayList of connected player.
-     */
-    @Override
-    public void sendGameUpdate(Board board, ArrayList<Player> players) {
-        this.sch.sendGameToClient(board, players);
-    }
-
-    @Override
-    public void isPlayerTurn(boolean isPlaying) {
-        this.sch.sendIfUserPlaying(isPlaying);
-    }
-
-    /**
-     * Send a chat messagge to the client.
-     * @param sender
-     * @param message
-     */
-    @Override
-    public void sendChatMessage(String sender, String message) {
-        this.sch.chatMessageToClient(sender, message);
-    }
-
-    @Override
-    public void askForServants(int minimumAmount) {
-        this.sch.askClientServants(minimumAmount);
-    }
-
-
-    public void askProductionOptions(ArrayList<ArrayList<Assets[]>> options) {
-
-    }
-
-    @Override
-    public int chooseFavor(List<Assets> possibleFavors) {return 0;}
-
-    @Override
-    public void broadcastMessage(String message) {}
-
-    @Override
-    public void gameMessage(String message) {}
-
-    @Override
-    public int chooseFloor() {
-        return 0;
-    }
-
-    @Override
-    public String chooseTower(HashMap<String, Integer> possibleTowers) {
-        return null;
-    }
-
-    @Override
-    public boolean askForOptionalBpPick(int requirement, int cost) {
-        return false;
-    }
-
-    @Override
-    public boolean askForExcommunication() {
-        return false;
-    }
-
     @Override
     public void notifyFastHarvest(int baseStr) {
 
@@ -109,8 +45,65 @@ public class SocketUser extends User {
     }
 
     @Override
+    public void askProductionOptions(ArrayList<ArrayList<Assets[]>> options) {
+
+    }
+
+    @Override
+    public void askForOptionalBpPick(int requirement, int cost) {
+
+    }
+
+    @Override
+    public void askForExcommunication() {
+        this.sch.askClientForExcommunication();
+    }
+
+    @Override
+    public void chooseFavor(List<Assets> possibleFavors) {
+
+    }
+
+    /**
+     * Send a chat messagge to the client.
+     * @param sender
+     * @param message
+     */
+    @Override
+    public void sendChatMessage(String sender, String message) {
+        this.sch.chatMessageToClient(sender, message);
+    }
+
+    @Override
+    public void gameMessage(String message) {
+        this.sch.gameMessageToClient(message);
+    }
+
+    @Override
+    public void broadcastMessage(String message) {
+
+    }
+
+    /**
+     * Send the Game board and the player List to client.
+     * @param board the game board.
+     * @param players arrayList of connected player.
+     */
+    @Override
+    public void sendGameUpdate(Board board, ArrayList<Player> players) {
+        this.sch.sendGameToClient(board, players);
+    }
+
+    @Override
+    public void isPlayerTurn(boolean isPlaying) {
+        this.sch.sendIfUserPlaying(isPlaying);
+    }
+
+    @Override
     public void gameError(String message) {
 
     }
+
+
 }
 

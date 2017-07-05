@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by ava on 12/06/17.
@@ -22,6 +23,10 @@ public class Board implements Serializable {
         this.harvest = new ArrayList<>();
         this.faithTrack = new Assets[FAITH_TRACK_LENGTH];
         this.excommunications = new ArrayList<>();
+        this.excommunications = new ArrayList<>();
+        this.dice = new HashMap<>();
+        DICE_COLORS.forEach(color -> this.dice.put(color, 0));
+        this.randomGenerator = new Random();
     }
 
     /**
@@ -70,7 +75,25 @@ public class Board implements Serializable {
      */
     private Market market;
 
+    /**
+     * The three dices, mapped by color: BLACK, WHITE, ORANGE, NEUTRAL (always 0)
+     */
+    private HashMap<String, Integer> dice;
+
+    /**
+     * Random generator to roll dices
+     */
+    private Random randomGenerator;
+
     // GETTERS & SETTERS
+
+    /**
+     * This method rolls dices
+     */
+    public void rollDices(){
+        //For every dice, generates a random number between 1 and 6.
+        DICE_COLORS.forEach(color -> this.dice.replace(color, randomGenerator.nextInt(6)+1));
+    }
 
     public List<Excommunication> getExcommunications() {
         return this.excommunications;
@@ -122,5 +145,9 @@ public class Board implements Serializable {
 
     public void setTurn(int turn) {
         this.turn = turn;
+    }
+
+    public HashMap<String, Integer> getDice() {
+        return dice;
     }
 }

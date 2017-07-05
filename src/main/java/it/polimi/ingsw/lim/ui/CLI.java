@@ -37,7 +37,7 @@ public class CLI extends AbsUI {
     /**
      * If the input is a int it'll store here.
      */
-    private int inputNum;
+    private Integer inputNum;
 
     private UIController uiCallback;
 
@@ -50,42 +50,137 @@ public class CLI extends AbsUI {
         initializeCommandLine();
     }
 
-    /**
-     * Simply print on stdout a string.
-     */
-    private void turnForm() {
-        printMessageln("Turn order: ");
+    private void askForExcommunication() {
+        printMessageln("Do you want to suffer of the excommunication?");
+        printMessageln("1) yes\n2) no");
+        do {
+            inputNum = userInput.nextInt();
+        } while (!inputNum.equals(1) && !inputNum.equals(2));
+        uiCallback.sendExcommunicationChoice(inputNum.equals(1));
+        availableCmdList.remove(EXCOMMUNICATION);
+        lock.unlock();
     }
 
-    @Override
-    public int sendServantsToServer(int minimum) {
-        printMessageln("How many servants do you want to use in this action? Minimum: " + minimum);
-        while(!userInput.hasNextInt()) {
-            userInput.next();
+    private void leaderCardManager() {
+
+    }
+
+    private String fmServant() {
+        printMessageln("How many servants would you like to put here?");
+        do {
+            inputNum = userInput.nextInt();
+        } while (inputNum >= 0);
+        return inputNum.toString();
+    }
+
+    private ArrayList<String> fmDestination() {
+        String[] board4Player =
+                {"Green Tower", "Yellow Tower", "Blue Tower", "Purple Tower", "Council", "Production", "Harvest", "Market"};
+        String[] board5Player =
+                {"Green Tower", "Yellow Tower", "Blue Tower", "Purple Tower", "Black Tower", "Council", "Production", "Harvest", "Market"};
+        ArrayList<String> destination = new ArrayList<>();
+        int count = 1;
+        printMessageln("Where would you like to put it?");
+
+        //Two players
+        if (uiCallback.getLocalPlayers().size() < 3) {
+            for (String pos : board4Player)
+                printMessageln(count + ") " + pos);
+            do {
+                inputNum = userInput.nextInt();
+            } while (inputNum-1 >= 0 && inputNum-1 < 8);
+            destination.add(board4Player[inputNum]);
+            if (inputNum-1 >= 0 && inputNum-1 < 4) { //If tower, select the floor
+                printMessage("Please select the floor: (1/2/3/4) ");
+                do {
+                    inputNum = userInput.nextInt();
+                } while (inputNum-1 >= 0 && inputNum-1 < 4);
+                destination.add(inputNum.toString());
+            } else if (inputNum == 8) { //If market, select the slot
+                printMessage("Please select the market slot: (1/2) ");
+                do {
+                    inputNum = userInput.nextInt();
+                } while (inputNum-1 >= 0 && inputNum-1 < 2);
+                destination.add(inputNum.toString());
+            }
+            return destination;
         }
-        return inputNum = userInput.nextInt();
+
+        //Three/Four players
+        if (uiCallback.getLocalPlayers().size() < 5) {
+            for (String pos : board4Player)
+                printMessageln(count + ") " + pos);
+            do {
+                inputNum = userInput.nextInt();
+            } while (inputNum-1 >= 0 && inputNum-1 < 8);
+            destination.add(board4Player[inputNum]);
+            if (inputNum-1 >= 0 && inputNum-1 < 4) { //If tower, select the floor
+                printMessage("Please select the floor: (1/2/3/4) ");
+                do {
+                    inputNum = userInput.nextInt();
+                } while (inputNum-1 >= 0 && inputNum-1 < 4);
+                destination.add(inputNum.toString());
+            } else if (inputNum == 8) { //If market, select the slot
+                printMessage("Please select the market slot: (1/2/3/4) ");
+                do {
+                    inputNum = userInput.nextInt();
+                } while (inputNum-1 >= 0 && inputNum-1 < 4);
+                destination.add(inputNum.toString());
+            }
+            return destination;
+        }
+
+        //Five players
+        if (uiCallback.getLocalPlayers().size() < 6) {
+            for (String pos : board5Player)
+                printMessageln(count + ") " + pos);
+            do {
+                inputNum = userInput.nextInt();
+            } while (inputNum-1 >= 0 && inputNum-1 < 9);
+            destination.add(board5Player[inputNum]);
+            if (inputNum-1 >= 0 && inputNum-1 < 5) { //If tower, select the floor
+                printMessage("Please select the floor: (1/2/3/4) ");
+                do {
+                    inputNum = userInput.nextInt();
+                } while (inputNum-1 >= 0 && inputNum-1 < 5);
+                destination.add(inputNum.toString());
+            } else if (inputNum == 9) { //If market, select the slot
+                printMessage("Please select the market slot: (1/2/3/4/5) ");
+                do {
+                    inputNum = userInput.nextInt();
+                } while (inputNum-1 >= 0 && inputNum-1 < 5);
+                destination.add(inputNum.toString());
+            }
+            return destination;
+        }
+        return null;
     }
 
-    /**
-     * Print to stdout a chat message.
-     * @param sender the sender's username.
-     * @param message the chat message.
-     */
-    @Override
-    public void printChatMessage(String sender, String message) {
-        printMessageln("[CHAT]: message from "+sender+": "+message);
+    private String fmColor() {
+        printMessageln("What family member would you like to place?");
+        int count = 1;
+        for (FamilyMember fm : uiCallback.getPlayer(uiCallback.getUsername()).getFamilyMembers()) {
+            printMessageln(count + ") " + fm.getDiceColor());
+            count++;
+        }
+        do {
+            inputNum = userInput.nextInt();
+        } while (inputNum > 0 && inputNum <= count);
+        return uiCallback.getPlayer(uiCallback.getUsername()).getFamilyMembers().get(inputNum - 1).getDiceColor();
     }
 
-    private void personalInformation() {
-
+    private void placeFamilyMember() {
+        uiCallback.sendPlaceFM(fmColor(), fmDestination(), fmServant());
+        availableCmdList.remove(FAMILY_MEMBER);
+        lock.unlock();
     }
 
     /**
      * Print the currently turn order.
      */
     private void turnOrder() {
-        turnForm();
-        for (Player pl : this.uiCallback.getLocalPlayers())
+        printMessageln("Turn order: ");
+        for (Player pl : uiCallback.getLocalPlayers())
             printMessageln(pl.getNickname());
     }
 
@@ -100,8 +195,13 @@ public class CLI extends AbsUI {
         lock.unlock();
     }
 
-    public void cmdManager(String command) {
+    public void commandAdder(String command) {
+        availableCmdList.put(command, cmdList.get(command));
+    }
 
+    public void commandManager(String command, String message, boolean outcome) {
+        printMessageln(("[").concat(command).concat("]: ").concat(message));
+        if (!outcome) availableCmdList.put(command, cmdList.get(command));
     }
 
     private void cmdExecutor(String command) throws InvalidInputException {
@@ -135,11 +235,23 @@ public class CLI extends AbsUI {
         }
     }
 
-    private void initializeCommandLine() {
-        cmdDescr = new HashMap<>();
-        availableCmdList = new HashMap<>();
+    private void initializeAvailableCmdList() {
+        availableCmdList.put(CHAT, () -> chat());
+        availableCmdList.put(TURN, () -> turnOrder());
+        //availableCmdList.put(INFO, () -> );
+    }
 
-        //Description HashMap
+    private void initializeCmdList() {
+        cmdList.put(FAMILY_MEMBER, () -> placeFamilyMember());
+        //cmdList.put(LEADER_CARD, () -> );
+        //cmdList.put(EXCOMMUNICATION, () -> );
+        //cmdList.put(CHOOSE_FAVOR, () -> );
+        //cmdList.put(CHOOSE_TOWER, () -> );
+        //cmdList.put(CHOOSE_PRODUCTION, () -> );
+        //cmdList.put(CHOOSE_HARVEST, () -> );
+    }
+
+    private void initializeCmdDescr() {
         cmdDescr.put(CHAT, CHAT_DESCR);
         cmdDescr.put(TURN, TURN_DESCR);
         cmdDescr.put(INFO, INFO_DESCR);
@@ -148,17 +260,22 @@ public class CLI extends AbsUI {
         cmdDescr.put(EXCOMMUNICATION, EXCOMMUNICATION_DESCR);
         cmdDescr.put(CHOOSE_FAVOR, CHOOSE_FAVOR_DESCR);
         cmdDescr.put(CHOOSE_TOWER,CHOOSE_TOWER_DESCR);
-        cmdDescr.put(CHOOSE_FLOOR, CHOOSE_FLOOR_DESCR);
         cmdDescr.put(CHOOSE_PRODUCTION, CHOOSE_PRODUCTION_DESCR);
+    }
 
-        //Command HashMap
-        availableCmdList.put(CHAT, () -> chat());
-        availableCmdList.put(TURN, () -> turnOrder());
-        availableCmdList.put(INFO, () -> personalInformation());
-
+    private void initializeCommandLine() {
+        cmdDescr = new HashMap<>();
+        availableCmdList = new HashMap<>();
+        cmdList = new HashMap<>();
+        //Populate Description HashMap
+        initializeCmdDescr();
+        //Populate Command HashMap
+        initializeCmdList();
+        //Populate Available Command HashMap
+        initializeAvailableCmdList();
         if(uiCallback.getIsMyTurn()) {
-            //availableCmdList.put(FAMILY_MEMBER, () -> );
-            //availableCmdList.put(LEADER_CARD, () -> );
+            commandAdder(FAMILY_MEMBER);
+            commandAdder(LEADER_CARD);
         }
     }
 
@@ -205,6 +322,21 @@ public class CLI extends AbsUI {
         }
     }
 
+    /**
+     * Print to stdout a chat message.
+     * @param sender the sender's username.
+     * @param message the chat message.
+     */
+    @Override
+    public void printChatMessage(String sender, String message) {
+        printMessageln("[CHAT]: message from "+sender+": "+message);
+    }
+
+    @Override
+    public void printGameMessage(String message) {
+        printMessageln("[GAME]: "+message);
+    }
+
     @Override
     public void printError(String errorMessage) {
         System.out.println(errorMessage);
@@ -242,7 +374,7 @@ public class CLI extends AbsUI {
         }
     }
 
-    public void printPlayer(Player player){
+    private void printPlayer(Player player){
         printPlayerCards(GREEN_COLOR, player);
         printPlayerCards(BLUE_COLOR, player);
         printPlayerCards(YELLOW_COLOR, player);

@@ -33,10 +33,8 @@ public class Game {
         this.players = new ArrayList<>();
         this.cardsDeck = new CardsDeck();
         this.availablePlayerColors = new ArrayList<>(PLAYER_COLORS);
-        this.dice = new HashMap<>();
         this.controllerCallback = controllerCallback;
         this.randomGenerator = new Random();
-        dice.put(NEUTRAL_COLOR, NEUTRAL_FM_STRENGTH);
     }
 
     /**
@@ -53,11 +51,6 @@ public class Game {
      * Link to the cards container
      */
     private CardsDeck cardsDeck;
-
-    /**
-     * The three dices, mapped by color: BLACK, WHITE, ORANGE, NEUTRAL (always 0)
-     */
-    private HashMap<String, Integer> dice;
 
     /**
      *
@@ -80,12 +73,11 @@ public class Game {
         return this.board.getExcommunications().get(this.board.getAge());
     }
 
-    /**
-     * This method rolls dices
-     */
-    public void rollDices(){
-        //For every dice, generates a random number between 1 and 6.
-        DICE_COLORS.forEach(color -> this.dice.replace(color, randomGenerator.nextInt(6)+1));
+    //TODO:implement leadercard effect here
+    public int getFmStrength(FamilyMember fm) {
+        if (fm.getDiceColor().equals(NEUTRAL_COLOR)) return NEUTRAL_FM_STRENGTH;
+        return this.board.getDice().get(fm.getDiceColor())+getPlayerFromColor(fm.getOwnerColor())
+                .getStrengths().getDiceBonus().get(fm.getDiceColor());
     }
 
     /**
@@ -93,7 +85,6 @@ public class Game {
      */
     public void setUpGame(Parser parsedGame) throws GameSetupException {
         getLog().info("[GAME SETUP BEGIN]");
-        DICE_COLORS.forEach(color -> this.dice.put(color, 0));
         int playersNumber = this.players.size();
         if (playersNumber < 2 || playersNumber > 5)
             throw new GameSetupException("Wrong player number on game setup");
@@ -164,7 +155,7 @@ public class Game {
         this.players.forEach(player ->
                 DICE_COLORS.forEach(color ->
                         player.addFamilyMember((new FamilyMember(color, player.getColor())))));
-        this.rollDices();
+        this.board.rollDices();
         getLog().info("[NEW_TURN_SETUP_END]");
     }
 
@@ -235,9 +226,8 @@ public class Game {
      * @param towerColor
      * @param floorNumber
      * @param fm the family member performing the action
-     * @param strength all the bonuses and maluses except the family member
      */
-    public boolean isTowerMoveAllowed(String towerColor, int floorNumber, FamilyMember fm, Strengths strength) {
+    public boolean isTowerMoveAllowed(String towerColor, int floorNumber, FamilyMember fm) {
         Floor destination = this.board.getTowers().get(towerColor).getFloor(floorNumber);
         if (destination.isOccupied()) return false;
         if (!destination.hasCard()) return false;
@@ -247,9 +237,9 @@ public class Game {
             if (slot != null && slot.getOwnerColor().equals(fm.getOwnerColor()) && !fm.getDiceColor().equals(NEUTRAL_COLOR))
                 return false;
         }
-        if(destination.getActionCost() >
-                this.dice.get(fm.getDiceColor()) +
-                        strength.getTowerStrength(towerColor))
+        if (destination.getActionCost() >
+                this.getFmStrength(fm) +
+                        getPlayerFromColor(fm.getOwnerColor()).getStrengths().getTowerStrength(towerColor))
             return false;
         return true;
     }
@@ -296,9 +286,9 @@ public class Game {
         return false;
     }
 
-    public boolean isCardAffordable(Card card, Player actor, String towerColor) {
+    public boolean isCardAffordable(Card card, Player actor, String towerColor, Assets optionalPickDiscount) {
         Assets cardCost = card.getCost().subtractToZero
-                (actor.getPickDiscount(towerColor));
+                (actor.getPickDiscount(towerColor).subtractToZero(optionalPickDiscount));
         return (actor.getResources().isGreaterOrEqual(cardCost));
     }
 
@@ -313,8 +303,9 @@ public class Game {
      * @param fm
      * @param servantsDeployed
      * @param useBp
+     * @return the picked card
      */
-    public void towerMove(String towerColor, int floorNumber, FamilyMember fm, int servantsDeployed, boolean useBp) {
+    public Card towerMove(String towerColor, int floorNumber, FamilyMember fm, int servantsDeployed, boolean useBp) {
         Player actor = this.getPlayerFromColor(fm.getOwnerColor());
         Floor destination = this.board.getTowers().get(towerColor).getFloor(floorNumber);
         Card card = destination.pullCard();
@@ -325,8 +316,25 @@ public class Game {
             actionCost.addCoins(COINS_TO_ENTER_OCCUPIED_TOWER);
         destination.setFamilyMemberSlot(actor.pullFamilyMember(fm.getDiceColor()));
         actionCost.subtractToZero(actor.getPickDiscount(towerColor));
+        giveAssetsToPlayer(destination.getInstantBonus(), actor);
         actor.getResources().subtract(actionCost);
         actor.addCard(card, towerColor);
+        return card;
+    }
+
+    public Card fastTowerMove(String towerColor, int floorNumber, int servantsDeployed, boolean useBp, Player actor,
+                              Assets optionalPickDiscount) {
+        Floor destination = this.board.getTowers().get(towerColor).getFloor(floorNumber);
+        Card card = destination.pullCard();
+        //Action cost is different whether the player wants to pay the card's cost or the purple's card bp cost.
+        Assets actionCost = (useBp) ? new Assets().addServants(((PurpleCard)card).getOptionalBpCost()) :
+                new Assets(card.getCost()).addServants(servantsDeployed);
+        if(this.isTowerOccupied(towerColor))
+            actionCost.addCoins(COINS_TO_ENTER_OCCUPIED_TOWER);
+        actionCost.subtractToZero(actor.getPickDiscount(towerColor).subtractToZero(optionalPickDiscount));
+        actor.getResources().subtract(actionCost);
+        actor.addCard(card, towerColor);
+        return card;
     }
 
     /**
@@ -343,7 +351,7 @@ public class Game {
             actionCost.addCoins(COINS_TO_ENTER_OCCUPIED_TOWER);
         else return false;
         Assets availableAssets = new Assets(pl.getResources()
-                .add(pl.getPickDiscount(towerColor).add(optionalPickDiscount)));
+                .add(pl.getPickDiscount(towerColor).add(optionalPickDiscount).add(destination.getInstantBonus())));
         if (actionCost.isGreaterOrEqual(availableAssets))
             return false;
         return true;
@@ -404,7 +412,7 @@ public class Game {
      * TODO: add excomm malus ? is it already in the player?
      */
     public int servantsForProductionAction(FamilyMember fm, int baseStr) {
-        int baseStrength = (fm == null) ? baseStr : this.dice.get(fm.getDiceColor());
+        int baseStrength = (fm == null) ? baseStr : this.getFmStrength(fm);
         int actionCost = (this.board.getHarvest().size() <= PRODUCTION_DEFAULTSPACE_SIZE)
                 ? PRODUCTION_DEFAULT_STR : PRODUCTION_STR_MALUS;
         int actionStr = baseStrength +
@@ -421,7 +429,7 @@ public class Game {
      * TODO: add excomm malus ? is it already in the player?
      */
     public int servantsForHarvestAction(FamilyMember fm, int baseStr) {
-        int baseStrength = (fm == null) ? baseStr : this.dice.get(fm.getDiceColor());
+        int baseStrength = (fm == null) ? baseStr : this.getFmStrength(fm);
         int actionCost = (this.board.getHarvest().size() <= HARVEST_DEFAULTSPACE_SIZE)
                 ? HARVEST_DEFAULT_STR : HARVEST_STR_MALUS;
         int actionStr = baseStrength +
@@ -439,7 +447,8 @@ public class Game {
      * @return
      */
     public int calcHarvestActionStr(FamilyMember fm, int servantsDeployed, int tmpActionStr) {
-        int baseStr = (fm == null) ? tmpActionStr : this.getDice().get(fm.getDiceColor());
+        int baseStr = (fm == null) ? tmpActionStr : this.getFmStrength(fm);
+
         return baseStr+servantsDeployed+getPlayerFromColor(fm.getOwnerColor()).getStrengths().getHarvestBonus();
     }
 
@@ -452,7 +461,8 @@ public class Game {
      * @return
      */
     public int calcProductionActionStr(FamilyMember fm, int servantsDeployed, int tmpActionStr) {
-        int baseStr = (fm == null) ? tmpActionStr : this.getDice().get(fm.getDiceColor());
+        int baseStr = (fm == null) ? tmpActionStr : this.getFmStrength(fm);
+        if (this.board.getProduction().size() <= PRODUCTION_DEFAULTSPACE_SIZE) baseStr -= PRODUCTION_STR_MALUS;
         return baseStr+servantsDeployed+getPlayerFromColor(fm.getOwnerColor()).getStrengths().getProductionBonus();
     }
 
@@ -508,7 +518,7 @@ public class Game {
      * @return
      */
     public int servantsForTowerAction(FamilyMember fm,String towerColor, int floor) {
-        int actionStr = dice.get(fm.getDiceColor())
+        int actionStr = this.getFmStrength(fm)
                 + this.getPlayerFromColor(fm.getOwnerColor()).getStrengths().getTowerStrength(towerColor);
         int actionCost = this.board.getTowers().get(towerColor).getFloor(floor).getActionCost();
         int servants = actionCost - actionStr;
@@ -524,7 +534,7 @@ public class Game {
     }
 
     public int servantsForMarketAction(FamilyMember fm) {
-        int actionStr = dice.get(fm.getDiceColor());
+        int actionStr = this.getFmStrength(fm);
         int servants = MARKET_ACTION_COST - actionStr;
         return (servants > 0) ? -servants : 0;
 
@@ -579,9 +589,5 @@ public class Game {
     }
     public ArrayList<FamilyMember> getProduction() {
         return this.board.getProduction();
-    }
-
-    public HashMap<String, Integer> getDice() {
-        return dice;
     }
 }

@@ -5,17 +5,9 @@ package it.polimi.ingsw.lim.ui;
  */
 public abstract class AbsUI {
 
-    AbsUI() {}
+    public abstract void commandAdder(String command);
 
-    public abstract void printBoard();
-
-    public abstract void printChatMessage(String sender, String message);
-
-    public abstract int sendServantsToServer(int minimum);
-
-   // public abstract void placeFamilyMember();
-
-    public abstract void cmdManager(String command);
+    public abstract void commandManager(String command, String message, boolean outcome);
 
     public abstract void waitForRequest();
 
@@ -25,6 +17,10 @@ public abstract class AbsUI {
      * This method is used for set the network protocol from the selected ui
      */
     public abstract String setNetworkSettings();
+
+    public abstract void printChatMessage(String sender, String message);
+
+    public abstract void printGameMessage(String message);
 
     public abstract void printError(String errorMessage);
 

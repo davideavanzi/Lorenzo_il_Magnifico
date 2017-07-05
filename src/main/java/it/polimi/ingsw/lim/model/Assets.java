@@ -97,6 +97,7 @@ public class Assets implements Serializable {
     }
 
     public Assets subtract(Assets operand) {
+        if (operand == null) return new Assets(this);
         Assets diff = new Assets();
         diff.coins = this.coins - operand.getCoins();
         diff.wood = this.wood - operand.getWood();
@@ -135,6 +136,7 @@ public class Assets implements Serializable {
      * @return the result
      */
     public Assets subtractToZero(Assets operand) {
+        if (operand == null) return new Assets(this);
         Assets diff = new Assets();
         diff.coins = (this.coins - operand.getCoins() >= 0) ? this.coins - operand.getCoins() : 0;
         diff.wood = (this.wood - operand.getWood() >= 0) ? this.wood - operand.getWood() : 0;

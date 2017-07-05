@@ -8,10 +8,11 @@ import it.polimi.ingsw.lim.ui.UIController;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.logging.Level;
 
 import static it.polimi.ingsw.lim.Log.getLog;
-import static it.polimi.ingsw.lim.network.ServerConstants.*;
+import static it.polimi.ingsw.lim.network.CommunicationConstants.*;
 
 /**
  * Created by nico.
@@ -79,14 +80,39 @@ public class SocketClient implements Runnable, ServerInterface {
      */
     private int getPort() {return port;}
 
+    @Override
+    public void excommunicationChoice(boolean choice) {
+        try {
+            sendObjToServer(EXCOMMUNICATION + SPLITTER + choice);
+        } catch (IOException e) {
+            getLog().log(Level.SEVERE, "[SOCKET]: Could not send excommunication's choice to server", e);
+        }
+    }
+
+    @Override
+    public void placeFM(String color, ArrayList<String> destination, String servants, String username) {
+        try {
+            if (destination.get(1) == null)
+                sendObjToServer(FAMILY_MEMBER + SPLITTER + color + SPLITTER + destination.get(0) + SPLITTER + servants);
+            else
+                sendObjToServer(FAMILY_MEMBER + SPLITTER + color + SPLITTER + destination.get(0) + SPLITTER + destination.get(1) + SPLITTER + servants);
+        } catch (IOException e) {
+            getLog().log(Level.SEVERE, "[SOCKET]: Could not send FamilyMember command to server", e);
+        }
+    }
+
     /**
      * Send chat message through the client's output stream.
      * @param sender the username of the sender
      * @param message the chat message
-     * @throws ClientNetworkException
      */
-    public void chatMessageToServer(String sender, String message) throws ClientNetworkException {
-        sendObjToServer(CHAT + SPLITTER + sender + SPLITTER + message);
+    @Override
+    public void sendChatMessageToServer(String sender, String message) {
+        try {
+            sendObjToServer(CHAT + SPLITTER + sender + SPLITTER + message);
+        } catch (IOException e) {
+            getLog().log(Level.SEVERE, "[SOCKET]: Could not send login information to server", e);
+        }
     }
 
     /**
@@ -95,7 +121,11 @@ public class SocketClient implements Runnable, ServerInterface {
      * @throws ClientNetworkException
      */
     public void login(String username, String password) {
-        sendObjToServer(LOGIN + SPLITTER + username + SPLITTER + password);
+        try {
+            sendObjToServer(LOGIN + SPLITTER + username + SPLITTER + password);
+        } catch (IOException e) {
+            getLog().log(Level.SEVERE, "[SOCKET]: Could not send login information to server", e);
+        }
     }
 
     /**
@@ -103,14 +133,10 @@ public class SocketClient implements Runnable, ServerInterface {
      * @param obj to send
      * @throws IOException
      */
-    private void sendObjToServer(Object obj) {
-        try {
-            objFromClient.writeObject(obj);
-            objFromClient.flush();
-            objFromClient.reset();
-        } catch (IOException e) {
-            getLog().log(Level.SEVERE, "[SOCKET]: Could not send object to server", e);
-        }
+    private void sendObjToServer(Object obj) throws IOException {
+        objFromClient.writeObject(obj);
+        objFromClient.flush();
+        objFromClient.reset();
     }
 
     /**
@@ -133,6 +159,7 @@ public class SocketClient implements Runnable, ServerInterface {
      * This method is used for connect to the socket server
      * @throws ClientNetworkException raised if the client could not connect to server
      */
+    @Override
     public void connect() throws ClientNetworkException {
         try {
             // socket, input and output stream
@@ -146,6 +173,7 @@ public class SocketClient implements Runnable, ServerInterface {
         }
     }
 
+    @Override
     public void run() {
         try {
             waitRequest();

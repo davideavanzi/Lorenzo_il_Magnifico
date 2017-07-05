@@ -1,13 +1,12 @@
 package it.polimi.ingsw.lim.controller;
 
+import it.polimi.ingsw.lim.exceptions.BadRequestException;
 import it.polimi.ingsw.lim.exceptions.GameSetupException;
 import it.polimi.ingsw.lim.model.*;
 import it.polimi.ingsw.lim.model.cards.*;
 import it.polimi.ingsw.lim.model.immediateEffects.*;
 import it.polimi.ingsw.lim.parser.Parser;
-import org.codehaus.jackson.annotate.JsonTypeInfo;
 
-import javax.jws.soap.SOAPBinding;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
@@ -32,6 +31,7 @@ public class GameController {
     private Strengths fastActionStr;
     private Assets optPickDiscount;
     private User fastActor;
+    private PendingTowerMove pendingTowerMove;
 
     public Game getGame(){
         return this.game;
@@ -47,8 +47,8 @@ public class GameController {
         contr.game.addPlayer("HELLONE");
         contr.game.addPlayer("HOLAONE");
 
-        contr.moveInTower(contr.game.getPlayer("CIAONE").pullFamilyMember(BLACK_COLOR), GREEN_COLOR,1,1);
-        System.out.println("SIZE FM: "+contr.game.getPlayer("CIAONE").getFamilyMember().size());
+        //contr.moveInTower(contr.game.getPlayer("CIAONE").pullFamilyMember(BLACK_COLOR), GREEN_COLOR,1,1);
+        //System.out.println("SIZE FM: "+contr.game.getPlayer("CIAONE").getFamilyMember().size());
         //contr.moveInHarvest(contr.game.getPlayer("CIAONE").pullFamilyMember(WHITE_COLOR));
         /*
         Game game = new Game();
@@ -162,49 +162,40 @@ public class GameController {
      * TODO: do we have to split the legality checks from the actual move?
      * TODO: handle max card number and battle points requirements for green card
      */
-    public void moveInTower (FamilyMember fm, String towerColor, int floor, int servantsDeployed) {
-        Strengths strength = new Strengths();
+    public void moveInTower (FamilyMember fm, String towerColor, int floor, int servantsDeployed)
+            throws BadRequestException {
         User actor = roomCallback.getUser(this.game.getPlayerFromColor(fm.getOwnerColor()).getNickname());
         getLog().log(Level.INFO, "Player "+actor.getPlayer().getNickname()+
                 " is trying to enter "+towerColor+" tower at floor number "+floor+" with the "
-                +fm.getDiceColor()+" family member of value "+this.game.getDice().get(fm.getDiceColor()));
-        if(this.game.isTowerMoveAllowed(towerColor, floor, fm, strength)){
+                +fm.getDiceColor()+" family member of value "+this.game.getFmStrength(fm));
+        if(this.game.isTowerMoveAllowed(towerColor, floor, fm)){
             if(this.game.isTowerMoveAffordable(towerColor, floor, fm)){
                 Card card = this.game.getTower(towerColor).getFloor(floor).getCard();
-                boolean cardAffordable = this.game.isCardAffordable(card, actor.getPlayer(), towerColor);
+                boolean cardAffordable = this.game.isCardAffordable(card, actor.getPlayer(), towerColor, null);
                 boolean purpleAffordable = card instanceof PurpleCard ||
                         this.game.isPurpleCardAffordable((PurpleCard)card, actor.getPlayer());
                 if (cardAffordable || purpleAffordable) {
                     boolean useBp = false;
                     int servantsForTowerAction = this.game.servantsForTowerAction(fm, towerColor, floor);
-
                     if (servantsDeployed < servantsForTowerAction || servantsDeployed >
                             actor.getPlayer().getResources().getServants()) {
                         actor.gameMessage("You did not set the right amount of servants to deploy to perform the action");
                         return;
                     }
-
                     if (cardAffordable && purpleAffordable) {
-                            //let the client choose and save the action state.
-                            useBp = actor.askForOptionalBpPick(((PurpleCard) card).getOptionalBpRequirement(),
-                                    ((PurpleCard) card).getOptionalBpCost());
-
-                        } else {
-                            //in this case only one of the two paying methods is available
-                            if (purpleAffordable) useBp = true;
-                            this.game.towerMove(towerColor, floor, fm, servantsDeployed, useBp);
-                        }
-                    //Activate before all resources bonus, then actions.
-                    card.getImmediateEffects().stream().filter(ie -> ie instanceof AssetsEffect
-                            || ie instanceof AssetsMultipliedEffect || ie instanceof CardMultipliedEffect
-                            || ie instanceof CouncilFavorsEffect)
-                            .forEach(ie -> EffectHandler.activateImmediateEffect(ie, actor));
-                    card.getImmediateEffects().stream().filter(ie -> ie instanceof ActionEffect)
-                            .forEach(ie -> EffectHandler.activateImmediateEffect(ie, actor));
-                    if (card instanceof BlueCard) CardHandler.activateBlueCard((BlueCard)card, actor.getPlayer());
-                    roomCallback.broadcastMessage
-                            ("Player "+actor.getUsername()+" has picked a card from the "+towerColor+" tower");
-                    roomCallback.fmPlaced();
+                        //let the client choose and save the action state.
+                        this.pendingTowerMove = new PendingTowerMove(towerColor, floor, fm, servantsDeployed, actor);
+                        actor.askForOptionalBpPick(((PurpleCard) card).getOptionalBpRequirement(),
+                                ((PurpleCard) card).getOptionalBpCost());
+                    } else {
+                        //in this case only one of the two paying methods is available
+                        if (purpleAffordable) useBp = true;
+                        this.game.towerMove(towerColor, floor, fm, servantsDeployed, useBp);
+                        activatePickedCard(card, actor);
+                        roomCallback.broadcastMessage
+                                ("Player "+actor.getUsername()+" has picked a card from the "+towerColor+" tower");
+                        roomCallback.fmPlaced();
+                    }
                 } else {
                     getLog().log(Level.INFO, "But the card is not affordable");
                 }
@@ -217,18 +208,47 @@ public class GameController {
     }
 
     /**
+     * This method continues a tower move interrupted to ask the actor whether he wanted to pay the ordinary cost or
+     * with his battle points
+     * @param useBp the decision of the user, it's true if the he wants to pay in battle points
+     */
+    public void confirmTowerMove(boolean useBp){
+        Card card = this.game.towerMove(pendingTowerMove.tower,
+                pendingTowerMove.floor,
+                pendingTowerMove.fm,
+                pendingTowerMove.servantsDeployed, useBp);
+        activatePickedCard(card, pendingTowerMove.actor);
+        roomCallback.broadcastMessage
+                ("Player "+pendingTowerMove.actor.getUsername()+" has picked a card from the "+pendingTowerMove.tower+" tower");
+        roomCallback.fmPlaced();
+    }
+
+    public void activatePickedCard(Card card, User actor){
+        //Activate before all resources bonus, then actions.
+        card.getImmediateEffects().stream().filter(ie -> ie instanceof AssetsEffect
+                || ie instanceof AssetsMultipliedEffect || ie instanceof CardMultipliedEffect
+                || ie instanceof CouncilFavorsEffect)
+                .forEach(ie -> EffectHandler.activateImmediateEffect(ie, actor));
+        card.getImmediateEffects().stream().filter(ie -> ie instanceof ActionEffect)
+                .forEach(ie -> EffectHandler.activateImmediateEffect(ie, actor));
+        if (card instanceof BlueCard) CardHandler.activateBlueCard((BlueCard)card, actor.getPlayer());
+    }
+
+    /**
      * This method performs the actual harvest move.
      * It does not require a reference to the remote user as the harvest has not costs to choose.
      * @param fm the family member deployed for the action
      */
-    public void moveInHarvest (FamilyMember fm, int servantsDeployed) {
+    public void moveInHarvest (FamilyMember fm, int servantsDeployed) throws BadRequestException {
         if(this.game.isHarvestMoveAllowed(fm)){ //If
             Player actor = this.game.getPlayerFromColor(fm.getOwnerColor());
             int servantsForHarvestAction = this.game.servantsForHarvestAction(fm, 0);
             this.game.giveAssetsToPlayer(actor.getDefaultHarvestBonus(), actor);
-
             if (servantsDeployed < servantsForHarvestAction || //TODO: do better
-                    servantsDeployed > this.game.getPlayerFromColor(fm.getOwnerColor()).getResources().getServants()) return;
+                    servantsDeployed > this.game.getPlayerFromColor(fm.getOwnerColor()).getResources().getServants()) {
+
+                return;
+            }
             this.game.harvestMove(fm);
             int actionStrength = game.calcHarvestActionStr(fm, servantsDeployed, 0);
             for (Card card: game.getPlayerFromColor(fm.getOwnerColor()).getCardsOfColor(GREEN_COLOR)) {
@@ -242,7 +262,8 @@ public class GameController {
         }
     }
 
-    public void moveInProduction (FamilyMember fm, User actor, int servantsDeployed) {
+    public void moveInProduction (FamilyMember fm, int servantsDeployed) throws BadRequestException {
+        User actor = roomCallback.getPlayingUser(); //only the playing user can perform the action
         if(this.game.isProductionMoveAllowed(fm)){
             int servantsForProductionAction = this.game.servantsForProductionAction(fm, 0);
 
@@ -257,7 +278,7 @@ public class GameController {
                     CardHandler.activateYellowCard(activeCard, actor, this);
             }
             if (this.currentProductionOptions.size() == 0) {
-                //don't ask user, complete directly production skipping excomm malus
+                //don't ask user, complete directly production skipping excomm malus (already given)
                 actor.getPlayer().setResources(actor.getPlayer().getResources().add(currentProductionAccumulator));
             } else {
                 actor.askProductionOptions(currentProductionOptions);
@@ -265,11 +286,15 @@ public class GameController {
         }
     }
 
-    public void moveInMarket(FamilyMember fm, User actor) {
+    public void moveInMarket(FamilyMember fm, int marketSlot, int servantsDeployed) throws BadRequestException {
 
     }
 
-    public void confirmProduction(ArrayList<Integer> choices) {
+    public void moveInCouncil(FamilyMember fm, int servantsDeployed) throws BadRequestException {
+
+    }
+
+    public void confirmProduction(ArrayList<Integer> choices) throws BadRequestException {
         if (choices.size() != currentProductionOptions.size()) {
             getLog().log(Level.SEVERE, "Wrong amount of player production choices!");
             return;
@@ -332,7 +357,7 @@ public class GameController {
     }
 
 
-    public void performFastHarvest(int servantsDeployed) {
+    public void performFastHarvest(int servantsDeployed) throws BadRequestException {
         int servantsForHarvestAction = this.game.servantsForHarvestAction(null, fastActionStr.getHarvestBonus());
         if (servantsForHarvestAction > fastActor.getPlayer().getResources().getServants() ||
                 servantsDeployed > fastActor.getPlayer().getResources().getServants() ||
@@ -350,7 +375,7 @@ public class GameController {
     }
 
 
-    public void performFastProduction(int servantsDeployed, User actor) {
+    public void performFastProduction(int servantsDeployed, User actor) throws BadRequestException {
         int servantsForProductionAction = this.game.servantsForProductionAction(null, fastActionStr.getHarvestBonus());
         if (servantsForProductionAction > fastActor.getPlayer().getResources().getServants() ||
                 servantsDeployed > fastActor.getPlayer().getResources().getServants() ||
@@ -382,7 +407,8 @@ public class GameController {
      * @param
      * @param actor
      */
-    public void performFastTowerMove(int servantsDeployed, String towerColor, int floor, User actor) {
+    public void performFastTowerMove(int servantsDeployed, String towerColor, int floor, User actor)
+            throws BadRequestException {
         int servantsForTowerAction = this.game.servantsForFastTowerAction(fastActionStr
                 .getTowerStrength(towerColor), towerColor, floor, actor.getPlayer());
         if (servantsForTowerAction > fastActor.getPlayer().getResources().getServants() ||
@@ -396,16 +422,28 @@ public class GameController {
             actor.gameError("Fast action not valid");
             return;
         }
-
-        Card pickedCard = this.game.getTower(towerColor).getFloor(floor).pullCard();
-        actor.getPlayer().addCard(pickedCard, towerColor);
-        pickedCard.getImmediateEffects().stream().filter(ie -> ie instanceof AssetsEffect
-                || ie instanceof AssetsMultipliedEffect || ie instanceof CardMultipliedEffect
-                || ie instanceof CouncilFavorsEffect)
-                .forEach(ie -> EffectHandler.activateImmediateEffect(ie, actor));
-        pickedCard.getImmediateEffects().stream().filter(ie -> ie instanceof ActionEffect)
-                .forEach(ie -> EffectHandler.activateImmediateEffect(ie, actor));
-        if (pickedCard instanceof BlueCard) CardHandler.activateBlueCard((BlueCard)pickedCard, actor.getPlayer());
+        Card card = this.game.getTower(towerColor).getFloor(floor).getCard();
+        boolean cardAffordable = this.game.isCardAffordable(card, actor.getPlayer(), towerColor, optPickDiscount);
+        boolean purpleAffordable = card instanceof PurpleCard ||
+                this.game.isPurpleCardAffordable((PurpleCard)card, actor.getPlayer());
+        if (cardAffordable || purpleAffordable) {
+            boolean useBp = false;
+            if (cardAffordable && purpleAffordable) {
+                //let the client choose and save the action state.
+                this.pendingTowerMove = new PendingTowerMove(towerColor, floor, servantsDeployed, actor);
+                actor.askForOptionalBpPick(((PurpleCard) card).getOptionalBpRequirement(),
+                        ((PurpleCard) card).getOptionalBpCost());
+            } else {
+                //in this case only one of the two paying methods is available
+                if (purpleAffordable) useBp = true;
+                this.game.fastTowerMove(towerColor, floor, servantsDeployed, useBp, actor.getPlayer(), optPickDiscount);
+                activatePickedCard(card, actor);
+                roomCallback.broadcastMessage
+                        ("Player "+actor.getUsername()+" has picked a card from the "+towerColor+" tower");
+            }
+        } else {
+            getLog().log(Level.INFO, "The card accessed through fast action is not affordable");
+        }
     }
 
     /**
@@ -433,5 +471,28 @@ public class GameController {
     //TODO: do we need it?
     public Room getRoomCallback() {
         return roomCallback;
+    }
+
+    private class PendingTowerMove {
+        String tower;
+        int floor;
+        FamilyMember fm;
+        int servantsDeployed;
+        User actor;
+
+        PendingTowerMove(String tower, int floor, FamilyMember fm, int servantsDeployed, User actor) {
+            this.tower = tower;
+            this.floor = floor;
+            this.fm = fm;
+            this.servantsDeployed = servantsDeployed;
+            this.actor = actor;
+        }
+
+        PendingTowerMove(String tower, int floor, int servantsDeployed, User actor) {
+            this.tower = tower;
+            this.floor = floor;
+            this.servantsDeployed = servantsDeployed;
+            this.actor = actor;
+        }
     }
 }

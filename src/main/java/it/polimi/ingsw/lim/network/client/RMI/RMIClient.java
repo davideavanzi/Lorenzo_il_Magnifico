@@ -15,6 +15,8 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
+import static it.polimi.ingsw.lim.network.CommunicationConstants.*;
+
 /**
  * Created by nico.
  */
@@ -67,6 +69,58 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
         uiCallback.setIsMyTurn(state);
     }
 
+    @Override
+    public void commandValidator(String command, String message, boolean outcome) throws RemoteException {
+        uiCallback.getClientUI().commandManager(command, message, outcome);
+    }
+
+    @Override
+    public void excommunicationChoice(boolean choice) throws ClientNetworkException {
+        try {
+            rmiServer.excommunicationChoice(choice);
+        } catch (RemoteException e) {
+            throw new ClientNetworkException("[RMI]: Could not send message to server", e);
+        }
+    }
+
+    @Override
+    public void placeFM(String fmColor, ArrayList<String> destination, String servants, String username) throws ClientNetworkException {
+        int destArgs = Integer.parseInt(destination.get(1)); //floor's number or market slot
+        int servantsNum = Integer.parseInt(servants);
+        if (destination.get(0).contains(TOWER)) {
+            String twrColor = destination.get(0).replace(" Tower", "");
+            try {
+                rmiServer.moveInTower(fmColor, twrColor, destArgs, servantsNum, username, this);
+            } catch (RemoteException e) {
+                throw new ClientNetworkException("[RMI]: Could not send place family member command to server", e);
+            }
+        } else if (destination.get(0).equalsIgnoreCase(MARKET)) {
+            try {
+                rmiServer.moveInMarket(fmColor, destArgs, servantsNum, username, this);
+            } catch (RemoteException e) {
+                throw new ClientNetworkException("[RMI]: Could not send move to market command to server", e);
+            }
+        } else if (destination.get(0).equalsIgnoreCase(PRODUCTION)) {
+            try {
+                rmiServer.moveInProduction(fmColor, servantsNum, username, this) ;
+            } catch (RemoteException e) {
+                throw new ClientNetworkException("[RMI]: Could not send production command to server", e);
+            }
+        } else if (destination.get(0).equalsIgnoreCase(HARVEST)) {
+            try {
+                rmiServer.moveInHarvest(fmColor, servantsNum, username, this);
+            } catch (RemoteException e) {
+                throw new ClientNetworkException("[RMI]: Could not send harvest command to server", e);
+            }
+        } else if (destination.get(0).equalsIgnoreCase(COUNCIL)) {
+            try {
+                rmiServer.moveInCouncil(fmColor, servantsNum, username, this);
+            } catch (RemoteException e) {
+                throw new ClientNetworkException("[RMI]: Could not send move to council command to server", e);
+            }
+        }
+    }
+
     /**
      * Send a chat message to server.
      * @param sender the username of the sender.
@@ -74,11 +128,11 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
      * @throws ClientNetworkException
      */
     @Override
-    public void chatMessageToServer(String sender, String message) throws ClientNetworkException {
+    public void sendChatMessageToServer(String sender, String message) throws ClientNetworkException {
         try {
-            rmiServer.chatMessageFromClient(sender, message);
+            rmiServer.receiveChatMessageFromClient(sender, message);
         } catch (RemoteException e) {
-            throw new ClientNetworkException("[RMI]: Could not send a message to the server", e);
+            throw new ClientNetworkException("[RMI]: Could not send chat message to server", e);
         }
     }
 
@@ -88,18 +142,18 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
      * @param message the chat message.
      */
     @Override
-    public void chatMessageFromServer(String sender, String message) {
+    public void receiveChatMessageFromServer(String sender, String message) {
         uiCallback.getClientUI().printChatMessage(sender, message);
     }
 
     @Override
-    public int askUserServants(int minimum) throws RemoteException {
-        return uiCallback.getClientUI().sendServantsToServer(minimum);
+    public void receiveGameMessageFromServer(String message) throws RemoteException {
+        uiCallback.getClientUI().printGameMessage(message);
     }
 
     @Override
-    public void startListen() throws RemoteException {
-        uiCallback.startWaitRequest();
+    public void startListenToInput() throws RemoteException {
+        uiCallback.getClientUI().waitForRequest();
     }
 
     @Override

@@ -14,13 +14,17 @@ import java.util.ArrayList;
  */
 public interface ServerInterface {
 
+    void excommunicationChoice(boolean choice)throws ClientNetworkException;
+
+    void placeFM(String color, ArrayList<String> destination, String servants, String username) throws ClientNetworkException;
+
     /**
      * Send a chat message to the server.
      * @param sender the username of the sender
      * @param message the chat message
      * @throws ClientNetworkException
      */
-    void chatMessageToServer(String sender, String message) throws ClientNetworkException;
+    void sendChatMessageToServer(String sender, String message) throws ClientNetworkException;
 
     /**
      * Calling this method the client will try to connect to the server.
