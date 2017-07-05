@@ -80,6 +80,16 @@ public class SocketClient implements Runnable, ServerInterface {
      */
     private int getPort() {return port;}
 
+    @Override
+    public void excommunicationChoice(boolean choice) {
+        try {
+            sendObjToServer(EXCOMMUNICATION + SPLITTER + choice);
+        } catch (IOException e) {
+            getLog().log(Level.SEVERE, "[SOCKET]: Could not send excommunication's choice to server", e);
+        }
+    }
+
+    @Override
     public void placeFM(String color, ArrayList<String> destination, String servants, String username) {
         try {
             if (destination.get(1) == null)
@@ -96,6 +106,7 @@ public class SocketClient implements Runnable, ServerInterface {
      * @param sender the username of the sender
      * @param message the chat message
      */
+    @Override
     public void sendChatMessageToServer(String sender, String message) {
         try {
             sendObjToServer(CHAT + SPLITTER + sender + SPLITTER + message);
@@ -148,6 +159,7 @@ public class SocketClient implements Runnable, ServerInterface {
      * This method is used for connect to the socket server
      * @throws ClientNetworkException raised if the client could not connect to server
      */
+    @Override
     public void connect() throws ClientNetworkException {
         try {
             // socket, input and output stream
@@ -161,6 +173,7 @@ public class SocketClient implements Runnable, ServerInterface {
         }
     }
 
+    @Override
     public void run() {
         try {
             waitRequest();

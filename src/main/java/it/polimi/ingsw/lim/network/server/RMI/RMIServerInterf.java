@@ -9,6 +9,8 @@ import java.rmi.*;
  */
 public interface RMIServerInterf extends Remote {
 
+    void excommunicationChoice(boolean choice) throws RemoteException;
+
     void moveInCouncil(String fmColor, int servants, String username, RMIClientInterf rci) throws RemoteException;
 
     void moveInHarvest(String fmColor, int servants, String username, RMIClientInterf rci) throws RemoteException;

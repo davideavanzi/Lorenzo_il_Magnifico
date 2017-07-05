@@ -56,6 +56,14 @@ class ServerCommandHandler {
                 uiCallback.getClientUI().printChatMessage(command.get(1), command.get(2));
             } else if (commandIdentifier.equalsIgnoreCase(GAME_MSG)) {
                 uiCallback.getClientUI().printGameMessage(command.get(1));
+            } else if (commandIdentifier.equalsIgnoreCase(EXCOMMUNICATION)) {
+                uiCallback.getClientUI().commandAdder(command.get(0));
+            } else if (commandIdentifier.equalsIgnoreCase(CHOOSE_FAVOR)) {
+                uiCallback.getClientUI().commandAdder(command.get(0));
+            } else if (commandIdentifier.equalsIgnoreCase(CHOOSE_PRODUCTION)) {
+                uiCallback.getClientUI().commandAdder(command.get(0));
+            } else if (commandIdentifier.equalsIgnoreCase(CHOOSE_TOWER)) {
+                uiCallback.getClientUI().commandAdder(command.get(0));
             } else if (commandIdentifier.equalsIgnoreCase(CMD_VALIDATOR)) {
                 uiCallback.getClientUI().commandManager(command.get(1), command.get(2), Boolean.valueOf(command.get(3)));
             }

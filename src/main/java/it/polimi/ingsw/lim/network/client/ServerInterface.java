@@ -14,6 +14,8 @@ import java.util.ArrayList;
  */
 public interface ServerInterface {
 
+    void excommunicationChoice(boolean choice)throws ClientNetworkException;
+
     void placeFM(String color, ArrayList<String> destination, String servants, String username) throws ClientNetworkException;
 
     /**

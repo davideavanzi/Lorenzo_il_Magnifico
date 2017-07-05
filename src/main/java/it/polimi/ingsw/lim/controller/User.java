@@ -137,11 +137,6 @@ public abstract class User {
      * @return an integer between 0 and the possibleFavors size
      */
     public abstract void chooseFavor(List<Assets> possibleFavors);
-
-    /**
-     * This method indicate to the user the outcome of the command.
-     */
-    public abstract void isLegalCommand(String message, String command, boolean outcome);
     
     /**
      * Send chat message to client.

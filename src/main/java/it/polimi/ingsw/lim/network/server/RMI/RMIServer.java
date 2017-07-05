@@ -40,6 +40,11 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
     }
 
     @Override
+    public void excommunicationChoice(boolean choice) throws RemoteException {
+        //todo chiamare metodo su gameController
+    }
+
+    @Override
     public void moveInCouncil(String fmColor, int servants, String username, RMIClientInterf rmiClient) throws RemoteException {
         GameController gc = MainServer.getUserFromUsername(username).getRoom().getGameController();
         FamilyMember fm = MainServer.getUserFromUsername(username).getPlayer().getFamilyMember(fmColor);

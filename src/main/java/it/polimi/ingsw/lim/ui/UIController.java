@@ -133,6 +133,14 @@ public class UIController {
         return getLocalPlayers().stream().filter(pl -> pl.getNickname().equals(username)).findFirst().orElse(null);
     }
 
+    void sendExcommunicationChoice(boolean choice) {
+        try {
+            clientProtocol.excommunicationChoice(choice);
+        } catch (ClientNetworkException e) {
+            clientUI.printError(e.getMessage());
+        }
+    }
+
     void sendPlaceFM(String color, ArrayList<String> destination, String servants) {
         try {
             clientProtocol.placeFM(color, destination, servants, username);

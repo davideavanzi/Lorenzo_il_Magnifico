@@ -23,6 +23,9 @@ public class CommunicationConstants {
     public static final String FAMILY_MEMBER_OK = "Family member has been correctly place";
 
     public static final String EXCOMMUNICATION = "EXCOMMUNICATION";
+    public static final String CHOOSE_FAVOR = "CHOOSE_FAVOR";
+    public static final String CHOOSE_TOWER = "CHOOSE_TOWER";
+    public static final String CHOOSE_PRODUCTION = "CHOOSE_PRODUCTION";
 
     public static final String TOWER = "Tower";
     public static final String PRODUCTION = "Production";

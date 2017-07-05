@@ -5,7 +5,7 @@ package it.polimi.ingsw.lim.ui;
  */
 public abstract class AbsUI {
 
-    public abstract void printBoard();
+    public abstract void commandAdder(String command);
 
     public abstract void commandManager(String command, String message, boolean outcome);
 

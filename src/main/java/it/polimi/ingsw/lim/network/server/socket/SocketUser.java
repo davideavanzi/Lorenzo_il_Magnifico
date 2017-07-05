@@ -64,12 +64,6 @@ public class SocketUser extends User {
 
     }
 
-
-    @Override
-    public void isLegalCommand(String command, String message, boolean outcome) {
-        this.sch.commandValidator(command, message, outcome);
-    }
-
     /**
      * Send a chat messagge to the client.
      * @param sender

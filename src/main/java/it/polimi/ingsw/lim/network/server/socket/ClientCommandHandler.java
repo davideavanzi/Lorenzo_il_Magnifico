@@ -32,7 +32,16 @@ class ClientCommandHandler {
     /**
      * The client's command is stored here.
      */
-    ArrayList<String> command;
+    private ArrayList<String> command;
+
+    /**
+     * The controller of the game.
+     */
+    GameController gameController;
+
+    public ClientCommandHandler() {
+        gameController = handlerCallback.getUser().getRoom().getGameController();
+    }
 
     /**
      * Parse the input object for calling the corrispondent method.
@@ -43,10 +52,12 @@ class ClientCommandHandler {
         if(obj instanceof String) {
             command = new ArrayList<>(Arrays.asList(((String) obj).split(SPLITTER_REGEX)));
             String commandIdentifier = command.get(0);
-            if(commandIdentifier.equals(FAMILY_MEMBER)) {
-                placeFMcmd();
-            } else if (commandIdentifier.equals(CHAT)) {
+            if (commandIdentifier.equals(CHAT)) {
                 handlerCallback.getUser().getRoom().chatMessageToRoom(command.get(1), command.get(2));
+            } else if (commandIdentifier.equals(FAMILY_MEMBER)) {
+                placeFMcmd();
+            } else if (commandIdentifier.equals(EXCOMMUNICATION)) {
+                //todo chiamare metodo su gameController
             } else {
                 getLog().log(Level.SEVERE, () ->"[COMMAND_HANDLER]: Invalid message indentifier: "+commandIdentifier);
             }
@@ -54,23 +65,22 @@ class ClientCommandHandler {
     }
 
     private void placeFMcmd() {
-        GameController gc = handlerCallback.getUser().getRoom().getGameController();
         FamilyMember fm = handlerCallback.getUser().getPlayer().getFamilyMember(command.get(1));
         int servants = Integer.parseInt(command.get(4));
         try {
             if (command.get(2).contains(TOWER)) {
                 String twrColor = command.get(2).replace(" Tower", "");
                 int floor = Integer.parseInt(command.get(3));
-                gc.moveInTower(fm, twrColor, floor, servants);
+                gameController.moveInTower(fm, twrColor, floor, servants);
             } else if (command.get(2).equalsIgnoreCase(MARKET)) {
                 int marketSlot = Integer.parseInt(command.get(3));
-                gc.moveInMarket(fm, marketSlot, servants);
+                gameController.moveInMarket(fm, marketSlot, servants);
             } else if (command.get(2).equalsIgnoreCase(PRODUCTION)) {
-                gc.moveInProduction(fm, servants);
+                gameController.moveInProduction(fm, servants);
             } else if (command.get(2).equalsIgnoreCase(HARVEST)) {
-                gc.moveInHarvest(fm, servants);
+                gameController.moveInHarvest(fm, servants);
             } else if (command.get(2).equalsIgnoreCase(COUNCIL)) {
-                gc.moveInCouncil(fm, servants);
+                gameController.moveInCouncil(fm, servants);
             }
             handlerCallback.commandValidator(FAMILY_MEMBER, FAMILY_MEMBER_OK , true);
         } catch (BadRequestException e) {

@@ -50,6 +50,21 @@ public class CLI extends AbsUI {
         initializeCommandLine();
     }
 
+    private void askForExcommunication() {
+        printMessageln("Do you want to suffer of the excommunication?");
+        printMessageln("1) yes\n2) no");
+        do {
+            inputNum = userInput.nextInt();
+        } while (!inputNum.equals(1) && !inputNum.equals(2));
+        uiCallback.sendExcommunicationChoice(inputNum.equals(1));
+        availableCmdList.remove(EXCOMMUNICATION);
+        lock.unlock();
+    }
+
+    private void leaderCardManager() {
+
+    }
+
     private String fmServant() {
         printMessageln("How many servants would you like to put here?");
         do {
@@ -82,7 +97,7 @@ public class CLI extends AbsUI {
                 } while (inputNum-1 >= 0 && inputNum-1 < 4);
                 destination.add(inputNum.toString());
             } else if (inputNum == 8) { //If market, select the slot
-                printMessageln("Please select the market slot: (1/2) ");
+                printMessage("Please select the market slot: (1/2) ");
                 do {
                     inputNum = userInput.nextInt();
                 } while (inputNum-1 >= 0 && inputNum-1 < 2);
@@ -106,7 +121,7 @@ public class CLI extends AbsUI {
                 } while (inputNum-1 >= 0 && inputNum-1 < 4);
                 destination.add(inputNum.toString());
             } else if (inputNum == 8) { //If market, select the slot
-                printMessageln("Please select the market slot: (1/2/3/4) ");
+                printMessage("Please select the market slot: (1/2/3/4) ");
                 do {
                     inputNum = userInput.nextInt();
                 } while (inputNum-1 >= 0 && inputNum-1 < 4);
@@ -130,7 +145,7 @@ public class CLI extends AbsUI {
                 } while (inputNum-1 >= 0 && inputNum-1 < 5);
                 destination.add(inputNum.toString());
             } else if (inputNum == 9) { //If market, select the slot
-                printMessageln("Please select the market slot: (1/2/3/4/5) ");
+                printMessage("Please select the market slot: (1/2/3/4/5) ");
                 do {
                     inputNum = userInput.nextInt();
                 } while (inputNum-1 >= 0 && inputNum-1 < 5);
@@ -180,6 +195,10 @@ public class CLI extends AbsUI {
         lock.unlock();
     }
 
+    public void commandAdder(String command) {
+        availableCmdList.put(command, cmdList.get(command));
+    }
+
     public void commandManager(String command, String message, boolean outcome) {
         printMessageln(("[").concat(command).concat("]: ").concat(message));
         if (!outcome) availableCmdList.put(command, cmdList.get(command));
@@ -214,34 +233,6 @@ public class CLI extends AbsUI {
             }
             lock.lock();
         }
-    }
-
-    private void addChooseHarvestCmd() {
-        //availableCmdList.put(CHOOSE_HARVEST, () -> );
-    }
-
-    private void addChooseProductionCmd() {
-        //availableCmdList.put(CHOOSE_PRODUCTION, () -> );
-    }
-
-    private void addChooseTowerCmd() {
-        //availableCmdList.put(CHOOSE_TOWER, () -> );
-    }
-
-    private void addChooseFavorCmd() {
-        //availableCmdList.put(CHOOSE_FAVOR, () -> );
-    }
-
-    private void addExcommunicationCmd() {
-        //availableCmdList.put(EXCOMMUNICATION, () -> );
-    }
-
-    private void addLeaderCardCmd() {
-        //availableCmdList.put(LEADER_CARD, () -> );
-    }
-
-    private void addFamilyMemberCmd() {
-        availableCmdList.put(FAMILY_MEMBER, () -> placeFamilyMember());
     }
 
     private void initializeAvailableCmdList() {
@@ -283,8 +274,8 @@ public class CLI extends AbsUI {
         //Populate Available Command HashMap
         initializeAvailableCmdList();
         if(uiCallback.getIsMyTurn()) {
-            addFamilyMemberCmd();
-            addLeaderCardCmd();
+            commandAdder(FAMILY_MEMBER);
+            commandAdder(LEADER_CARD);
         }
     }
 

@@ -68,16 +68,6 @@ public class RMIUser extends User {
     @Override
     public void chooseFavor(List<Assets> possibleFavors) {}
 
-
-    @Override
-    public void isLegalCommand(String command, String message, boolean outcome) {
-        try {
-            RMIServer.commandValidator(command, message, outcome, this.rci);
-        } catch (RemoteException e) {
-            getLog().log(Level.SEVERE, "[RMI]: Remote error sending chat message to client.");
-        }
-    }
-
     @Override
     public void sendChatMessage(String sender, String message) {
         try {

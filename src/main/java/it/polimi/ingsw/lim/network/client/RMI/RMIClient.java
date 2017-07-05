@@ -75,6 +75,15 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
     }
 
     @Override
+    public void excommunicationChoice(boolean choice) throws ClientNetworkException {
+        try {
+            rmiServer.excommunicationChoice(choice);
+        } catch (RemoteException e) {
+            throw new ClientNetworkException("[RMI]: Could not send message to server", e);
+        }
+    }
+
+    @Override
     public void placeFM(String fmColor, ArrayList<String> destination, String servants, String username) throws ClientNetworkException {
         int destArgs = Integer.parseInt(destination.get(1)); //floor's number or market slot
         int servantsNum = Integer.parseInt(servants);
@@ -123,7 +132,7 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
         try {
             rmiServer.receiveChatMessageFromClient(sender, message);
         } catch (RemoteException e) {
-            throw new ClientNetworkException("[RMI]: Could not send a message to server", e);
+            throw new ClientNetworkException("[RMI]: Could not send chat message to server", e);
         }
     }
 
