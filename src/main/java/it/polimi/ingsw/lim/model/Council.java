@@ -15,6 +15,10 @@ public class Council implements Serializable {
     /**
      * Constructor
      */
+    public Council(){
+        this.slots = new ArrayList<>();
+    }
+
     public Council(int favorsAmount, Assets councilBonus) {
         getLog().info("Creating council istance");
         this.favorsAmount = favorsAmount;
@@ -43,6 +47,17 @@ public class Council implements Serializable {
      */
     private ArrayList<Assets> favorBonuses;
 
+    public void setSlots(ArrayList<FamilyMember> slots){
+        this.slots = slots;
+    }
+
+    public void setFavorsAmount (int favorsAmount){
+        this.favorsAmount = favorsAmount;
+    }
+
+    private void setCouncilBonus (Assets councilBonus){
+        this.councilBonus = councilBonus;
+    }
 
     public int getFavorsAmount(){
         return this.favorsAmount;

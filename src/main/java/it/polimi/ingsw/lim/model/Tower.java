@@ -2,6 +2,7 @@ package it.polimi.ingsw.lim.model;
 
 
 import it.polimi.ingsw.lim.model.cards.Card;
+import org.codehaus.jackson.annotate.JsonSetter;
 
 import java.io.Serializable;
 import java.util.*;
@@ -12,6 +13,15 @@ import static it.polimi.ingsw.lim.Settings.*;
  * TODO: The tower itself doesn't know it's color, only the game knows. Is this right?
  */
 public class Tower implements Serializable {
+
+    public Tower(){
+        this.floors = new Floor[TOWER_HEIGHT];
+    }
+
+    @JsonSetter
+    public void setFloors(Floor[] floors){
+        this.floors = floors;
+    }
 
     /**
      * Default constructor
@@ -52,6 +62,10 @@ public class Tower implements Serializable {
 
     public Floor getFloor(int number) {
         return this.floors[number-1];
+    }
+
+    public Floor[] getFloors(){
+        return this.floors;
     }
 
 }

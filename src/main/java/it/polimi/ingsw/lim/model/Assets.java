@@ -1,5 +1,7 @@
 package it.polimi.ingsw.lim.model;
 import it.polimi.ingsw.lim.Log;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
 import static it.polimi.ingsw.lim.Utils.*;
 
 import java.io.Serializable;
@@ -9,6 +11,9 @@ import java.util.*;
  * This class acts as a container for every kind of resource that a player can have. Also all kind of bonuses and costs
  * in terms of resources are represented with objects of this class.
  */
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+
 public class Assets implements Serializable {
 
     /**

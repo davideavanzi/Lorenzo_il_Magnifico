@@ -7,6 +7,10 @@ import it.polimi.ingsw.lim.model.Assets;
  */
 public class EndGameExcommunication extends Excommunication {
 
+    public EndGameExcommunication (){
+        super();
+    }
+
     /**
      * Default constructor
      */
@@ -44,6 +48,19 @@ public class EndGameExcommunication extends Excommunication {
 
     public Assets getOnAssetsMalus(int i){
         return onAssetsMalus[i];
+    }
+
+    public void setBlockedCardColor (String blockedCardColor){
+        this.blockedCardColor = blockedCardColor;
+    }
+
+    public void setProductionCardCostMalus (Assets productionCardCostMalus){
+        this.productionCardCostMalus = productionCardCostMalus;
+    }
+
+    public void setOnAssetsMalus (Assets[] onAssetsMalus){
+        this.onAssetsMalus = new Assets[2];
+        this.onAssetsMalus = onAssetsMalus;
     }
 
     @Override

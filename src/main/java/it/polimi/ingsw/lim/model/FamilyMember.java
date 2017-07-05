@@ -8,6 +8,10 @@ import java.util.*;
  */
 public class FamilyMember implements Serializable {
 
+    public FamilyMember(){
+
+    }
+
     /**
      * Constructor
      */
@@ -33,4 +37,11 @@ public class FamilyMember implements Serializable {
         return this.diceColor;
     }
 
+    public void setOwnerColor(String ownerColor){
+        this.ownerColor = ownerColor;
+    }
+
+    private void setDiceColor(String diceColor){
+        this.diceColor = diceColor;
+    }
 }

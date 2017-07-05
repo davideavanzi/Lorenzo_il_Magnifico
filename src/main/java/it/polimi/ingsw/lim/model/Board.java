@@ -1,5 +1,6 @@
 package it.polimi.ingsw.lim.model;
 import it.polimi.ingsw.lim.model.excommunications.Excommunication;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 import static it.polimi.ingsw.lim.Settings.*;
 
@@ -19,6 +20,8 @@ public class Board implements Serializable {
      */
     public Board() {
         this.towers = new HashMap<>();
+        DEFAULT_TOWERS_COLORS.forEach(color ->
+            this.towers.put(color, new Tower())); //todo con 5 player fallisce nel restorare il gioco perhce la torre nera non e creta
         this.production = new ArrayList<>();
         this.harvest = new ArrayList<>();
         this.faithTrack = new Assets[FAITH_TRACK_LENGTH];
@@ -83,6 +86,7 @@ public class Board implements Serializable {
     /**
      * Random generator to roll dices
      */
+    @JsonIgnore
     private Random randomGenerator;
 
     // GETTERS & SETTERS
@@ -116,6 +120,19 @@ public class Board implements Serializable {
     public Market getMarket() {
         return market;
     }
+
+    public void setExcommunications(ArrayList<Excommunication> excommunications) {
+        this.excommunications = excommunications;
+    }
+
+    public void setTowers (HashMap<String, Tower> towers){
+
+        this.towers = towers;
+    }
+
+    public void setFaithTrack (Assets[] faithTrack){this.faithTrack = faithTrack;}
+
+    public void setDice (HashMap<String, Integer> dice){this.dice = dice;}
 
     public void setMarket(Market market) {
         this.market = market;

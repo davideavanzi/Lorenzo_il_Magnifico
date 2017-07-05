@@ -88,14 +88,16 @@ public class Game {
             throw new GameSetupException("Wrong player number on game setup");
 
         getLog().info("Creating towers with bonuses and players card slots");
+        HashMap<String, Tower> towers = new HashMap<>();
         DEFAULT_TOWERS_COLORS.forEach(color -> {
-                this.board.getTowers().put(color, new Tower(parsedGame.getTowerbonuses(color)));
+                towers.put(color, new Tower(parsedGame.getTowerbonuses(color)));
                 this.players.forEach(player -> player.getCards().put(color, new ArrayList<Card>()));});
         if (playersNumber == 5){
             getLog().info("Creating fifth tower and black card slots.");
-            this.board.getTowers().put(BLACK_COLOR, new Tower(parsedGame.getTowerbonuses(BLACK_COLOR)));
+            towers.put(BLACK_COLOR, new Tower(parsedGame.getTowerbonuses(BLACK_COLOR)));
             this.players.forEach(player -> player.getCards().put(BLACK_COLOR, new ArrayList<Card>()));
         }
+        this.board.setTowers(towers);
         getLog().info("Creating market with bonuses");
         this.board.setMarket(new Market(playersNumber, parsedGame.getMarketBonuses()));
         getLog().info("Creating council with bonuses");

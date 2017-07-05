@@ -7,6 +7,10 @@ import it.polimi.ingsw.lim.model.Assets;
  */
 public class AssetsExcommunication extends Excommunication {
 
+    public AssetsExcommunication(){
+        super();
+    }
+
     /**
      * Constructor
      */
@@ -22,6 +26,10 @@ public class AssetsExcommunication extends Excommunication {
 
     public Assets getMalus(){
         return this.malus;
+    }
+
+    public void setMalus(Assets malus){
+        this.malus = malus;
     }
 
     @Override

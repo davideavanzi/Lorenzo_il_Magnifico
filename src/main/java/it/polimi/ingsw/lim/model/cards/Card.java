@@ -3,6 +3,9 @@ package it.polimi.ingsw.lim.model.cards;
 import it.polimi.ingsw.lim.Log;
 import it.polimi.ingsw.lim.model.Assets;
 import it.polimi.ingsw.lim.model.immediateEffects.ImmediateEffect;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonSubTypes;
+import org.codehaus.jackson.annotate.JsonTypeInfo;
 
 import java.io.Serializable;
 import java.util.*;
@@ -11,6 +14,21 @@ import java.util.*;
  * This abstract class is responsible of representing a generic development card. Each subclass will define different
  * behaviours for the 5 kinds of cards in the game (Green, Yellow, Blue, Purple, Black)
  */
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = GreenCard.class, name = "GreenCard"),
+
+        @JsonSubTypes.Type(value = BlueCard.class, name = "BlueCard"),
+
+        @JsonSubTypes.Type(value = YellowCard.class, name = "YellowCard" ),
+
+        @JsonSubTypes.Type(value = PurpleCard.class, name = "PurpleCard"),
+
+        @JsonSubTypes.Type(value = BlackCard.class, name = "BlackCard" )
+})
+
 public abstract class Card implements Serializable {
 
     /**

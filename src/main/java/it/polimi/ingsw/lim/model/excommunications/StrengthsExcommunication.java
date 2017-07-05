@@ -7,6 +7,10 @@ import it.polimi.ingsw.lim.model.Strengths;
  */
 public class StrengthsExcommunication extends Excommunication {
 
+    public StrengthsExcommunication(){
+        super();
+    }
+
     /**
      * Default constructor
      */
@@ -21,6 +25,10 @@ public class StrengthsExcommunication extends Excommunication {
 
     public Strengths getMalus(){
         return this.malus;
+    }
+
+    public void setMalus(Strengths malus){
+        this.malus = malus;
     }
 
     @Override

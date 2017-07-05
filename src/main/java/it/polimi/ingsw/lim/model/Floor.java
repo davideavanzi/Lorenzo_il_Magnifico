@@ -18,6 +18,10 @@ public class Floor implements Serializable {
         this.actionCost = FLOORS_ACTION_COSTS[floorPosition];
     }
 
+    public Floor (){
+
+    }
+
     /**
      * The bonus given when a player puts his family member in this floor
      */
@@ -62,6 +66,10 @@ public class Floor implements Serializable {
 
     public void setInstantBonus(Assets bonus) { this.instantBonus = bonus; }
 
+    public void setActionCost(int actionCost){
+        this.actionCost = actionCost;
+    }
+
     public Assets getInstantBonus() { return this.instantBonus; }
 
     public FamilyMember getFamilyMember(){
@@ -84,5 +92,7 @@ public class Floor implements Serializable {
     }
 
     public int getActionCost() { return this.actionCost; }
+
+    public FamilyMember getFamilyMemberSlot(){return  this.familyMemberSlot;}
 
 }
