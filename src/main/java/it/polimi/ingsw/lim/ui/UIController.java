@@ -82,6 +82,10 @@ public class UIController {
         }
     }
 
+
+    //todo only test method
+    public void setLocalBoard(Board lb){localBoard = lb;}
+
     /**
      * @return the abstract UI of client.
      */

@@ -66,6 +66,7 @@ public class CLI extends AbsUI {
 
     }
 
+
     private String fmServant() {
         printMessageln("How many servants would you like to put here?");
         do {
@@ -368,12 +369,9 @@ public class CLI extends AbsUI {
 
     public void printBoard(){
         this.printTowers();
-        //this.printMarket();
+        this.printMarket();
         //this.printFaithPointsTrack();
         this.printVictoryPointsTrack();
-        String path = boardWriter(this.uiCallback.getLocalBoard());
-        Board tmpBoard = readerBoard(path);
-        System.out.println(tmpBoard.getAge());
     }
 
     public void printPlayerBoard(){
@@ -452,6 +450,32 @@ public class CLI extends AbsUI {
         printMessageln(s);
         printMessageln("");
         printMessageln("");
+    }
+
+    public void printCouncilFavours() {
+        ArrayList<Assets> councilFavours = this.uiCallback.getLocalBoard().getCouncil().getFavorBonuses();
+        String format = "||%-20s||\n";
+        String s = "________________________";
+        for (Assets a : councilFavours) {
+            printMessageln(s);
+            System.out.format(format, "");
+            System.out.format(format, StringUtils.center(("Council Favour: "), 20));
+            System.out.format(format, "_  _  _  _  _  _  _ ");
+            System.out.format(format, "");
+            printAsset(a);
+            printMessageln(s);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
     }
 
     private void printPlayerSingleCard(String name, Player player){
@@ -802,7 +826,7 @@ public class CLI extends AbsUI {
         FamilyMember[] familyMembers = this.uiCallback.getLocalBoard().getMarket().getSlots();
         String format = "||%-20s||\n";
         String s = "________________________";
-        for(int i = 0; i < 2; i++){
+        for(int i = 0; i < market.length; i++){
             printMessageln(s);
             System.out.format(format, "", 20);
             System.out.format(format, StringUtils.center(("MARKET " + i), 20));
