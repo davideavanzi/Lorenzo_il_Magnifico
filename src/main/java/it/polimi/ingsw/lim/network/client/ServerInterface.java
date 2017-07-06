@@ -14,7 +14,11 @@ import java.util.ArrayList;
  */
 public interface ServerInterface {
 
-    void excommunicationChoice(boolean choice)throws ClientNetworkException;
+    void optionalBpPick(boolean bpPayment, String username) throws ClientNetworkException;
+
+    void favorChoice(ArrayList<Integer> favorChoice, String username) throws ClientNetworkException;
+
+    void excommunicationChoice(boolean choice, String username) throws ClientNetworkException;
 
     void placeFM(String color, ArrayList<String> destination, String servants, String username) throws ClientNetworkException;
 

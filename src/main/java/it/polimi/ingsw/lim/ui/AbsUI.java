@@ -1,7 +1,5 @@
 package it.polimi.ingsw.lim.ui;
 
-import java.util.ArrayList;
-
 /**
  * Created by nico.
  */
@@ -21,6 +19,8 @@ public abstract class AbsUI {
     public abstract String setNetworkSettings();
 
     public abstract void printChatMessage(String sender, String message);
+
+    public abstract void printGameMessageln(String message);
 
     public abstract void printGameMessage(String message);
 

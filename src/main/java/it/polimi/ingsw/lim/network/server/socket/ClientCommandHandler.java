@@ -58,8 +58,16 @@ class ClientCommandHandler {
                 placeFMcmd();
             } else if (commandIdentifier.equals(EXCOMMUNICATION)) {
                 //todo chiamare metodo su gameController
+                handlerCallback.commandValidator(EXCOMMUNICATION, EXCOMMUNICATION_OK , true);
+            } else if (commandIdentifier.equals(CHOOSE_FAVOR)) {
+                //Todo trasformare String in arrayList<Integer>
+                gameController.performCfActivation();
+                handlerCallback.commandValidator(CHOOSE_FAVOR, CHOOSE_FAVOR_OK , true);
+            } else if (commandIdentifier.equals(OPTIONAL_BP_PICK)) {
+                //TODO metodo in GC a cui passo il booleano bpPayment
+                handlerCallback.commandValidator(OPTIONAL_BP_PICK, OPTIONAL_BP_PICK_OK , true);
             } else {
-                getLog().log(Level.SEVERE, () ->"[COMMAND_HANDLER]: Invalid message indentifier: "+commandIdentifier);
+                getLog().log(Level.SEVERE, () ->"[COMMAND_HANDLER]: Invalid message identifier: "+commandIdentifier);
             }
         }
     }

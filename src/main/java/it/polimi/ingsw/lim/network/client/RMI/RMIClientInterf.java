@@ -16,7 +16,11 @@ public interface RMIClientInterf extends Remote {
 
     void commandValidator(String command, String message, boolean outcome) throws RemoteException;
 
-    void askUserForExcommunication() throws RemoteException;
+    void askPlayerForBpPick() throws RemoteException;
+
+    void askPlayerForFavor(int amount) throws RemoteException;
+
+    void askPlayerForExcommunication() throws RemoteException;
 
     void isUserPlaying(Boolean state) throws RemoteException;
 
