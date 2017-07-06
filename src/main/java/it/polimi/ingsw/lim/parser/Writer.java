@@ -26,11 +26,15 @@ public class Writer {
         }catch (IOException e){
             Log.getLog().severe("[WRITER]:Unable to open or create board writer file");
             e.printStackTrace();
+            return null;
         }
         return pathToWriterFile;
     }
 
     public static Board readerBoard(String pathToWriterBoardFile){
+        if (pathToWriterBoardFile.isEmpty()){
+            pathToWriterBoardFile = PATH_TO_WRITER_BOARD_FILE;
+        }
         ObjectMapper mapper = new ObjectMapper();
         Board board = null;
         try {
@@ -38,6 +42,7 @@ public class Writer {
         }catch (IOException e){
             Log.getLog().severe("[READER]:Unable to open board writer file");
             e.printStackTrace();
+            return null;
         }
         return board;
     }

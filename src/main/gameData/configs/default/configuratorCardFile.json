@@ -248,7 +248,7 @@
       },
       {
         "cardName":"Dukedom",
-        "cardAge": 3,
+        "cardAge": 2,
         "cardType":"greenCard",
         "cardImmediateEffect": {
           "assetsEffect": {
@@ -873,7 +873,7 @@
       },
       {
         "cardName": "Stronghold",
-        "cardAge": 3,
+        "cardAge": 2,
         "cardAssetsCost": {
           "coin":2,
           "wood": 2,
@@ -1295,6 +1295,24 @@
         }
       },
       {
+        "cardName": "Hero",
+        "cardAge": 2,
+        "cardAssetsCost": {
+          "coin": 4
+        },
+        "cardType": "blueCard",
+        "cardImmediateEffect": {
+          "actionEffect":{
+            "actionEffectStrength":{
+              "purpleBonus":6
+            },
+            "councilFavourEffect":{
+              "councilFavorsEffectAmount":1
+            }
+          }
+        }
+      },
+      {
         "cardName": "Peasant",
         "cardAge": 2,
         "cardAssetsCost": {
@@ -1331,7 +1349,7 @@
       },
       {
         "cardName": "Royal Messenger",
-        "cardAge": 3,
+        "cardAge": 2,
         "cardAssetsCost": {
           "coin": 5
         },

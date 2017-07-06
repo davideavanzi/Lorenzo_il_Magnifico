@@ -676,6 +676,18 @@ public class Parser {
                     throw new InvalidCardException("Card Type is not recognized");
              }
         }
+        System.out.println("SIZE: " + cards.get(0).get(GREEN_COLOR).size());
+        System.out.println("SIZE: " + cards.get(1).get(GREEN_COLOR).size());
+        System.out.println("SIZE: " + cards.get(2).get(GREEN_COLOR).size());
+        System.out.println("SIZE: " + cards.get(0).get(BLUE_COLOR).size());
+        System.out.println("SIZE: " + cards.get(1).get(BLUE_COLOR).size());
+        System.out.println("SIZE: " + cards.get(2).get(BLUE_COLOR).size());
+        System.out.println("SIZE: " + cards.get(0).get(YELLOW_COLOR).size());
+        System.out.println("SIZE: " + cards.get(1).get(YELLOW_COLOR).size());
+        System.out.println("SIZE: " + cards.get(2).get(YELLOW_COLOR).size());
+        System.out.println("SIZE: " + cards.get(0).get(PURPLE_COLOR).size());
+        System.out.println("SIZE: " + cards.get(1).get(PURPLE_COLOR).size());
+        System.out.println("SIZE: " + cards.get(2).get(PURPLE_COLOR).size());
 
         return cards;
     }

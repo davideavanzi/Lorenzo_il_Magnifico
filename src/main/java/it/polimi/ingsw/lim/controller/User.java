@@ -43,6 +43,7 @@ public abstract class User {
     /**
      * A game room.
      */
+    @JsonIgnore
     private Room room;
 
     /**

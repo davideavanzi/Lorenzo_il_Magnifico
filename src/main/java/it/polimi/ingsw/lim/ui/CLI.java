@@ -426,7 +426,7 @@ public class CLI extends AbsUI {
         this.printTowers();
         this.printMarket();
         //this.printFaithPointsTrack();
-        this.printVictoryPointsTrack();
+        //this.printVictoryPointsTrack();
     }
 
     /**
@@ -947,7 +947,11 @@ public class CLI extends AbsUI {
         FamilyMember[] familyMembers = this.uiCallback.getLocalBoard().getMarket().getSlots();
         String format = "||%-20s||\n";
         String s = "________________________";
-        for(int i = 0; i < market.length; i++){
+        int marketSize = 2;
+        if(this.uiCallback.getLocalPlayers().size() >= 4 && this.uiCallback.getLocalPlayers().size() < 6){
+            marketSize = this.uiCallback.getLocalPlayers().size();
+        }
+        for(int i = 0; i < marketSize/*the num of the player == dim of the market*/; i++){
             printMessageln(s);
             System.out.format(format, "", 20);
             System.out.format(format, StringUtils.center(("MARKET " + i), 20));
