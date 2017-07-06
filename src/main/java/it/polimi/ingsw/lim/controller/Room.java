@@ -3,6 +3,7 @@ package it.polimi.ingsw.lim.controller;
 import it.polimi.ingsw.lim.Lock;
 import it.polimi.ingsw.lim.Log;
 import it.polimi.ingsw.lim.model.Player;
+import it.polimi.ingsw.lim.parser.Writer;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
@@ -98,6 +99,8 @@ public class Room {
     void switchRound(){
         if (playOrder.isEmpty()) {
             startNewTurn();
+            Writer.boardWriter(this.gameController.getBoard());
+            Writer.roomWriter(this);
             return;
         }
         Log.getLog().info("player ".concat(round.getUserName()).concat(" ending round"));
@@ -105,6 +108,8 @@ public class Room {
         this.round = new PlayerRound(this.getUser(nextUserName));
         Log.getLog().info("player ".concat(round.getUserName()).concat(" now can play ")
                 .concat("in room" + this.getUser(nextUserName).getRoom().toString()));
+        Writer.boardWriter(this.gameController.getBoard());
+        Writer.roomWriter(this);
     }
 
     /**
@@ -142,6 +147,7 @@ public class Room {
         return new ArrayList<>(usersList.stream().filter(user -> user.isAlive()).collect(Collectors.toList()));
     }
 
+    @JsonIgnore
     public GameController getGameController() {
         return gameController;
     }
