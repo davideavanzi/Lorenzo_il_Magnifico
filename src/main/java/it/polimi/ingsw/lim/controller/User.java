@@ -3,7 +3,9 @@ package it.polimi.ingsw.lim.controller;
 import it.polimi.ingsw.lim.model.Assets;
 import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.Player;
-import it.polimi.ingsw.lim.network.server.RMI.RMIUser;
+/**
+     * Print all the Council Favours Bonus
+     */import it.polimi.ingsw.lim.network.server.RMI.RMIUser;
 import it.polimi.ingsw.lim.network.server.socket.SocketUser;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
@@ -130,29 +132,18 @@ public abstract class User {
     /**
      * This method asks the user which production wants to activate. A production option is an array of two
      * Assets objects: the first is the cost, the second is the result.
-     * @param options production options the player can choose from
+     * @param options production options the player can choose from.
      */
     public abstract void askProductionOptions(ArrayList<ArrayList<Assets[]>> options);
 
     /**
      * This method is called when a player can pick a purple card both paying normal cost and
      * it's optional cost in terms of battle points.
-     * @param requirement the amount of battle points required to pay this way
-     * @param cost the amount of battle points that the player will pay
-     * @return a boolean that indicates if the player wants to pay with his battle points
      */
+    public abstract void askForOptionalBpPick();
 
     /**
-     * This method tells the user that can pick a purple card in both ways, then asks him if he wants to use his
-     * battle points
-     * @param requirement
-     * @param cost
-     */
-    public abstract void askForOptionalBpPick(int requirement, int cost);
-
-    /**
-     * This method asks a user if he wants to take an excommunication
-     * @return a boolean that indicates if the player wants the excommunication
+     * This method asks a user if he wants to take an excommunication.
      */
     public abstract void askForExcommunication();
 
@@ -163,7 +154,7 @@ public abstract class User {
     
     /**
      * Send chat message to client.
-     * @param sender ArrayList<Object> argsr
+     * @param sender
      * @param message
      */
     public abstract void sendChatMessage(String sender, String message);
@@ -172,7 +163,7 @@ public abstract class User {
 
     /**
      * This method sends a message to the user relative to it's gaming state.
-     * @param message the message to send
+     * @param message the message to send.
      */
     public abstract void gameMessage(String message);
 

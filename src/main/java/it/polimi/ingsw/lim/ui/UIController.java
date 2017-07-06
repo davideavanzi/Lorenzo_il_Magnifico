@@ -3,6 +3,7 @@ package it.polimi.ingsw.lim.ui;
 import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
 import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.Player;
+import it.polimi.ingsw.lim.model.cards.PurpleCard;
 import it.polimi.ingsw.lim.network.client.RMI.RMIClient;
 import it.polimi.ingsw.lim.network.client.ServerInterface;
 import it.polimi.ingsw.lim.network.client.socket.SocketClient;
@@ -68,6 +69,11 @@ public class UIController {
     private boolean isMyTurn = false;
 
     /**
+     * Indicate how many favors you can pick in a single time.
+     */
+    private int favorAmount;
+
+    /**
      * The first thing to do is create a user interface, then the player must choose
      * the network protocol
      * @param ui this String represent the User Interface chosen.
@@ -93,17 +99,23 @@ public class UIController {
         return username;
     }
 
-    public Board getLocalBoard(){
+    Board getLocalBoard(){
         return localBoard;
     }
 
-    public ArrayList<Player> getLocalPlayers() { return localPlayers; }
+    ArrayList<Player> getLocalPlayers() { return localPlayers; }
 
-    public boolean getIsMyTurn() { return isMyTurn; }
+    boolean getIsMyTurn() { return isMyTurn; }
 
     public void setIsMyTurn(boolean isMyTurn) {
         this.isMyTurn = isMyTurn;
     }
+
+    int getFavorAmount() { return favorAmount; }
+
+    public void setFavorAmount(int amount) { favorAmount = amount; }
+
+
 
     /**
      * Every turn the board is send to all client.
@@ -133,9 +145,25 @@ public class UIController {
         return getLocalPlayers().stream().filter(pl -> pl.getNickname().equals(username)).findFirst().orElse(null);
     }
 
+    void sendOptionalBpPick(boolean bpPayment) {
+        try {
+            clientProtocol.optionalBpPick(bpPayment, username);
+        } catch (ClientNetworkException e) {
+            clientUI.printError(e.getMessage());
+        }
+    }
+
+    void sendFavorChoice(ArrayList<Integer> favorChoice) {
+        try {
+            clientProtocol.favorChoice(favorChoice, username);
+        } catch (ClientNetworkException e) {
+            clientUI.printError(e.getMessage());
+        }
+    }
+
     void sendExcommunicationChoice(boolean choice) {
         try {
-            clientProtocol.excommunicationChoice(choice);
+            clientProtocol.excommunicationChoice(choice, username);
         } catch (ClientNetworkException e) {
             clientUI.printError(e.getMessage());
         }
@@ -209,10 +237,10 @@ public class UIController {
         static final String INFO = "showPersonalInfo";
 
         static final String FAMILY_MEMBER = "putFamilyMember";
-        static final String LEADER_CARD = "chooseLeaderCard";
+        static final String LEADER_CARD = "leaderCard";
         static final String EXCOMMUNICATION = "excommunication";
         static final String CHOOSE_FAVOR = "chooseFavor";
-        static final String CHOOSE_TOWER = "chooseTower";
+        static final String OPTIONAL_BP_PICK = "purpleCardPayment";
         static final String CHOOSE_PRODUCTION = "chooseProduction";
 
         //Command description
@@ -221,10 +249,10 @@ public class UIController {
         static final String INFO_DESCR = "Show the personal information of a specific player";
 
         static final String FAMILY_MEMBER_DESCR = "Place a family member on the board";
-        static final String LEADER_CARD_DESCR = "Choose and use a leader card";
+        static final String LEADER_CARD_DESCR = "Choose if discard or use a leader card";
         static final String EXCOMMUNICATION_DESCR = "Choose if you want take a excommunication";
         static final String CHOOSE_FAVOR_DESCR = "Choose a favor from council";
-        static final String CHOOSE_TOWER_DESCR = "Choose a tower to pick a card from";
+        static final String OPTIONAL_BP_PICK_DESCR = "You have taken a purple card! How do you want to pay it?";
         static final String CHOOSE_PRODUCTION_DESCR = "Choose what type of production you want activate";
     }
 }

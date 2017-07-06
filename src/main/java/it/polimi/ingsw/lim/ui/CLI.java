@@ -16,8 +16,6 @@ import static it.polimi.ingsw.lim.Settings.*;
 import static it.polimi.ingsw.lim.parser.Writer.*;
 import static it.polimi.ingsw.lim.ui.UIController.*;
 import static it.polimi.ingsw.lim.ui.UIController.UIConstant.*;
-import static it.polimi.ingsw.lim.ui.UIController.UIConstant.INFO;
-import static it.polimi.ingsw.lim.ui.UIController.UIConstant.TURN;
 
 /**
  * Created by nico.
@@ -51,14 +49,36 @@ public class CLI extends AbsUI {
         initializeCommandLine();
     }
 
+    private void askForBpPick() {
+        printGameMessageln("You have picked a card that can be payed in two ways, using resources or battle points.\n" +
+                "How do you prefer to pay?\n1) Battle Points\n2) Resources");
+        do {
+            inputNum = userInput.nextInt();
+        } while (!inputNum.equals(1) && !inputNum.equals(2));
+        availableCmdList.remove(OPTIONAL_BP_PICK);
+        uiCallback.sendOptionalBpPick(inputNum.equals(1));
+        lock.unlock();
+    }
+
+    private void askForFavor() {
+        ArrayList<Integer> favorChoice = new ArrayList<>();
+        printGameMessage("You can choose between" + uiCallback.getFavorAmount() + "council's favors: ");
+        printCouncilFavors();
+        for (int count = 0; userInput.hasNext() && count < uiCallback.getFavorAmount(); count++)
+            favorChoice.add(userInput.nextInt());
+        availableCmdList.remove(CHOOSE_FAVOR);
+        uiCallback.sendFavorChoice(favorChoice);
+        lock.unlock();
+    }
+
     private void askForExcommunication() {
-        printMessageln("Do you want to suffer of the excommunication?");
+        printGameMessageln("Do you want to suffer of the excommunication?");
         printMessageln("1) yes\n2) no");
         do {
             inputNum = userInput.nextInt();
         } while (!inputNum.equals(1) && !inputNum.equals(2));
-        uiCallback.sendExcommunicationChoice(inputNum.equals(1));
         availableCmdList.remove(EXCOMMUNICATION);
+        uiCallback.sendExcommunicationChoice(inputNum.equals(1));
         lock.unlock();
     }
 
@@ -68,7 +88,7 @@ public class CLI extends AbsUI {
 
 
     private String fmServant() {
-        printMessageln("How many servants would you like to put here?");
+        printGameMessage("How many servants would you like to put here? ");
         do {
             inputNum = userInput.nextInt();
         } while (inputNum >= 0);
@@ -82,7 +102,7 @@ public class CLI extends AbsUI {
                 {"Green Tower", "Yellow Tower", "Blue Tower", "Purple Tower", "Black Tower", "Council", "Production", "Harvest", "Market"};
         ArrayList<String> destination = new ArrayList<>();
         int count = 1;
-        printMessageln("Where would you like to put it?");
+        printGameMessageln("Where would you like to put it?");
 
         //Two players
         if (uiCallback.getLocalPlayers().size() < 3) {
@@ -93,13 +113,13 @@ public class CLI extends AbsUI {
             } while (inputNum-1 >= 0 && inputNum-1 < 8);
             destination.add(board4Player[inputNum]);
             if (inputNum-1 >= 0 && inputNum-1 < 4) { //If tower, select the floor
-                printMessage("Please select the floor: (1/2/3/4) ");
+                printGameMessage("Please select the floor: (1/2/3/4) ");
                 do {
                     inputNum = userInput.nextInt();
                 } while (inputNum-1 >= 0 && inputNum-1 < 4);
                 destination.add(inputNum.toString());
             } else if (inputNum == 8) { //If market, select the slot
-                printMessage("Please select the market slot: (1/2) ");
+                printGameMessage("Please select the market slot: (1/2) ");
                 do {
                     inputNum = userInput.nextInt();
                 } while (inputNum-1 >= 0 && inputNum-1 < 2);
@@ -108,7 +128,31 @@ public class CLI extends AbsUI {
             return destination;
         }
 
-        //Three/Four players
+        //Three players
+        if (uiCallback.getLocalPlayers().size() < 4) {
+            for (String pos : board4Player)
+                printMessageln(count + ") " + pos);
+            do {
+                inputNum = userInput.nextInt();
+            } while (inputNum-1 >= 0 && inputNum-1 < 8);
+            destination.add(board4Player[inputNum]);
+            if (inputNum-1 >= 0 && inputNum-1 < 4) { //If tower, select the floor
+                printGameMessage("Please select the floor: (1/2/3/4) ");
+                do {
+                    inputNum = userInput.nextInt();
+                } while (inputNum-1 >= 0 && inputNum-1 < 4);
+                destination.add(inputNum.toString());
+            } else if (inputNum == 8) { //If market, select the slot
+                printGameMessage("Please select the market slot: (1/2/3) ");
+                do {
+                    inputNum = userInput.nextInt();
+                } while (inputNum-1 >= 0 && inputNum-1 < 3);
+                destination.add(inputNum.toString());
+            }
+            return destination;
+        }
+
+        //Four players
         if (uiCallback.getLocalPlayers().size() < 5) {
             for (String pos : board4Player)
                 printMessageln(count + ") " + pos);
@@ -117,13 +161,13 @@ public class CLI extends AbsUI {
             } while (inputNum-1 >= 0 && inputNum-1 < 8);
             destination.add(board4Player[inputNum]);
             if (inputNum-1 >= 0 && inputNum-1 < 4) { //If tower, select the floor
-                printMessage("Please select the floor: (1/2/3/4) ");
+                printGameMessage("Please select the floor: (1/2/3/4) ");
                 do {
                     inputNum = userInput.nextInt();
                 } while (inputNum-1 >= 0 && inputNum-1 < 4);
                 destination.add(inputNum.toString());
             } else if (inputNum == 8) { //If market, select the slot
-                printMessage("Please select the market slot: (1/2/3/4) ");
+                printGameMessage("Please select the market slot: (1/2/3/4) ");
                 do {
                     inputNum = userInput.nextInt();
                 } while (inputNum-1 >= 0 && inputNum-1 < 4);
@@ -135,19 +179,19 @@ public class CLI extends AbsUI {
         //Five players
         if (uiCallback.getLocalPlayers().size() < 6) {
             for (String pos : board5Player)
-                printMessageln(count + ") " + pos);
+                printGameMessage(count + ") " + pos);
             do {
                 inputNum = userInput.nextInt();
             } while (inputNum-1 >= 0 && inputNum-1 < 9);
             destination.add(board5Player[inputNum]);
             if (inputNum-1 >= 0 && inputNum-1 < 5) { //If tower, select the floor
-                printMessage("Please select the floor: (1/2/3/4) ");
+                printGameMessage("Please select the floor: (1/2/3/4) ");
                 do {
                     inputNum = userInput.nextInt();
                 } while (inputNum-1 >= 0 && inputNum-1 < 5);
                 destination.add(inputNum.toString());
             } else if (inputNum == 9) { //If market, select the slot
-                printMessage("Please select the market slot: (1/2/3/4/5) ");
+                printGameMessage("Please select the market slot: (1/2/3/4/5) ");
                 do {
                     inputNum = userInput.nextInt();
                 } while (inputNum-1 >= 0 && inputNum-1 < 5);
@@ -159,7 +203,7 @@ public class CLI extends AbsUI {
     }
 
     private String fmColor() {
-        printMessageln("What family member would you like to place?");
+        printGameMessageln("What family member would you like to place?");
         int count = 1;
         for (FamilyMember fm : uiCallback.getPlayer(uiCallback.getUsername()).getFamilyMembers()) {
             printMessageln(count + ") " + fm.getDiceColor());
@@ -172,13 +216,13 @@ public class CLI extends AbsUI {
     }
 
     private void placeFamilyMember() {
-        uiCallback.sendPlaceFM(fmColor(), fmDestination(), fmServant());
         availableCmdList.remove(FAMILY_MEMBER);
+        uiCallback.sendPlaceFM(fmColor(), fmDestination(), fmServant());
         lock.unlock();
     }
 
     private void showPersonalInfo() {
-        printMessageln("Enter the username of the player of which you want to see information: ");
+        printGameMessage("Enter the username of the player of which you want to see information: ");
         do {
             input = userInput.nextLine().trim();
         } while (uiCallback.getPlayer(input) != null);
@@ -189,9 +233,12 @@ public class CLI extends AbsUI {
      * Print the currently turn order.
      */
     private void turnOrder() {
-        printMessageln("Turn order: ");
-        for (Player pl : uiCallback.getLocalPlayers())
-            printMessageln(pl.getNickname());
+        printGameMessageln("Turn order: ");
+        int count = 1;
+        for (Player pl : uiCallback.getLocalPlayers()) {
+            printMessage(count + ") " + pl.getNickname() + " ");
+            count++;
+        }
     }
 
     /**
@@ -223,7 +270,7 @@ public class CLI extends AbsUI {
     }
 
     private void printCmd() {
-        printMessageln("Available Command:");
+        printGameMessageln("Available Command:");
         printMessageln("");
         availableCmdList.keySet().forEach(command -> System.out.printf("%-30s%s%n", command, cmdDescr.get(command)));
         printMessage("");
@@ -233,7 +280,7 @@ public class CLI extends AbsUI {
     public void waitForRequest() {
         while (true) {
             printCmd();
-            printMessage("Enter a command: ");
+            printGameMessage("Enter a command: ");
             input = userInput.next().toLowerCase().trim();
             printBoard(); //todo only for test
             try {
@@ -255,8 +302,8 @@ public class CLI extends AbsUI {
         cmdList.put(FAMILY_MEMBER, () -> placeFamilyMember());
         //cmdList.put(LEADER_CARD, () -> );
         cmdList.put(EXCOMMUNICATION, () -> askForExcommunication());
-        //cmdList.put(CHOOSE_FAVOR, () -> );
-        //cmdList.put(CHOOSE_TOWER, () -> );
+        cmdList.put(CHOOSE_FAVOR, () -> askForFavor());
+        cmdList.put(OPTIONAL_BP_PICK, () -> askForBpPick());
         //cmdList.put(CHOOSE_PRODUCTION, () -> );
         //cmdList.put(CHOOSE_HARVEST, () -> );
     }
@@ -269,7 +316,7 @@ public class CLI extends AbsUI {
         cmdDescr.put(LEADER_CARD, LEADER_CARD_DESCR);
         cmdDescr.put(EXCOMMUNICATION, EXCOMMUNICATION_DESCR);
         cmdDescr.put(CHOOSE_FAVOR, CHOOSE_FAVOR_DESCR);
-        cmdDescr.put(CHOOSE_TOWER,CHOOSE_TOWER_DESCR);
+        cmdDescr.put(OPTIONAL_BP_PICK, OPTIONAL_BP_PICK_DESCR);
         cmdDescr.put(CHOOSE_PRODUCTION, CHOOSE_PRODUCTION_DESCR);
     }
 
@@ -340,8 +387,13 @@ public class CLI extends AbsUI {
     }
 
     @Override
-    public void printGameMessage(String message) {
+    public void printGameMessageln(String message) {
         printMessageln("[GAME]: "+message);
+    }
+
+    @Override
+    public void printGameMessage(String message) {
+        printMessage("[GAME]: "+message);
     }
 
     @Override
@@ -472,7 +524,7 @@ public class CLI extends AbsUI {
     /**
      * Print all the Council Favours Bonus
      */
-    public void printCouncilFavours() {
+    public void printCouncilFavors() {
         ArrayList<Assets> councilFavours = this.uiCallback.getLocalBoard().getCouncil().getFavorBonuses();
         String format = "||%-20s||\n";
         String s = "________________________";

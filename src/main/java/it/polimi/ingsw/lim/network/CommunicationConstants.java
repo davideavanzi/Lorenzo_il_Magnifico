@@ -23,9 +23,16 @@ public class CommunicationConstants {
     public static final String FAMILY_MEMBER_OK = "Family member has been correctly place";
 
     public static final String EXCOMMUNICATION = "EXCOMMUNICATION";
+    public static final String EXCOMMUNICATION_OK = "You have been correctly excommunicated";
+
     public static final String CHOOSE_FAVOR = "CHOOSE_FAVOR";
-    public static final String CHOOSE_TOWER = "CHOOSE_TOWER";
+    public static final String CHOOSE_FAVOR_OK = "The council's favors have correctly chosen";
+
     public static final String CHOOSE_PRODUCTION = "CHOOSE_PRODUCTION";
+    public static final String CHOOSE_PRODUCTION_OK = "The production is started correctly";
+
+    public static final String OPTIONAL_BP_PICK = "OPTIONAL_BP_PICK";
+    public static final String OPTIONAL_BP_PICK_OK = "You have pay a purple card with battle point";
 
     public static final String TOWER = "Tower";
     public static final String PRODUCTION = "Production";

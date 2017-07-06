@@ -1,15 +1,21 @@
 package it.polimi.ingsw.lim.network.server.RMI;
 
+import it.polimi.ingsw.lim.network.client.RMI.RMIClient;
 import it.polimi.ingsw.lim.network.client.RMI.RMIClientInterf;
 
 import java.rmi.*;
+import java.util.ArrayList;
 
 /**
  * Created by nico.
  */
 public interface RMIServerInterf extends Remote {
 
-    void excommunicationChoice(boolean choice) throws RemoteException;
+    void optionalBpPick(boolean bpPayment, String username, RMIClientInterf rci) throws RemoteException;
+
+    void favorChoice(ArrayList<Integer> favorChoice, String username, RMIClientInterf rci) throws RemoteException;
+
+    void excommunicationChoice(boolean choice, String username, RMIClientInterf rci) throws RemoteException;
 
     void moveInCouncil(String fmColor, int servants, String username, RMIClientInterf rci) throws RemoteException;
 

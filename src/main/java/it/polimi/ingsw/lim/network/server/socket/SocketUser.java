@@ -4,6 +4,7 @@ import it.polimi.ingsw.lim.controller.User;
 import it.polimi.ingsw.lim.model.Assets;
 import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.Player;
+import it.polimi.ingsw.lim.model.cards.PurpleCard;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,8 +63,8 @@ public class SocketUser extends User {
     }
 
     @Override
-    public void askForOptionalBpPick(int requirement, int cost) {
-
+    public void askForOptionalBpPick() {
+        this.sch.askClientForOptionalBpPick();
     }
 
     @Override

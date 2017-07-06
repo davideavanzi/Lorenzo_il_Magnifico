@@ -1,8 +1,10 @@
 package it.polimi.ingsw.lim.network.client.socket;
 
+import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
 import it.polimi.ingsw.lim.exceptions.LoginFailedException;
 import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.Player;
+import it.polimi.ingsw.lim.model.cards.PurpleCard;
 import it.polimi.ingsw.lim.ui.UIController;
 
 import java.util.ArrayList;
@@ -45,7 +47,11 @@ class ServerCommandHandler {
             String commandIdentifier = command.get(0);
             if (commandIdentifier.equalsIgnoreCase(LOGIN_REQUEST)) {
                 String[] loginInfo = uiCallback.sendLoginInfo();
-                clientCallback.login(loginInfo[0], loginInfo[1]);
+                try {
+                    clientCallback.login(loginInfo[0], loginInfo[1]);
+                } catch (ClientNetworkException e) {
+                    uiCallback.getClientUI().printError(e.getMessage());
+                }
             } else if (commandIdentifier.equalsIgnoreCase(LOGIN_SUCCESSFUL)) {
                 uiCallback.getClientUI().waitForRequest();
             } else if (commandIdentifier.equalsIgnoreCase(LOGIN_FAILED)) {
@@ -60,17 +66,17 @@ class ServerCommandHandler {
                 uiCallback.getClientUI().commandAdder(command.get(0));
             } else if (commandIdentifier.equalsIgnoreCase(CHOOSE_FAVOR)) {
                 uiCallback.getClientUI().commandAdder(command.get(0));
+                uiCallback.setFavorAmount(Integer.parseInt(command.get(1)));
+            } else if (commandIdentifier.equalsIgnoreCase(OPTIONAL_BP_PICK)) {
+                uiCallback.getClientUI().commandAdder(command.get(0));
             } else if (commandIdentifier.equalsIgnoreCase(CHOOSE_PRODUCTION)) {
                 uiCallback.getClientUI().commandAdder(command.get(0));
-            } else if (commandIdentifier.equalsIgnoreCase(CHOOSE_TOWER)) {
-                uiCallback.getClientUI().commandAdder(command.get(0));
-            } else if (commandIdentifier.equalsIgnoreCase(CMD_VALIDATOR)) {
+            }  else if (commandIdentifier.equalsIgnoreCase(CMD_VALIDATOR)) {
                 uiCallback.getClientUI().commandManager(command.get(1), command.get(2), Boolean.valueOf(command.get(3)));
             }
         } else if (obj instanceof Board) {
             Board board = (Board)obj;
             uiCallback.updateBoard(board);
-
         } else if (obj instanceof Player) {
             ArrayList<Player> players = new ArrayList<>(); //TODO: how can i convert obj in an arrayList of player
             uiCallback.updatePlayers(players);

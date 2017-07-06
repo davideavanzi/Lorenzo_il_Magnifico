@@ -10,7 +10,6 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.logging.Level;
 
 import static it.polimi.ingsw.lim.Log.getLog;
@@ -97,20 +96,27 @@ public class RMIUser extends User {
     }
 
     @Override
-    public void chooseFavor(int amount) {}
+    public void chooseFavor(int favorAmount) {
+        try {
+            RMIServer.askClientForFavor(favorAmount, this.rci);
+        } catch (RemoteException e) {
+            getLog().log(Level.SEVERE, "[RMI]: Remote error sending favour  to client.");
+        }
+    }
 
     @Override
     public void broadcastMessage(String message) {
     }
 
     @Override
-    public void askForOptionalBpPick(int requirement, int cost) {
+    public void askForOptionalBpPick() {
+        RMIServer.askClientForOptionalBpPick(this.rci);
     }
 
     @Override
     public void askForExcommunication() {
         try {
-            RMIServer.excommunicationChoice(this.rci);
+            RMIServer.askClientForExcommunication(this.rci);
         } catch (RemoteException e) {
             getLog().log(Level.SEVERE, "[RMI]: Remote error sending board and arrayList of player to client.");
         }
