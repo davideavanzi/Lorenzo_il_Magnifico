@@ -782,7 +782,7 @@ public class Parser {
                         (excommunicationNode.path(PRODUCTION_CARD_COST_MALUS));
                 Assets[] tmpOnAssetsMalus = parseArrayAssets
                         (excommunicationNode.path(ON_ASSETS_MALUS),2);//TODO modificare il numero di slot dell'array
-                return new EndGameExcommunication(tmpBlockedCardColor, tmpProductionCardCostMalus, tmpOnAssetsMalus);
+                return new EndGameAssetsExcommunication(tmpBlockedCardColor, tmpProductionCardCostMalus, tmpOnAssetsMalus);
             default:
                 throw new InvalidExcommunicationException("Excommunication Type is not recognized");
         }

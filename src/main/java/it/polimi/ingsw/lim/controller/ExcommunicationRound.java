@@ -8,7 +8,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * In this class is handled an excommunication round.
- * Players will choose whether the
+ * Players will choose whether they want to suffer the excommunication or give up they faith points.
+ * Players that can't choose or don't answer will automatically be excommunicated.
  */
 public class ExcommunicationRound implements Runnable, Round {
     ArrayList<User> usersToCheck;

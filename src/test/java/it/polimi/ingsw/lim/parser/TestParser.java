@@ -9,7 +9,6 @@ import it.polimi.ingsw.lim.model.cards.*;
 import it.polimi.ingsw.lim.model.excommunications.*;
 import it.polimi.ingsw.lim.model.immediateEffects.*;
 import junit.framework.*;
-import org.junit.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -243,7 +242,7 @@ public class TestParser{
         Assets[] onAssetsMalus = new Assets[2];
         onAssetsMalus[0] = new Assets(0,1,0,0,0,0,0);
         onAssetsMalus[1] = new Assets(0,0,2,0,0,0,0);
-        EndGameExcommunication e2Expected = new EndGameExcommunication(YELLOW_COLOR, new Assets(1,0,0,0,0,0,0), onAssetsMalus);
+        EndGameAssetsExcommunication e2Expected = new EndGameAssetsExcommunication(YELLOW_COLOR, new Assets(1,0,0,0,0,0,0), onAssetsMalus);
         firtAgeExcommExpected.add(e2Expected);
         return firtAgeExcommExpected;
     }

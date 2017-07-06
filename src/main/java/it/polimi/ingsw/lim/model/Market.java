@@ -1,5 +1,6 @@
 package it.polimi.ingsw.lim.model;
 
+import static it.polimi.ingsw.lim.Settings.*;
 import java.io.Serializable;
 import java.util.*;
 
@@ -17,7 +18,7 @@ public class Market implements Serializable {
         //TODO: exception for wrong player number or wrong bonuses number?
         getLog().info("Creating market instance");
         int slotsNumber = 2;
-        if(playersNumber < 6 && playersNumber > 3) //do we have to check if there are more than 6 players?
+        if(playersNumber <= MAX_USERS_PER_ROOM && playersNumber > 3) //do we have to check if there are more than 6 players?
             slotsNumber = playersNumber;
         this.slots = new FamilyMember[slotsNumber];
         this.bonuses = new Assets[slotsNumber];
@@ -25,7 +26,6 @@ public class Market implements Serializable {
     }
 
     public Market(){
-
     }
 
     /**

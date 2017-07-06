@@ -203,7 +203,6 @@ public class Game {
             this.board.setTurn(1);
             this.board.setAge(this.board.getAge()+1);
             getLog().log(Level.INFO, () -> "Advancing into new age, number: " + this.board.getAge());
-            controllerCallback.handleExcommunications();
         } else {
             this.board.setTurn(this.board.getTurn()+1);
             getLog().log(Level.INFO, () -> "Advancing into new turn, number: " + this.board.getTurn());
@@ -597,6 +596,12 @@ public class Game {
         if(set.size() < choices.size()) throw new ControllerException("Error on giving favors to player, duplicates!");
         choices.forEach(choice -> giveAssetsToPlayer(this.board.getCouncil().getFavorBonuses().get(choice),pl));
     }
+
+    //this method calculates the single bonuses a player can have at the and of the
+    public void calcEndGameBonus(Player pl) {
+
+    }
+
 
     // ------------------------------------------------------------------------ Excommunications
 

@@ -17,7 +17,7 @@ import java.util.*;
 @JsonSubTypes({
         @JsonSubTypes.Type(value = AssetsExcommunication.class, name = "AssetsExcommunications"),
 
-        @JsonSubTypes.Type(value = EndGameExcommunication.class, name = "EndGameExcommunication"),
+        @JsonSubTypes.Type(value = EndGameAssetsExcommunication.class, name = "EndGameAssetsExcommunication"),
 
         @JsonSubTypes.Type(value = MarketExcommunication.class, name = "MarketExcommunication" ),
 

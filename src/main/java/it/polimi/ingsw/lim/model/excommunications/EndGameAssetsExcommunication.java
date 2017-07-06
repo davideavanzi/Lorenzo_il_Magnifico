@@ -5,27 +5,21 @@ import it.polimi.ingsw.lim.model.Assets;
 /**
  * This excommunication gives a malus to the player at the end of the game
  */
-public class EndGameExcommunication extends Excommunication {
+public class EndGameAssetsExcommunication extends Excommunication {
 
-    public EndGameExcommunication (){
+    public EndGameAssetsExcommunication(){
         super();
     }
 
     /**
      * Default constructor
      */
-    public EndGameExcommunication(String blockedCardColor, Assets productionCardCostMalus, Assets[] onAssetsMalus) {
-        this.blockedCardColor = blockedCardColor;
+    public EndGameAssetsExcommunication(Assets productionCardCostMalus, Assets[] onAssetsMalus) {
         this.productionCardCostMalus = productionCardCostMalus;
         this.onAssetsMalus = new Assets[2];
         this.onAssetsMalus[0] = onAssetsMalus[0];
         this.onAssetsMalus[1] = onAssetsMalus[1];
     }
-
-    /**
-     * The player will not receive endgame victory points from the cards of this color
-     */
-    private String blockedCardColor;
 
     /**
      * Player will loose as many victory points as the result of the division of his YellowCards's cost and this asset.
@@ -38,20 +32,12 @@ public class EndGameExcommunication extends Excommunication {
      */
     private Assets[] onAssetsMalus;
 
-    public String getBlockedCardColor(){
-        return blockedCardColor;
-    }
-
     public Assets getProductionCardCostMalus(){
         return productionCardCostMalus;
     }
 
     public Assets getOnAssetsMalus(int i){
         return onAssetsMalus[i];
-    }
-
-    public void setBlockedCardColor (String blockedCardColor){
-        this.blockedCardColor = blockedCardColor;
     }
 
     public void setProductionCardCostMalus (Assets productionCardCostMalus){
@@ -72,22 +58,18 @@ public class EndGameExcommunication extends Excommunication {
             Log.getLog().info("other = null");
             return false;
         }
-        if(!(other instanceof EndGameExcommunication)){
+        if(!(other instanceof EndGameAssetsExcommunication)){
             Log.getLog().info("other not a EndGameExcomm");
             return false;
         }
-        EndGameExcommunication endGameExcommunication = (EndGameExcommunication) other;
+        EndGameAssetsExcommunication endGameAssetsExcommunication = (EndGameAssetsExcommunication) other;
         boolean equals = true;
-        if(!(this.blockedCardColor.equals((endGameExcommunication.getBlockedCardColor())))){
-            Log.getLog().info("blockedColorCard not equal");
-            equals = false;
-        }
-        if(!(this.productionCardCostMalus.equals((endGameExcommunication.getProductionCardCostMalus())))){
+        if(!(this.productionCardCostMalus.equals((endGameAssetsExcommunication.getProductionCardCostMalus())))){
             Log.getLog().info("productionCostMalus not equal");
             equals = false;
         }
         for(int i = 0; i < 2; i++){
-            if(!(this.onAssetsMalus[i].equals((endGameExcommunication.getOnAssetsMalus(i))))){
+            if(!(this.onAssetsMalus[i].equals((endGameAssetsExcommunication.getOnAssetsMalus(i))))){
                 Log.getLog().info("onAssets not equal");
                 equals = false;
             }

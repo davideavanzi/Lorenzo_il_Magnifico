@@ -31,8 +31,6 @@ public class Room {
     private ArrayList<User> usersList;
     private ArrayList<String> playOrder;
     private PlayerRound round;
-    private int roundNumber;
-
 
     public Room(User user) {
         usersList = new ArrayList<>();
@@ -57,10 +55,6 @@ public class Room {
 
     public void setRound(PlayerRound round){
         this.round = round;
-    }
-
-    public void setRoundNumber(int roundNumber){
-        this.roundNumber = roundNumber;
     }
 
     public void addUser(User user) {
@@ -179,6 +173,15 @@ public class Room {
                 this.round = new PlayerRound(this.getUser(username));
                 return;
             }
+    }
+
+    /**
+     * This method handles the game end and builds the ranking based on victory points and final scoring
+     */
+    void endGame(){
+        usersList.forEach(user -> user.gameMessage("The game has ended. Ranking will be built now."));
+        //endgameExcomm!
+        ArrayList<String> ranking = gameController.buildRanking();
     }
 
     public void closeRoom(){

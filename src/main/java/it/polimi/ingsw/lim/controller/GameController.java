@@ -149,13 +149,6 @@ public class GameController {
     }
 
     /**
-     * This method is called from the game upon a new age, it asks whether a player wants to keep
-     */
-    public void handleExcommunications() {
-        //this.roomCallback.getUsersList().forEach(user -> if(this.game.));
-    }
-
-    /**
      * This methods moves a family member in a tower, checking if the action is legal.
      * @param fm
      * @param towerColor
@@ -173,7 +166,7 @@ public class GameController {
             if(this.game.isTowerMoveAffordable(towerColor, floor, fm)){
                 Card card = this.game.getTower(towerColor).getFloor(floor).getCardSlot();
                 boolean cardAffordable = this.game.isCardAffordable(card, actor.getPlayer(), towerColor, null);
-                boolean purpleAffordable = card instanceof PurpleCard ||
+                boolean purpleAffordable = card instanceof PurpleCard &&
                         this.game.isPurpleCardAffordable((PurpleCard)card, actor.getPlayer());
                 if (cardAffordable || purpleAffordable) {
                     boolean useBp = false;
@@ -487,6 +480,11 @@ public class GameController {
     //TODO: do we need it?
     public Room getRoomCallback() {
         return roomCallback;
+    }
+
+    public ArrayList<String> buildRanking() {
+        //game.getPlayers().forEach(game.); TODO !!!
+        return new ArrayList<>();
     }
 
     private class PendingTowerMove {
