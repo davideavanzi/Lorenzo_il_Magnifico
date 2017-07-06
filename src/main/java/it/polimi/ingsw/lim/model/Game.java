@@ -4,11 +4,13 @@ import it.polimi.ingsw.lim.exceptions.ControllerException;
 import it.polimi.ingsw.lim.exceptions.GameSetupException;
 import it.polimi.ingsw.lim.model.cards.Card;
 import it.polimi.ingsw.lim.model.cards.PurpleCard;
+import it.polimi.ingsw.lim.model.cards.YellowCard;
 import it.polimi.ingsw.lim.model.excommunications.*;
 import it.polimi.ingsw.lim.parser.Parser;
 
 import java.util.*;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.lim.Settings.*;
 import static it.polimi.ingsw.lim.Log.*;
@@ -597,12 +599,48 @@ public class Game {
         choices.forEach(choice -> giveAssetsToPlayer(this.board.getCouncil().getFavorBonuses().get(choice),pl));
     }
 
-    //this method calculates the single bonuses a player can have at the and of the
+    /**
+     * this method calculates the single bonuses a player can have at the and of the game.
+     * These bonuses are not influenced by previous excommunications (maybe assets)
+     */
     public void calcEndGameBonus(Player pl) {
-        if(!isPlayerEndCardExcommunicated(pl, GREEN_COLOR)){
-            //Assets endGameAssetsBonus
+        if (!isPlayerEndCardExcommunicated(pl, GREEN_COLOR)){
+            pl.setResources(pl.getResources()
+                    .addVictoryPoints(ENDGAME_GREEN_CARDS_VP_BONUS[pl.getCardsOfColor(GREEN_COLOR).size()]));
         }
+        if (!isPlayerEndCardExcommunicated(pl, BLUE_COLOR)){
+            pl.setResources(pl.getResources()
+                    .addVictoryPoints(ENDGAME_BLUE_CARDS_VP_BONUS[pl.getCardsOfColor(BLUE_COLOR).size()]));
+        }
+        // here we add an assets bonus, other assets except victory points will be counted in the next control
+        if (!isPlayerEndCardExcommunicated(pl, PURPLE_COLOR)){
+            pl.getCardsOfColor(PURPLE_COLOR).forEach(card -> pl.setResources(
+                    pl.getResources().add(((PurpleCard)card).getEndgameBonus())));
+        }
+        pl.setResources(pl.getResources().addVictoryPoints(pl.getResources().sumAll()/ENDGAME_VP_ASSETS_DIVIDER));
+    }
 
+    /**
+     * this method is called at the end of the game and adds victory points to the first two players that have
+     * the highest battle points (first two on the military track)
+     */
+    public void applyVpOnBpRank() {
+        HashMap<Player, Integer> milTrack = new HashMap<>(players.stream().collect(
+                Collectors.toMap (player -> player, player -> player.getResources().getBattlePoints())));
+        ArrayList<Integer> bpScores = new ArrayList<>(milTrack.values());
+        Collections.sort(bpScores, Collections.reverseOrder());
+        //get players with highest score
+        ArrayList<Player> firstPlayers = new ArrayList<Player>(milTrack.entrySet().stream()
+                .filter(pl -> pl.getValue().equals(bpScores.get(0)))
+                .map(Map.Entry::getKey).collect(Collectors.toList()));
+        if (firstPlayers.size() > 1)
+            firstPlayers.forEach(pl -> pl.setResources(pl.getResources().addVictoryPoints(ENDGAME_FIRSTVP_BONUS)));
+        else {
+        ArrayList<Player> secondPlayers = new ArrayList<>(milTrack.entrySet().stream()
+                .filter(pl -> pl.getValue().equals(bpScores.get(0)))
+                .map(Map.Entry::getKey).collect(Collectors.toList()));
+            secondPlayers.forEach(pl -> pl.setResources(pl.getResources().addVictoryPoints(ENDGAME_SECONDVP_BONUS)));
+        }
     }
 
 
@@ -614,7 +652,7 @@ public class Game {
      * @return the answer
      */
     public boolean isNotExcommunicable(Player pl) {
-        return pl.getResources().getFaithPoints() > FIRST_EXCOMM_FP+this.board.getAge()-1;
+        return pl.getResources().getFaithPoints() >= FIRST_EXCOMM_FP+this.board.getAge()-1;
     }
 
     /**
@@ -634,6 +672,20 @@ public class Game {
         ex.addExcommunicated(pl);
         if (ex instanceof StrengthsExcommunication) pl.setStrengths(pl.getStrengths()
                 .add(((StrengthsExcommunication) ex).getMalus()));
+        else if (ex instanceof EndGameAssetsExcommunication) {
+            EndGameAssetsExcommunication excomm = (EndGameAssetsExcommunication) ex;
+            if (excomm.getProductionCardCostMalus() != null) {
+                int costAccumulator = 0;
+                for (Card card : pl.getCardsOfColor(YELLOW_COLOR))
+                    costAccumulator += (card.getCost().getWood() + card.getCost().getStone());
+                pl.setResources(pl.getResources()
+                        .subtractToZero(excomm.getProductionCardCostMalus().multiply(costAccumulator)));
+            } else {
+                pl.setResources(pl.getResources()
+                        .subtractToZero(excomm.getOnAssetsMalus(0).multiply(pl.getResources()
+                                .divide(excomm.getOnAssetsMalus(1)))));
+            }
+        }
     }
 
     boolean isPlayerTowerBonusAllowed(Player pl) {

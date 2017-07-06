@@ -161,4 +161,8 @@ public class Player implements Serializable{
     public Assets getDefaultProductionBonus() {
         return defaultProductionBonus;
     }
+
+    //Used in lambda to generate rank
+    public int getMilitaryPoints() { return this.resources.getBattlePoints(); }
+
 }

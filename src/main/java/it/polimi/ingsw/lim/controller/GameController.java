@@ -485,6 +485,13 @@ public class GameController {
         return new ArrayList<>();
     }
 
+    public void applyEndGameExcomm() {
+        ArrayList<Player> playersToExcomm = new ArrayList<>
+                (game.getPlayers().stream().filter(player -> game.isNotExcommunicable(player))
+                        .collect(Collectors.toList()));
+        playersToExcomm.forEach(player -> game.excommunicatePlayer(player));
+    }
+
     private class PendingTowerMove {
         String tower;
         int floor;
