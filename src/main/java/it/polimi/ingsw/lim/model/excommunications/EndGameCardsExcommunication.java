@@ -5,9 +5,11 @@ import it.polimi.ingsw.lim.Log;
 /**
  * Created by ava on 06/07/17.
  */
-public class EndGameCardsExcommunication {
+public class EndGameCardsExcommunication extends Excommunication{
 
     private String blockedCardColor;
+
+    public EndGameCardsExcommunication(){}
 
     public EndGameCardsExcommunication(String blockedCardColor) {
         this.blockedCardColor = blockedCardColor;

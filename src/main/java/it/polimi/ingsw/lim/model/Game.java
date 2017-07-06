@@ -599,6 +599,9 @@ public class Game {
 
     //this method calculates the single bonuses a player can have at the and of the
     public void calcEndGameBonus(Player pl) {
+        if(!isPlayerEndCardExcommunicated(pl, GREEN_COLOR)){
+            //Assets endGameAssetsBonus
+        }
 
     }
 
@@ -640,15 +643,22 @@ public class Game {
     }
 
     boolean isPlayerServantsExcommunicated(Player pl) {
-        Excommunication secondAgeExcomm = board.getExcommunications().get(0);
-        return !(secondAgeExcomm instanceof ServantsExcommunication &&
+        Excommunication secondAgeExcomm = board.getExcommunications().get(1);
+        return (secondAgeExcomm instanceof ServantsExcommunication &&
                 secondAgeExcomm.getExcommunicated().contains(pl.getColor()));
     }
 
     public boolean isPlayerRoundExcommunicated(Player pl) {
-        Excommunication secondAgeExcomm = board.getExcommunications().get(0);
-        return !(secondAgeExcomm instanceof RoundExcommunication &&
+        Excommunication secondAgeExcomm = board.getExcommunications().get(1);
+        return (secondAgeExcomm instanceof RoundExcommunication &&
                 secondAgeExcomm.getExcommunicated().contains(pl.getColor()));
+    }
+
+    private boolean isPlayerEndCardExcommunicated(Player pl, String color){
+        Excommunication endGameExcomm = board.getExcommunications().get(2);
+        return (endGameExcomm instanceof EndGameCardsExcommunication &&
+                endGameExcomm.getExcommunicated().contains(pl.getColor()) &&
+                ((EndGameCardsExcommunication) endGameExcomm).getBlockedCardColor().equals(color));
     }
 
     /**

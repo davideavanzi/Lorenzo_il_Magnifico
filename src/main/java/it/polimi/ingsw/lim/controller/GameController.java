@@ -179,8 +179,7 @@ public class GameController {
                     if (cardAffordable && purpleAffordable) {
                         //let the client choose and save the action state.
                         this.pendingTowerMove = new PendingTowerMove(towerColor, floor, fm, servantsDeployed, actor);
-                        actor.askForOptionalBpPick(((PurpleCard) card).getOptionalBpRequirement(),
-                                ((PurpleCard) card).getOptionalBpCost());
+                        actor.askForOptionalBpPick();
                     } else {
                         //in this case only one of the two paying methods is available
                         if (purpleAffordable) useBp = true;
@@ -418,15 +417,14 @@ public class GameController {
         }
         Card card = this.game.getTower(towerColor).getFloor(floor).getCardSlot();
         boolean cardAffordable = this.game.isCardAffordable(card, actor.getPlayer(), towerColor, optPickDiscount);
-        boolean purpleAffordable = card instanceof PurpleCard ||
+        boolean purpleAffordable = card instanceof PurpleCard &&
                 this.game.isPurpleCardAffordable((PurpleCard)card, actor.getPlayer());
         if (cardAffordable || purpleAffordable) {
             boolean useBp = false;
             if (cardAffordable && purpleAffordable) {
                 //let the client choose and save the action state.
                 this.pendingTowerMove = new PendingTowerMove(towerColor, floor, servantsDeployed, actor);
-                actor.askForOptionalBpPick(((PurpleCard) card).getOptionalBpRequirement(),
-                        ((PurpleCard) card).getOptionalBpCost());
+                actor.askForOptionalBpPick();
             } else {
                 //in this case only one of the two paying methods is available
                 if (purpleAffordable) useBp = true;
@@ -483,7 +481,7 @@ public class GameController {
     }
 
     public ArrayList<String> buildRanking() {
-        //game.getPlayers().forEach(game.); TODO !!!
+        game.getPlayers().forEach(player -> game.calcEndGameBonus(player));
         return new ArrayList<>();
     }
 

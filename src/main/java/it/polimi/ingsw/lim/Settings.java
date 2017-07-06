@@ -13,7 +13,7 @@ public class Settings {
     public static final int FAITH_TRACK_LENGTH = 30;
     public static final int TOWER_HEIGHT = 4;
     public static final int[] FLOORS_ACTION_COSTS = {1, 3, 5, 7};
-    public static final int[] PLAYER_TERRITORIES_REQ = {0, 0, 1, 4, 10, 20};
+    public static final int[] PLAYER_TERRITORIES_REQ = {0, 0, 3, 7, 12, 18};
     public static final int COUNCIL_FAVUORS_TYPES = 5;
     public static final int MARKET_MAX_SIZE = 5;
     public static final int MARKET_ACTION_COST = 1;
@@ -37,6 +37,9 @@ public class Settings {
     public static final int PRODUCTION_STR_MALUS = 3;
     public static final int PRODUCTION_DEFAULTSPACE_SIZE = 1;
 
+
+    public static final int[] ENDGAME_GREEN_CARDS_VP_BONUS = {0, 0, 1, 4, 10, 20};
+    public static final int[] ENDGAME_BLUE_CARDS_VP_BONUS = {1, 3, 6, 10, 15, 21};
 
     //Color strings used in the code.
     //These should prevent errors setting a standard name to all fixed string variables.
