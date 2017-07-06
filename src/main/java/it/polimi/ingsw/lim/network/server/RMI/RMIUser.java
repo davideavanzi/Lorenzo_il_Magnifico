@@ -22,6 +22,7 @@ public class RMIUser extends User {
     /**
      * rmi Client reference.
      */
+    @JsonIgnore
     RMIClientInterf rci;
 
     /**
@@ -39,15 +40,6 @@ public class RMIUser extends User {
         super();
         new Thread(new RMIAliveness(this)).start();
     }
-
-    public void setRci(RMIClientInterf rci){
-        this.rci = rci;
-    }
-
-    public RMIClientInterf getRci(){
-        return rci;
-    }
-
 
     @Override
     public void sendChatMessage(String sender, String message) {
@@ -162,7 +154,7 @@ public class RMIUser extends User {
                 }
             } catch (InterruptedException e) {
                 getLog().log(Level.SEVERE, () -> "RMI Aliveness thread interrupted for user "+user.getUsername());
-            } catch (RemoteException e) {
+            } catch (RemoteException | NullPointerException e) {
                 user.hasDied();
             }
             Thread.currentThread().interrupt();

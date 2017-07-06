@@ -1,7 +1,7 @@
 package it.polimi.ingsw.lim.parser;
 
 /**
- * Created by FabCars. This class contains all the key used in the Json file.
+ * This class contains all the key used in the Json file.
  * It is created due to increase scalability of the code (e.g. if the key of the Json file changes)
  */
 class KeyConst {
@@ -117,7 +117,7 @@ class KeyConst {
     protected static final String PLAY_MOVE_TIMER = "playMoveTimer";
     
     //writer
-    protected static final String PATH_TO_WRITER_BOARD_FILE = "src/main/gameData/configs/writer/boardWriter";
-    protected static final String PATH_TO_WRITER_ROOM_FILE = "src/main/gameData/configs/writer/roomWriter";
+    protected static final String PATH_TO_WRITER_GAME_FILE = "src/main/gameData/configs/writer/game/gameWriter_";
+    protected static final String PATH_TO_WRITER_ROOM_FILE = "src/main/gameData/configs/writer/room/roomWriter_";
     protected static final String EXTENTION = ".json";
 }

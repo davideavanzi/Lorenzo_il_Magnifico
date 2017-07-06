@@ -150,7 +150,7 @@ public class Parser {
      * @param assetsToParse is a JsonNode element "link" to the assets to parse in JSon file
      * @return an Assets' Object type after parsing
      */
-    private static Assets parseAssets(JsonNode assetsToParse) {
+    private Assets parseAssets(JsonNode assetsToParse) {
         return new Assets(
                 assetsToParse.path(COIN).asInt(),
                 assetsToParse.path(WOOD).asInt(),
@@ -167,7 +167,7 @@ public class Parser {
      * @param arrayAssetsNode is the node "link" to the array in JsonFile
      * @return an ArrayList of Assets
      */
-    private static ArrayList<Assets> parseArrayAssets (JsonNode arrayAssetsNode){
+    private ArrayList<Assets> parseArrayAssets (JsonNode arrayAssetsNode){
         ArrayList<Assets> assets = new ArrayList<>();
         JsonNode tmpArrayAssetsNode = arrayAssetsNode;
         Iterator<JsonNode> arrayAssetsIterator = tmpArrayAssetsNode.getElements();
@@ -185,7 +185,7 @@ public class Parser {
      * @param assetsNum is the dimension of the array of Assets
      * @return an array of Assets
      */
-    private static Assets[] parseArrayAssets(JsonNode arrayAssetsNode, int assetsNum) {
+    private Assets[] parseArrayAssets(JsonNode arrayAssetsNode, int assetsNum) {
         JsonNode tmpArrayAssetsNode = arrayAssetsNode;
         Assets[] assets = new Assets[assetsNum];
         Iterator<JsonNode> arrayAssetsIterator = tmpArrayAssetsNode.getElements();
@@ -204,7 +204,7 @@ public class Parser {
      * @param strengthsToParse is a JsonNode element "link" to the strength in JSon file
      * @return a Strengths' Object type after parsing
      */
-    private static Strengths parseStrengths(JsonNode strengthsToParse) {
+    private Strengths parseStrengths(JsonNode strengthsToParse) {
         return new Strengths(
                 strengthsToParse.path(HARVEST_BONUS).asInt(),
                 strengthsToParse.path(PRODUCTION_BONUS).asInt(),
@@ -227,7 +227,7 @@ public class Parser {
      * @return an HashMap<String, Assets[]> that contain all the bonuses previously listed
      * @throws IOException if in the given path do not exist the file needed
      */
-    private static HashMap<String, Assets[]> boardAssetsParser(String pathToConfiguratorBonusesAssetsFile)
+    private HashMap<String, Assets[]> boardAssetsParser(String pathToConfiguratorBonusesAssetsFile)
             throws IOException{
         HashMap<String, Assets[]> bonuses = new HashMap<>();
 
@@ -248,7 +248,7 @@ public class Parser {
         return bonuses;
     }
 
-    private static Object[] marketBonusParser(String pathToConfiguratorBonusesAssetsFile)
+    private Object[] marketBonusParser(String pathToConfiguratorBonusesAssetsFile)
             throws IOException{
         Object[] market;
         byte[] jsonData = Files.readAllBytes(Paths.get(pathToConfiguratorBonusesAssetsFile));
@@ -259,7 +259,7 @@ public class Parser {
         return market;
     }
 
-    private static Object[] parseArrayMarketBonuses(JsonNode marketToParse, int marketSize){
+    private Object[] parseArrayMarketBonuses(JsonNode marketToParse, int marketSize){
         Object[] market = new Object[marketSize];
         Iterator<JsonNode> arrayMarketIterator = marketToParse.getElements();
         int i = 0;
@@ -282,7 +282,7 @@ public class Parser {
      * @param immediateEffectType is a JsonNode element "link" to the immediateEffectType in JSon file
      * @return an ArrayList of ImmediateEffect after parsing
      */
-    private static ArrayList<ImmediateEffect> parseImmediateEffect(JsonNode immediateEffectType) {
+    private ArrayList<ImmediateEffect> parseImmediateEffect(JsonNode immediateEffectType) {
         //use to check if an ImmediateEffect exists
         boolean immediateEffectExist = false;
 
@@ -378,7 +378,7 @@ public class Parser {
      * @param cardNode is the node where the GreenCard details starts in JsonFile
      * @return a new built GreenCard
      */
-    private static GreenCard parseGreenCard
+    private GreenCard parseGreenCard
     (String cardName, int cardAge, Assets tmpCardAssetsCost, ArrayList<ImmediateEffect> immediateEffects, JsonNode cardNode){
         Assets tmpGreenHarvestResult = new Assets();
         if (cardNode.path(GREEN_HARVEST_RESULT).isContainerNode()) {
@@ -411,7 +411,7 @@ public class Parser {
      * @param cardNode is the node where the BlueCard details starts in JsonFile
      * @return a new built BlueCard
      */
-    private static BlueCard parseBlueCard
+    private BlueCard parseBlueCard
             (String cardName, int cardAge, Assets tmpCardAssetsCost, ArrayList<ImmediateEffect> immediateEffects, JsonNode cardNode) {
         Strengths tmpBluePermanentBonus = new Strengths();
         if (cardNode.path(BLUE_PERMANENT_BONUS).isContainerNode()) {
@@ -478,7 +478,7 @@ public class Parser {
      * @param cardNode is the node where the YellowCard details starts in JsonFile
      * @return a new built YellowCard
      */
-    private static YellowCard parseYellowCard
+    private YellowCard parseYellowCard
             (String cardName, int cardAge, Assets tmpCardAssetsCost, ArrayList<ImmediateEffect> immediateEffects, JsonNode cardNode) {
         ArrayList<Assets> tmpYellowProductionCostList = new ArrayList<>();
         ArrayList<Assets> tmpYellowProductionResultList = new ArrayList<>();
@@ -533,7 +533,7 @@ public class Parser {
      * @param cardNode is the node where the PurpleCard details starts in JsonFile
      * @return a new built PurpleCard
      */
-    private static PurpleCard parsePurpleCard
+    private PurpleCard parsePurpleCard
             (String cardName, int cardAge, Assets tmpCardAssetsCost, ArrayList<ImmediateEffect> immediateEffects, JsonNode cardNode) {
         JsonNode purpleEndGameBonus = cardNode.path(PURPLE_END_GAME_BONUS);
         Assets tmpPurpleEndGameBonus = parseAssets(purpleEndGameBonus);
@@ -567,7 +567,7 @@ public class Parser {
      * @param immediateEffects is an ArrayList that contain all the immediate effect of the card (parsed previously)
      * @return a new built BlackCard
      */
-    private static BlackCard parseBlackCard
+    private BlackCard parseBlackCard
             (String cardName, int cardAge, Assets tmpCardAssetsCost, ArrayList<ImmediateEffect> immediateEffects) {
         return new BlackCard(
                 cardName,
@@ -587,7 +587,7 @@ public class Parser {
      * @throws IOException if in the given path do not exist the file needed
      * @throws InvalidCardException if even just one of the not nullable variables is null or invalid
      */
-    private static ArrayList<HashMap<String, ArrayList<Card>>> cardParser(String pathToConfiguratorCardFile)
+    private ArrayList<HashMap<String, ArrayList<Card>>> cardParser(String pathToConfiguratorCardFile)
             throws IOException, InvalidCardException{
 
         //the ArrayList where store all the game's card
@@ -676,19 +676,6 @@ public class Parser {
                     throw new InvalidCardException("Card Type is not recognized");
              }
         }
-        System.out.println("SIZE: " + cards.get(0).get(GREEN_COLOR).size());
-        System.out.println("SIZE: " + cards.get(1).get(GREEN_COLOR).size());
-        System.out.println("SIZE: " + cards.get(2).get(GREEN_COLOR).size());
-        System.out.println("SIZE: " + cards.get(0).get(BLUE_COLOR).size());
-        System.out.println("SIZE: " + cards.get(1).get(BLUE_COLOR).size());
-        System.out.println("SIZE: " + cards.get(2).get(BLUE_COLOR).size());
-        System.out.println("SIZE: " + cards.get(0).get(YELLOW_COLOR).size());
-        System.out.println("SIZE: " + cards.get(1).get(YELLOW_COLOR).size());
-        System.out.println("SIZE: " + cards.get(2).get(YELLOW_COLOR).size());
-        System.out.println("SIZE: " + cards.get(0).get(PURPLE_COLOR).size());
-        System.out.println("SIZE: " + cards.get(1).get(PURPLE_COLOR).size());
-        System.out.println("SIZE: " + cards.get(2).get(PURPLE_COLOR).size());
-
         return cards;
     }
 
@@ -700,7 +687,7 @@ public class Parser {
      * @return an Assets Object that contain the bonus previously described
      * @throws IOException if in the given path do not exist the file needed
      */
-    private static Assets parseCouncilBonus(String pathToConfiguratorBonusAssetsFile)
+    private Assets parseCouncilBonus(String pathToConfiguratorBonusAssetsFile)
             throws IOException{
         Assets councilBonus;
         //read JSon all file data
@@ -724,7 +711,7 @@ public class Parser {
      * @return an int (the number of he favour taken by a player that "goes" to the council)
      * @throws IOException if in the given path do not exist the file needed
      */
-    private static int parseCouncilFavours(String pathToConfiguratorBonusAssetsFile)
+    private int parseCouncilFavours(String pathToConfiguratorBonusAssetsFile)
             throws IOException{
         int councilFavours;
 
@@ -748,7 +735,7 @@ public class Parser {
      * @return an Assets type (the bonus given to a player when the game starts)
      * @throws IOException if in the given path do not exist the file needed
      */
-    private static Assets parseStartingGameBonus (String pathToConfiguratorBonusAssetsFile)
+    private Assets parseStartingGameBonus (String pathToConfiguratorBonusAssetsFile)
             throws IOException{
         Assets startingGameBonus;
 
@@ -770,7 +757,7 @@ public class Parser {
      * @return the excommunication type selected based on the type indicated in the JsonFile
      * @throws InvalidExcommunicationException if even just one of the not nullable variables is null or invalid
      */
-    private static Excommunication parseSingleExcommunication (JsonNode excommunicationNode)
+    private Excommunication parseSingleExcommunication (JsonNode excommunicationNode)
             throws InvalidExcommunicationException{
         if(!(excommunicationNode.path(EXCOMMUNICATION_TYPE).isTextual())){
             throw new InvalidExcommunicationException("Excommunication Type is not nullable");
@@ -809,7 +796,7 @@ public class Parser {
      * @return an ArrayList contain all the excommunication of that age
      * @throws InvalidExcommunicationException if even just one of the not nullable variables is null or invalid
      */
-    private static ArrayList<Excommunication> parseArrayExcommunication (JsonNode arrayExcommunicationNode, int age)
+    private ArrayList<Excommunication> parseArrayExcommunication (JsonNode arrayExcommunicationNode, int age)
             throws InvalidExcommunicationException {
         JsonNode tmpArrayExcommunicationNode = arrayExcommunicationNode;
         ArrayList<Excommunication> tmpArrayExcommunication = new ArrayList<>();
@@ -835,7 +822,7 @@ public class Parser {
      * @throws IOException if in the given path do not exist the file needed
      * @throws InvalidExcommunicationException if even just one of the not nullable variables is null or invalid
      */
-    private static HashMap<Integer, ArrayList<Excommunication>> parseExcommunications (String pathToExcommunicationsConfiguratorFile)
+    private HashMap<Integer, ArrayList<Excommunication>> parseExcommunications (String pathToExcommunicationsConfiguratorFile)
             throws IOException, InvalidExcommunicationException {
         HashMap<Integer, ArrayList<Excommunication>> tmpExcommunications = new HashMap<>();
         //read JSon all file data
@@ -866,7 +853,7 @@ public class Parser {
      * @return ArrayList of assets containing the player board assets bonus
      * @throws IOException if in the given path do not exist the file needed
      */
-    private static ArrayList<Assets> parseBoardPlayerProductionBonus (String pathToConfiguratorBonusAssetsFile)
+    private ArrayList<Assets> parseBoardPlayerProductionBonus (String pathToConfiguratorBonusAssetsFile)
             throws IOException{
         //read JSon all file data
         byte[] jsonData = Files.readAllBytes(Paths.get(pathToConfiguratorBonusAssetsFile));
@@ -887,7 +874,7 @@ public class Parser {
      * @return ArrayList of assets containing the player board assets bonus
      * @throws IOException if in the given path do not exist the file needed
      */
-    private static ArrayList<Assets> parseBoardPlayerHarvestBonus (String pathToConfiguratorBonusAssetsFile)
+    private  ArrayList<Assets> parseBoardPlayerHarvestBonus (String pathToConfiguratorBonusAssetsFile)
             throws IOException{
         byte[] jsonData = Files.readAllBytes(Paths.get(pathToConfiguratorBonusAssetsFile));
 
@@ -908,7 +895,7 @@ public class Parser {
      * @throws IOException if in the given path do not exist the file needed
      * @throws InvalidTimerException if the time is not specified or invalid
      */
-    private static int parseTimerStartGame (String pathToConfiguratorTimersFile)
+    public int parseTimerStartGame (String pathToConfiguratorTimersFile)
             throws IOException, InvalidTimerException{
         byte[] jsonData = Files.readAllBytes(Paths.get(pathToConfiguratorTimersFile));
 
@@ -934,7 +921,7 @@ public class Parser {
      * @throws IOException if in the given path do not exist the file needed
      * @throws InvalidTimerException if the time is not specified or invalid
      */
-    private static int parseTimerPlayMove (String pathToConfiguratorTimersFile)
+    public int parseTimerPlayMove (String pathToConfiguratorTimersFile)
             throws IOException, InvalidTimerException {
         byte[] jsonData = Files.readAllBytes(Paths.get(pathToConfiguratorTimersFile));
 

@@ -2,16 +2,21 @@ package it.polimi.ingsw.lim.network.server;
 
 import static it.polimi.ingsw.lim.Log.*;
 
+import it.polimi.ingsw.lim.Log;
 import it.polimi.ingsw.lim.controller.Room;
 import it.polimi.ingsw.lim.controller.User;
-import it.polimi.ingsw.lim.model.Board;
+import it.polimi.ingsw.lim.model.Player;
 import it.polimi.ingsw.lim.network.server.RMI.RMIServer;
 import it.polimi.ingsw.lim.network.server.socket.SocketServer;
+import it.polimi.ingsw.lim.parser.Writer;
 
+import java.io.File;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.logging.Level;
+
 
 /**
  * Created by nico.
@@ -64,6 +69,15 @@ public class MainServer {
             getLog().log(Level.SEVERE, "[RMI]: Could not create RMIServer's instance", e);
         }
         roomList = new ArrayList<>();
+        try {
+            for (File file : new File("src/main/gameData/configs/writer/room/").listFiles()) {
+                roomList.add(Writer.readerRoom(file));
+                Log.getLog().info("[SERVER]: importing room");
+            }
+            System.out.println("SIZE" + roomList.size()); //todo test
+        }catch (NullPointerException e){
+            Log.getLog().info("[SERVER]: No room file in src/main/gameData/configs/writer/room/v");
+        }
         connectedUsers = new ArrayList<>();
         try {
             jdbc = new JDBC();
@@ -113,8 +127,20 @@ public class MainServer {
     public static Room addUserToRoom(User user) {
         connectedUsers.add(user);
         if(roomList.isEmpty() || !roomList.get(roomList.size()-1).isOpen()) {
-            roomList.add(new Room(user, roomList.size()));
+            Random random = new Random();
+            roomList.add(new Room(user, random.nextInt(89999999) + 100000000));
+            Log.getLog().info("[SERVER]: creating new room. Rooms size " + roomList.size());
         } else {
+            Log.getLog().info("[SERVER]: add user to existing room. Rooms size " + roomList.size());
+            for(Room room: roomList){
+                for(User u: room.getUsersList()){
+                    Log.getLog().info("Player " + u.getUsername()+" has rejoin?");
+                    if(u.getUsername().equals(user.getUsername())){
+                        room.readdUser(user);
+                        return roomList.get(roomList.size()-1);
+                    }
+                }
+            }
             roomList.get(roomList.size()-1).addUser(user);
         }
         return roomList.get(roomList.size()-1);

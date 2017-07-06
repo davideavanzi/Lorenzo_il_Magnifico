@@ -25,7 +25,6 @@ public class Room {
 
     @JsonIgnore
     private transient GameController gameController;
-    @JsonIgnore
     private boolean roomOpen = true; // room open
     @JsonIgnore
     private Lock excommLock;
@@ -44,8 +43,47 @@ public class Room {
         this.id = id;
     }
 
+    public int getId(){
+        return id;
+    }
+
+    public void setExcommLock(Lock excommLock){
+        this.excommLock = excommLock;
+    }
+
+    public void setRoomOpen(boolean roomOpen){
+        this.roomOpen = roomOpen;
+    }
+
+    public Lock getExcommLock(){
+        return excommLock;
+    }
+
+    public void readdUser(User user){
+        user.setRoom(this);
+        getLog().log(Level.INFO, () -> "REadding "+ user.getUsername() +" to existing room");
+        user.setIsAlive(true);
+        int i = 1;
+        for(User u: usersList){
+            if(u.isAlive()){
+                System.out.println(u.getUsername());
+                i++;
+            }
+        }
+        this.gameController = new GameController(this);
+        //gameController.setGame(Writer.gameReader(this.getId()));
+        gameController.restartGame(this);
+        if(i == 1) {
+            this.switchRound();
+        }
+    }
+
+    public void setId(int id){this.id = id;}
+
     public Room(){
         usersList = new ArrayList<>();
+        playOrder = new ArrayList<>();
+        excommLock = new Lock();
     }
 
     public void setUsersList(ArrayList<User> usersList){
@@ -102,7 +140,7 @@ public class Room {
         if (playOrder.isEmpty()) {
             startNewTurn();
             Log.getLog().info("[WRITER]: saving game info");
-            Writer.boardWriter(this.gameController.getBoard(), id);
+            Writer.gameWriter(this.gameController.getGame(), id);
             Writer.roomWriter(this, id);
             return;
         }
@@ -112,7 +150,7 @@ public class Room {
         Log.getLog().info("player ".concat(round.getUserName()).concat(" now can play ")
                 .concat("in room" + this.getUser(nextUserName).getRoom().toString()));
         Log.getLog().info("[WRITER]: saving game info");
-        Writer.boardWriter(this.gameController.getBoard(), id);
+        Writer.gameWriter(this.gameController.getGame(), id);
         Writer.roomWriter(this, id);
     }
 

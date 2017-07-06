@@ -6,6 +6,7 @@ import it.polimi.ingsw.lim.model.cards.Card;
 import it.polimi.ingsw.lim.model.cards.PurpleCard;
 import it.polimi.ingsw.lim.model.excommunications.*;
 import it.polimi.ingsw.lim.parser.Parser;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -37,6 +38,38 @@ public class Game {
         this.randomGenerator = new Random();
     }
 
+    public Game(){
+        this.players = new ArrayList<>();
+        this.availablePlayerColors = new ArrayList<>(PLAYER_COLORS);
+        this.randomGenerator = new Random();
+    }
+
+
+    public void setBoard(Board board){
+        this.board = board;
+    }
+
+    public void setPlayers(ArrayList<Player> players){
+        this.players = players;
+    }
+
+    public void setCardsDeck(CardsDeck cardsDeck){
+        this.cardsDeck = cardsDeck;
+    }
+
+    public void setAvailablePlayerColors(List<String> availablePlayerColors){
+        this.availablePlayerColors = availablePlayerColors;
+    }
+
+    public CardsDeck getCardsDeck (){
+        return cardsDeck;
+    }
+
+    public List<String> getAvailablePlayerColors(){
+        return availablePlayerColors;
+    }
+
+
     /**
      * The board, contains links to the structures
      */
@@ -60,8 +93,9 @@ public class Game {
     /**
      * reference to the controller handling this game instance
      */
+    @JsonIgnore
     private GameController controllerCallback;
-
+    @JsonIgnore
     private Random randomGenerator;
 
     // ############################################################# METHODS AHEAD
@@ -168,16 +202,20 @@ public class Game {
         this.board.setProduction(new ArrayList<>());
     }
 
+    @JsonIgnore
     public int getAge() { return  this.board.getAge(); }
+    @JsonIgnore
     public int getTurn() { return  this.board.getTurn(); }
+
     public ArrayList<Player> getPlayers(){ return this.players; }
 
-
+    @JsonIgnore
     public Player getPlayer(String nickname) {
         getLog().log(Level.INFO, () -> "Getting player "+nickname+" from "+players.size()+" Players");
         return players.stream().filter(pl -> pl.getNickname().equals(nickname)).findFirst().orElse(null);
     }
 
+    @JsonIgnore
     public Player getPlayerFromColor(String color) {
         return players.stream().filter(pl -> pl.getColor().equals(color)).findFirst().orElse(null);
     }
@@ -225,6 +263,7 @@ public class Game {
      * @param floorNumber
      * @param fm the family member performing the action
      */
+    @JsonIgnore
     public boolean isTowerMoveAllowed(String towerColor, int floorNumber, FamilyMember fm) {
         Floor destination = this.board.getTowers().get(towerColor).getFloor(floorNumber);
         if (destination.isOccupied()) return false;
@@ -266,6 +305,7 @@ public class Game {
      * @param fm
      * @return this.getPlayerFromColor(fm.getOwnerColor()
      */
+    @JsonIgnore
     public boolean isTowerMoveAffordable(String towerColor, int floorNumber, FamilyMember fm) {
         Player pl = this.getPlayerFromColor(fm.getOwnerColor());
         Floor destination = this.getTower(towerColor).getFloor(floorNumber);
@@ -287,13 +327,13 @@ public class Game {
             return true;
         return false;
     }
-
+    @JsonIgnore
     public boolean isCardAffordable(Card card, Player actor, String towerColor, Assets optionalPickDiscount) {
         Assets cardCost = card.getCost().subtractToZero
                 (actor.getPickDiscount(towerColor).subtractToZero(optionalPickDiscount));
         return (actor.getResources().isGreaterOrEqual(cardCost));
     }
-
+    @JsonIgnore
     public boolean isPurpleCardAffordable(PurpleCard card, Player pl){
         return (pl.getResources().getVictoryPoints() > card.getOptionalBpRequirement());
     }
@@ -348,6 +388,7 @@ public class Game {
      * @param floor
      * @return
      */
+    @JsonIgnore
     public boolean isFastTowerMoveAllowed(String towerColor, int floor, Player pl, Assets optionalPickDiscount) {
         Floor destination = this.board.getTowers().get(towerColor).getFloor(floor);
         if (!destination.hasCard()) return false;
@@ -367,6 +408,7 @@ public class Game {
      * @param towerColor the color of the tower
      * @return boolean
      */
+    @JsonIgnore
     public boolean isTowerOccupied(String towerColor) {
         for (int i = 1; i <= TOWER_HEIGHT; i++)
             if (this.board.getTowers().get(towerColor).getFloor(i).isOccupied())
@@ -379,6 +421,7 @@ public class Game {
      * @param fm
      * @return boolean
      */
+    @JsonIgnore
     public boolean isHarvestMoveAllowed(FamilyMember fm) {
         if(this.players.size() == 2 && !this.board.getHarvest().isEmpty())
             return false;
@@ -479,7 +522,7 @@ public class Game {
         if (this.board.getProduction().size() <= PRODUCTION_DEFAULTSPACE_SIZE) baseStr -= PRODUCTION_STR_MALUS;
         return baseStr+servantsDeployed+getPlayerFromColor(fm.getOwnerColor()).getStrengths().getProductionBonus();
     }
-
+    @JsonIgnore
     public boolean isProductionMoveAllowed(FamilyMember fm) {
         if(this.players.size() == 2 && !this.board.getProduction().isEmpty())
             return false;
@@ -500,11 +543,12 @@ public class Game {
         this.board.getProduction().add(fm);
     }
 
+    @JsonIgnore
     public Tower getTower(String color){
         return this.board.getTowers().get(color);
     }
 
-
+    @JsonIgnore
     public ArrayList<String> getNewPlayerOrder() {
         ArrayList<FamilyMember> fms = this.board.getCouncil().getFamilyMembers();
         ArrayList<String> councilPlayers = new ArrayList<>();
@@ -519,6 +563,7 @@ public class Game {
         return councilPlayers;
     }
 
+    @JsonIgnore
     public Council getCouncil() {
         return this.board.getCouncil();
     }
@@ -620,10 +665,12 @@ public class Game {
     /**
      * @return an excommunication based on the game's age
      */
+    @JsonIgnore
     public Excommunication getExcommunication(){
         return this.board.getExcommunications().get(this.board.getAge());
     }
 
+    @JsonIgnore
     public Excommunication getExcommunication(int age) {
         return this.board.getExcommunications().stream().filter(excomm -> excomm.getAge() == age)
                 .findFirst().orElse(null);
@@ -636,24 +683,28 @@ public class Game {
                 .add(((StrengthsExcommunication) ex).getMalus()));
     }
 
+    @JsonIgnore
     boolean isPlayerTowerBonusAllowed(Player pl) {
         Excommunication secondAgeExcomm = board.getExcommunications().get(0);
         return !(secondAgeExcomm instanceof AssetsExcommunication &&
                 secondAgeExcomm.getExcommunicated().contains(pl.getColor()));
     }
 
+    @JsonIgnore
     boolean isPlayerServantsExcommunicated(Player pl) {
         Excommunication secondAgeExcomm = board.getExcommunications().get(1);
         return (secondAgeExcomm instanceof ServantsExcommunication &&
                 secondAgeExcomm.getExcommunicated().contains(pl.getColor()));
     }
 
+    @JsonIgnore
     public boolean isPlayerRoundExcommunicated(Player pl) {
         Excommunication secondAgeExcomm = board.getExcommunications().get(1);
         return (secondAgeExcomm instanceof RoundExcommunication &&
                 secondAgeExcomm.getExcommunicated().contains(pl.getColor()));
     }
 
+    @JsonIgnore
     private boolean isPlayerEndCardExcommunicated(Player pl, String color){
         Excommunication endGameExcomm = board.getExcommunications().get(2);
         return (endGameExcomm instanceof EndGameCardsExcommunication &&
@@ -664,9 +715,11 @@ public class Game {
     /**
      * FOLLOWING METHODS ARE USED ONLY FOR TESTING PURPOSES
      */
+    @JsonIgnore
     public ArrayList<FamilyMember> getHarvest() {
         return this.board.getHarvest();
     }
+    @JsonIgnore
     public ArrayList<FamilyMember> getProduction() {
         return this.board.getProduction();
     }

@@ -3,6 +3,7 @@ package it.polimi.ingsw.lim.parser;
 import it.polimi.ingsw.lim.Log;
 import it.polimi.ingsw.lim.controller.Room;
 import it.polimi.ingsw.lim.model.Board;
+import it.polimi.ingsw.lim.model.Game;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
 
@@ -15,14 +16,14 @@ import static it.polimi.ingsw.lim.parser.KeyConst.*;
  * The task of this class is to write in a file all the game parameters, in order to make the game persistent
  */
 public class Writer {
-    public static String boardWriter(Board board, int id) {
-        String pathToWriterFile = (PATH_TO_WRITER_BOARD_FILE + id).concat(EXTENTION);
+    public static String gameWriter(Game game, int id) {
+        String pathToWriterFile = (PATH_TO_WRITER_GAME_FILE + id).concat(EXTENTION);
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS, false);
         File file = new File(pathToWriterFile);
         try{
             file.createNewFile();
-            mapper.writeValue(file, board);
+            mapper.writeValue(file, game);
         }catch (IOException e){
             Log.getLog().severe("[WRITER]:Unable to open or create board writer file");
             e.printStackTrace();
@@ -31,21 +32,22 @@ public class Writer {
         return pathToWriterFile;
     }
 
-    public static Board readerBoard(String pathToWriterBoardFile){
+    public static Game gameReader(int id){
         ObjectMapper mapper = new ObjectMapper();
-        Board board = null;
+        Game game = null;
+        String pathToWriterGameFile = PATH_TO_WRITER_GAME_FILE + id + EXTENTION;
         try {
-            board = mapper.readValue(new File(pathToWriterBoardFile), Board.class);
+            game = mapper.readValue(new File(pathToWriterGameFile), Game.class);
         }catch (IOException e){
             Log.getLog().severe("[READER]:Unable to open board writer file");
             e.printStackTrace();
             return null;
         }
-        return board;
+        return game;
     }
 
     public static String roomWriter(Room room, int id){
-        String pathToWriterFile = PATH_TO_WRITER_ROOM_FILE + id;
+        String pathToWriterFile = (PATH_TO_WRITER_ROOM_FILE + id).concat(EXTENTION);
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS, false);
         File file = new File(pathToWriterFile);
@@ -59,15 +61,16 @@ public class Writer {
         return pathToWriterFile;
     }
 
-    public static Room readerRoom(String pathToWriterRoomFile){
+    public static Room readerRoom(File file){
         ObjectMapper mapper = new ObjectMapper();
         Room room = null;
         try {
-            room = mapper.readValue(new File(pathToWriterRoomFile), Room.class);
+            room = mapper.readValue(file, Room.class);
         }catch (IOException e){
             Log.getLog().severe("[READER]:Unable to open board writer file");
             e.printStackTrace();
         }
         return room;
     }
+
 }

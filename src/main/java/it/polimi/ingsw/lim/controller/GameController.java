@@ -7,6 +7,7 @@ import it.polimi.ingsw.lim.model.*;
 import it.polimi.ingsw.lim.model.cards.*;
 import it.polimi.ingsw.lim.model.immediateEffects.*;
 import it.polimi.ingsw.lim.parser.Parser;
+import it.polimi.ingsw.lim.parser.Writer;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -25,7 +26,7 @@ public class GameController {
 
     public GameController(Room roomCallback) { this.roomCallback = roomCallback; }
 
-    public GameController() {  }
+    public GameController() { game = new Game(); }
 
     private ArrayList<ArrayList<Assets[]>> currentProductionOptions;
     private Assets currentProductionAccumulator;
@@ -37,6 +38,11 @@ public class GameController {
     public Game getGame(){
         return this.game;
     }
+
+    public void setGame(Game game){
+        this.game = game;
+    }
+
 
     public static void main(String[] args){
 
@@ -146,6 +152,10 @@ public class GameController {
             getLog().severe(e.getMessage());
         }
         game.setUpTurn();
+    }
+
+    public void restartGame(Room roomCallback){
+        this.game = Writer.gameReader(roomCallback.getId());
     }
 
     /**

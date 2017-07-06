@@ -5,6 +5,7 @@ import it.polimi.ingsw.lim.model.Assets;
 import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.Player;
 import it.polimi.ingsw.lim.model.cards.PurpleCard;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +19,7 @@ public class SocketUser extends User {
     /**
      * Socket Client Handler reference.
      */
+    @JsonIgnore
     SocketClientHandler sch;
 
     /**
@@ -32,14 +34,6 @@ public class SocketUser extends User {
 
     SocketUser(){
         super();
-    }
-
-    public void setSch(SocketClientHandler sch){
-        this.sch = sch;
-    }
-
-    public SocketClientHandler getSch(){
-        return sch;
     }
 
     @Override

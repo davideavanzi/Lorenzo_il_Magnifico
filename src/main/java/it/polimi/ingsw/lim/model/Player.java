@@ -1,6 +1,7 @@
 package it.polimi.ingsw.lim.model;
 
 import it.polimi.ingsw.lim.model.cards.Card;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 import java.io.Serializable;
 import java.util.*;
@@ -14,6 +15,10 @@ import static it.polimi.ingsw.lim.Settings.*;
  * TODO: map family members with an hashmap?
  */
 public class Player implements Serializable{
+
+    public Player(){
+
+    }
 
     /**
      * Creating an empty player with a nickname.
@@ -90,6 +95,38 @@ public class Player implements Serializable{
      *
      */
 
+    public void setLeaderCards(ArrayList<LeaderCard> leaderCards){
+        this.leaderCards = leaderCards;
+    }
+
+    public void setPickDiscounts (HashMap<String, Assets> pickDiscounts){
+        this.pickDiscounts = pickDiscounts;
+    }
+
+    public void setCards (HashMap<String, ArrayList<Card>> cards){
+        this.cards = cards;
+    }
+
+    public void setFamilyMembers(ArrayList<FamilyMember> familyMembers){
+        this.familyMembers = familyMembers;
+    }
+
+    public void setDefaultProductionBonus(Assets defaultProductionBonus){
+        this.defaultHarvestBonus = defaultProductionBonus;
+    }
+
+    public void setDefaultHarvestBonus(Assets defaultHarvestBonus){
+        this.defaultHarvestBonus = defaultHarvestBonus;
+    }
+
+    public ArrayList<LeaderCard> getLeaderCards() {
+        return leaderCards;
+    }
+
+    public HashMap<String, Assets> getPickDiscounts() {
+        return pickDiscounts;
+    }
+
     public void clearFamilyMembers() { this.familyMembers = new ArrayList<>(); }
 
     public void addFamilyMember(FamilyMember fm){
@@ -98,6 +135,7 @@ public class Player implements Serializable{
 
     public ArrayList<FamilyMember> getFamilyMembers() { return this.familyMembers; }
 
+    @JsonIgnore
     public FamilyMember getFamilyMember(String color) {
         return this.familyMembers.stream().filter(fm -> fm.getDiceColor().equals(color)).findFirst().orElse(null);
     }
@@ -110,12 +148,14 @@ public class Player implements Serializable{
 
     public String getNickname() { return  this.nickname; }
 
+    @JsonIgnore
     public Assets getPickDiscount(String color) {
         return this.pickDiscounts.get(color);
     }
 
     public HashMap getCards() { return this.cards; }
 
+    @JsonIgnore
     public ArrayList<Card> getCardsOfColor(String color) { return this.cards.get(color); }
 
     public void addCard(Card card, String color) {
@@ -146,10 +186,13 @@ public class Player implements Serializable{
     public void setStrengths(Strengths strengths) {
         this.strengths = strengths;
     }
+
+    @JsonIgnore
     public void setPickDiscount(String color, Assets value) {
         this.pickDiscounts.replace(color, value);
     }
 
+    @JsonIgnore
     public int getCardsAmount(String color) {
         return this.cards.get(color).size();
     }

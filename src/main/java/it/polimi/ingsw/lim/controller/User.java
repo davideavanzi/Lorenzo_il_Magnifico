@@ -64,7 +64,7 @@ public abstract class User {
         this.username = username;
     }
 
-    public User(){super();}
+    public User(){}
 
     public boolean getIsAlive(){
         return this.isAlive;

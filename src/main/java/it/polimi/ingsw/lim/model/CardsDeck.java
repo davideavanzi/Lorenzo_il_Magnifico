@@ -1,6 +1,7 @@
 package it.polimi.ingsw.lim.model;
 
 import it.polimi.ingsw.lim.model.cards.Card;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 import java.util.*;
 
@@ -20,6 +21,13 @@ public class CardsDeck {
         this.developementCards = new HashMap<>();
     }
 
+    public void setDevelopementCards(HashMap<Integer, HashMap<String,ArrayList<Card>>> developementCards){
+        this.developementCards = developementCards;
+    }
+
+    public HashMap<Integer, HashMap<String,ArrayList<Card>>> getDevelopementCards (){
+        return developementCards;
+    }
     /**
      * The development cards. Indexed first by Age, then by color
      */
@@ -28,6 +36,7 @@ public class CardsDeck {
     /**
      *
      */
+    @JsonIgnore
     private LeaderCard leaderCardsDeck;
 
     /**
@@ -39,7 +48,7 @@ public class CardsDeck {
      */
     public ArrayList <Card> pullCardsForTower(String color, int age) {
         ArrayList<Card> cards = new ArrayList<>();
-        for (int i = 0; i < TOWER_HEIGHT; i++){
+        for (int i = 0; i < TOWER_HEIGHT; i++) {
             Random randomGenerator = new Random();
             cards.add(developementCards.get(age).get(color).remove(randomGenerator.nextInt(developementCards.get(age).get(color).size())));
         }

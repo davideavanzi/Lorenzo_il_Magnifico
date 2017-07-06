@@ -15,6 +15,10 @@ public class BlackCard extends Card {
     /**
      * Default constructor
      */
+    public BlackCard(){
+        super();
+    }
+
     public BlackCard(String name, int age, Assets cost,
                      ArrayList<ImmediateEffect> iEffects) {
         super(name, age, cost, iEffects);
