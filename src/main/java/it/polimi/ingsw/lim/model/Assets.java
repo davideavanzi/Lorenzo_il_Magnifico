@@ -2,7 +2,7 @@ package it.polimi.ingsw.lim.model;
 import it.polimi.ingsw.lim.Log;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
-import static it.polimi.ingsw.lim.Utils.*;
+import static it.polimi.ingsw.lim.utils.Utils.*;
 
 import java.io.Serializable;
 import java.util.*;
@@ -247,11 +247,17 @@ public class Assets implements Serializable {
      * Write here more adders if needed.
      * @return the object itself (used in game setup)
      */
-    public Assets addCoins(int amount) { this.coins += amount; return this; }
+    public Assets addCoins(int amount) { return new Assets(this).addCoins(amount); }
 
-    public Assets addServants(int amount) { this.servants += amount; return this; }
+    public Assets addServants(int amount) { return new Assets(this).addServants(amount); }
+
+    public Assets addVictoryPoints(int amount) { return new Assets(this).addVictoryPoints(amount); }
 
     public Assets subtractCoins(int amount) { this.coins -= amount; return this;}
+
+    public int sumAll() {
+        return coins+wood+stone+servants;
+    }
 
     /**
      * the task of this method is to compare if two assets are equal and return true if they are

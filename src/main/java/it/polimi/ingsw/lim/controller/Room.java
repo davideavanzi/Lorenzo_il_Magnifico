@@ -228,7 +228,7 @@ public class Room {
      */
     void endGame(){
         usersList.forEach(user -> user.gameMessage("The game has ended. Ranking will be built now."));
-        //endgameExcomm!
+        gameController.applyEndGameExcomm();
         ArrayList<String> ranking = gameController.buildRanking();
     }
 
