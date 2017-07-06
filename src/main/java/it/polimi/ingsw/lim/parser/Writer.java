@@ -21,7 +21,7 @@ public class Writer {
         mapper.configure(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS, false);
         File file = new File(pathToWriterFile);
         try{
-            if (file.createNewFile());
+            file.createNewFile();
             mapper.writeValue(file, board);
         }catch (IOException e){
             Log.getLog().severe("[WRITER]:Unable to open or create board writer file");
@@ -50,7 +50,7 @@ public class Writer {
         mapper.configure(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS, false);
         File file = new File(pathToWriterFile);
         try{
-            if (file.createNewFile());
+            file.createNewFile();
             mapper.writeValue(file, room);
         }catch (IOException e){
             Log.getLog().severe("[WRITER]:Unable to open or create room writer file");

@@ -20,7 +20,6 @@ import static it.polimi.ingsw.lim.ui.UIController.*;
 import static it.polimi.ingsw.lim.ui.UIController.UIConstant.*;
 
 /**
- * Created by nico.
  * This is the client commandInput line interface
  */
 public class CLI extends AbsUI {
@@ -254,13 +253,16 @@ public class CLI extends AbsUI {
         lock.unlock();
     }
 
+    @Override
     public void commandAdder(String command) {
         availableCmdList.put(command, cmdList.get(command));
     }
 
+    @Override
     public void commandManager(String command, String message, boolean outcome) {
         printMessageln(("[").concat(command).concat("]: ").concat(message));
-        if (!outcome) availableCmdList.put(command, cmdList.get(command));
+        if (!outcome)
+            availableCmdList.put(command, cmdList.get(command));
     }
 
     private void cmdExecutor(String command) throws InvalidInputException {
@@ -818,7 +820,7 @@ public class CLI extends AbsUI {
                 printMessageln(sRid);
                 System.out.format(format, "");
                 System.out.format(format, StringUtils.center("Council Favours:", 20));
-                System.out.format(format, StringUtils.center("" + ((CouncilFavorsEffect) immediateEffect).getAmount(), 20));
+                System.out.format(format, StringUtils.center(Integer.toString(((CouncilFavorsEffect) immediateEffect).getAmount()), 20));
             }
         }
     }
@@ -964,13 +966,13 @@ public class CLI extends AbsUI {
             System.out.format(format, "");
             System.out.format(format, StringUtils.center(("Battle Point"), 20));
             System.out.format(format, StringUtils.center(("Requirement:"), 20));
-            System.out.format(format, StringUtils.center(("" + purpleCard.getOptionalBpRequirement()), 20));
+            System.out.format(format, StringUtils.center(Integer.toString(purpleCard.getOptionalBpRequirement()), 20));
         }
         if(purpleCard.getOptionalBpCost() != 0){
             printMessageln(sRid);
             System.out.format(format, "");
             System.out.format(format, StringUtils.center(("Battle Point Cost:"), 20));
-            System.out.format(format, StringUtils.center(("" + purpleCard.getOptionalBpRequirement()), 20));
+            System.out.format(format, StringUtils.center(Integer.toString(purpleCard.getOptionalBpRequirement()), 20));
         }
     }
 
@@ -1118,23 +1120,23 @@ public class CLI extends AbsUI {
     private void printStrengths(Strengths strengths, String type){
         String format = "|| %-17s%-2s||\n";  //todo 20 o 19
         if(strengths.getTowerStrength(GREEN_COLOR) != 0 ){
-            System.out.format(format, GREEN_COLOR.concat(" Tower:"), "" + strengths.getTowerStrength(GREEN_COLOR));
+            System.out.format(format, GREEN_COLOR.concat(" Tower:"), Integer.toString(strengths.getTowerStrength(GREEN_COLOR)));
         }
         if(strengths.getTowerStrength(BLUE_COLOR) != 0 ){
-            System.out.format(format, BLUE_COLOR.concat(" Tower:"), "" + strengths.getTowerStrength(BLUE_COLOR));
+            System.out.format(format, BLUE_COLOR.concat(" Tower:"), Integer.toString(strengths.getTowerStrength(BLUE_COLOR)));
         }
         if(strengths.getTowerStrength(YELLOW_COLOR) != 0 ){
-            System.out.format(format, YELLOW_COLOR.concat(" Tower:"), "" + strengths.getTowerStrength(YELLOW_COLOR));
+            System.out.format(format, YELLOW_COLOR.concat(" Tower:"), Integer.toString(strengths.getTowerStrength(YELLOW_COLOR)));
         }
         if(strengths.getTowerStrength(PURPLE_COLOR) != 0 ){
-            System.out.format(format, PURPLE_COLOR.concat(" Tower:"), "" + strengths.getTowerStrength(PURPLE_COLOR));
+            System.out.format(format, PURPLE_COLOR.concat(" Tower:"), Integer.toString(strengths.getTowerStrength(PURPLE_COLOR)));
         }
 
         if(strengths.getHarvestBonus() != 0){
-            System.out.format(format, "Harvest ".concat(type).concat(":"), "" + strengths.getHarvestBonus());
+            System.out.format(format, "Harvest ".concat(type).concat(":"), Integer.toString(strengths.getHarvestBonus()));
         }
         if(strengths.getProductionBonus() != 0){
-            System.out.format(format, "Production ".concat(type).concat(":"), "" + strengths.getProductionBonus());
+            System.out.format(format, "Production ".concat(type).concat(":"), Integer.toString(strengths.getProductionBonus()));
         }
         if(strengths.getDiceBonus().get(ORANGE_COLOR) != 0){
             System.out.format(format, ORANGE_COLOR.concat(" dice:"), "+" + strengths.getDiceBonus().get(ORANGE_COLOR));
@@ -1154,25 +1156,25 @@ public class CLI extends AbsUI {
     private void printAsset(Assets asset){
         String format = "|| %-17s%-2s||\n";
         if(asset.getCoins() != 0){
-            System.out.format(format, "Coins:", ""+asset.getCoins());
+            System.out.format(format, "Coins:", Integer.toString(asset.getCoins()));
         }
         if(asset.getWood() != 0){
-            System.out.format(format, "Woods:", ""+asset.getWood());
+            System.out.format(format, "Woods:", Integer.toString(asset.getWood()));
         }
         if(asset.getStone() != 0){
-            System.out.format(format, "Stone:", ""+asset.getStone());
+            System.out.format(format, "Stone:", Integer.toString(asset.getStone()));
         }
         if(asset.getServants() != 0){
-            System.out.format(format, "Servants:", ""+asset.getServants());
+            System.out.format(format, "Servants:", Integer.toString(asset.getServants()));
         }
         if(asset.getFaithPoints() != 0){
-            System.out.format(format, "Faith Points:", ""+asset.getFaithPoints());
+            System.out.format(format, "Faith Points:", Integer.toString(asset.getFaithPoints()));
         }
         if(asset.getBattlePoints() != 0){
-            System.out.format(format, "Battle Points:", ""+asset.getBattlePoints());
+            System.out.format(format, "Battle Points:", Integer.toString(asset.getBattlePoints()));
         }
         if(asset.getVictoryPoints() != 0){
-            System.out.format(format, "Victory Points:", ""+asset.getVictoryPoints());
+            System.out.format(format, "Victory Points:", Integer.toString(asset.getVictoryPoints()));
         }
     }
 
