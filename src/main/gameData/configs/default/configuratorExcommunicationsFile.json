@@ -3,19 +3,19 @@
     [
       {
         "excommunicationType":"assetsMalusExcommunication",
-        "assetsMalusExcommunicationType":{"battlePoints":1}
+        "assetsMalusExcommunication":{"battlePoints":1}
       },
       {
         "excommunicationType":"assetsMalusExcommunication",
-        "assetsMalusExcommunicationType":{"coin":1}
+        "assetsMalusExcommunication":{"coin":1}
       },
       {
         "excommunicationType":"assetsMalusExcommunication",
-        "assetsMalusExcommunicationType":{"servants":1}
+        "assetsMalusExcommunication":{"servants":1}
       },
       {
         "excommunicationType":"assetsMalusExcommunication",
-        "assetsMalusExcommunicationType":{"wood":1,"stone":1}
+        "assetsMalusExcommunication":{"wood":1,"stone":1}
       },
       {
         "excommunicationType": "strengthMalusExcommunication",
