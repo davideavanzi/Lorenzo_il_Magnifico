@@ -99,7 +99,7 @@ public class Board implements Serializable {
         DICE_COLORS.forEach(color -> this.dice.replace(color, randomGenerator.nextInt(6)+1));
     }
 
-    public List<Excommunication> getExcommunications() {
+    public ArrayList<Excommunication> getExcommunications() {
         return this.excommunications;
     }
 

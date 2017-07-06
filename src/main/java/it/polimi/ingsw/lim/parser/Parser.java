@@ -809,7 +809,7 @@ public class Parser {
      * @return an ArrayList contain all the excommunication of that age
      * @throws InvalidExcommunicationException if even just one of the not nullable variables is null or invalid
      */
-    private static ArrayList<Excommunication> parseArrayExcommunication (JsonNode arrayExcommunicationNode)
+    private static ArrayList<Excommunication> parseArrayExcommunication (JsonNode arrayExcommunicationNode, int age)
             throws InvalidExcommunicationException {
         JsonNode tmpArrayExcommunicationNode = arrayExcommunicationNode;
         ArrayList<Excommunication> tmpArrayExcommunication = new ArrayList<>();
@@ -817,6 +817,7 @@ public class Parser {
         while(arrayExcommunicationIterator.hasNext()){
             tmpArrayExcommunicationNode = arrayExcommunicationIterator.next();
             Excommunication tmpSingleExcommunication = parseSingleExcommunication(tmpArrayExcommunicationNode);
+            tmpSingleExcommunication.setAge(age);
             tmpArrayExcommunication.add(tmpSingleExcommunication);
         }
         return tmpArrayExcommunication;
@@ -851,7 +852,7 @@ public class Parser {
         int i = 0;
         while (excommunicationIterator.hasNext()) {
             excommunicationNode = excommunicationIterator.next();
-            ArrayList<Excommunication> tmpExcommunicationAge = parseArrayExcommunication (excommunicationNode);
+            ArrayList<Excommunication> tmpExcommunicationAge = parseArrayExcommunication (excommunicationNode, i + 1);
             i++;
             tmpExcommunications.put(i, tmpExcommunicationAge);
         }

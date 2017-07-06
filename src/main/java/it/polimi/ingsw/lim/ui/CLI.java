@@ -4,8 +4,10 @@ import it.polimi.ingsw.lim.Lock;
 import it.polimi.ingsw.lim.exceptions.InvalidInputException;
 import it.polimi.ingsw.lim.model.*;
 import it.polimi.ingsw.lim.model.cards.*;
+import it.polimi.ingsw.lim.model.excommunications.*;
 import it.polimi.ingsw.lim.model.immediateEffects.*;
 import org.apache.commons.lang3.StringUtils;
+import org.omg.PortableServer.Servant;
 
 import java.io.Console;
 import java.util.ArrayList;
@@ -425,8 +427,65 @@ public class CLI extends AbsUI {
     public void printBoard(){
         this.printTowers();
         this.printMarket();
+        this.printExcommunications();
         //this.printFaithPointsTrack();
         //this.printVictoryPointsTrack();
+    }
+
+    private void printExcommunications(){
+        ArrayList<Excommunication> excommunications = this.uiCallback.getLocalBoard().getExcommunications();
+        for(Excommunication excommunication: excommunications){
+            printSingleExcommunication(excommunication);
+        }
+    }
+
+    private void printSingleExcommunication(Excommunication excommunication){
+        String format = "||%-20s||\n";
+        String s = "________________________";
+        String sRid = "_  _  _  _  _  _  _ ";
+        printMessageln(s);
+        System.out.format(format, "");
+        System.out.format(format, StringUtils.center("Excomm. Age: " + excommunication.getAge(), 20));
+        if(excommunication instanceof AssetsExcommunication){
+            printSingleExcommunication((AssetsExcommunication)excommunication);
+        }
+        if(excommunication instanceof EndGameAssetsExcommunication){
+            printSingleExcommunication((EndGameAssetsExcommunication)excommunication);
+        }
+        if(excommunication instanceof EndGameCardsExcommunication){
+            printSingleExcommunication((EndGameCardsExcommunication)excommunication);
+        }
+        if(excommunication instanceof StrengthsExcommunication){
+            printSingleExcommunication((StrengthsExcommunication)excommunication);
+        }
+        for(Player player: this.uiCallback.getLocalPlayers()){
+            for(String excommPlayerColor: excommunication.getExcommunicated()){
+                if(player.getColor().equals(excommPlayerColor)){
+                    System.out.format(format, sRid);
+                    System.out.format(format, "");
+                    System.out.format(format, StringUtils.center("Excommunicated Player:", 20));
+                    System.out.format(format, StringUtils.center(player.getNickname(), 20));
+                }
+            }
+        }
+        System.out.format(format, "");
+        printMessageln(s);
+    }
+
+    private void printSingleExcommunication(AssetsExcommunication excommunication){
+
+    }
+
+    private void printSingleExcommunication(EndGameAssetsExcommunication excommunication){
+
+    }
+
+    private void printSingleExcommunication(EndGameCardsExcommunication excommunication){
+
+    }
+
+    private void printSingleExcommunication(StrengthsExcommunication excommunication){
+
     }
 
     /**
