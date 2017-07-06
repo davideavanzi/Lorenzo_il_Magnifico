@@ -446,17 +446,39 @@ public class CLI extends AbsUI {
         printMessageln(s);
         System.out.format(format, "");
         System.out.format(format, StringUtils.center("Excomm. Age: " + excommunication.getAge(), 20));
+        System.out.format(format, sRid);
+        System.out.format(format, "");
         if(excommunication instanceof AssetsExcommunication){
+            System.out.format(format, StringUtils.center("Assets",20));
+            System.out.format(format, StringUtils.center("Excommunication",20));
             printSingleExcommunication((AssetsExcommunication)excommunication);
         }
-        if(excommunication instanceof EndGameAssetsExcommunication){
+        else if(excommunication instanceof EndGameAssetsExcommunication){
+            System.out.format(format, StringUtils.center("End Game Bonus",20));
+            System.out.format(format, StringUtils.center("Excommunication",20));
             printSingleExcommunication((EndGameAssetsExcommunication)excommunication);
         }
-        if(excommunication instanceof EndGameCardsExcommunication){
+        else if(excommunication instanceof EndGameCardsExcommunication){
+            System.out.format(format, StringUtils.center("End Game Card",20));
+            System.out.format(format, StringUtils.center("Excommunication",20));
             printSingleExcommunication((EndGameCardsExcommunication)excommunication);
         }
-        if(excommunication instanceof StrengthsExcommunication){
+        else if(excommunication instanceof StrengthsExcommunication){
+            System.out.format(format, StringUtils.center("Strengths",20));
+            System.out.format(format, StringUtils.center("Excommunication",20));
             printSingleExcommunication((StrengthsExcommunication)excommunication);
+        }
+        else if(excommunication instanceof MarketExcommunication){
+            System.out.format(format, StringUtils.center("Market",20));
+            System.out.format(format, StringUtils.center("Excommunication",20));
+        }
+        else if(excommunication instanceof ServantsExcommunication){
+            System.out.format(format, StringUtils.center("Servants",20));
+            System.out.format(format, StringUtils.center("Excommunication",20));
+        }
+        else if(excommunication instanceof RoundExcommunication){
+            System.out.format(format, StringUtils.center("Round",20));
+            System.out.format(format, StringUtils.center("Excommunication",20));
         }
         for(Player player: this.uiCallback.getLocalPlayers()){
             for(String excommPlayerColor: excommunication.getExcommunicated()){
@@ -473,19 +495,58 @@ public class CLI extends AbsUI {
     }
 
     private void printSingleExcommunication(AssetsExcommunication excommunication){
-
+        String format = "||%-20s||\n";
+        String sRid = "_  _  _  _  _  _  _ ";
+        System.out.format(format, sRid);
+        System.out.format(format, "");
+        System.out.format(format, StringUtils.center("Malus:", 20));
+        System.out.format(format, "");
+        printAsset(excommunication.getMalus());
     }
 
     private void printSingleExcommunication(EndGameAssetsExcommunication excommunication){
-
+        String format = "||%-20s||\n";
+        String sRid = "_  _  _  _  _  _  _ ";
+        System.out.format(format, sRid);
+        System.out.format(format, "");
+        if(excommunication.getOnAssetsMalus(0).isNotNull()) {
+            System.out.format(format, StringUtils.center("For Each:", 20));
+            System.out.format(format, "");
+            printAsset(excommunication.getOnAssetsMalus(0));
+        }
+        if(excommunication.getProductionCardCostMalus().isNotNull()) {
+            System.out.format(format, StringUtils.center("For Each:", 20));
+            System.out.format(format, StringUtils.center("of Yellow Card:", 20));
+            System.out.format(format, "");
+            printAsset(excommunication.getProductionCardCostMalus());
+        }
+        if(excommunication.getOnAssetsMalus(1).isNotNull()) {
+            System.out.format(format, sRid);
+            System.out.format(format, "");
+            System.out.format(format, StringUtils.center("Malus:", 20));
+            System.out.format(format, "");
+            printAsset(excommunication.getOnAssetsMalus(1));
+        }
     }
 
     private void printSingleExcommunication(EndGameCardsExcommunication excommunication){
-
+        String format = "||%-20s||\n";
+        String sRid = "_  _  _  _  _  _  _ ";
+        System.out.format(format, sRid);
+        System.out.format(format, "");
+        System.out.format(format, StringUtils.center("Blocked Color:", 20));
+        System.out.format(format, "");
+        System.out.format(format, StringUtils.center(excommunication.getBlockedCardColor(),20));
     }
 
     private void printSingleExcommunication(StrengthsExcommunication excommunication){
-
+        String format = "||%-20s||\n";
+        String sRid = "_  _  _  _  _  _  _ ";
+        System.out.format(format, sRid);
+        System.out.format(format, "");
+        System.out.format(format, StringUtils.center("Malus:", 20));
+        System.out.format(format, "");
+        printStrengths(excommunication.getMalus(), "Malus");
     }
 
     /**
@@ -534,7 +595,7 @@ public class CLI extends AbsUI {
         System.out.format(format, StringUtils.center(player.getNickname(), 20));
         printMessageln(sRid);
         if(player.getStrengths().isNotNull()) {
-            printStrengths(player.getStrengths());
+            printStrengths(player.getStrengths(), "Bonus");
         }
         else{
             System.out.format(format, StringUtils.center("No Strengths", 20));
@@ -724,7 +785,7 @@ public class CLI extends AbsUI {
                 printMessageln(sRid);
                 System.out.format(format, "");
                 System.out.format(format, StringUtils.center("Immediate Bonus:", 20));
-                printStrengths(((ActionEffect) immediateEffect).getStrength());
+                printStrengths(((ActionEffect) immediateEffect).getStrength(), "Bonus");
                 if (((ActionEffect) immediateEffect).hasDiscount()) {
                     printMessageln(sRid);
                     System.out.format(format, "");
@@ -781,7 +842,7 @@ public class CLI extends AbsUI {
             printMessageln(sRid);
             System.out.format(format, "");
             System.out.format(format, StringUtils.center(("Action Cost"), 20));
-            printStrengthsCost(greenCard.getActionStrength());
+            printStrengths(greenCard.getActionStrength(), "Cost");
         }
     }
 
@@ -800,7 +861,7 @@ public class CLI extends AbsUI {
             printMessageln(sRid);
             System.out.format(format, "");
             System.out.format(format, StringUtils.center(("Permanent Bonus:"), 20));
-            printStrengths(blueCard.getPermanentBonus());
+            printStrengths(blueCard.getPermanentBonus(), "Bonus");
         }
         if(blueCard.getPickDiscount(BLUE_COLOR).isNotNull()){
             printMessageln(sRid);
@@ -871,7 +932,7 @@ public class CLI extends AbsUI {
             printMessageln(sRid);
             System.out.format(format, "");
             System.out.format(format, StringUtils.center(("Action Cost:"), 20));
-            printStrengthsCost(yellowCard.getActionStrength());
+            printStrengths(yellowCard.getActionStrength(), "Cost");
         }
         if(!yellowCard.getCardMultiplier().isEmpty()){
             printMessageln(sRid);
@@ -1054,7 +1115,7 @@ public class CLI extends AbsUI {
      * Print the Strengths Bonus (e.g. +3 in the Production move)
      * @param strengths
      */
-    private void printStrengths(Strengths strengths){
+    private void printStrengths(Strengths strengths, String type){
         String format = "|| %-17s%-2s||\n";  //todo 20 o 19
         if(strengths.getTowerStrength(GREEN_COLOR) != 0 ){
             System.out.format(format, GREEN_COLOR.concat(" Tower:"), "" + strengths.getTowerStrength(GREEN_COLOR));
@@ -1070,10 +1131,10 @@ public class CLI extends AbsUI {
         }
 
         if(strengths.getHarvestBonus() != 0){
-            System.out.format(format, "Harvest Bonus:", "" + strengths.getHarvestBonus());
+            System.out.format(format, "Harvest ".concat(type).concat(":"), "" + strengths.getHarvestBonus());
         }
         if(strengths.getProductionBonus() != 0){
-            System.out.format(format, "Production Bonus:", "" + strengths.getProductionBonus());
+            System.out.format(format, "Production ".concat(type).concat(":"), "" + strengths.getProductionBonus());
         }
         if(strengths.getDiceBonus().get(ORANGE_COLOR) != 0){
             System.out.format(format, ORANGE_COLOR.concat(" dice:"), "+" + strengths.getDiceBonus().get(ORANGE_COLOR));
@@ -1083,34 +1144,6 @@ public class CLI extends AbsUI {
         }
         if(strengths.getDiceBonus().get(WHITE_COLOR) != 0){
             System.out.format(format, WHITE_COLOR.concat(" dice:"), "+" + strengths.getDiceBonus().get(WHITE_COLOR));
-        }
-    }
-
-
-    /**
-     * Print the Strengths Cost (e.g. Player's family member must have value of 6 to activate the Harvest)
-     * @param strengths
-     */
-    private void printStrengthsCost(Strengths strengths){
-        String format = "|| %-17s%-2s||\n";
-        if(strengths.getTowerStrength(GREEN_COLOR) != 0 ){
-            System.out.format(format, GREEN_COLOR.concat(" Tower:"), "" + strengths.getTowerStrength(GREEN_COLOR));
-        }
-        if(strengths.getTowerStrength(BLUE_COLOR) != 0 ){
-            System.out.format(format, BLUE_COLOR.concat(" Tower:"), "" + strengths.getTowerStrength(BLUE_COLOR));
-        }
-        if(strengths.getTowerStrength(YELLOW_COLOR) != 0 ){
-            System.out.format(format, YELLOW_COLOR.concat(" Tower:"), "" + strengths.getTowerStrength(YELLOW_COLOR));
-        }
-        if(strengths.getTowerStrength(PURPLE_COLOR) != 0 ){
-            System.out.format(format, PURPLE_COLOR.concat(" Tower:"), "" + strengths.getTowerStrength(PURPLE_COLOR));
-        }
-
-        if(strengths.getHarvestBonus() != 0){
-            System.out.format(format, "Harvest:", "" + strengths.getHarvestBonus());
-        }
-        if(strengths.getProductionBonus() != 0){
-            System.out.format(format, "Production:", "" + strengths.getProductionBonus());
         }
     }
 
