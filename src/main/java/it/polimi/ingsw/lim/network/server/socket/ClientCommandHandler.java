@@ -61,7 +61,7 @@ class ClientCommandHandler {
                 handlerCallback.commandValidator(EXCOMMUNICATION, EXCOMMUNICATION_OK , true);
             } else if (commandIdentifier.equals(CHOOSE_FAVOR)) {
                 //Todo trasformare String in arrayList<Integer>
-                gameController.performCfActivation();
+                //gameController.performCfActivation();
                 handlerCallback.commandValidator(CHOOSE_FAVOR, CHOOSE_FAVOR_OK , true);
             } else if (commandIdentifier.equals(OPTIONAL_BP_PICK)) {
                 //TODO metodo in GC a cui passo il booleano bpPayment

@@ -96,9 +96,11 @@ class KeyConst {
     protected static final String MARKET_EXCOMMUNICATION = "marketExcommunication";
     protected static final String SERVANTS_EXCOMMUNICATION = "servantsExcommunication";
     protected static final String TURN_EXCOMMUNICATION = "turnExcommunication";
-    protected static final String END_GAME_EXCOMMUNICATION = "endGameExcommunication";
+    protected static final String END_GAME_ASSETS_EXCOMMUNICATION = "endGameAssetsExcommunication";
+    protected static final String END_GAME_CARDS_EXCOMMUNICATION = "endGameCardsExcommunication";
     protected static final String PRODUCTION_CARD_COST_MALUS = "productionCardCostMalus";
     protected static final String ON_ASSETS_MALUS = "onAssetsMalus";
+    protected static final String BLOCKED_CARD_COLOR = "blockedCardColor";
 
     protected static final String EXCOMMUNICATIONS = "excommunications";
 

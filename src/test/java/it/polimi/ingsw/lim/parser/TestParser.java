@@ -242,7 +242,7 @@ public class TestParser{
         Assets[] onAssetsMalus = new Assets[2];
         onAssetsMalus[0] = new Assets(0,1,0,0,0,0,0);
         onAssetsMalus[1] = new Assets(0,0,2,0,0,0,0);
-        EndGameAssetsExcommunication e2Expected = new EndGameAssetsExcommunication(YELLOW_COLOR, new Assets(1,0,0,0,0,0,0), onAssetsMalus);
+        EndGameAssetsExcommunication e2Expected = new EndGameAssetsExcommunication(new Assets(1,0,0,0,0,0,0), onAssetsMalus);
         firtAgeExcommExpected.add(e2Expected);
         return firtAgeExcommExpected;
     }

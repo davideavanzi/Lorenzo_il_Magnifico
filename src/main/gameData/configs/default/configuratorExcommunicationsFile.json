@@ -59,31 +59,35 @@
     ],
     [
       {
-        "excommunicationType":"endGameExcommunication",
-        "endGameExcommunication":"BLUE"
+        "excommunicationType":"endGameCardsExcommunication",
+        "blockedCardColor":"BLUE"
       },
       {
-        "excommunicationType":"endGameExcommunication",
-        "endGameExcommunication":"PURPLE"
+        "excommunicationType":"endGameCardsExcommunication",
+        "blockedCardColor":"GREEN"
       },
       {
-        "excommunicationType":"endGameExcommunication",
+        "excommunicationType":"endGameCardsExcommunication",
+        "blockedCardColor":"PURPLE"
+      },
+      {
+        "excommunicationType":"endGameAssetsExcommunication",
         "onAssetsMalus":[
           {"victoryPoints":5},{"victoryPoints":1}
         ]
       },
       {
-        "excommunicationType":"endGameExcommunication",
+        "excommunicationType":"endGameAssetsExcommunication",
         "onAssetsMalus":[
           {"battlePoints":1},{"victoryPoints":1}
         ]
       },
       {
-        "excommunicationType":"endGameExcommunication",
+        "excommunicationType":"endGameAssetsExcommunication",
         "productionCardCostMalus":{"wood":1,"stone":1}
       },
       {
-        "excommunicationType":"endGameExcommunication",
+        "excommunicationType":"endGameAssetsExcommunication",
         "onAssetsMalus":[
           {"servants":1,"coin":1,"stone":1,"wood":1},{"victoryPoints":1}
         ]

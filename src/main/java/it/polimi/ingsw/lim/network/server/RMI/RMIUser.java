@@ -110,7 +110,7 @@ public class RMIUser extends User {
 
     @Override
     public void askForOptionalBpPick() {
-        RMIServer.askClientForOptionalBpPick(this.rci);
+        //RMIServer.askClientForOptionalBpPick(this.rci);
     }
 
     @Override

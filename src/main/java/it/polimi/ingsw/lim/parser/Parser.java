@@ -788,13 +788,15 @@ public class Parser {
                 return new ServantsExcommunication();
             case TURN_EXCOMMUNICATION:
                 return new RoundExcommunication();
-            case END_GAME_EXCOMMUNICATION:
-                String tmpBlockedCardColor = excommunicationNode.path(END_GAME_EXCOMMUNICATION).asText();
+            case END_GAME_ASSETS_EXCOMMUNICATION:
                 Assets tmpProductionCardCostMalus = parseAssets
                         (excommunicationNode.path(PRODUCTION_CARD_COST_MALUS));
                 Assets[] tmpOnAssetsMalus = parseArrayAssets
-                        (excommunicationNode.path(ON_ASSETS_MALUS),2);//TODO modificare il numero di slot dell'array
-                return new EndGameAssetsExcommunication(tmpBlockedCardColor, tmpProductionCardCostMalus, tmpOnAssetsMalus);
+                        (excommunicationNode.path(ON_ASSETS_MALUS),2);
+                return new EndGameAssetsExcommunication(tmpProductionCardCostMalus, tmpOnAssetsMalus);
+            case END_GAME_CARDS_EXCOMMUNICATION:
+                String tmpBlockedCardColor = excommunicationNode.path(BLOCKED_CARD_COLOR).asText();
+                return new EndGameCardsExcommunication(tmpBlockedCardColor);
             default:
                 throw new InvalidExcommunicationException("Excommunication Type is not recognized");
         }
