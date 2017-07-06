@@ -15,8 +15,8 @@ import static it.polimi.ingsw.lim.parser.KeyConst.*;
  * The task of this class is to write in a file all the game parameters, in order to make the game persistent
  */
 public class Writer {
-    public static String boardWriter(Board board) {
-        String pathToWriterFile = PATH_TO_WRITER_BOARD_FILE;
+    public static String boardWriter(Board board, int id) {
+        String pathToWriterFile = (PATH_TO_WRITER_BOARD_FILE + id).concat(EXTENTION);
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS, false);
         File file = new File(pathToWriterFile);
@@ -32,9 +32,6 @@ public class Writer {
     }
 
     public static Board readerBoard(String pathToWriterBoardFile){
-        if (pathToWriterBoardFile.isEmpty()){
-            pathToWriterBoardFile = PATH_TO_WRITER_BOARD_FILE;
-        }
         ObjectMapper mapper = new ObjectMapper();
         Board board = null;
         try {
@@ -47,8 +44,8 @@ public class Writer {
         return board;
     }
 
-    public static String roomWriter(Room room){
-        String pathToWriterFile = PATH_TO_WRITER_ROOM_FILE;
+    public static String roomWriter(Room room, int id){
+        String pathToWriterFile = PATH_TO_WRITER_ROOM_FILE + id;
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS, false);
         File file = new File(pathToWriterFile);

@@ -117,6 +117,7 @@ class KeyConst {
     protected static final String PLAY_MOVE_TIMER = "playMoveTimer";
     
     //writer
-    protected static final String PATH_TO_WRITER_BOARD_FILE = "src/main/gameData/configs/writer/boardWriter.json";
-    protected static final String PATH_TO_WRITER_ROOM_FILE = "src/main/gameData/configs/writer/roomWriter.json";
+    protected static final String PATH_TO_WRITER_BOARD_FILE = "src/main/gameData/configs/writer/boardWriter";
+    protected static final String PATH_TO_WRITER_ROOM_FILE = "src/main/gameData/configs/writer/roomWriter";
+    protected static final String EXTENTION = ".json";
 }

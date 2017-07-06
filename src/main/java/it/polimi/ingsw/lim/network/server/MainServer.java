@@ -113,7 +113,7 @@ public class MainServer {
     public static Room addUserToRoom(User user) {
         connectedUsers.add(user);
         if(roomList.isEmpty() || !roomList.get(roomList.size()-1).isOpen()) {
-            roomList.add(new Room(user));
+            roomList.add(new Room(user, roomList.size()));
         } else {
             roomList.get(roomList.size()-1).addUser(user);
         }

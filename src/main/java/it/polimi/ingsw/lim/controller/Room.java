@@ -32,14 +32,16 @@ public class Room {
     private ArrayList<User> usersList;
     private ArrayList<String> playOrder;
     private PlayerRound round;
+    private int id;
 
-    public Room(User user) {
+    public Room(User user, int id) {
         usersList = new ArrayList<>();
         gameController = new GameController(this);
         usersList.add(user);
         user.setRoom(this);
         excommLock = new Lock();
         getLog().log(Level.INFO, () -> "Room created, adding "+ user.getUsername() +" to room");
+        this.id = id;
     }
 
     public Room(){
@@ -99,8 +101,9 @@ public class Room {
     void switchRound(){
         if (playOrder.isEmpty()) {
             startNewTurn();
-            Writer.boardWriter(this.gameController.getBoard());
-            Writer.roomWriter(this);
+            Log.getLog().info("[WRITER]: saving game info");
+            Writer.boardWriter(this.gameController.getBoard(), id);
+            Writer.roomWriter(this, id);
             return;
         }
         Log.getLog().info("player ".concat(round.getUserName()).concat(" ending round"));
@@ -108,8 +111,9 @@ public class Room {
         this.round = new PlayerRound(this.getUser(nextUserName));
         Log.getLog().info("player ".concat(round.getUserName()).concat(" now can play ")
                 .concat("in room" + this.getUser(nextUserName).getRoom().toString()));
-        Writer.boardWriter(this.gameController.getBoard());
-        Writer.roomWriter(this);
+        Log.getLog().info("[WRITER]: saving game info");
+        Writer.boardWriter(this.gameController.getBoard(), id);
+        Writer.roomWriter(this, id);
     }
 
     /**
