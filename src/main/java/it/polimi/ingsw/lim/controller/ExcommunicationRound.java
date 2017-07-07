@@ -26,6 +26,7 @@ public class ExcommunicationRound implements Runnable, Round {
         this.roomCallback = roomCallback;
         roomCallback.setExcommunicationRound(this);
         this.usersToCheck = roomCallback.getUsersList();
+        this.toExcommunicate = new ArrayList<>();
         this.toExcommunicate.addAll(usersToCheck.stream().map(user -> user.getPlayer())
                 .collect(Collectors.toList()));
         new RoundTimer(20, this);

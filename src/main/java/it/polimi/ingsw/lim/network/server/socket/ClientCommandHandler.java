@@ -105,7 +105,8 @@ class ClientCommandHandler {
                 }
             } else if (commandID.equals(PICK_FROM_TOWER)) {
                 try {
-                    //todo metodo su GameController
+                    gameController.performFastTowerMove(Integer.valueOf(command[1]), command[2],
+                            Integer.valueOf(command[3]),handlerCallback.getUser());
                     handlerCallback.commandValidator(PICK_FROM_TOWER, PICK_FROM_TOWER_OK, true);
                 } catch (BadRequestException e) {
                     handlerCallback.commandValidator(PICK_FROM_TOWER, e.getMessage(), false);

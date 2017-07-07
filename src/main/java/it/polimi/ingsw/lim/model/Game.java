@@ -135,7 +135,6 @@ public class Game {
         getLog().info("Creating council with bonuses");
         this.board.setCouncil(new Council(parsedGame.getCouncilFavors(), parsedGame.getCouncilBonus()));
         getLog().info("Adding bonuses to faith track");
-        //TODO: maybe better with a standard for cycle?
         int i = 0;
         for (Assets bonus : parsedGame.getFaithTrackBonuses())
             this.board.getFaithTrack()[i] = bonus;
@@ -147,7 +146,6 @@ public class Game {
         /*
          * Distribute initial resources starting from the first player,
          * the following will have a coin more than the player before them.
-         * TODO: where we decide the player order? at the beginning we consider their order of creation in the list.
          */
         getLog().log(Level.INFO, () -> "Giving initial resources to"+playersNumber+"players");
         int moreCoin = 0;
@@ -157,8 +155,7 @@ public class Game {
         }
 
         getLog().info("Moving loaded cards to Cards Deck");
-        //TODO: when the china's work is done, change 1 to AGES_NUMBER
-        for (int j = 1; j <= 1; j++) {
+        for (int j = 1; j <= AGES_NUMBER; j++) {
             cardsDeck.addDevelopementCardsOfAge(j,parsedGame.getCard(j));
         }
         ArrayList<Assets> cfBonuses = new ArrayList<>(Arrays.asList(parsedGame.getCouncilFavourBonuses()));
@@ -519,12 +516,12 @@ public class Game {
      * @param tmpActionStr
      * @return
      */
-    public int calcProductionActionStr(FamilyMember fm, int servantsDeployed, int tmpActionStr) {
+    public int calcProductionActionStr(Player actor, FamilyMember fm, int servantsDeployed, int tmpActionStr) {
         int baseStr = (fm == null) ? tmpActionStr : this.getFmStrength(fm);
-        if (isPlayerServantsExcommunicated(getPlayerFromColor(fm.getOwnerColor())))
+        if (isPlayerServantsExcommunicated(actor))
             servantsDeployed /= 2;
         if (this.board.getProduction().size() <= PRODUCTION_DEFAULTSPACE_SIZE) baseStr -= PRODUCTION_STR_MALUS;
-        return baseStr+servantsDeployed+getPlayerFromColor(fm.getOwnerColor()).getStrengths().getProductionBonus();
+        return baseStr+servantsDeployed+actor.getStrengths().getProductionBonus();
     }
     @JsonIgnore
     public boolean isProductionMoveAllowed(FamilyMember fm) {
@@ -780,14 +777,14 @@ public class Game {
     }
 
     @JsonIgnore
-    boolean isPlayerTowerBonusAllowed(Player pl) {
+    private boolean isPlayerTowerBonusAllowed(Player pl) {
         Excommunication secondAgeExcomm = board.getExcommunications().get(0);
         return !(secondAgeExcomm instanceof AssetsExcommunication &&
                 secondAgeExcomm.getExcommunicated().contains(pl.getColor()));
     }
 
     @JsonIgnore
-    boolean isPlayerServantsExcommunicated(Player pl) {
+    private boolean isPlayerServantsExcommunicated(Player pl) {
         Excommunication secondAgeExcomm = board.getExcommunications().get(1);
         return (secondAgeExcomm instanceof ServantsExcommunication &&
                 secondAgeExcomm.getExcommunicated().contains(pl.getColor()));

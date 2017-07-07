@@ -228,6 +228,9 @@ public class Room {
         getConnectedUsers().forEach(user -> user.sendGameUpdate(this.gameController.getBoard(), players));
 
         buildTurnOrder();
+        System.out.println("_______________________________");
+        System.out.println(this.playOrder.toString());
+        System.out.println("_______________________________");
 
         if(this.gameController.getTime()[1] >= TURNS_PER_AGE) {
             excommLock.lock();

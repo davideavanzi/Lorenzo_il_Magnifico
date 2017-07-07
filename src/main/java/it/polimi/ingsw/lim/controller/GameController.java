@@ -266,7 +266,7 @@ public class GameController {
             throw new BadRequestException("Not enough servants to perform production action");
         this.pendingProduction = new PendingProduction();
         pendingProduction.add(actor.getPlayer().getDefaultProductionBonus());
-        int actionStrength = game.calcProductionActionStr(fm, servantsDeployed, 0);
+        int actionStrength = game.calcProductionActionStr(actor.getPlayer(), fm, servantsDeployed, 0);
         for (Card card: game.getPlayerFromColor(fm.getOwnerColor()).getCardsOfColor(YELLOW_COLOR)) {
             YellowCard activeCard = (YellowCard) card;
             if (activeCard.getActionStrength().getProductionBonus() <= actionStrength)
@@ -399,7 +399,9 @@ public class GameController {
     }
 
 
-    public void performFastHarvest(int servantsDeployed) throws BadRequestException {
+    public void performFastHarvest(int servantsDeployed, User actor) throws BadRequestException {
+        if (!actor.getUsername().equals(fastActor.getUsername()))
+            throw new BadRequestException("Wrong user");
         int servantsForHarvestAction = this.game.servantsForHarvestAction(null, fastActionStr.getHarvestBonus());
         if (servantsForHarvestAction > fastActor.getPlayer().getResources().getServants() ||
                 servantsDeployed > fastActor.getPlayer().getResources().getServants() ||
@@ -416,6 +418,8 @@ public class GameController {
 
 
     public void performFastProduction(int servantsDeployed, User actor) throws BadRequestException {
+        if (!actor.getUsername().equals(fastActor.getUsername()))
+            throw new BadRequestException("Wrong user");
         int servantsForProductionAction = this.game.servantsForProductionAction(null, fastActionStr.getHarvestBonus());
         if (servantsForProductionAction > fastActor.getPlayer().getResources().getServants() ||
                 servantsDeployed > fastActor.getPlayer().getResources().getServants() ||
@@ -424,7 +428,7 @@ public class GameController {
         this.pendingProduction = new PendingProduction();
         pendingProduction.add(actor.getPlayer().getDefaultProductionBonus());
         int actionStrength = game.calcProductionActionStr
-                (null, servantsDeployed, fastActionStr.getProductionBonus());
+                (actor.getPlayer(),null, servantsDeployed, fastActionStr.getProductionBonus());
         for (Card card: actor.getPlayer().getCardsOfColor(YELLOW_COLOR)) {
             YellowCard activeCard = (YellowCard) card;
             if (activeCard.getActionStrength().getProductionBonus() <= actionStrength)

@@ -88,7 +88,7 @@ public class TestParser{
         Assets productionCost2 = new Assets(0, 3, 0, 0, 0, 0, 0);
         productionCosts.add(productionCost1);
         productionCosts.add(productionCost2);
-        ArrayList<Assets> productionResults = new ArrayList<>();
+        ArrayList<Object> productionResults = new ArrayList<>();
         Assets productionResult1 = new Assets(5, 0, 0, 0, 0, 0, 0);
         Assets productionResult2 = new Assets(15, 0, 0, 0, 0, 0, 0);
         productionResults.add(productionResult1);
@@ -103,8 +103,7 @@ public class TestParser{
                 productionCosts,
                 productionResults,
                 actionStrengthExpected,
-                bonusMultiplierExpected,
-                0
+                bonusMultiplierExpected
         );
     }
 

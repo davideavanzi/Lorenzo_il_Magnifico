@@ -1032,7 +1032,7 @@ public class CLI extends AbsUI {
         if(!(yellowCard.getProductionResults().isEmpty())){
             for(java.lang.Object ob: yellowCard.getProductionResults()){
                 printMessageln(sRid);
-                System.out.format(format, "")b;
+                System.out.format(format, "");
                 System.out.format(format, StringUtils.center(("Production Result:"), 20));
                 if(ob instanceof Assets){
                     printAsset((Assets)ob);
