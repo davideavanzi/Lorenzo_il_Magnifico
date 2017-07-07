@@ -196,7 +196,7 @@ public class GameController {
      * with his battle points
      * @param useBp the decision of the user, it's true if the he wants to pay in battle points
      */
-    public void confirmTowerMove(boolean useBp){
+    public void confirmTowerMove(boolean useBp) throws BadRequestException {
         Card card = this.game.towerMove(pendingTowerMove.tower,
                 pendingTowerMove.floor,
                 pendingTowerMove.fm,

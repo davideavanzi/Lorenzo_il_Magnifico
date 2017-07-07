@@ -1,6 +1,7 @@
 package it.polimi.ingsw.lim.controller;
 import it.polimi.ingsw.lim.Lock;
 import it.polimi.ingsw.lim.Log;
+import it.polimi.ingsw.lim.exceptions.BadRequestException;
 import it.polimi.ingsw.lim.model.Player;
 
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public class ExcommunicationRound implements Runnable, Round {
         new RoundTimer(20, this);
     }
 
-    public void applyExcommAnswer(User user, boolean answer) {
+    public void applyExcommAnswer(User user, boolean answer) throws BadRequestException{
         if (!answer)
             this.toExcommunicate.remove(toExcommunicate.indexOf(user.getPlayer()));
     }
