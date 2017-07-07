@@ -72,8 +72,12 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
     }
 
     @Override
-    public void fastHarvest(/*devo passare quello che voglio tornare al server dalla CLI*/) throws ClientNetworkException {
-
+    public void fastHarvest(int servantsDeployed) throws ClientNetworkException {
+        try {
+            rmiServer.fastHarvest(servantsDeployed, uiCallback.getUsername(), this);
+        } catch (RemoteException e) {
+            throw new ClientNetworkException("[RMI]: Could not send bonus harvest action to server", e);
+        }
     }
 
     @Override
@@ -82,8 +86,12 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
     }
 
     @Override
-    public void fastProduction(/*devo passare quello che voglio tornare al server dalla CLI*/) throws ClientNetworkException {
-
+    public void fastProduction(int servantsDeployed) throws ClientNetworkException {
+        try {
+            rmiServer.fastProduction(servantsDeployed, uiCallback.getUsername(), this);
+        } catch (RemoteException e) {
+            throw new ClientNetworkException("[RMI]: Could not send bonus production action to server", e);
+        }
     }
 
     @Override
@@ -92,8 +100,12 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
     }
 
     @Override
-    public void fastTowerMove(/*devo passare quello che voglio tornare al server dalla CLI*/) throws ClientNetworkException {
-
+    public void fastTowerMove(int servantsDeployed, String towerColor, int floor) throws ClientNetworkException {
+        try {
+            rmiServer.fastTowerMove(servantsDeployed, towerColor, floor, uiCallback.getUsername(), this);
+        } catch (RemoteException e) {
+            throw new ClientNetworkException("[RMI]: Could not send bonus tower action to server", e);
+        }
     }
 
     @Override
@@ -102,11 +114,11 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
     }
 
     @Override
-    public void productionOption(ArrayList<Integer> prodChoice, String username) throws ClientNetworkException {
+    public void productionOption(ArrayList<Integer> prodChoice) throws ClientNetworkException {
         try {
-            rmiServer.productionOption(prodChoice, username, this);
+            rmiServer.productionOption(prodChoice, uiCallback.getUsername(), this);
         } catch (RemoteException e) {
-            throw new ClientNetworkException("[RMI]: Could not send battle point payment request to server", e);
+            throw new ClientNetworkException("[RMI]: Could not production action to server", e);
         }
     }
 
@@ -116,9 +128,9 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
     }
 
     @Override
-    public void optionalBpPick(boolean bpPayment, String username) throws ClientNetworkException {
+    public void optionalBpPick(boolean bpPayment) throws ClientNetworkException {
         try {
-            rmiServer.optionalBpPick(bpPayment, username, this);
+            rmiServer.optionalBpPick(bpPayment, uiCallback.getUsername(), this);
         } catch (RemoteException e) {
             throw new ClientNetworkException("[RMI]: Could not send battle point payment request to server", e);
         }
@@ -130,9 +142,9 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
     }
 
     @Override
-    public void favorChoice(ArrayList<Integer> favorChoice, String username) throws ClientNetworkException {
+    public void favorChoice(ArrayList<Integer> favorChoice) throws ClientNetworkException {
         try {
-            rmiServer.favorChoice(favorChoice, username, this);
+            rmiServer.favorChoice(favorChoice, uiCallback.getUsername(), this);
         } catch (RemoteException e) {
             throw new ClientNetworkException("[RMI]: Could not send council choice to server", e);
         }
@@ -145,9 +157,9 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
     }
 
     @Override
-    public void excommunicationChoice(boolean choice, String username) throws ClientNetworkException {
+    public void excommunicationChoice(boolean choice) throws ClientNetworkException {
         try {
-            rmiServer.excommunicationChoice(choice, username, this);
+            rmiServer.excommunicationChoice(choice, uiCallback.getUsername(), this);
         } catch (RemoteException e) {
             throw new ClientNetworkException("[RMI]: Could not send excommunication choice to server", e);
         }
@@ -159,21 +171,21 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
     }
 
     @Override
-    public void placeFM(String fmColor, ArrayList<String> destination, String servants, String username) throws ClientNetworkException {
+    public void placeFM(String fmColor, ArrayList<String> destination, String servants) throws ClientNetworkException {
         int destArgs = Integer.parseInt(destination.get(1)); //floor's number or market slot
         int servantsNum = Integer.parseInt(servants);
         try {
             if (destination.get(0).contains(TOWER)) {
                 String twrColor = destination.get(0).replace(" Tower", "");
-                rmiServer.moveInTower(fmColor, twrColor, destArgs, servantsNum, username, this);
+                rmiServer.moveInTower(fmColor, twrColor, destArgs, servantsNum, uiCallback.getUsername(), this);
             } else if (destination.get(0).equalsIgnoreCase(MARKET)) {
-                rmiServer.moveInMarket(fmColor, destArgs, servantsNum, username, this);
+                rmiServer.moveInMarket(fmColor, destArgs, servantsNum, uiCallback.getUsername(), this);
             } else if (destination.get(0).equalsIgnoreCase(PRODUCTION)) {
-                rmiServer.moveInProduction(fmColor, servantsNum, username, this);
+                rmiServer.moveInProduction(fmColor, servantsNum, uiCallback.getUsername(), this);
             } else if (destination.get(0).equalsIgnoreCase(HARVEST)) {
-                rmiServer.moveInHarvest(fmColor, servantsNum, username, this);
+                rmiServer.moveInHarvest(fmColor, servantsNum, uiCallback.getUsername(), this);
             } else if (destination.get(0).equalsIgnoreCase(COUNCIL)) {
-                rmiServer.moveInCouncil(fmColor, servantsNum, username, this);
+                rmiServer.moveInCouncil(fmColor, servantsNum, uiCallback.getUsername(), this);
             }
         } catch (RemoteException e) {
             throw new ClientNetworkException("[RMI]: Could not contact the server to place family member", e);

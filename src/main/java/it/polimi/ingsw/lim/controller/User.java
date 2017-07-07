@@ -165,9 +165,6 @@ public abstract class User implements Serializable{
      */
     public abstract void sendChatMessage(String sender, String message);
 
-
-    public abstract void gameError(String message);
-
     /**
      * This method sends a message to the user relative to it's gaming state.
      * @param message the message to send.

@@ -2,7 +2,6 @@ package it.polimi.ingsw.lim.network.server.socket;
 
 import it.polimi.ingsw.lim.controller.GameController;
 import it.polimi.ingsw.lim.exceptions.BadRequestException;
-import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.FamilyMember;
 
 import static it.polimi.ingsw.lim.Log.getLog;
@@ -72,34 +71,34 @@ class ClientCommandHandler {
                 }
             } else if (commandID.equals(CHOOSE_FAVOR)) {
                 try {
-                    //gameController.performCfActivation();
+                    gameController.performCfActivation(unpackPacket(command));
                     handlerCallback.commandValidator(CHOOSE_FAVOR, CHOOSE_FAVOR_OK, true);
                 } catch (BadRequestException e) {
                     handlerCallback.commandValidator(CHOOSE_FAVOR, e.getMessage(), false);
                 }
             } else if (commandID.equals(OPTIONAL_BP_PICK)) {
                 try {
-                    //TODO metodo in GC a cui passo il booleano bpPayment
+                    gameController.confirmTowerMove(Boolean.valueOf(command[1]));
                     handlerCallback.commandValidator(OPTIONAL_BP_PICK, OPTIONAL_BP_PICK_OK, true);
                 } catch (BadRequestException e) {
                     handlerCallback.commandValidator(OPTIONAL_BP_PICK, e.getMessage(), false);                }
             } else if (commandID.equals(CHOOSE_PRODUCTION)) {
                 try {
-                    //todo metodo su GameController
+                    gameController.confirmProduction(unpackPacket(command));
                     handlerCallback.commandValidator(CHOOSE_PRODUCTION, CHOOSE_PRODUCTION_OK, true);
                 } catch (BadRequestException e) {
                     handlerCallback.commandValidator(CHOOSE_PRODUCTION, e.getMessage(), false);
                 }
             } else if (commandID.equals(SERVANTS_PRODUCTION)) {
                 try {
-                    //todo metodo su GameController
+                    gameController.performFastProduction(Integer.valueOf(command[1]), handlerCallback.getUser());
                     handlerCallback.commandValidator(SERVANTS_PRODUCTION, SERVANTS_PRODUCTION_OK, true);
                 } catch (BadRequestException e) {
                     handlerCallback.commandValidator(SERVANTS_PRODUCTION, e.getMessage(), false);
                 }
             } else if (commandID.equals(SERVANTS_HARVEST)) {
                 try {
-                    //todo metodo su GameController
+                    gameController.performFastHarvest(Integer.valueOf(command[1]), handlerCallback.getUser());
                     handlerCallback.commandValidator(SERVANTS_HARVEST, SERVANTS_HARVEST_OK, true);
                 } catch (BadRequestException e) {
                     handlerCallback.commandValidator(SERVANTS_HARVEST, e.getMessage(), false);
@@ -137,11 +136,10 @@ class ClientCommandHandler {
     }
 
     ArrayList<Integer> unpackPacket(String[] cmd) {
-        int count = 1;
-        ArrayList<Integer>
+        ArrayList<Integer> command = new ArrayList<>();
         for (String charNum : cmd) {
-
+            command.add(Integer.valueOf(charNum));
         }
-        return ;
+        return command;
     }
 }

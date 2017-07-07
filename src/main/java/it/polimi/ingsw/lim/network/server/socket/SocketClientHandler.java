@@ -79,8 +79,7 @@ public class SocketClientHandler implements Runnable {
     }
 
     void askClientForFastTowerMove(HashMap<String, Integer> baseStr, Assets optionalPickDiscount) {
-        //TODO capire come passare baseStr e optional
-        sendObjectToClient(PICK_FROM_TOWER + SPLITTER + baseStr + SPLITTER + optionalPickDiscount);
+        sendObjectToClient(new Object[] {PICK_FROM_TOWER, baseStr, optionalPickDiscount});
     }
 
     void askClientForProductionOption(ArrayList<ArrayList<Object[]>> options) {

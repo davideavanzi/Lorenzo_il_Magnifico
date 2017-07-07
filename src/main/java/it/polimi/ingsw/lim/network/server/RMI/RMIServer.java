@@ -37,11 +37,11 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
     public RMIServer() throws RemoteException {}
 
     @Override
-    public void fastHarvest() throws RemoteException {
+    public void fastHarvest(int servantsDeployed, String username, RMIClientInterf rmiClient) throws RemoteException {
         User actor = MainServer.getUserFromUsername(username);
         try {
             GameController gc = actor.getRoom().getGameController();
-            gc.performFastHarvest(servantsDeployed);
+            gc.performFastHarvest(servantsDeployed, actor);
             rmiClient.commandValidator(SERVANTS_HARVEST, SERVANTS_HARVEST_OK , true);
         } catch (BadRequestException e) {
             rmiClient.commandValidator(SERVANTS_HARVEST, e.getMessage() , false);
@@ -53,10 +53,11 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
     }
 
     @Override
-    public void fastProduction(/*passare param*/) throws RemoteException {
+    public void fastProduction(int servantsDeployed, String username, RMIClientInterf rmiClient) throws RemoteException {
         User actor = MainServer.getUserFromUsername(username);
         try {
             GameController gc = actor.getRoom().getGameController();
+            gc.performFastProduction(servantsDeployed, actor);
             rmiClient.commandValidator(SERVANTS_PRODUCTION, SERVANTS_PRODUCTION_OK , true);
         } catch (BadRequestException e) {
             rmiClient.commandValidator(SERVANTS_PRODUCTION, e.getMessage() , false);
@@ -70,7 +71,8 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
     }
 
     @Override
-    public void fastTowerMove(/*PARAMETRRIRIIR*/) throws RemoteException {
+    public void fastTowerMove(int servantsDeployed, String towerColor, int floor, String username, RMIClientInterf rmiClient)
+            throws RemoteException {
         User actor = MainServer.getUserFromUsername(username);
         try {
             GameController gc = actor.getRoom().getGameController();
@@ -83,15 +85,16 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
         }
     }
 
-    static void askClientForFastTowerMove(HashMap<String, Integer> baseStr, Assets optionalPickDiscount, RMIClientInterf rmiClient) throws RemoteException {
+    static void askClientForFastTowerMove(HashMap<String, Integer> baseStr,
+                                          Assets optionalPickDiscount, RMIClientInterf rmiClient) throws RemoteException {
         rmiClient.askPlayerForFastTowerMove(baseStr, optionalPickDiscount);
     }
 
     @Override
-    public void productionOption(/*MANCANO PARAMETRI da cli a server*/) throws RemoteException {
+    public void productionOption(ArrayList<Integer> prodChoice, String username, RMIClientInterf rmiClient) throws RemoteException {
         try {
             GameController gc = MainServer.getUserFromUsername(username).getRoom().getGameController();
-            gc.confirmProduction(choices);
+            gc.confirmProduction(prodChoice);
             rmiClient.commandValidator(CHOOSE_PRODUCTION, CHOOSE_PRODUCTION_OK, true);
         } catch (BadRequestException e) {
             rmiClient.commandValidator(CHOOSE_PRODUCTION, e.getMessage(), false);

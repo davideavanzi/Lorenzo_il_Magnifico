@@ -145,9 +145,33 @@ public class UIController {
         return getLocalPlayers().stream().filter(pl -> pl.getNickname().equals(username)).findFirst().orElse(null);
     }
 
+    void sendFastHarvest (int servantDeployes) {
+        try {
+            clientProtocol.fastHarvest(servantDeployes);
+        } catch (ClientNetworkException e) {
+            clientUI.printError(e.getMessage());
+        }
+    }
+
+    void sendFastProduction(int servantDeployes) {
+        try {
+            clientProtocol.fastProduction(servantDeployes);
+        } catch (ClientNetworkException e) {
+            clientUI.printError(e.getMessage());
+        }
+    }
+
+    void sendFastTowerMove (int servantsDeployed, String towerColor, int floor) {
+        try {
+            clientProtocol.fastTowerMove(servantsDeployed, towerColor, floor);
+        } catch (ClientNetworkException e) {
+            clientUI.printError(e.getMessage());
+        }
+    }
+
     void sendProductionOption(ArrayList<Integer> prodChoice) {
         try {
-            clientProtocol.productionOption(prodChoice, username);
+            clientProtocol.productionOption(prodChoice);
         } catch (ClientNetworkException e) {
             clientUI.printError(e.getMessage());
         }
@@ -155,7 +179,7 @@ public class UIController {
 
     void sendOptionalBpPick(boolean bpPayment) {
         try {
-            clientProtocol.optionalBpPick(bpPayment, username);
+            clientProtocol.optionalBpPick(bpPayment);
         } catch (ClientNetworkException e) {
             clientUI.printError(e.getMessage());
         }
@@ -163,7 +187,7 @@ public class UIController {
 
     void sendFavorChoice(ArrayList<Integer> favorChoice) {
         try {
-            clientProtocol.favorChoice(favorChoice, username);
+            clientProtocol.favorChoice(favorChoice);
         } catch (ClientNetworkException e) {
             clientUI.printError(e.getMessage());
         }
@@ -171,7 +195,7 @@ public class UIController {
 
     void sendExcommunicationChoice(boolean choice) {
         try {
-            clientProtocol.excommunicationChoice(choice, username);
+            clientProtocol.excommunicationChoice(choice);
         } catch (ClientNetworkException e) {
             clientUI.printError(e.getMessage());
         }
@@ -179,7 +203,7 @@ public class UIController {
 
     void sendPlaceFM(String color, ArrayList<String> destination, String servants) {
         try {
-            clientProtocol.placeFM(color, destination, servants, username);
+            clientProtocol.placeFM(color, destination, servants);
         } catch (ClientNetworkException e) {
             clientUI.printError(e.getMessage());
         }

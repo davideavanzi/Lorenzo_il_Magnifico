@@ -10,11 +10,11 @@ import java.util.ArrayList;
  */
 public interface RMIServerInterf extends Remote {
 
-    void fastHarvest() throws RemoteException;
+    void fastHarvest(int servantsDeployed, String username, RMIClientInterf rmiClient) throws RemoteException;
 
-    void fastProduction() throws RemoteException;
+    void fastProduction(int servantsDeployed, String username, RMIClientInterf rmiClient) throws RemoteException;
 
-    void fastTowerMove() throws RemoteException;
+    void fastTowerMove(int servantsDeployed, String towerColor, int floor, String username, RMIClientInterf rmiClient) throws RemoteException;
 
     void productionOption(ArrayList<Integer> prodChoice, String username, RMIClientInterf rci) throws RemoteException;
 

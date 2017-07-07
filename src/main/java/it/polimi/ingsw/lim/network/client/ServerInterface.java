@@ -13,22 +13,22 @@ import java.util.ArrayList;
  * This interface is use to communication to the server.
  */
 public interface ServerInterface {
-    //TODO OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
-    void fastHarvest(/*devo passare quello che voglio tornare al server dalla CLI*/) throws ClientNetworkException;
 
-    void fastProduction(/*devo passare quello che voglio tornare al server dalla CLI*/) throws ClientNetworkException;
+    void fastHarvest(int servantsDeployed) throws ClientNetworkException;
 
-    void fastTowerMove(/*devo passare quello che voglio tornare al server dalla CLI*/) throws ClientNetworkException;
+    void fastProduction(int servantsDeployed) throws ClientNetworkException;
 
-    void productionOption(ArrayList<Integer> prodChoice, String username) throws ClientNetworkException;
+    void fastTowerMove(int servantsDeployed, String towerColor, int floor) throws ClientNetworkException;
 
-    void optionalBpPick(boolean bpPayment, String username) throws ClientNetworkException;
+    void productionOption(ArrayList<Integer> prodChoice) throws ClientNetworkException;
 
-    void favorChoice(ArrayList<Integer> favorChoice, String username) throws ClientNetworkException;
+    void optionalBpPick(boolean bpPayment) throws ClientNetworkException;
 
-    void excommunicationChoice(boolean choice, String username) throws ClientNetworkException;
+    void favorChoice(ArrayList<Integer> favorChoice) throws ClientNetworkException;
 
-    void placeFM(String color, ArrayList<String> destination, String servants, String username) throws ClientNetworkException;
+    void excommunicationChoice(boolean choice) throws ClientNetworkException;
+
+    void placeFM(String color, ArrayList<String> destination, String servants) throws ClientNetworkException;
 
     /**
      * Send a chat message to the server.

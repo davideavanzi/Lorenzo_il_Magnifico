@@ -79,22 +79,34 @@ public class SocketClient implements Runnable, ServerInterface {
     private int getPort() {return port;}
 
     @Override
-    public void fastHarvest(/*devo passare quello che voglio tornare al server dalla CLI*/) throws ClientNetworkException {
-
+    public void fastHarvest(int servantsDeployed) throws ClientNetworkException {
+        try {
+            sendObjToServer(new String[] {SERVANTS_HARVEST, String.valueOf(servantsDeployed)});
+        } catch (IOException e) {
+                throw new ClientNetworkException("[SOCKET]: Could not send bonus harvest action to server", e);
+        }
     }
 
     @Override
-    public void fastProduction(/*devo passare quello che voglio tornare al server dalla CLI*/) throws ClientNetworkException {
-
+    public void fastProduction(int servantsDeployed) throws ClientNetworkException {
+        try {
+            sendObjToServer(new String[] {SERVANTS_PRODUCTION, String.valueOf(servantsDeployed)});
+        } catch (IOException e) {
+            throw new ClientNetworkException("[SOCKET]: Could not send bonus production actionto server", e);
+        }
     }
 
     @Override
-    public void fastTowerMove(/*devo passare quello che voglio tornare al server dalla CLI*/) throws ClientNetworkException {
-
+    public void fastTowerMove(int servantsDeployed, String towerColor, int floor) throws ClientNetworkException {
+        try {
+            sendObjToServer(new String[] {PICK_FROM_TOWER, towerColor, String.valueOf(floor)});
+        } catch (IOException e) {
+            throw new ClientNetworkException("[SOCKET]: Could not send bonus tower move action to server", e);
+        }
     }
 
     @Override
-    public void productionOption(ArrayList<Integer> prodChoice, String username) throws ClientNetworkException {
+    public void productionOption(ArrayList<Integer> prodChoice) throws ClientNetworkException {
         try {
             sendObjToServer(createSocketPacket(CHOOSE_PRODUCTION, prodChoice));
         } catch (IOException e) {
@@ -103,7 +115,7 @@ public class SocketClient implements Runnable, ServerInterface {
     }
 
     @Override
-    public void optionalBpPick(boolean bpPayment, String username) throws ClientNetworkException {
+    public void optionalBpPick(boolean bpPayment) throws ClientNetworkException {
         try {
             sendObjToServer(new String[] {OPTIONAL_BP_PICK, String.valueOf(bpPayment)});
         } catch (IOException e) {
@@ -112,7 +124,7 @@ public class SocketClient implements Runnable, ServerInterface {
     }
 
     @Override
-    public void favorChoice(ArrayList<Integer> favorChoice, String username) throws ClientNetworkException {
+    public void favorChoice(ArrayList<Integer> favorChoice) throws ClientNetworkException {
         try {
             sendObjToServer(createSocketPacket(CHOOSE_FAVOR, favorChoice));
         } catch (IOException e) {
@@ -121,7 +133,7 @@ public class SocketClient implements Runnable, ServerInterface {
     }
 
     @Override
-    public void excommunicationChoice(boolean choice, String username) throws ClientNetworkException {
+    public void excommunicationChoice(boolean choice) throws ClientNetworkException {
         try {
             sendObjToServer(new String[] {EXCOMMUNICATION, String.valueOf(choice)});
         } catch (IOException e) {
@@ -130,7 +142,7 @@ public class SocketClient implements Runnable, ServerInterface {
     }
 
     @Override
-    public void placeFM(String color, ArrayList<String> destination, String servants, String username) throws ClientNetworkException {
+    public void placeFM(String color, ArrayList<String> destination, String servants) throws ClientNetworkException {
         try {
             if (destination.get(1) == null)
                 sendObjToServer(new String[] {FAMILY_MEMBER, color, destination.get(0), servants});
