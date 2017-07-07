@@ -24,7 +24,8 @@ public class Market implements Serializable {
             slotsNumber = playersNumber;
         this.slots = new FamilyMember[slotsNumber];
         this.bonuses = new Assets[slotsNumber];
-        this.bonuses = marketBonuses;
+        for (int i = 0; i < slotsNumber; i++)
+            this.bonuses[i] = marketBonuses[i];
     }
 
     public Market(){
@@ -67,6 +68,9 @@ public class Market implements Serializable {
         this.bonuses = bonuses;
     }
 
+    public boolean isPositionAvailable(int position) {
+        return position > 0 && position < slots.length;
+    }
 
     public boolean isPositionOccupied(int position){
         if(this.slots[position-1] != null)

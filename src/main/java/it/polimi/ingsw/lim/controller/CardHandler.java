@@ -5,6 +5,7 @@ import it.polimi.ingsw.lim.model.*;
 import it.polimi.ingsw.lim.model.cards.BlueCard;
 import it.polimi.ingsw.lim.model.cards.GreenCard;
 import it.polimi.ingsw.lim.model.cards.YellowCard;
+import org.codehaus.jackson.annotate.JsonTypeInfo;
 
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -15,8 +16,10 @@ import java.util.logging.Level;
  */
 public class CardHandler {
 
-    public static void activateGreenCard (GreenCard card, Player pl) {
-        pl.getResources().add(card.getHarvestResult());
+    public static void activateGreenCard (GreenCard card, User actor) {
+        actor.getPlayer().getResources().add(card.getHarvestResult());
+        if (card.getCouncilFavourAmount() > 0)
+            actor.getRoom().getGameController().giveCouncilFavors(card.getCouncilFavourAmount());
     }
 
     /**
@@ -29,25 +32,26 @@ public class CardHandler {
         Log.getLog().log(Level.INFO, () ->
                 "activating production card "+card.getName()+" for player "+actor.getPlayer().getNickname());
         if (card.getCardMultiplier() != null) {
-            controllerCallback.addBonusToAccumulator(card.getProductionResults().get(0)
+            if (card.getProductionResults().get(0) instanceof Assets)
+                controllerCallback.addBonusToAccumulator(((Assets)card.getProductionResults().get(0))
                     .multiply(actor.getPlayer().getCardsAmount(card.getCardMultiplier())));
+            else if (card.getProductionResults().get(0) instanceof Integer)
+                controllerCallback.addBonusToAccumulator(((int)card.getProductionResults().get(0)) *
+                        actor.getPlayer().getCardsAmount(card.getCardMultiplier()));
         } else if (card.getProductionCosts().size() == 0) {
-            controllerCallback.addBonusToAccumulator(card.getProductionResults().get(0));
+            if (card.getProductionResults().get(0) instanceof Assets)
+                controllerCallback.addBonusToAccumulator((Assets)card.getProductionResults().get(0));
+            else if (card.getProductionResults().get(0) instanceof Integer)
+                controllerCallback.addBonusToAccumulator((int)card.getProductionResults().get(0));
         } else {
-            ArrayList<Assets[]> availableOptions = new ArrayList<>();
+            ArrayList<Object[]> availableOptions = new ArrayList<>();
             for (int i = 0; i < card.getProductionCosts().size(); i++)
                 if (actor.getPlayer().getResources().isGreaterOrEqual(card.getProductionCosts().get(i))) {
-                    availableOptions.add(new Assets[]{card.getProductionCosts().get(i),
+                    availableOptions.add(new Object[]{(card.getProductionCosts().get(i)),
                             card.getProductionResults().get(i)});
                 }
-
             if (availableOptions.size() > 0) {
                 controllerCallback.addProductionOptions(availableOptions);
-                /*
-                int chosenOption = actor.chooseProduction(availableOptions);
-                actor.getPlayer().setResources(actor.getPlayer().getResources()
-                        .subtract(availableOptions.get(chosenOption)[1]));
-                controllerCallback.add(availableOptions.get(chosenOption)[2]); */
             }
         }
     }
