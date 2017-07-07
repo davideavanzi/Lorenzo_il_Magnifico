@@ -57,27 +57,113 @@ public class CLI extends AbsUI {
     }
 
     private void askForFastTowerMove() {
-
+        ArrayList<String> tower = new ArrayList<>();
+        printGameMessageln("You can activate a fast tower move!");
+        printMessageln("How many Servants would you like to deploy to support your move?");
+        do {
+            inputNum = userInput.nextInt();
+        } while (inputNum < 0);
+        int servantsDeployed = inputNum;
+        printMessageln("In which tower would you like to pick a Card?");
+        tower.add("1) Green Tower");
+        tower.add("2) Yellow Tower");
+        tower.add("3) Blue Tower");
+        tower.add("4) Purple Tower");
+        if(uiCallback.getLocalPlayers().size() == 5){
+            tower.add("5) Black Tower");
+        }
+        for(String color: tower){
+            printMessageln(color);
+        }
+        if(uiCallback.getLocalPlayers().size() < 5) {
+            do {
+                inputNum = userInput.nextInt();
+            } while (inputNum < 0 || inputNum > 5);
+        }
+        if(uiCallback.getLocalPlayers().size() == 5) {
+            do {
+                inputNum = userInput.nextInt();
+            } while (inputNum < 0 || inputNum > 6);
+        }
+        int chosenTower = inputNum;
+        String towerColor = null;
+        switch (chosenTower){
+            case 1:
+                towerColor = "GREEN";
+                break;
+            case 2:
+                towerColor = "BLUE";
+                break;
+            case 3:
+                towerColor = "YELLOW";
+                break;
+            case 4:
+                towerColor = "PURPLE";
+                break;
+            case 5:
+                towerColor = "BLACK";
+                break;
+        }
+        printMessageln("In which floow of ".concat(towerColor.toLowerCase()).concat(" you would you like to pick a card?"));
+        do {
+            inputNum = userInput.nextInt();
+        } while (inputNum < 0 || inputNum > TOWER_HEIGHT);
+        int floor = inputNum;
+        uiCallback.sendFastTowerMove(servantsDeployed, towerColor, floor);
     }
 
     private void askForProductionOptions() {
+        String format = "||%-20s||\n";
+        String sRid = "||_  _  _  _  _  _  _ ||";
+        String s = "________________________";
+        ArrayList<Integer> choose = new ArrayList<>();
         printGameMessageln("You can activate a production!");
+        printMessageln("");
+        printMessageln(s);
+        System.out.format(format, "");
         for (ArrayList<Object[]> card : uiCallback.getTmpVar().getOptions()) {
+            Integer num = 0;
+            System.out.format(format, StringUtils.center((num.toString().concat("->Not Activate")), 20));
+            System.out.format(format, "");
             for (Object[] prod : card) {
-                if (prod instanceof Assets[]) {
-
-                } else {
-
+                num++;
+                printMessageln(sRid);
+                System.out.format(format, "");
+                System.out.format(format, StringUtils.center((num.toString().concat("->Activate This")), 20));
+                System.out.format(format, "");
+                if (((Assets)prod[0]).isNotNull()) {
+                    printMessageln(sRid);
+                    System.out.format(format, "");
+                    System.out.format(format, StringUtils.center(("Producition Cost:"), 20));
+                    printAsset((Assets)prod[0]);
                 }
+                if(prod[1] instanceof Assets){
+                    if (((Assets)prod[0]).isNotNull()) {
+                        printMessageln(sRid);
+                        System.out.format(format, "");
+                        System.out.format(format, StringUtils.center(("Producition Result:"), 20));
+                        printAsset((Assets) prod[1]);
+                    }
+                } else if(prod[1] instanceof Integer){
+                    if((Integer)prod[1] != 0) {
+                        printMessageln(sRid);
+                        System.out.format(format, "");
+                        System.out.format(format, StringUtils.center((prod[1]).toString(), 20));
+                    }
+                }
+                do {
+                    inputNum = userInput.nextInt();
+                } while (inputNum < 0 || inputNum > card.size());
+                choose.add(inputNum);
             }
         }
-        uiCallback.sendProductionOption(/*ArrayList<Integer>*/);
+        uiCallback.sendProductionOption(choose);
         lock.unlock();
     }
 
     private void askForOptionalBpPick() {
-        printGameMessageln("You have picked a card that can be payed in two ways, using resources or battle points.\n" +
-                "How do you prefer to pay?\n1) Battle Points\n2) Resources");
+        printGameMessageln("You have picked a card that can be payed in two ways, using resources or battle points.\n".concat(
+                "How do you prefer to pay?\n1) Battle Points\n2) Resources"));
         do {
             inputNum = userInput.nextInt();
         } while (!inputNum.equals(1) && !inputNum.equals(2));
@@ -89,6 +175,7 @@ public class CLI extends AbsUI {
     private void askForFavor() {
         ArrayList<Integer> favorChoice = new ArrayList<>();
         printGameMessage("You can choose between" + uiCallback.getTmpVar().getFavorAmount() + "council's favors: ");
+        printMessageln("");
         printCouncilFavors();
         for (int count = 0; userInput.hasNext() && count < uiCallback.getTmpVar().getFavorAmount(); count++)
             favorChoice.add(userInput.nextInt());
@@ -945,7 +1032,7 @@ public class CLI extends AbsUI {
         if(!(yellowCard.getProductionResults().isEmpty())){
             for(java.lang.Object ob: yellowCard.getProductionResults()){
                 printMessageln(sRid);
-                System.out.format(format, "");
+                System.out.format(format, "")b;
                 System.out.format(format, StringUtils.center(("Production Result:"), 20));
                 if(ob instanceof Assets){
                     printAsset((Assets)ob);
