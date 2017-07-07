@@ -2,6 +2,7 @@ package it.polimi.ingsw.lim.controller;
 
 import it.polimi.ingsw.lim.Lock;
 import it.polimi.ingsw.lim.Log;
+import it.polimi.ingsw.lim.exceptions.InvalidTimerException;
 import it.polimi.ingsw.lim.model.Player;
 import it.polimi.ingsw.lim.parser.Parser;
 import it.polimi.ingsw.lim.parser.Writer;
@@ -11,6 +12,7 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import static it.polimi.ingsw.lim.Log.getLog;
 import static it.polimi.ingsw.lim.Settings.*;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.*;
 import java.util.logging.Level;
@@ -48,8 +50,13 @@ public class Room implements Serializable{
         excommLock = new Lock();
         getLog().log(Level.INFO, () -> "Room created, adding "+ user.getUsername() +" to room");
         this.id = id;
-        timerPlayMove = Parser.parseTimerPlayMove(//todo path to directory);
-        timerStartingGame = Parser.parseTimerStartGame(//todo path to directory);
+        try {
+            timerPlayMove = Parser.parseTimerPlayMove(CONFIGS_PATH+"default/");
+            timerStartingGame = Parser.parseTimerStartGame(CONFIGS_PATH+"default/");
+        } catch (InvalidTimerException | IOException e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 
     public boolean getRoomOpen() {
@@ -167,15 +174,12 @@ public class Room implements Serializable{
      * TODO: handle disconnected players
      */
     void switchRound(){
-        System.out.println("_______________ TUTTIISANTI ________________");
         playOrder.remove(0);
         if (playOrder.isEmpty()) {
-            System.out.println("_______________ MADONNATROIA ________________");
             startNewTurn();
             Log.getLog().info("[WRITER]: saving game info");
             Writer.gameWriter(this.gameController.getGame(), id);
             Writer.roomWriter(this, id);
-            System.out.println("_______________ MADONNAPUTTANA ________________");
             return;
         }
         Log.getLog().info("player ".concat(round.getUserName()).concat(" ending round"));
@@ -244,16 +248,10 @@ public class Room implements Serializable{
      */
     private void startNewTurn(){
         //Send game state to players TODO: there's no need to update this everytime?
-        System.out.println("_______________ DIOCANE ________________");
         ArrayList<Player> players = new ArrayList<>();
         usersList.forEach(user -> players.add(user.getPlayer()));
         getConnectedUsers().forEach(user -> user.sendGameUpdate(this.gameController.getBoard(), players));
-        System.out.println("________________ * DIOPORCO * _______________");
         buildTurnOrder();
-        System.out.println("_______________________________");
-        System.out.println(this.playOrder.toString());
-        System.out.println("_______________________________");
-
         if(this.gameController.getTime()[1] >= TURNS_PER_AGE) {
             excommLock.lock();
             new Thread(new ExcommunicationRound(this,10000,excommLock)).start();
@@ -268,7 +266,6 @@ public class Room implements Serializable{
                 playOrder.remove(i);
                 i--;
             }
-
     }
 
     /**

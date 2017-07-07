@@ -78,6 +78,7 @@ public abstract class User implements Serializable{
         return username;
     }
 
+    @JsonIgnore
     public Room getRoom() {
         return room;
     }
