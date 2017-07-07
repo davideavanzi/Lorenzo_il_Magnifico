@@ -48,9 +48,11 @@ public class CardsDeck {
      */
     public ArrayList <Card> pullCardsForTower(String color, int age) {
         ArrayList<Card> cards = new ArrayList<>();
-        for (int i = 0; i < TOWER_HEIGHT; i++) {
-            Random randomGenerator = new Random();
-            cards.add(developementCards.get(age).get(color).remove(randomGenerator.nextInt(developementCards.get(age).get(color).size())));
+        if(developementCards.get(age).get(color).size() >= TOWER_HEIGHT) {
+            for (int i = 0; i < TOWER_HEIGHT; i++) {
+                Random randomGenerator = new Random();
+                cards.add(developementCards.get(age).get(color).remove(randomGenerator.nextInt(developementCards.get(age).get(color).size())));
+            }
         }
         return cards;
     }

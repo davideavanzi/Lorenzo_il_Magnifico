@@ -9,6 +9,7 @@ import it.polimi.ingsw.lim.model.immediateEffects.*;
 import it.polimi.ingsw.lim.parser.Parser;
 import it.polimi.ingsw.lim.parser.Writer;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
@@ -128,34 +129,41 @@ public class GameController {
      * Room must have players before instantiating game instance
      */
     public void createGame() {
-        this.game = new Game(this);
-        roomCallback.getUsersList().forEach(user ->
-            user.setPlayer(game.addPlayer(user.getUsername())));
-        Collections.shuffle(game.getPlayers());
-        String defaultPath = "default/";
-        //TODO: handle exception in a proper place
-        Parser parsedGame = new Parser();
-        try {
-            parsedGame.parser(CONFIGS_PATH+defaultPath);
-        } catch (Exception e) {
-            getLog().severe("PARSER ERROR:\n"+e.getMessage());
+        if(!restartGame(roomCallback)){
+            this.game = new Game(this);
+            roomCallback.getUsersList().forEach(user ->
+                    user.setPlayer(game.addPlayer(user.getUsername())));
+            Collections.shuffle(game.getPlayers());
+            String defaultPath = "default/";
+            //TODO: handle exception in a proper place
+            Parser parsedGame = new Parser();
+            try {
+                parsedGame.parser(CONFIGS_PATH + defaultPath);
+            } catch (Exception e) {
+                getLog().severe("PARSER ERROR:\n" + e.getMessage());
+            }
+            getLog().info("Validating game data with current settings.");
+            //TODO: how to call validating method?
+            if (validateParsedData(parsedGame))
+                getLog().severe("[ERROR] - parsed data are incorrect");
+            //building game
+            getLog().info("Setting up game with parsed data");
+            try {
+                game.setUpGame(parsedGame);
+            } catch (GameSetupException e) {
+                getLog().severe(e.getMessage());
+            }
+            game.setUpTurn();
         }
-        getLog().info("Validating game data with current settings.");
-        //TODO: how to call validating method?
-        if(validateParsedData(parsedGame))
-            getLog().severe("[ERROR] - parsed data are incorrect");
-        //building game
-        getLog().info("Setting up game with parsed data");
-        try {
-            game.setUpGame(parsedGame);
-        } catch (GameSetupException e) {
-            getLog().severe(e.getMessage());
-        }
-        game.setUpTurn();
     }
 
-    public void restartGame(Room roomCallback){
-        this.game = Writer.gameReader(roomCallback.getId());
+    public boolean restartGame(Room roomCallback) {
+        try {
+            this.game = Writer.gameReader(roomCallback.getId());
+            return true;
+        }catch (IOException e){
+            return false;
+        }
     }
 
     /**

@@ -181,10 +181,13 @@ public class Game {
         players.forEach(pl -> pl.clearFamilyMembers());
         this.board.getTowers().keySet().forEach(color ->
             {
-                getLog().info("Clearing "+color+" tower");
-                this.board.getTowers().get(color).clear();
-                getLog().log(Level.INFO,"Adding cards to "+color+" tower");
-                this.board.getTowers().get(color).addCards(cardsDeck.pullCardsForTower(color, this.board.getAge()));
+                ArrayList<Card> cards = cardsDeck.pullCardsForTower(color, this.board.getAge());
+                if(!cards.isEmpty()){
+                    getLog().info("Clearing "+color+" tower");
+                    this.board.getTowers().get(color).clear();
+                    getLog().log(Level.INFO,"Adding cards to "+color+" tower");
+                    this.board.getTowers().get(color).addCards(cards);
+                }
             });
         getLog().info("Allotting family members to players");
         this.players.forEach(player ->

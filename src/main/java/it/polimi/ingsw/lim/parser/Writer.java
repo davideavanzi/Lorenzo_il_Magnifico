@@ -32,17 +32,11 @@ public class Writer {
         return pathToWriterFile;
     }
 
-    public static Game gameReader(int id){
+    public static Game gameReader(int id) throws IOException{
         ObjectMapper mapper = new ObjectMapper();
-        Game game = null;
+        Game game;
         String pathToWriterGameFile = PATH_TO_WRITER_GAME_FILE + id + EXTENTION;
-        try {
-            game = mapper.readValue(new File(pathToWriterGameFile), Game.class);
-        }catch (IOException e){
-            Log.getLog().severe("[READER]:Unable to open board writer file");
-            e.printStackTrace();
-            return null;
-        }
+        game = mapper.readValue(new File(pathToWriterGameFile), Game.class);
         return game;
     }
 

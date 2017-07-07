@@ -63,19 +63,16 @@ public class Room {
         user.setRoom(this);
         getLog().log(Level.INFO, () -> "REadding "+ user.getUsername() +" to existing room");
         user.setIsAlive(true);
-        int i = 1;
         for(User u: usersList){
-            if(u.isAlive()){
+            if(u.getUsername().equals(user.getUsername()) && !u.isAlive()){
                 System.out.println(u.getUsername());
-                i++;
+                user.setPlayer(u.getPlayer());
+                usersList.remove(usersList.indexOf(u));
+                usersList.add(user);
             }
         }
-        this.gameController = new GameController(this);
         //gameController.setGame(Writer.gameReader(this.getId()));
         gameController.restartGame(this);
-        if(i == 1) {
-            this.switchRound();
-        }
     }
 
     public void setId(int id){this.id = id;}
@@ -84,6 +81,7 @@ public class Room {
         usersList = new ArrayList<>();
         playOrder = new ArrayList<>();
         excommLock = new Lock();
+        gameController = new GameController();
     }
 
     public void setUsersList(ArrayList<User> usersList){

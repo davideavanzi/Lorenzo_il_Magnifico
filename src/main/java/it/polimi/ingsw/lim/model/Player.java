@@ -206,6 +206,7 @@ public class Player implements Serializable{
     }
 
     //Used in lambda to generate rank
+    @JsonIgnore
     public int getMilitaryPoints() { return this.resources.getBattlePoints(); }
 
 }

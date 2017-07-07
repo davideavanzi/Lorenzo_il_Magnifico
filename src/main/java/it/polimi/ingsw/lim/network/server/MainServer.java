@@ -126,21 +126,21 @@ public class MainServer {
      */
     public static Room addUserToRoom(User user) {
         connectedUsers.add(user);
+        for(Room room: roomList){
+            for(User u: room.getUsersList()){
+                if(u.getUsername().equals(user.getUsername()) && !u.getIsAlive()){
+                    Log.getLog().info("Player " + u.getUsername()+" has rejoined");
+                    room.readdUser(user);
+                    return roomList.get(roomList.size()-1);
+                }
+            }
+        }
         if(roomList.isEmpty() || !roomList.get(roomList.size()-1).isOpen()) {
             Random random = new Random();
             roomList.add(new Room(user, random.nextInt(89999999) + 100000000));
             Log.getLog().info("[SERVER]: creating new room. Rooms size " + roomList.size());
         } else {
             Log.getLog().info("[SERVER]: add user to existing room. Rooms size " + roomList.size());
-            for(Room room: roomList){
-                for(User u: room.getUsersList()){
-                    Log.getLog().info("Player " + u.getUsername()+" has rejoin?");
-                    if(u.getUsername().equals(user.getUsername())){
-                        room.readdUser(user);
-                        return roomList.get(roomList.size()-1);
-                    }
-                }
-            }
             roomList.get(roomList.size()-1).addUser(user);
         }
         return roomList.get(roomList.size()-1);
