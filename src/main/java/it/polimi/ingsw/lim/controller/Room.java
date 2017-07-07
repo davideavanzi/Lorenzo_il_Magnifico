@@ -30,8 +30,10 @@ public class Room {
     private Lock excommLock;
     private ArrayList<User> usersList;
     private ArrayList<String> playOrder;
+    @JsonIgnore
     private PlayerRound round;
     private int id;
+    @JsonIgnore
     private ExcommunicationRound excommunicationRound;
 
     public Room(User user, int id) {
@@ -68,10 +70,12 @@ public class Room {
         return id;
     }
 
+    @JsonIgnore
     public ExcommunicationRound getExcommunicationRound() {
         return excommunicationRound;
     }
 
+    @JsonIgnore
     public void setExcommunicationRound(ExcommunicationRound excommunicationRound) {
         this.excommunicationRound = excommunicationRound;
     }
@@ -113,6 +117,7 @@ public class Room {
         this.playOrder = playOrder;
     }
 
+    @JsonIgnore
     public void setRound(PlayerRound round){
         this.round = round;
     }
@@ -156,21 +161,31 @@ public class Room {
      * TODO: handle disconnected players
      */
     void switchRound(){
+        System.out.println("_______________ TUTTIISANTI ________________");
+        playOrder.remove(0);
         if (playOrder.isEmpty()) {
+            System.out.println("_______________ MADONNATROIA ________________");
             startNewTurn();
             Log.getLog().info("[WRITER]: saving game info");
             Writer.gameWriter(this.gameController.getGame(), id);
             Writer.roomWriter(this, id);
+            System.out.println("_______________ MADONNAPUTTANA ________________");
             return;
         }
         Log.getLog().info("player ".concat(round.getUserName()).concat(" ending round"));
-        String nextUserName = playOrder.remove(0);
-        this.round = new PlayerRound(this.getUser(nextUserName));
-        Log.getLog().info("player ".concat(round.getUserName()).concat(" now can play ")
-                .concat("in room" + this.getUser(nextUserName).getRoom().toString()));
-        Log.getLog().info("[WRITER]: saving game info");
-        Writer.gameWriter(this.gameController.getGame(), id);
-        Writer.roomWriter(this, id);
+        for (int i = 0; i < playOrder.size(); i++)
+            if (this.getUser(playOrder.get(i)).isAlive()) {
+                this.round = new PlayerRound(this.getUser(playOrder.get(i)));
+                Log.getLog().info("player ".concat(round.getUserName()).concat(" now can play ")
+                        .concat("in room" + this.getUser(round.getUserName()).getRoom().toString()));
+                Log.getLog().info("[WRITER]: saving game info");
+                Writer.gameWriter(this.gameController.getGame(), id);
+                Writer.roomWriter(this, id);
+                return;
+            } else {
+                playOrder.remove(i);
+                i--;
+            }
     }
 
     /**
@@ -223,10 +238,11 @@ public class Room {
      */
     private void startNewTurn(){
         //Send game state to players TODO: there's no need to update this everytime?
+        System.out.println("_______________ DIOCANE ________________");
         ArrayList<Player> players = new ArrayList<>();
         usersList.forEach(user -> players.add(user.getPlayer()));
         getConnectedUsers().forEach(user -> user.sendGameUpdate(this.gameController.getBoard(), players));
-
+        System.out.println("________________ * DIOPORCO * _______________");
         buildTurnOrder();
         System.out.println("_______________________________");
         System.out.println(this.playOrder.toString());
@@ -238,11 +254,15 @@ public class Room {
         }
         if (excommLock.isLocked()) excommLock.lock();
         this.gameController.startNewTurn();
-        for (String username : this.playOrder)
-            if (this.getUser(username).isAlive()) {
-                this.round = new PlayerRound(this.getUser(username));
+        for (int i = 0; i < playOrder.size(); i++)
+            if (this.getUser(playOrder.get(i)).isAlive()) {
+                this.round = new PlayerRound(this.getUser(playOrder.get(i)));
                 return;
+            } else {
+                playOrder.remove(i);
+                i--;
             }
+
     }
 
     /**
