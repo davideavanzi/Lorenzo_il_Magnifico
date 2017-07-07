@@ -40,10 +40,9 @@ class ServerCommandHandler {
      * @param obj
      */
     void requestHandler(Object obj) throws LoginFailedException {
-        if (obj instanceof String[]) {
-            Object[] cmd = (Object[])obj;
-            String[] command = (String[])cmd;
-            String commandID = (String)cmd[0];
+        if (obj instanceof Object[]) {
+            Object[] command = (Object[]) obj;
+            String commandID = (String) command[0];
             if (commandID.equals(LOGIN_REQUEST)) {
                 String[] loginInfo = uiCallback.sendLoginInfo();
                 try {
@@ -54,22 +53,23 @@ class ServerCommandHandler {
             } else if (commandID.equals(LOGIN_SUCCESSFUL)) {
                 uiCallback.getClientUI().waitForRequest();
             } else if (commandID.equals(LOGIN_FAILED)) {
-                uiCallback.getClientUI().printError(command[1]);
+                uiCallback.getClientUI().printError((String)command[1]);
             } else if (commandID.equals(TURN)) {
-                uiCallback.setIsMyTurn(Boolean.valueOf(command[1]));
+                uiCallback.setIsMyTurn((Boolean)command[1]);
             } else if (commandID.equals(CHAT)) {
-                uiCallback.getClientUI().printChatMessage(command[1], command[2]);
+                uiCallback.getClientUI().printChatMessage((String)command[1], (String)command[2]);
             } else if (commandID.equals(GAME_MSG)) {
-                uiCallback.getClientUI().printGameMessage(command[1]);
+                uiCallback.getClientUI().printGameMessage((String)command[1]);
             } else if (commandID.equals(EXCOMMUNICATION)) {
                 uiCallback.getClientUI().commandAdder(commandID);
             } else if (commandID.equals(CHOOSE_FAVOR)) {
                 uiCallback.getClientUI().commandAdder(commandID);
-                uiCallback.getTmpVar().setFavorAmount(Integer.parseInt(command[1]));
+                uiCallback.getTmpVar().setFavorAmount((Integer)command[1]);
             } else if (commandID.equals(OPTIONAL_BP_PICK)) {
                 uiCallback.getClientUI().commandAdder(commandID);
             } else if (commandID.equals(CHOOSE_PRODUCTION)) {
                 uiCallback.getClientUI().commandAdder(commandID);
+                uiCallback.getTmpVar().setOptionsProd((ArrayList<ArrayList<Object[]>>)command[1]);
             } else if (commandID.equals(PICK_FROM_TOWER)) {
                 uiCallback.getClientUI().commandAdder(commandID);
             } else if (commandID.equals(SERVANTS_PRODUCTION)) {
@@ -77,7 +77,7 @@ class ServerCommandHandler {
             } else if (commandID.equals(SERVANTS_HARVEST)) {
                 uiCallback.getClientUI().commandAdder(commandID);
             } else if (commandID.equals(CMD_VALIDATOR)) {
-                uiCallback.getClientUI().commandManager(command[1], command[2], Boolean.valueOf(command[3]));
+                uiCallback.getClientUI().commandManager((String)command[1], (String)command[2], (Boolean)command[3]);
             }
         } else if (obj instanceof Board) {
             Board board = (Board)obj;

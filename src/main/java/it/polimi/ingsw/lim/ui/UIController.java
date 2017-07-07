@@ -1,10 +1,8 @@
 package it.polimi.ingsw.lim.ui;
 
 import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
-import it.polimi.ingsw.lim.model.Assets;
 import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.Player;
-import it.polimi.ingsw.lim.model.cards.PurpleCard;
 import it.polimi.ingsw.lim.network.client.RMI.RMIClient;
 import it.polimi.ingsw.lim.network.client.ServerInterface;
 import it.polimi.ingsw.lim.network.client.socket.SocketClient;
@@ -288,23 +286,25 @@ public class UIController {
          * This is a list of card, for each card there is a list of Assets' Arrays.
          * The Assets contains in the first slot the cost, in the second there is the result.
          */
-        private ArrayList<ArrayList<Object[]>> options;
+        private ArrayList<ArrayList<Object[]>> optionsProd;
 
         /**
          * Getters.
-         * @return options
+         * @return optionsProd
          */
-        public ArrayList<ArrayList<Object[]>> getOptions() {
-            return options;
+        public ArrayList<ArrayList<Object[]>> getOptionsProd() {
+            return optionsProd;
         }
 
         /**
          * Setters.
-         * @param options
+         * @param optionsProd
          */
-        public void setOptions(ArrayList<ArrayList<Object[]>> options) {
-            this.options = options;
+        public void setOptionsProd(ArrayList<ArrayList<Object[]>> optionsProd) {
+            this.optionsProd = optionsProd;
         }
+
+
     }
 
     /**

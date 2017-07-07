@@ -104,7 +104,7 @@ public class CLI extends AbsUI {
                 towerColor = "BLACK";
                 break;
         }
-        printMessageln("In which floow of ".concat(towerColor.toLowerCase()).concat(" you would you like to pick a card?"));
+        printMessageln("In which flow of ".concat(towerColor.toLowerCase()).concat(" you would you like to pick a card?"));
         do {
             inputNum = userInput.nextInt();
         } while (inputNum < 0 || inputNum > TOWER_HEIGHT);
@@ -121,7 +121,7 @@ public class CLI extends AbsUI {
         printMessageln("");
         printMessageln(s);
         System.out.format(format, "");
-        for (ArrayList<Object[]> card : uiCallback.getTmpVar().getOptions()) {
+        for (ArrayList<Object[]> card : uiCallback.getTmpVar().getOptionsProd()) {
             Integer num = 0;
             System.out.format(format, StringUtils.center((num.toString().concat("->Not Activate")), 20));
             System.out.format(format, "");
@@ -134,14 +134,14 @@ public class CLI extends AbsUI {
                 if (((Assets)prod[0]).isNotNull()) {
                     printMessageln(sRid);
                     System.out.format(format, "");
-                    System.out.format(format, StringUtils.center(("Producition Cost:"), 20));
+                    System.out.format(format, StringUtils.center(("Production Cost:"), 20));
                     printAsset((Assets)prod[0]);
                 }
                 if(prod[1] instanceof Assets){
                     if (((Assets)prod[0]).isNotNull()) {
                         printMessageln(sRid);
                         System.out.format(format, "");
-                        System.out.format(format, StringUtils.center(("Producition Result:"), 20));
+                        System.out.format(format, StringUtils.center(("Production Result:"), 20));
                         printAsset((Assets) prod[1]);
                     }
                 } else if(prod[1] instanceof Integer){
@@ -208,85 +208,53 @@ public class CLI extends AbsUI {
         return inputNum.toString();
     }
 
+    private ArrayList<String> chooseDestination(String[] board, int numBoard, int numFloor, int marketSlot) {
+        int count = 1;
+        ArrayList<String> destination = new ArrayList<>();
+
+        for (String pos : board)
+            printMessageln(count + ") " + pos);
+        do {
+            inputNum = userInput.nextInt();
+        } while (inputNum-1 >= 0 && inputNum-1 < numBoard);
+        destination.add(board[inputNum]);
+        if (inputNum-1 >= 0 && inputNum-1 < 4) { //If tower, select the floor
+            printGameMessage("Please select the floor: (1/2/3/4) ");
+            do {
+                inputNum = userInput.nextInt();
+            } while (inputNum-1 >= 0 && inputNum-1 < numFloor);
+            destination.add(inputNum.toString());
+        } else if (inputNum == 8) { //If market, select the slot
+            printGameMessage("Please select the market slot: (1/2) ");
+            do {
+                inputNum = userInput.nextInt();
+            } while (inputNum-1 >= 0 && inputNum-1 < marketSlot);
+            destination.add(inputNum.toString());
+        }
+        return destination;
+    }
+
     private ArrayList<String> fmDestination() {
         String[] board4Player =
                 {"Green Tower", "Yellow Tower", "Blue Tower", "Purple Tower", "Council", "Production", "Harvest", "Market"};
         String[] board5Player =
-                {"Green Tower", "Yellow Tower", "Blue Tower", "Purple Tower", "Black Tower", "Council", "Production", "Harvest", "Market"};
-        ArrayList<String> destination = new ArrayList<>();
-        int count = 1;
+                {"Green Tower", "Yellow Tower", "Blue Tower", "Purple Tower", "Black Tower", "Council", "Production",
+                        "Harvest", "Market"};
         printGameMessageln("Where would you like to put it?");
 
         //Two/Three players
         if (uiCallback.getLocalPlayers().size() < 3) {
-            for (String pos : board4Player)
-                printMessageln(count + ") " + pos);
-            do {
-                inputNum = userInput.nextInt();
-            } while (inputNum-1 >= 0 && inputNum-1 < 8);
-            destination.add(board4Player[inputNum]);
-            if (inputNum-1 >= 0 && inputNum-1 < 4) { //If tower, select the floor
-                printGameMessage("Please select the floor: (1/2/3/4) ");
-                do {
-                    inputNum = userInput.nextInt();
-                } while (inputNum-1 >= 0 && inputNum-1 < 4);
-                destination.add(inputNum.toString());
-            } else if (inputNum == 8) { //If market, select the slot
-                printGameMessage("Please select the market slot: (1/2) ");
-                do {
-                    inputNum = userInput.nextInt();
-                } while (inputNum-1 >= 0 && inputNum-1 < 2);
-                destination.add(inputNum.toString());
-            }
-            return destination;
+            return chooseDestination(board4Player, 8, 4, 2);
         }
 
         //Four players
         if (uiCallback.getLocalPlayers().size() < 5) {
-            for (String pos : board4Player)
-                printMessageln(count + ") " + pos);
-            do {
-                inputNum = userInput.nextInt();
-            } while (inputNum-1 >= 0 && inputNum-1 < 8);
-            destination.add(board4Player[inputNum]);
-            if (inputNum-1 >= 0 && inputNum-1 < 4) { //If tower, select the floor
-                printGameMessage("Please select the floor: (1/2/3/4) ");
-                do {
-                    inputNum = userInput.nextInt();
-                } while (inputNum-1 >= 0 && inputNum-1 < 4);
-                destination.add(inputNum.toString());
-            } else if (inputNum == 8) { //If market, select the slot
-                printGameMessage("Please select the market slot: (1/2/3/4) ");
-                do {
-                    inputNum = userInput.nextInt();
-                } while (inputNum-1 >= 0 && inputNum-1 < 4);
-                destination.add(inputNum.toString());
-            }
-            return destination;
+            return chooseDestination(board4Player, 8, 4, 4);
         }
 
         //Five players
         if (uiCallback.getLocalPlayers().size() < 6) {
-            for (String pos : board5Player)
-                printGameMessage(count + ") " + pos);
-            do {
-                inputNum = userInput.nextInt();
-            } while (inputNum-1 >= 0 && inputNum-1 < 9);
-            destination.add(board5Player[inputNum]);
-            if (inputNum-1 >= 0 && inputNum-1 < 5) { //If tower, select the floor
-                printGameMessage("Please select the floor: (1/2/3/4) ");
-                do {
-                    inputNum = userInput.nextInt();
-                } while (inputNum-1 >= 0 && inputNum-1 < 5);
-                destination.add(inputNum.toString());
-            } else if (inputNum == 9) { //If market, select the slot
-                printGameMessage("Please select the market slot: (1/2/3/4/5) ");
-                do {
-                    inputNum = userInput.nextInt();
-                } while (inputNum-1 >= 0 && inputNum-1 < 5);
-                destination.add(inputNum.toString());
-            }
-            return destination;
+            return chooseDestination(board5Player, 9, 4, 5);
         }
         return null;
     }
