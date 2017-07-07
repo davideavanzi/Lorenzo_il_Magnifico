@@ -2,11 +2,13 @@ package it.polimi.ingsw.lim.network.client.socket;
 
 import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
 import it.polimi.ingsw.lim.exceptions.LoginFailedException;
+import it.polimi.ingsw.lim.model.Assets;
 import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.Player;
 import it.polimi.ingsw.lim.ui.UIController;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static it.polimi.ingsw.lim.network.CommunicationConstants.*;
 
@@ -72,10 +74,14 @@ class ServerCommandHandler {
                 uiCallback.getTmpVar().setOptionsProd((ArrayList<ArrayList<Object[]>>)command[1]);
             } else if (commandID.equals(PICK_FROM_TOWER)) {
                 uiCallback.getClientUI().commandAdder(commandID);
+                uiCallback.getTmpVar().setTower((HashMap<String,Integer>)command[1]);
+                uiCallback.getTmpVar().setAssets((Assets)command[1]);
             } else if (commandID.equals(SERVANTS_PRODUCTION)) {
                 uiCallback.getClientUI().commandAdder(commandID);
+                uiCallback.getTmpVar().setMinServantsProd((Integer)command[1]);
             } else if (commandID.equals(SERVANTS_HARVEST)) {
                 uiCallback.getClientUI().commandAdder(commandID);
+                uiCallback.getTmpVar().setMinServantsHarv((Integer)command[1]);
             } else if (commandID.equals(CMD_VALIDATOR)) {
                 uiCallback.getClientUI().commandManager((String)command[1], (String)command[2], (Boolean)command[3]);
             }

@@ -48,12 +48,11 @@ class ClientCommandHandler {
      */
     void requestHandler(Object obj) {
         getLog().log(Level.INFO,() -> "[COMMAND_HANDLER]: Handling command: "+obj);
-        if(obj instanceof String) {
-            Object[] cmd = (Object[])obj;
-            command = (String[])cmd;
-            String commandID = (String)cmd[0];
+        if(obj instanceof Object[]) {
+            Object[] command = (Object[])obj;
+            String commandID = (String)command[0];
             if (commandID.equals(CHAT)) {
-                handlerCallback.getUser().getRoom().chatMessageToRoom(command[1], command[2]);
+                handlerCallback.getUser().getRoom().chatMessageToRoom((String)command[1], (String)command[2]);
             } else if (commandID.equals(FAMILY_MEMBER)) {
                 try {
                     placeFMcmd();
@@ -64,49 +63,49 @@ class ClientCommandHandler {
             } else if (commandID.equals(EXCOMMUNICATION)) {
                 try {
                     gameController.getRoomCallback().getExcommunicationRound()
-                            .applyExcommAnswer(handlerCallback.getUser(), Boolean.valueOf(command[1]));
+                            .applyExcommAnswer(handlerCallback.getUser(), (Boolean)command[1]);
                     handlerCallback.commandValidator(EXCOMMUNICATION, EXCOMMUNICATION_OK, true);
                 } catch (BadRequestException e) {
                     handlerCallback.commandValidator(EXCOMMUNICATION, e.getMessage(), false);
                 }
             } else if (commandID.equals(CHOOSE_FAVOR)) {
                 try {
-                    gameController.performCfActivation(unpackPacket(command));
+                    gameController.performCfActivation((ArrayList<Integer>) command[1]);
                     handlerCallback.commandValidator(CHOOSE_FAVOR, CHOOSE_FAVOR_OK, true);
                 } catch (BadRequestException e) {
                     handlerCallback.commandValidator(CHOOSE_FAVOR, e.getMessage(), false);
                 }
             } else if (commandID.equals(OPTIONAL_BP_PICK)) {
                 try {
-                    gameController.confirmTowerMove(Boolean.valueOf(command[1]));
+                    gameController.confirmTowerMove((Boolean)command[1]);
                     handlerCallback.commandValidator(OPTIONAL_BP_PICK, OPTIONAL_BP_PICK_OK, true);
                 } catch (BadRequestException e) {
                     handlerCallback.commandValidator(OPTIONAL_BP_PICK, e.getMessage(), false);                }
             } else if (commandID.equals(CHOOSE_PRODUCTION)) {
                 try {
-                    gameController.confirmProduction(unpackPacket(command));
+                    gameController.confirmProduction((ArrayList<Integer>)command[1]);
                     handlerCallback.commandValidator(CHOOSE_PRODUCTION, CHOOSE_PRODUCTION_OK, true);
                 } catch (BadRequestException e) {
                     handlerCallback.commandValidator(CHOOSE_PRODUCTION, e.getMessage(), false);
                 }
             } else if (commandID.equals(SERVANTS_PRODUCTION)) {
                 try {
-                    gameController.performFastProduction(Integer.valueOf(command[1]), handlerCallback.getUser());
+                    gameController.performFastProduction((Integer)command[1], handlerCallback.getUser());
                     handlerCallback.commandValidator(SERVANTS_PRODUCTION, SERVANTS_PRODUCTION_OK, true);
                 } catch (BadRequestException e) {
                     handlerCallback.commandValidator(SERVANTS_PRODUCTION, e.getMessage(), false);
                 }
             } else if (commandID.equals(SERVANTS_HARVEST)) {
                 try {
-                    gameController.performFastHarvest(Integer.valueOf(command[1]), handlerCallback.getUser());
+                    gameController.performFastHarvest((Integer)command[1], handlerCallback.getUser());
                     handlerCallback.commandValidator(SERVANTS_HARVEST, SERVANTS_HARVEST_OK, true);
                 } catch (BadRequestException e) {
                     handlerCallback.commandValidator(SERVANTS_HARVEST, e.getMessage(), false);
                 }
             } else if (commandID.equals(PICK_FROM_TOWER)) {
                 try {
-                    gameController.performFastTowerMove(Integer.valueOf(command[1]), command[2],
-                            Integer.valueOf(command[3]),handlerCallback.getUser());
+                    gameController.performFastTowerMove((Integer)command[1], (String)command[2],
+                            (Integer)command[3],handlerCallback.getUser());
                     handlerCallback.commandValidator(PICK_FROM_TOWER, PICK_FROM_TOWER_OK, true);
                 } catch (BadRequestException e) {
                     handlerCallback.commandValidator(PICK_FROM_TOWER, e.getMessage(), false);
@@ -134,13 +133,5 @@ class ClientCommandHandler {
         } else if (command[2].equalsIgnoreCase(COUNCIL)) {
             gameController.moveInCouncil(fm, servants);
         }
-    }
-
-    ArrayList<Integer> unpackPacket(String[] cmd) {
-        ArrayList<Integer> command = new ArrayList<>();
-        for (String charNum : cmd) {
-            command.add(Integer.valueOf(charNum));
-        }
-        return command;
     }
 }

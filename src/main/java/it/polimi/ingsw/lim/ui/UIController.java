@@ -1,6 +1,7 @@
 package it.polimi.ingsw.lim.ui;
 
 import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
+import it.polimi.ingsw.lim.model.Assets;
 import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.Player;
 import it.polimi.ingsw.lim.network.client.RMI.RMIClient;
@@ -8,6 +9,7 @@ import it.polimi.ingsw.lim.network.client.ServerInterface;
 import it.polimi.ingsw.lim.network.client.socket.SocketClient;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -282,9 +284,10 @@ public class UIController {
             this.favorAmount = favorAmount;
         }
 
+
         /**
-         * This is a list of card, for each card there is a list of Assets' Arrays.
-         * The Assets contains in the first slot the cost, in the second there is the result.
+         * This is a list of card, in each card there is a list of Assets' Arrays.
+         * The Assets contains in the first slot the cost(of production), in the second there is the result of the production.
          */
         private ArrayList<ArrayList<Object[]>> optionsProd;
 
@@ -305,6 +308,90 @@ public class UIController {
         }
 
 
+        /**
+         * This HashMap contains the information about a tower (color and floor's number)
+         */
+        private HashMap<String, Integer> tower;
+
+        /**
+         * Getters.
+         * @return tower
+         */
+        public HashMap<String, Integer> getTower() {
+            return tower;
+        }
+
+        /**
+         * Setters.
+         * @param tower
+         */
+        public void setTower(HashMap<String, Integer> tower) {
+            this.tower = tower;
+        }
+
+        /**
+         * It contains the specific assets of the discount.
+         */
+        private Assets optionalPickDiscount;
+
+        /**
+         * Getters.
+         * @return optionalPickDiscount
+         */
+        public Assets getAssets() {
+            return optionalPickDiscount;
+        }
+
+        /**
+         * Setters.
+         * @param optionalPickDiscount
+         */
+        public void setAssets(Assets optionalPickDiscount) {
+            this.optionalPickDiscount = optionalPickDiscount;
+        }
+
+
+        /**
+         * It store the minimum number of servants that the player must deploy for a specific production.
+         */
+        private int minServantsProd;
+
+        /**
+         * Getters.
+         * @return minServantProd
+         */
+        public int getMinServantsProd() {
+            return minServantsProd;
+        }
+
+        /**
+         * Setters.
+         * @param minServantsProd
+         */
+        public void setMinServantsProd(int minServantsProd) {
+            this.minServantsProd = minServantsProd;
+        }
+
+        /**
+         * It store the minimum number of servants that the player must deploy for a specific harvest.
+         */
+        private int minServantsHarv;
+
+        /**
+         * Getters.
+         * @return minServantsHarv
+         */
+        public int getMinServantsHarv() {
+            return minServantsHarv;
+        }
+
+        /**
+         * Setters.
+         * @param minServantsHarv
+         */
+        public void setMinServantsHarv(int minServantsHarv) {
+            this.minServantsHarv = minServantsHarv;
+        }
     }
 
     /**

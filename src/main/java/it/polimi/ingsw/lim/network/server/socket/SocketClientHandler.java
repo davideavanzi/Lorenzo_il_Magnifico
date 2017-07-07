@@ -67,15 +67,15 @@ public class SocketClientHandler implements Runnable {
     public User getUser() { return user; }
 
     void commandValidator(String command, String message, boolean outcome) {
-        sendObjectToClient(new Object[] {CMD_VALIDATOR, command, message, String.valueOf(outcome)});
+        sendObjectToClient(new Object[] {CMD_VALIDATOR, command, message, outcome});
     }
 
     void askClientForFastHarvest(int baseStr) {
-        sendObjectToClient(new Object[] {SERVANTS_HARVEST, String.valueOf(baseStr)});
+        sendObjectToClient(new Object[] {SERVANTS_HARVEST, baseStr});
     }
 
     void askClientForFastProduction(int baseStr) {
-        sendObjectToClient(new Object[] {SERVANTS_PRODUCTION, String.valueOf(baseStr)});
+        sendObjectToClient(new Object[] {SERVANTS_PRODUCTION, baseStr});
     }
 
     void askClientForFastTowerMove(HashMap<String, Integer> baseStr, Assets optionalPickDiscount) {

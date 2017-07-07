@@ -81,7 +81,7 @@ public class SocketClient implements Runnable, ServerInterface {
     @Override
     public void fastHarvest(int servantsDeployed) throws ClientNetworkException {
         try {
-            sendObjToServer(new String[] {SERVANTS_HARVEST, String.valueOf(servantsDeployed)});
+            sendObjToServer(new Object[] {SERVANTS_HARVEST, servantsDeployed});
         } catch (IOException e) {
                 throw new ClientNetworkException("[SOCKET]: Could not send bonus harvest action to server", e);
         }
@@ -90,7 +90,7 @@ public class SocketClient implements Runnable, ServerInterface {
     @Override
     public void fastProduction(int servantsDeployed) throws ClientNetworkException {
         try {
-            sendObjToServer(new String[] {SERVANTS_PRODUCTION, String.valueOf(servantsDeployed)});
+            sendObjToServer(new Object[] {SERVANTS_PRODUCTION, servantsDeployed});
         } catch (IOException e) {
             throw new ClientNetworkException("[SOCKET]: Could not send bonus production actionto server", e);
         }
@@ -99,7 +99,7 @@ public class SocketClient implements Runnable, ServerInterface {
     @Override
     public void fastTowerMove(int servantsDeployed, String towerColor, int floor) throws ClientNetworkException {
         try {
-            sendObjToServer(new String[] {PICK_FROM_TOWER, towerColor, String.valueOf(floor)});
+            sendObjToServer(new Object[] {PICK_FROM_TOWER, towerColor, floor});
         } catch (IOException e) {
             throw new ClientNetworkException("[SOCKET]: Could not send bonus tower move action to server", e);
         }
@@ -108,7 +108,7 @@ public class SocketClient implements Runnable, ServerInterface {
     @Override
     public void productionOption(ArrayList<Integer> prodChoice) throws ClientNetworkException {
         try {
-            sendObjToServer(createSocketPacket(CHOOSE_PRODUCTION, prodChoice));
+            sendObjToServer(new Object[] {CHOOSE_PRODUCTION, prodChoice});
         } catch (IOException e) {
             throw new ClientNetworkException("[SOCKET]: Could not send battle point payment request to server", e);
         }
@@ -117,7 +117,7 @@ public class SocketClient implements Runnable, ServerInterface {
     @Override
     public void optionalBpPick(boolean bpPayment) throws ClientNetworkException {
         try {
-            sendObjToServer(new String[] {OPTIONAL_BP_PICK, String.valueOf(bpPayment)});
+            sendObjToServer(new Object[] {OPTIONAL_BP_PICK, bpPayment});
         } catch (IOException e) {
             throw new ClientNetworkException("[SOCKET]: Could not send battle point payment request to server", e);
         }
@@ -126,7 +126,7 @@ public class SocketClient implements Runnable, ServerInterface {
     @Override
     public void favorChoice(ArrayList<Integer> favorChoice) throws ClientNetworkException {
         try {
-            sendObjToServer(createSocketPacket(CHOOSE_FAVOR, favorChoice));
+            sendObjToServer(new Object[] {CHOOSE_FAVOR, favorChoice});
         } catch (IOException e) {
             throw new ClientNetworkException("[SOCKET]: Could not send council's favor's choice to server", e);
         }
@@ -135,7 +135,7 @@ public class SocketClient implements Runnable, ServerInterface {
     @Override
     public void excommunicationChoice(boolean choice) throws ClientNetworkException {
         try {
-            sendObjToServer(new String[] {EXCOMMUNICATION, String.valueOf(choice)});
+            sendObjToServer(new Object[] {EXCOMMUNICATION, choice});
         } catch (IOException e) {
             throw new ClientNetworkException("[SOCKET]: Could not send excommunication's choice to server", e);
         }
@@ -145,9 +145,9 @@ public class SocketClient implements Runnable, ServerInterface {
     public void placeFM(String color, ArrayList<String> destination, String servants) throws ClientNetworkException {
         try {
             if (destination.get(1) == null)
-                sendObjToServer(new String[] {FAMILY_MEMBER, color, destination.get(0), servants});
+                sendObjToServer(new Object[] {FAMILY_MEMBER, color, destination.get(0), servants});
             else
-                sendObjToServer(new String[] {FAMILY_MEMBER, color, destination.get(0), destination.get(1), servants});
+                sendObjToServer(new Object[] {FAMILY_MEMBER, color, destination.get(0), destination.get(1), servants});
         } catch (IOException e) {
             throw new ClientNetworkException("[SOCKET]: Could not contact the server to place family member", e);
         }
@@ -161,7 +161,7 @@ public class SocketClient implements Runnable, ServerInterface {
     @Override
     public void sendChatMessageToServer(String sender, String message) throws ClientNetworkException {
         try {
-            sendObjToServer(new String[] {CHAT, sender, message});
+            sendObjToServer(new Object[] {CHAT, sender, message});
         } catch (IOException e) {
             throw new ClientNetworkException("[SOCKET]: Could not send chat message to server", e);
         }
@@ -174,26 +174,10 @@ public class SocketClient implements Runnable, ServerInterface {
      */
     public void login(String username, String password) throws ClientNetworkException {
         try {
-            sendObjToServer(new String[] {LOGIN, username, password});
+            sendObjToServer(new Object[] {LOGIN, username, password});
         } catch (IOException e) {
             throw new ClientNetworkException("[SOCKET]: Could not send login information to server", e);
         }
-    }
-
-    /**
-     * This method is used for create a packet that will be sent to the server with socket.
-     * @param selection input arrayList
-     * @return the packet
-     */
-    private String[] createSocketPacket(String command, ArrayList<Integer> selection) {
-        String[] pkg = new String[selection.size()];
-        int count = 1;
-        pkg[0] = command;
-        for (Integer favor : selection) {
-            pkg[count] = String.valueOf(favor);
-            count++;
-        }
-        return pkg;
     }
 
     /**
