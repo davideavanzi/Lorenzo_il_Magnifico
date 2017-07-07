@@ -244,7 +244,9 @@ public class GameController {
             int servantsForProductionAction = this.game.servantsForProductionAction(fm, 0);
 
             if (servantsDeployed < servantsForProductionAction ||
-                    servantsDeployed > this.game.getPlayerFromColor(fm.getOwnerColor()).getResources().getServants());
+                    servantsDeployed > this.game.getPlayerFromColor(fm.getOwnerColor()).getResources().getServants())
+                //TODO : EXC
+                ;
 
             this.currentProductionAccumulator = new Assets(actor.getPlayer().getDefaultProductionBonus());
             int actionStrength = game.calcProductionActionStr(fm, servantsDeployed, 0);
@@ -260,6 +262,7 @@ public class GameController {
                 actor.askProductionOptions(currentProductionOptions);
             }
         }
+        //TODO : EXC
     }
 
     /**
@@ -270,7 +273,17 @@ public class GameController {
      * @throws BadRequestException if //todo
      */
     public void moveInMarket(FamilyMember fm, int marketSlot, int servantsDeployed) throws BadRequestException {
-
+        if (game.isMarketMoveAllowed(fm, marketSlot)) {
+            if (game.servantsForMarketAction(fm) > servantsDeployed) {
+                game.marketMove(fm, marketSlot, servantsDeployed);
+                roomCallback.broadcastMessage
+                        ("Player "+game.getPlayerFromColor(fm.getOwnerColor()).getNickname()+
+                                " has entered the market in the slot number "+marketSlot);
+                roomCallback.fmPlaced();
+            }
+            //TODO : EXC
+        }
+        //TODO : EXC
     }
 
     /**

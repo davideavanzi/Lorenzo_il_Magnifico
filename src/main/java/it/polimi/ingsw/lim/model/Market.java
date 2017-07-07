@@ -67,7 +67,7 @@ public class Market implements Serializable {
 
 
     public boolean isPositionOccupied(int position){
-        if(this.slots[position] != null)
+        if(this.slots[position-1] != null)
             return true;
         return false;
     }

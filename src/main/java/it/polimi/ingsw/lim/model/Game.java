@@ -8,6 +8,7 @@ import it.polimi.ingsw.lim.model.cards.YellowCard;
 import it.polimi.ingsw.lim.model.excommunications.*;
 import it.polimi.ingsw.lim.parser.Parser;
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonTypeInfo;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -340,7 +341,7 @@ public class Game {
     }
     @JsonIgnore
     public boolean isPurpleCardAffordable(PurpleCard card, Player pl){
-        return (pl.getResources().getVictoryPoints() > card.getOptionalBpRequirement());
+        return (card.getOptionalBpRequirement() > 0 && pl.getResources().getVictoryPoints() > card.getOptionalBpRequirement());
     }
 
     /**
@@ -609,6 +610,25 @@ public class Game {
         return (servants > 0) ? -servants : 0;
     }
 
+    public boolean isMarketMoveAllowed(FamilyMember fm, int position) {
+        return this.getBoard().getMarket().isPositionOccupied(position);
+    }
+
+    public void marketMove(FamilyMember fm, int position, int servantsDeployed) {
+        Player actor = getPlayerFromColor(fm.getOwnerColor());
+        actor.pullFamilyMember(fm.getDiceColor());
+        Assets actionCost = new Assets();
+        actionCost.addServants(servantsDeployed);
+        removeAssetsFromPlayer(actionCost, actor);
+        this.board.getMarket().addFamilyMember(fm, position);
+        Object bonus = this.board.getMarket().getBonuses(position);
+        if (bonus instanceof Integer) {
+            controllerCallback.giveCouncilFavors((int) bonus);
+        } else if (bonus instanceof Assets) {
+            giveAssetsToPlayer((Assets)bonus, actor);
+        }
+    }
+
     public Board getBoard() {
         return board;
     }
@@ -665,6 +685,7 @@ public class Game {
             pl.getCardsOfColor(PURPLE_COLOR).forEach(card -> pl.setResources(
                     pl.getResources().add(((PurpleCard)card).getEndgameBonus())));
         }
+        applyVpOnBpRank();
         pl.setResources(pl.getResources().addVictoryPoints(pl.getResources().sumAll()/ENDGAME_VP_ASSETS_DIVIDER));
     }
 
