@@ -5,7 +5,7 @@ import java.util.Timer;
 /**
  * Round interface. It is used by a timer to call the end of the timer
  */
-public interface Round {
+public interface Round{
 
     void timerEnded();
 

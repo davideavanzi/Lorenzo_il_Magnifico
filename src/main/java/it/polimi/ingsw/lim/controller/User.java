@@ -45,7 +45,7 @@ public abstract class User implements Serializable{
      * A game room.
      */
     @JsonIgnore
-    private Room room;
+    private transient Room room;
 
     /**
      * A reference to the corresponding player of the game.

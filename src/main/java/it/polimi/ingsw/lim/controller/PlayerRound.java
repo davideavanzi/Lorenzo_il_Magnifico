@@ -3,6 +3,7 @@ package it.polimi.ingsw.lim.controller;
 import it.polimi.ingsw.lim.Log;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
+import java.io.Serializable;
 import java.util.Timer;
 
 import static it.polimi.ingsw.lim.Settings.DEPLOYABLE_FM_PER_ROUND;
@@ -10,7 +11,7 @@ import static it.polimi.ingsw.lim.Settings.DEPLOYABLE_FM_PER_ROUND;
 /**
  * This class represent the single turn phase of a player .
  */
-public class PlayerRound implements Round {
+public class PlayerRound implements Round, Serializable{
 
     /**
      * The user playing the game

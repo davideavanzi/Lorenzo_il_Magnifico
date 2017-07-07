@@ -10,6 +10,7 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import static it.polimi.ingsw.lim.Log.getLog;
 import static it.polimi.ingsw.lim.Settings.*;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
@@ -21,20 +22,20 @@ import java.util.stream.Collectors;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 
-public class Room {
+public class Room implements Serializable{
 
     @JsonIgnore
     private transient GameController gameController;
     private boolean roomOpen = true; // room open
     @JsonIgnore
-    private Lock excommLock;
+    private transient Lock excommLock;
     private ArrayList<User> usersList;
     private ArrayList<String> playOrder;
     @JsonIgnore
     private PlayerRound round;
     private int id;
     @JsonIgnore
-    private ExcommunicationRound excommunicationRound;
+    private transient ExcommunicationRound excommunicationRound;
 
     public Room(User user, int id) {
         usersList = new ArrayList<>();

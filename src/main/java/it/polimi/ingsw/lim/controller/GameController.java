@@ -73,15 +73,12 @@ public class GameController {
             if(parsedGame.getTowerbonuses(color).length != TOWER_HEIGHT)
                 return false;
         int marketSize = parsedGame.getMarketBonuses().length;
-        if(marketSize < 2){
+        if(
+            (marketSize < 2) ||
+            (marketSize < 4 && this.roomCallback.getUsersList().size() == 4) ||
+            (marketSize < 5 && this.roomCallback.getUsersList().size() == 5)
+        )
             return false;
-        }
-        else if (marketSize < 4 && this.roomCallback.getUsersList().size() == 4){
-            return false;
-        }
-        else if (marketSize < 5 && this.roomCallback.getUsersList().size() == 5){
-            return false;
-        }
         if(parsedGame.getCouncilFavourBonuses().length < 3){ /* at least 3 slots (the maximum num of different favours that a player can pick) */
             return false;
         }

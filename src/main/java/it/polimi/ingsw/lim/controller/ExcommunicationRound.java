@@ -4,6 +4,7 @@ import it.polimi.ingsw.lim.Log;
 import it.polimi.ingsw.lim.exceptions.BadRequestException;
 import it.polimi.ingsw.lim.model.Player;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.concurrent.locks.ReentrantLock;
