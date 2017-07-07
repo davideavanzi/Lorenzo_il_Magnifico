@@ -85,7 +85,7 @@ public class GameController {
         if(parsedGame.getCouncilFavourBonuses().length < 3){ /* at least 3 slots (the maximum num of different favours that a player can pick) */
             return false;
         }
-        if(parsedGame.getFaithTrackBonuses().length < 5) { /* at least 5 slots (the last excommunication) */
+        if(parsedGame.getFaithTrackBonuses().length < FIRST_EXCOMM_FP + AGES_NUMBER -1) { /* slots amount should cover last excommunication */
             return false;
         }
         return true;
@@ -258,34 +258,29 @@ public class GameController {
      */
     public void moveInProduction (FamilyMember fm, int servantsDeployed) throws BadRequestException {
         User actor = roomCallback.getPlayingUser(); //only the playing user can perform the action
-        if(this.game.isProductionMoveAllowed(fm)){
-            int servantsForProductionAction = this.game.servantsForProductionAction(fm, 0);
-
-            if (servantsDeployed < servantsForProductionAction ||
-                    servantsDeployed > this.game.getPlayerFromColor(fm.getOwnerColor()).getResources().getServants())
-                //TODO : EXC
-                ;
-
-            this.pendingProduction = new PendingProduction();
-            pendingProduction.add(actor.getPlayer().getDefaultProductionBonus());
-
-            int actionStrength = game.calcProductionActionStr(fm, servantsDeployed, 0);
-            for (Card card: game.getPlayerFromColor(fm.getOwnerColor()).getCardsOfColor(YELLOW_COLOR)) {
-                YellowCard activeCard = (YellowCard) card;
-                if (activeCard.getActionStrength().getProductionBonus() <= actionStrength)
-                    CardHandler.activateYellowCard(activeCard, actor, this);
-            }
-            if (this.currentProductionOptions.size() == 0) {
-                //don't ask user, complete directly production skipping excomm malus (already given)
-                actor.getPlayer().setResources(actor.getPlayer().
-                        getResources().add(pendingProduction.getAssetsAccumulator()));
-                if (pendingProduction.getCouncilFavorsAccumulator() > 0)
-                    giveCouncilFavors(pendingProduction.getCouncilFavorsAccumulator());
-            } else {
-                actor.askForProductionOptions(currentProductionOptions);
-            }
+        if(!this.game.isProductionMoveAllowed(fm))
+            throw new BadRequestException("Production move not allowed");
+        int servantsForProductionAction = this.game.servantsForProductionAction(fm, 0);
+        if (servantsDeployed < servantsForProductionAction ||
+                servantsDeployed > this.game.getPlayerFromColor(fm.getOwnerColor()).getResources().getServants())
+            throw new BadRequestException("Not enough servants to perform production action");
+        this.pendingProduction = new PendingProduction();
+        pendingProduction.add(actor.getPlayer().getDefaultProductionBonus());
+        int actionStrength = game.calcProductionActionStr(fm, servantsDeployed, 0);
+        for (Card card: game.getPlayerFromColor(fm.getOwnerColor()).getCardsOfColor(YELLOW_COLOR)) {
+            YellowCard activeCard = (YellowCard) card;
+            if (activeCard.getActionStrength().getProductionBonus() <= actionStrength)
+                CardHandler.activateYellowCard(activeCard, actor, this);
         }
-        //TODO : EXC
+        if (this.currentProductionOptions.size() == 0) {
+            //don't ask user, complete directly production skipping excomm malus (already given)
+            actor.getPlayer().setResources(actor.getPlayer().
+                    getResources().add(pendingProduction.getAssetsAccumulator()));
+            if (pendingProduction.getCouncilFavorsAccumulator() > 0)
+                giveCouncilFavors(pendingProduction.getCouncilFavorsAccumulator());
+        } else {
+            actor.askForProductionOptions(currentProductionOptions);
+        }
     }
 
     /**
@@ -293,48 +288,44 @@ public class GameController {
      * @param fm the family member put in the market
      * @param marketSlot is the position in the market in which the user intend to move to
      * @param servantsDeployed the num of the servants deployed by the user
-     * @throws BadRequestException if //todo
+     * @throws BadRequestException if the provided data are not valid to perform the action
      */
     public void moveInMarket(FamilyMember fm, int marketSlot, int servantsDeployed) throws BadRequestException {
-        if (game.isMarketMoveAllowed(fm, marketSlot)) {
-            if (game.servantsForMarketAction(fm) > servantsDeployed) {
-                game.marketMove(fm, marketSlot, servantsDeployed);
-                roomCallback.broadcastMessage
-                        ("Player "+game.getPlayerFromColor(fm.getOwnerColor()).getNickname()+
-                                " has entered the market in the slot number "+marketSlot);
-                roomCallback.fmPlaced();
-            }
-            //TODO : EXC
-        }
-        //TODO : EXC
+        if (!game.isMarketMoveAllowed(fm, marketSlot))
+            throw new BadRequestException("Market move not allowed");
+        if (game.servantsForMarketAction(fm) > servantsDeployed)
+            throw new BadRequestException("Not enough servants to perform market move");
+        game.marketMove(fm, marketSlot, servantsDeployed);
+        roomCallback.broadcastMessage
+                ("Player "+game.getPlayerFromColor(fm.getOwnerColor()).getNickname()+
+                        " has entered the market in the slot number "+marketSlot);
+        roomCallback.fmPlaced();
     }
 
     /**
      * this method is called when a player go to council with a family member, and (optional) using servants
      * @param fm the family member put in the council
      * @param servantsDeployed the num of the servants deployed by the user
-     * @throws BadRequestException if //todo
+     * @throws BadRequestException if the provided servants amount is invalid
      */
     public void moveInCouncil(FamilyMember fm, int servantsDeployed) throws BadRequestException {
-        if (game.servantsForCouncilAction(fm) > servantsDeployed) {
-            game.councilMove(fm, servantsDeployed);
-            roomCallback.broadcastMessage
-                    ("Player "+game.getPlayerFromColor(fm.getOwnerColor()).getNickname()+
-                            " has entered the council");
-            roomCallback.fmPlaced();
-        }
+        if (!(game.servantsForCouncilAction(fm) > servantsDeployed))
+            throw new BadRequestException("Not enough servants to enter council");
+        game.councilMove(fm, servantsDeployed);
+        roomCallback.broadcastMessage
+                ("Player "+game.getPlayerFromColor(fm.getOwnerColor()).getNickname()+
+                        " has entered the council");
+        roomCallback.fmPlaced();
     }
 
     /**
-     * //todo
-     * @param choices
-     * @throws BadRequestException
+     * This method completes a production move that was hanging waiting for the user's choice of production options
+     * @param choices the list of choices made by the user
+     * @throws BadRequestException if the choices are not correct
      */
     public void confirmProduction(ArrayList<Integer> choices) throws BadRequestException {
-        if (choices.size() != currentProductionOptions.size()) {
-            getLog().log(Level.SEVERE, "Wrong amount of player production choices!");
-            return; //TODO EXCEPTION
-        }
+        if (choices.size() != currentProductionOptions.size())
+            throw new BadRequestException("Production move not allowed, wrong choices number!");
         //TODO: CHECK IF FASTACTOR IS THE SAME AS THE ONE PLAYING?
         currentProductionOptions.forEach(option -> {
             Assets costOption = ((Assets)option.get(choices.indexOf(option))[0]);
@@ -358,7 +349,7 @@ public class GameController {
 
     /**
      * this method adds the available options of a yellow card to choose
-     * @param options
+     * @param options all available production options of the card
      */
     void addProductionOptions(ArrayList<Object[]> options) {
         this.currentProductionOptions.add(options);
@@ -390,11 +381,11 @@ public class GameController {
     }
 
     /**
-     * Tells the user that can perform a fast tower move, telling him all towers that the bonus
+     * Tells the user that can perform a fast tower move, sending him all tower colors that the bonus
      * allows to enter.
-     * @param str
-     * @param optPickDiscount
-     * @param actor
+     * @param str the strength to perform the action
+     * @param optPickDiscount an optional pick discount to take the card
+     * @param actor the actor that will perform the fast action
      */
     void beginFastTowerMove(Strengths str, Assets optPickDiscount, User actor) {
         this.fastActionStr = str;
@@ -412,10 +403,8 @@ public class GameController {
         int servantsForHarvestAction = this.game.servantsForHarvestAction(null, fastActionStr.getHarvestBonus());
         if (servantsForHarvestAction > fastActor.getPlayer().getResources().getServants() ||
                 servantsDeployed > fastActor.getPlayer().getResources().getServants() ||
-                servantsDeployed < servantsForHarvestAction) {
-            //TODO: tell user bad entry
-            return;
-        }
+                servantsDeployed < servantsForHarvestAction)
+            throw new BadRequestException("Wrong amount of servants deployed to perform fast harvest action");
         this.game.giveAssetsToPlayer(fastActor.getPlayer().getDefaultHarvestBonus(), fastActor.getPlayer());
         int actionStrength = game.calcHarvestActionStr(null, servantsDeployed, fastActionStr.getHarvestBonus());
         for (Card card: fastActor.getPlayer().getCardsOfColor(GREEN_COLOR)) {
@@ -430,10 +419,8 @@ public class GameController {
         int servantsForProductionAction = this.game.servantsForProductionAction(null, fastActionStr.getHarvestBonus());
         if (servantsForProductionAction > fastActor.getPlayer().getResources().getServants() ||
                 servantsDeployed > fastActor.getPlayer().getResources().getServants() ||
-                servantsDeployed < servantsForProductionAction) {
-            //TODO: tell user bad entry
-            return;
-        }
+                servantsDeployed < servantsForProductionAction)
+            throw new BadRequestException("Wrong amount of servants deployed to perform fast production action");
         this.pendingProduction = new PendingProduction();
         pendingProduction.add(actor.getPlayer().getDefaultProductionBonus());
         int actionStrength = game.calcProductionActionStr
@@ -459,9 +446,12 @@ public class GameController {
     }
 
     /**
-     * This method handles the whole logic to perform a fast tower action, activated by an immediate effect
-     * @param
-     * @param actor
+     * This method performs a fast tower action, activated by an immediate effect, with the data provided by the user
+     * @param servantsDeployed the amount of servants deployed in the action
+     * @param towerColor the destination tower color
+     * @param floor the destination tower floor
+     * @param actor the actor performing the fast tower move
+     * @throws BadRequestException
      */
     public void performFastTowerMove(int servantsDeployed, String towerColor, int floor, User actor)
             throws BadRequestException {
@@ -469,15 +459,11 @@ public class GameController {
                 .getTowerStrength(towerColor), towerColor, floor, actor.getPlayer());
         if (servantsForTowerAction > fastActor.getPlayer().getResources().getServants() ||
                 servantsDeployed > fastActor.getPlayer().getResources().getServants() ||
-                servantsDeployed < servantsForTowerAction) {
-            //TODO: tell user bad entry
-            return;
-        }
+                servantsDeployed < servantsForTowerAction)
+            throw new BadRequestException("Wrong amount of servants deployed to perform fast tower move");
         if (!this.game.isFastTowerMoveAllowed(towerColor, floor,actor.getPlayer(), optPickDiscount) ||
-                !fastActor.getUsername().equals(actor.getUsername())) {
-            //actor.gameError("Fast action not valid");
-            return;
-        }
+                !fastActor.getUsername().equals(actor.getUsername()))
+            throw new BadRequestException("Fast tower move not valid");
         Card card = this.game.getTower(towerColor).getFloor(floor).getCardSlot();
         boolean cardAffordable = this.game.isCardAffordable(card, actor.getPlayer(), towerColor, optPickDiscount);
         boolean purpleAffordable = card instanceof PurpleCard &&
@@ -489,7 +475,7 @@ public class GameController {
                 this.pendingTowerMove = new PendingTowerMove(towerColor, floor, servantsDeployed, actor);
                 actor.askForOptionalBpPick();
             } else {
-                //in this case only one of the two paying methods is available
+                //in this case only one of the two paying methods is available, it is automatically chosen
                 if (purpleAffordable) useBp = true;
                 this.game.fastTowerMove(towerColor, floor, servantsDeployed, useBp, actor.getPlayer(), optPickDiscount);
                 activatePickedCard(card, actor);
@@ -497,13 +483,12 @@ public class GameController {
                         ("Player "+actor.getUsername()+" has picked a card from the "+towerColor+" tower");
             }
         } else {
-            getLog().log(Level.INFO, "The card accessed through fast action is not affordable");
+            throw new BadRequestException("Destination card is not affordable");
         }
     }
 
     //------------------------------ COUNCIL
 
-    //TODO:USELESS?
     public void giveCouncilFavors(int amount) {
         roomCallback.getPlayingUser().askForCouncilFavor(amount);
     }
@@ -519,18 +504,18 @@ public class GameController {
     /**
      * This method has to be called at the beginning of the game,
      * otherwise it generates an order that might be incorrect
-     * @return
+     * @return the generated list of nicknames, in the correct order
      */
-    public ArrayList<String> getPlayOrder() {
+    ArrayList<String> getPlayOrder() {
         return game.getNewPlayerOrder();
     }
 
-    public void startNewTurn(){
+    void startNewTurn(){
         this.game.newTurn();
         this.game.setUpTurn();
     }
 
-    public int[] getTime() {
+    int[] getTime() {
         return new int[] {this.game.getAge(), this.game.getTurn()};
     }
 
@@ -538,24 +523,23 @@ public class GameController {
         return this.game.getBoard();
     }
 
-    //TODO: do we need it?
     public Room getRoomCallback() {
         return roomCallback;
     }
 
-    public ArrayList<String> buildRanking() {
+    ArrayList<String> buildRanking() {
         game.getPlayers().forEach(player -> game.calcEndGameBonus(player));
         return new ArrayList<>();
     }
 
-    public void applyEndGameExcomm() {
+    void applyEndGameExcomm() {
         ArrayList<Player> playersToExcomm = new ArrayList<>
                 (game.getPlayers().stream().filter(player -> game.isNotExcommunicable(player))
                         .collect(Collectors.toList()));
         playersToExcomm.forEach(player -> game.excommunicatePlayer(player));
     }
 
-    public void applyExcommunication(ArrayList<Player> toExcommunicate) {
+    void applyExcommunication(ArrayList<Player> toExcommunicate) {
         //Excommunicate given players, reset fp of players that won't be excommunicated
     }
 
@@ -599,11 +583,11 @@ public class GameController {
             this.councilFavorsAccumulator += amount;
         }
 
-        public Assets getAssetsAccumulator() {
+        Assets getAssetsAccumulator() {
             return assetsAccumulator;
         }
 
-        public int getCouncilFavorsAccumulator() {
+        int getCouncilFavorsAccumulator() {
             return councilFavorsAccumulator;
         }
     }
