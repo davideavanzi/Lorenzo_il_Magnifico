@@ -17,6 +17,7 @@ public class Settings {
     public static final int COUNCIL_FAVUORS_TYPES = 5;
     public static final int MARKET_MAX_SIZE = 5;
     public static final int MARKET_ACTION_COST = 1;
+    public static final int COUNCIL_ACTION_COST = 1;
     public static final int NEUTRAL_FM_STRENGTH = 0;
     public static final int DEPLOYABLE_FM_PER_ROUND = 1;
 

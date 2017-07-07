@@ -38,8 +38,10 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
 
     @Override
     public void fastHarvest() throws RemoteException {
+        User actor = MainServer.getUserFromUsername(username);
         try {
-            //TODO metodo sul GC
+            GameController gc = actor.getRoom().getGameController();
+            gc.performFastHarvest(servantsDeployed);
             rmiClient.commandValidator(SERVANTS_HARVEST, SERVANTS_HARVEST_OK , true);
         } catch (BadRequestException e) {
             rmiClient.commandValidator(SERVANTS_HARVEST, e.getMessage() , false);
@@ -52,11 +54,14 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
 
     @Override
     public void fastProduction(/*passare param*/) throws RemoteException {
+        User actor = MainServer.getUserFromUsername(username);
         try {
-            //TODO metodo sul GC
+            GameController gc = actor.getRoom().getGameController();
             rmiClient.commandValidator(SERVANTS_PRODUCTION, SERVANTS_PRODUCTION_OK , true);
         } catch (BadRequestException e) {
             rmiClient.commandValidator(SERVANTS_PRODUCTION, e.getMessage() , false);
+        } catch (NullPointerException e) {
+            rmiClient.commandValidator(SERVANTS_PRODUCTION, "No user found",false);
         }
     }
 
@@ -66,11 +71,15 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
 
     @Override
     public void fastTowerMove(/*PARAMETRRIRIIR*/) throws RemoteException {
+        User actor = MainServer.getUserFromUsername(username);
         try {
-            //TODO metodo sul GC
+            GameController gc = actor.getRoom().getGameController();
+            gc.performFastTowerMove(servantsDeployed, towerColor, floor, actor);
             rmiClient.commandValidator(PICK_FROM_TOWER_OK, PICK_FROM_TOWER_OK, true);
         } catch (BadRequestException e) {
             rmiClient.commandValidator(PICK_FROM_TOWER, e.getMessage(), false);
+        } catch (NullPointerException e) {
+            rmiClient.commandValidator(PICK_FROM_TOWER, "No user found",false);
         }
     }
 
@@ -81,10 +90,13 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
     @Override
     public void productionOption(/*MANCANO PARAMETRI da cli a server*/) throws RemoteException {
         try {
-            //TODO metodo sul GC a
+            GameController gc = MainServer.getUserFromUsername(username).getRoom().getGameController();
+            gc.confirmProduction(choices);
             rmiClient.commandValidator(CHOOSE_PRODUCTION, CHOOSE_PRODUCTION_OK, true);
         } catch (BadRequestException e) {
             rmiClient.commandValidator(CHOOSE_PRODUCTION, e.getMessage(), false);
+        } catch (NullPointerException e) {
+            rmiClient.commandValidator(CHOOSE_PRODUCTION, "No user found",false);
         }
     }
 
@@ -94,12 +106,14 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
 
     @Override
     public void optionalBpPick(boolean bpPayment, String username, RMIClientInterf rmiClient) throws RemoteException {
-        GameController gc = MainServer.getUserFromUsername(username).getRoom().getGameController();
         try {
-            //TODO metodo sul GC a cui passo bpPayment
+            GameController gc = MainServer.getUserFromUsername(username).getRoom().getGameController();
+            gc.confirmTowerMove(bpPayment);
             rmiClient.commandValidator(OPTIONAL_BP_PICK, OPTIONAL_BP_PICK_OK, true);
         } catch (BadRequestException e) {
             rmiClient.commandValidator(OPTIONAL_BP_PICK, e.getMessage(), false);
+        } catch (NullPointerException e) {
+            rmiClient.commandValidator(OPTIONAL_BP_PICK, "No user found",false);
         }
     }
 
@@ -109,12 +123,14 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
 
     @Override
     public void favorChoice(ArrayList<Integer> favorChoice, String username, RMIClientInterf rmiClient) throws RemoteException {
-        GameController gc = MainServer.getUserFromUsername(username).getRoom().getGameController();
         try {
+            GameController gc = MainServer.getUserFromUsername(username).getRoom().getGameController();
             gc.performCfActivation(favorChoice);
             rmiClient.commandValidator(CHOOSE_FAVOR, CHOOSE_FAVOR_OK, true);
         } catch (BadRequestException e) {
             rmiClient.commandValidator(CHOOSE_FAVOR, e.getMessage(), false);
+        } catch (NullPointerException e) {
+            rmiClient.commandValidator(CHOOSE_FAVOR, "No user found",false);
         }
 
     }
@@ -125,14 +141,17 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
 
     @Override
     public void excommunicationChoice(boolean choice, String username, RMIClientInterf rmiClient) throws RemoteException {
-        GameController gc = MainServer.getUserFromUsername(username).getRoom().getGameController();
+        User actor = MainServer.getUserFromUsername(username);
         try {
+            GameController gc = actor.getRoom().getGameController();
             gc.getRoomCallback().getExcommunicationRound()
-                    .applyExcommAnswer();
+                    .applyExcommAnswer(MainServer.getUserFromUsername(username), choice);
             rmiClient.commandValidator(EXCOMMUNICATION, EXCOMMUNICATION_OK, true);
         } catch (BadRequestException e) {
             rmiClient.commandValidator(EXCOMMUNICATION, e.getMessage(), false);
-        }*
+        } catch (NullPointerException e) {
+            rmiClient.commandValidator(EXCOMMUNICATION, "No user found",false);
+        }
     }
 
     static void askClientForExcommunication(RMIClientInterf rmiClient) throws RemoteException {
@@ -141,61 +160,76 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
 
     @Override
     public void moveInCouncil(String fmColor, int servants, String username, RMIClientInterf rmiClient) throws RemoteException {
-        GameController gc = MainServer.getUserFromUsername(username).getRoom().getGameController();
-        FamilyMember fm = MainServer.getUserFromUsername(username).getPlayer().getFamilyMember(fmColor);
+        User actor = MainServer.getUserFromUsername(username);
         try {
+            GameController gc = actor.getRoom().getGameController();
+            FamilyMember fm = actor.getPlayer().getFamilyMember(fmColor);
             gc.moveInCouncil(fm, servants);
             rmiClient.commandValidator(FAMILY_MEMBER, FAMILY_MEMBER_OK, true);
         } catch (BadRequestException e) {
             rmiClient.commandValidator(FAMILY_MEMBER, e.getMessage(), false);
+        } catch (NullPointerException e) {
+            rmiClient.commandValidator(FAMILY_MEMBER, "No user found",false);
         }
     }
 
     @Override
     public void moveInHarvest(String fmColor, int servants, String username, RMIClientInterf rmiClient) throws RemoteException {
-        GameController gc = MainServer.getUserFromUsername(username).getRoom().getGameController();
-        FamilyMember fm = MainServer.getUserFromUsername(username).getPlayer().getFamilyMember(fmColor);
+        User actor = MainServer.getUserFromUsername(username);
         try {
+            GameController gc = actor.getRoom().getGameController();
+            FamilyMember fm = actor.getPlayer().getFamilyMember(fmColor);
             gc.moveInHarvest(fm, servants);
             rmiClient.commandValidator(FAMILY_MEMBER, FAMILY_MEMBER_OK, true);
         } catch (BadRequestException e) {
             rmiClient.commandValidator(FAMILY_MEMBER, e.getMessage(), false);
+        } catch (NullPointerException e) {
+            rmiClient.commandValidator(FAMILY_MEMBER, "No user found",false);
         }
     }
 
     @Override
     public void moveInProduction(String fmColor, int servants, String username, RMIClientInterf rmiClient) throws RemoteException {
-        GameController gc = MainServer.getUserFromUsername(username).getRoom().getGameController();
-        FamilyMember fm = MainServer.getUserFromUsername(username).getPlayer().getFamilyMember(fmColor);
+        User actor = MainServer.getUserFromUsername(username);
         try {
+            GameController gc = actor.getRoom().getGameController();
+            FamilyMember fm = actor.getPlayer().getFamilyMember(fmColor);
             gc.moveInProduction(fm, servants);
             rmiClient.commandValidator(FAMILY_MEMBER, FAMILY_MEMBER_OK, true);
         } catch (BadRequestException e) {
             rmiClient.commandValidator(FAMILY_MEMBER, e.getMessage(), false);
+        } catch (NullPointerException e) {
+            rmiClient.commandValidator(FAMILY_MEMBER, "No user found",false);
         }
     }
 
     @Override
     public void moveInMarket(String fmColor, int marketSlot, int servants, String username, RMIClientInterf rmiClient) throws RemoteException {
-        GameController gc = MainServer.getUserFromUsername(username).getRoom().getGameController();
-        FamilyMember fm = MainServer.getUserFromUsername(username).getPlayer().getFamilyMember(fmColor);
+        User actor = MainServer.getUserFromUsername(username);
         try {
+            GameController gc = actor.getRoom().getGameController();
+            FamilyMember fm = actor.getPlayer().getFamilyMember(fmColor);
             gc.moveInMarket(fm, marketSlot, servants);
             rmiClient.commandValidator(FAMILY_MEMBER, FAMILY_MEMBER_OK, true);
         } catch (BadRequestException e) {
             rmiClient.commandValidator(FAMILY_MEMBER, e.getMessage(), false);
+        } catch (NullPointerException e) {
+            rmiClient.commandValidator(FAMILY_MEMBER, "No user found",false);
         }
     }
 
     @Override
     public void moveInTower(String fmColor, String twrColor, int floor, int servants, String username, RMIClientInterf rmiClient) throws RemoteException {
-        GameController gc = MainServer.getUserFromUsername(username).getRoom().getGameController();
-        FamilyMember fm = MainServer.getUserFromUsername(username).getPlayer().getFamilyMember(fmColor);
+        User actor = MainServer.getUserFromUsername(username);
         try {
+            GameController gc = actor.getRoom().getGameController();
+            FamilyMember fm = actor.getPlayer().getFamilyMember(fmColor);
             gc.moveInTower(fm, twrColor, floor, servants);
             rmiClient.commandValidator(FAMILY_MEMBER, FAMILY_MEMBER_OK, true);
         } catch (BadRequestException e) {
             rmiClient.commandValidator(FAMILY_MEMBER, e.getMessage(), false);
+        } catch (NullPointerException e) {
+            rmiClient.commandValidator(FAMILY_MEMBER, "No user found",false);
         }
     }
 

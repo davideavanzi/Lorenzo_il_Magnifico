@@ -4,11 +4,9 @@ import it.polimi.ingsw.lim.exceptions.ControllerException;
 import it.polimi.ingsw.lim.exceptions.GameSetupException;
 import it.polimi.ingsw.lim.model.cards.Card;
 import it.polimi.ingsw.lim.model.cards.PurpleCard;
-import it.polimi.ingsw.lim.model.cards.YellowCard;
 import it.polimi.ingsw.lim.model.excommunications.*;
 import it.polimi.ingsw.lim.parser.Parser;
 import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.annotate.JsonTypeInfo;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -559,8 +557,9 @@ public class Game {
         ArrayList<FamilyMember> fms = this.board.getCouncil().getFamilyMembers();
         ArrayList<String> councilPlayers = new ArrayList<>();
         for (FamilyMember fm : fms) {
-            councilPlayers.add(players.stream().filter(pl -> pl.getColor().equals(fm.getOwnerColor()))
-                    .findFirst().orElse(null).getNickname());
+            Player pl = getPlayerFromColor(fm.getOwnerColor());
+            if (!councilPlayers.contains(pl.getNickname()))
+                councilPlayers.add(pl.getNickname());
         }
         for (Player pl : this.players) {
             if (!councilPlayers.contains(pl.getNickname()))
@@ -611,7 +610,8 @@ public class Game {
     }
 
     public boolean isMarketMoveAllowed(FamilyMember fm, int position) {
-        return this.getBoard().getMarket().isPositionOccupied(position);
+        Market market = this.getBoard().getMarket();
+        return market.isPositionAvailable(position) && market.isPositionOccupied(position);
     }
 
     public void marketMove(FamilyMember fm, int position, int servantsDeployed) {
@@ -627,6 +627,24 @@ public class Game {
         } else if (bonus instanceof Assets) {
             giveAssetsToPlayer((Assets)bonus, actor);
         }
+    }
+
+    public int servantsForCouncilAction(FamilyMember fm) {
+        int actionStr = this.getFmStrength(fm);
+        int servants = COUNCIL_ACTION_COST - actionStr;
+        if (isPlayerServantsExcommunicated(getPlayerFromColor(fm.getOwnerColor())))
+            servants *= 2;
+        return (servants > 0) ? -servants : 0;
+    }
+
+    public void councilMove(FamilyMember fm, int servantsDeployed) {
+        Player actor = getPlayerFromColor(fm.getOwnerColor());
+        actor.pullFamilyMember(fm.getDiceColor());
+        Assets actionCost = new Assets();
+        actionCost.addServants(servantsDeployed);
+        removeAssetsFromPlayer(actionCost, actor);
+        giveAssetsToPlayer(board.getCouncil().getCouncilBonus(), actor);
+        controllerCallback.giveCouncilFavors(board.getCouncil().getFavorsAmount());
     }
 
     public Board getBoard() {

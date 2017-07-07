@@ -18,14 +18,13 @@ import static it.polimi.ingsw.lim.Log.*;
 import static it.polimi.ingsw.lim.Settings.*;
 
 /**
- * Created by Davide on 25/05/2017.
  * This class is the main game controller.
  */
 public class GameController {
     private Game game;
     private Room roomCallback;
-    private ArrayList<ArrayList<Assets[]>> currentProductionOptions;
-    private Assets currentProductionAccumulator;
+    private ArrayList<ArrayList<Object[]>> currentProductionOptions;
+    private PendingProduction pendingProduction;
     private Strengths fastActionStr;
     private Assets optPickDiscount;
     private User fastActor;
@@ -197,7 +196,7 @@ public class GameController {
      * with his battle points
      * @param useBp the decision of the user, it's true if the he wants to pay in battle points
      */
-    public void confirmTowerMove(boolean useBp){
+    public void confirmTowerMove(boolean useBp) throws BadRequestException {
         Card card = this.game.towerMove(pendingTowerMove.tower,
                 pendingTowerMove.floor,
                 pendingTowerMove.fm,
@@ -236,7 +235,6 @@ public class GameController {
             this.game.giveAssetsToPlayer(actor.getDefaultHarvestBonus(), actor);
             if (servantsDeployed < servantsForHarvestAction || //TODO: do better
                     servantsDeployed > this.game.getPlayerFromColor(fm.getOwnerColor()).getResources().getServants()) {
-
                 return;
             }
             this.game.harvestMove(fm);
@@ -244,7 +242,7 @@ public class GameController {
             for (Card card: game.getPlayerFromColor(fm.getOwnerColor()).getCardsOfColor(GREEN_COLOR)) {
                 GreenCard activeCard = (GreenCard) card;
                 if (activeCard.getActionStrength().getHarvestBonus() <= actionStrength)
-                    CardHandler.activateGreenCard(activeCard, game.getPlayerFromColor(fm.getOwnerColor()));
+                    CardHandler.activateGreenCard(activeCard, roomCallback.getPlayingUser());
             }
             roomCallback.broadcastMessage
                     ("Player "+actor.getNickname()+" performed an harvest action of value: "+actionStrength);
@@ -268,7 +266,9 @@ public class GameController {
                 //TODO : EXC
                 ;
 
-            this.currentProductionAccumulator = new Assets(actor.getPlayer().getDefaultProductionBonus());
+            this.pendingProduction = new PendingProduction();
+            pendingProduction.add(actor.getPlayer().getDefaultProductionBonus());
+
             int actionStrength = game.calcProductionActionStr(fm, servantsDeployed, 0);
             for (Card card: game.getPlayerFromColor(fm.getOwnerColor()).getCardsOfColor(YELLOW_COLOR)) {
                 YellowCard activeCard = (YellowCard) card;
@@ -277,7 +277,10 @@ public class GameController {
             }
             if (this.currentProductionOptions.size() == 0) {
                 //don't ask user, complete directly production skipping excomm malus (already given)
-                actor.getPlayer().setResources(actor.getPlayer().getResources().add(currentProductionAccumulator));
+                actor.getPlayer().setResources(actor.getPlayer().
+                        getResources().add(pendingProduction.getAssetsAccumulator()));
+                if (pendingProduction.getCouncilFavorsAccumulator() > 0)
+                    giveCouncilFavors(pendingProduction.getCouncilFavorsAccumulator());
             } else {
                 actor.askForProductionOptions(currentProductionOptions);
             }
@@ -313,7 +316,13 @@ public class GameController {
      * @throws BadRequestException if //todo
      */
     public void moveInCouncil(FamilyMember fm, int servantsDeployed) throws BadRequestException {
-
+        if (game.servantsForCouncilAction(fm) > servantsDeployed) {
+            game.councilMove(fm, servantsDeployed);
+            roomCallback.broadcastMessage
+                    ("Player "+game.getPlayerFromColor(fm.getOwnerColor()).getNickname()+
+                            " has entered the council");
+            roomCallback.fmPlaced();
+        }
     }
 
     /**
@@ -324,17 +333,26 @@ public class GameController {
     public void confirmProduction(ArrayList<Integer> choices) throws BadRequestException {
         if (choices.size() != currentProductionOptions.size()) {
             getLog().log(Level.SEVERE, "Wrong amount of player production choices!");
-            return;
+            return; //TODO EXCEPTION
         }
+        //TODO: CHECK IF FASTACTOR IS THE SAME AS THE ONE PLAYING?
         currentProductionOptions.forEach(option -> {
-                if (option.get(choices.indexOf(option))[0].isGreaterOrEqual(
-                        roomCallback.getPlayingUser().getPlayer().getResources())){
-                    this.game.removeAssetsFromPlayer(option.get(choices.indexOf(option))[0],
-                            roomCallback.getPlayingUser().getPlayer());
-                    currentProductionAccumulator.add(option.get(choices.indexOf(option))[1]);}
+            Assets costOption = ((Assets)option.get(choices.indexOf(option))[0]);
+            Object resultOption = option.get(choices.indexOf(option))[1];
+                if (costOption.isGreaterOrEqual(roomCallback.getPlayingUser().getPlayer().getResources())){
+                    this.game.removeAssetsFromPlayer(costOption, roomCallback.getPlayingUser().getPlayer());
+                    if (resultOption instanceof Assets)
+                        pendingProduction.add((Assets)option.get(choices.indexOf(option))[1]);
+                    if (resultOption instanceof Integer)
+                        pendingProduction.add((int)option.get(choices.indexOf(option))[1]);
+                }
         });
+        fastActor.getPlayer().setResources(fastActor.getPlayer().getResources()
+                .add(pendingProduction.getAssetsAccumulator()));
+        if (pendingProduction.getCouncilFavorsAccumulator() > 0)
+            giveCouncilFavors(pendingProduction.getCouncilFavorsAccumulator());
         roomCallback.broadcastMessage
-                ("Player XXX performed a production action");
+                ("Player "+fastActor.getUsername()+" performed a production action");
         roomCallback.fmPlaced();
     }
 
@@ -342,14 +360,20 @@ public class GameController {
      * this method adds the available options of a yellow card to choose
      * @param options
      */
-    void addProductionOptions(ArrayList<Assets[]> options) {
+    void addProductionOptions(ArrayList<Object[]> options) {
         this.currentProductionOptions.add(options);
     }
 
     void addBonusToAccumulator(Assets bonus) {
-        this.currentProductionAccumulator.add(this.game.apllyExcommMalus(bonus,
+        this.pendingProduction.add(this.game.apllyExcommMalus(bonus,
                 roomCallback.getPlayingUser().getPlayer()));
     }
+
+    void addBonusToAccumulator(int amount) {
+        this.pendingProduction.add(amount);
+    }
+
+
 
     //FAST ACTIONS:
 
@@ -397,7 +421,7 @@ public class GameController {
         for (Card card: fastActor.getPlayer().getCardsOfColor(GREEN_COLOR)) {
             GreenCard activeCard = (GreenCard) card;
             if (activeCard.getActionStrength().getHarvestBonus() <= actionStrength)
-                CardHandler.activateGreenCard(activeCard, fastActor.getPlayer());
+                CardHandler.activateGreenCard(activeCard, fastActor);
         }
     }
 
@@ -410,16 +434,21 @@ public class GameController {
             //TODO: tell user bad entry
             return;
         }
-        this.currentProductionAccumulator = new Assets(actor.getPlayer().getDefaultProductionBonus());
-        int actionStrength = game.calcProductionActionStr(null, servantsDeployed, fastActionStr.getProductionBonus());
+        this.pendingProduction = new PendingProduction();
+        pendingProduction.add(actor.getPlayer().getDefaultProductionBonus());
+        int actionStrength = game.calcProductionActionStr
+                (null, servantsDeployed, fastActionStr.getProductionBonus());
         for (Card card: actor.getPlayer().getCardsOfColor(YELLOW_COLOR)) {
             YellowCard activeCard = (YellowCard) card;
             if (activeCard.getActionStrength().getProductionBonus() <= actionStrength)
                 CardHandler.activateYellowCard(activeCard, actor, this);
         }
         if (this.currentProductionOptions.size() == 0) {
-            //don't ask user, complete directly production skipping excomm malus
-            actor.getPlayer().setResources(actor.getPlayer().getResources().add(currentProductionAccumulator));
+            //don't ask user, complete directly production skipping excomm malus (already given)
+            actor.getPlayer().setResources(actor.getPlayer().getResources()
+                    .add(pendingProduction.getAssetsAccumulator()));
+            if (pendingProduction.getCouncilFavorsAccumulator() > 0)
+                giveCouncilFavors(pendingProduction.getCouncilFavorsAccumulator());
         } else {
             actor.askForProductionOptions(currentProductionOptions);
         }
@@ -550,6 +579,32 @@ public class GameController {
             this.floor = floor;
             this.servantsDeployed = servantsDeployed;
             this.actor = actor;
+        }
+    }
+
+    private class PendingProduction {
+        Assets assetsAccumulator;
+        int councilFavorsAccumulator;
+
+        PendingProduction() {
+            this.assetsAccumulator = new Assets();
+            this.councilFavorsAccumulator = 0;
+        }
+
+        void add(Assets assets) {
+            this.assetsAccumulator = this.assetsAccumulator.add(assets);
+        }
+
+        void add(int amount) {
+            this.councilFavorsAccumulator += amount;
+        }
+
+        public Assets getAssetsAccumulator() {
+            return assetsAccumulator;
+        }
+
+        public int getCouncilFavorsAccumulator() {
+            return councilFavorsAccumulator;
         }
     }
 }
