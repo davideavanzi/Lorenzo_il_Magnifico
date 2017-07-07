@@ -834,17 +834,22 @@ public class CLI extends AbsUI {
     private void printCard(GreenCard greenCard){
         String format = "||%-20s||\n";
         String sRid = "||_  _  _  _  _  _  _ ||";
+        if(greenCard.getActionStrength().isNotNull()){
+            printMessageln(sRid);
+            System.out.format(format, "");
+            System.out.format(format, StringUtils.center(("Action Cost"), 20));
+            printStrengths(greenCard.getActionStrength(), "Cost");
+        }
         if(greenCard.getHarvestResult().isNotNull()){
             printMessageln(sRid);
             System.out.format(format, "");
             System.out.format(format, StringUtils.center(("Harvest Result"), 20));
             printAsset(greenCard.getHarvestResult());
         }
-        if(greenCard.getActionStrength().isNotNull()){
+        if(greenCard.getCouncilFavourAmount() != 0){
             printMessageln(sRid);
             System.out.format(format, "");
-            System.out.format(format, StringUtils.center(("Action Cost"), 20));
-            printStrengths(greenCard.getActionStrength(), "Cost");
+            System.out.format(format, StringUtils.center(("Council Favour: ").concat(((Integer)greenCard.getCouncilFavourAmount()).toString()), 20));
         }
     }
 
@@ -941,6 +946,11 @@ public class CLI extends AbsUI {
             System.out.format(format, "");
             System.out.format(format, StringUtils.center(("Card Multiplier:"), 20));
             System.out.format(format, StringUtils.center((yellowCard.getCardMultiplier().concat(" cards")), 20));
+        }
+        if(yellowCard.getCouncilFavourAmount() != 0){
+            printMessageln(sRid);
+            System.out.format(format, "");
+            System.out.format(format, StringUtils.center(("Council Favour: ").concat(((Integer)yellowCard.getCouncilFavourAmount()).toString()), 20));
         }
     }
 
