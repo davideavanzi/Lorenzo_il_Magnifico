@@ -24,17 +24,14 @@ public class YellowCard extends Card {
     public YellowCard(String name, int age, Assets cost,
                       ArrayList<ImmediateEffect> iEffects,
                       ArrayList<Assets> productionCosts,
-                      ArrayList<Assets> productionResults,
+                      ArrayList<Object> productionResults,
                       Strengths actionStrength,
-                      String bonusMultiplier,
-                      int councilFavourAmount) {
+                      String bonusMultiplier) {
         super(name, age, cost, iEffects);
         this.productionCosts = productionCosts;
         this.productionResults = productionResults;
         this.actionStrength = actionStrength;
         this.cardMultiplier = bonusMultiplier;
-        this.councilFavourAmount = councilFavourAmount;
-
     }
 
     public YellowCard(){
@@ -43,15 +40,6 @@ public class YellowCard extends Card {
         this.productionResults = new ArrayList<>();
     }
 
-    private int councilFavourAmount;
-
-    public int getCouncilFavourAmount(){
-        return councilFavourAmount;
-    }
-
-    public void setCouncilFavourAmount(int councilFavourAmount){
-        this.councilFavourAmount = councilFavourAmount;
-    }
 
     /**
      * 
@@ -61,7 +49,7 @@ public class YellowCard extends Card {
     /**
      * 
      */
-    private ArrayList<Assets> productionResults;
+    private ArrayList<Object> productionResults;
 
     /**
      * 
@@ -77,7 +65,7 @@ public class YellowCard extends Card {
         this.productionCosts = productionCosts;
     }
 
-    public void setProductionResults(ArrayList<Assets> productionResults){
+    public void setProductionResults(ArrayList<Object> productionResults){
         this.productionResults = productionResults;
     }
 
@@ -97,7 +85,7 @@ public class YellowCard extends Card {
         return productionCosts;
     }
 
-    public ArrayList<Assets> getProductionResults() {
+    public ArrayList<Object> getProductionResults() {
         return productionResults;
     }
 

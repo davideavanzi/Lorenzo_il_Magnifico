@@ -7,7 +7,6 @@ import it.polimi.ingsw.lim.model.cards.*;
 import it.polimi.ingsw.lim.model.excommunications.*;
 import it.polimi.ingsw.lim.model.immediateEffects.*;
 import org.apache.commons.lang3.StringUtils;
-import org.omg.PortableServer.Servant;
 
 import java.io.Console;
 import java.util.ArrayList;
@@ -928,11 +927,16 @@ public class CLI extends AbsUI {
         }
 
         if(!(yellowCard.getProductionResults().isEmpty())){
-            for(Assets a: yellowCard.getProductionResults()){
+            for(java.lang.Object ob: yellowCard.getProductionResults()){
                 printMessageln(sRid);
                 System.out.format(format, "");
                 System.out.format(format, StringUtils.center(("Production Result:"), 20));
-                printAsset(a);
+                if(ob instanceof Assets){
+                    printAsset((Assets)ob);
+                }
+                else if(ob instanceof Integer){
+                    System.out.format(format, StringUtils.center((ob).toString(), 20));
+                }
             }
         }
         if(yellowCard.getActionStrength().isNotNull()){
@@ -946,11 +950,6 @@ public class CLI extends AbsUI {
             System.out.format(format, "");
             System.out.format(format, StringUtils.center(("Card Multiplier:"), 20));
             System.out.format(format, StringUtils.center((yellowCard.getCardMultiplier().concat(" cards")), 20));
-        }
-        if(yellowCard.getCouncilFavourAmount() != 0){
-            printMessageln(sRid);
-            System.out.format(format, "");
-            System.out.format(format, StringUtils.center(("Council Favour: ").concat(((Integer)yellowCard.getCouncilFavourAmount()).toString()), 20));
         }
     }
 
@@ -1075,15 +1074,12 @@ public class CLI extends AbsUI {
      * of players).
      */
     private void printMarket(){
-        Object [] market = this.uiCallback.getLocalBoard().getMarket().getBonuses();
+        Object[] market = this.uiCallback.getLocalBoard().getMarket().getBonuses();
         FamilyMember[] familyMembers = this.uiCallback.getLocalBoard().getMarket().getSlots();
         String format = "||%-20s||\n";
         String s = "________________________";
-        int marketSize = 2;
-        if(this.uiCallback.getLocalPlayers().size() >= 4 && this.uiCallback.getLocalPlayers().size() < 6){
-            marketSize = this.uiCallback.getLocalPlayers().size();
-        }
-        for(int i = 0; i < marketSize/*the num of the player == dim of the market*/; i++){
+        int marketSize = market.length;
+        for(int i = 0; i < marketSize; i++){
             printMessageln(s);
             System.out.format(format, "", 20);
             System.out.format(format, StringUtils.center(("MARKET " + i), 20));
@@ -1097,7 +1093,7 @@ public class CLI extends AbsUI {
             }
             System.out.format(format, "");
             printMessageln(s);
-            if(this.uiCallback.getLocalBoard().getMarket().isPositionOccupied(i)){
+            if(this.uiCallback.getLocalBoard().getMarket().isPositionOccupied(i+1)){
                 printMessageln("");
                 printMessageln("");
                 printMessageln(s);

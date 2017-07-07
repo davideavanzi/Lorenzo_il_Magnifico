@@ -44,6 +44,18 @@ public class Room {
         this.id = id;
     }
 
+    public boolean getRoomOpen() {
+        return roomOpen;
+    }
+
+    public ArrayList<String> getPlayOrder() {
+        return playOrder;
+    }
+
+    public PlayerRound getRound() {
+        return round;
+    }
+
     public Room(){
         usersList = new ArrayList<>();
         playOrder = new ArrayList<>();

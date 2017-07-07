@@ -53,22 +53,42 @@ public class GameController {
 
     /**
      * This method checks if all parsed data are ok with current game settings.
-     * - Development cards number for each color and age = tower_height * turns_per_age (??)
+     * - Development cards number for each color and age = tower_height * turns_per_age
      * - At least one excommunication for every age from first_excomm_fp to ages_number
      * - Tower bonuses consistent with tower heights.
      * - Market bonuses consistent.
      * - Council bonuses consistent.
-     * - More controls?
      * - Faith track bonuses corresponding to faith track length
      * TODO: do we have to check if every card is valid?
      */
-    private static boolean validateParsedData (Parser parsedGame){
+    private boolean validateParsedData (Parser parsedGame){
         for (int age = 1; age <= AGES_NUMBER; age++)
             for (String color : DEFAULT_TOWERS_COLORS)
-                return !(parsedGame.getCard(age, color).size() == TURNS_PER_AGE * TOWER_HEIGHT);
+                if((parsedGame.getCard(age, color).size() < TURNS_PER_AGE * TOWER_HEIGHT))
+                    return false;
+        int excommunicationAge = parsedGame.getExcommunications().size();
+        if(excommunicationAge < AGES_NUMBER){
+            return false;
+        }
         for (String color : DEFAULT_TOWERS_COLORS)
-            return !(parsedGame.getTowerbonuses(color).length == TOWER_HEIGHT);
-        //TODO: implement
+            if(parsedGame.getTowerbonuses(color).length != TOWER_HEIGHT)
+                return false;
+        int marketSize = parsedGame.getMarketBonuses().length;
+        if(marketSize < 2){
+            return false;
+        }
+        else if (marketSize < 4 && this.roomCallback.getUsersList().size() == 4){
+            return false;
+        }
+        else if (marketSize < 5 && this.roomCallback.getUsersList().size() == 5){
+            return false;
+        }
+        if(parsedGame.getCouncilFavourBonuses().length < 3){ /* at least 3 slots (the maximum num of different favours that a player can pick) */
+            return false;
+        }
+        if(parsedGame.getFaithTrackBonuses().length < 5) { /* at least 5 slots (the last excommunication) */
+            return false;
+        }
         return true;
     }
 

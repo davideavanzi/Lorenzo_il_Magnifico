@@ -1,5 +1,7 @@
 package it.polimi.ingsw.lim.model;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import static it.polimi.ingsw.lim.Settings.*;
 import java.io.Serializable;
 import java.util.*;
@@ -75,6 +77,11 @@ public class Market implements Serializable {
     public void clear(){
         getLog().info("Clearing market spaces");
         Arrays.stream(slots).forEach(slot -> slot = null);
+    }
+
+    @JsonIgnore
+    public int getSize(){
+        return this.bonuses.length;
     }
 
 

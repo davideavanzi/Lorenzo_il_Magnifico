@@ -486,7 +486,7 @@ public class Parser {
     private YellowCard parseYellowCard
             (String cardName, int cardAge, Assets tmpCardAssetsCost, ArrayList<ImmediateEffect> immediateEffects, JsonNode cardNode) {
         ArrayList<Assets> tmpYellowProductionCostList = new ArrayList<>();
-        ArrayList<Assets> tmpYellowProductionResultList = new ArrayList<>();
+        ArrayList<Object> tmpYellowProductionResultList = new ArrayList<>();
         if(cardNode.path(YELLOW_PRODUCTION).isContainerNode()) {
             JsonNode yellowProductionNode = cardNode.path(YELLOW_PRODUCTION);
             Iterator<JsonNode> yellowProductionEffectIterator = yellowProductionNode.getElements();
@@ -504,6 +504,12 @@ public class Parser {
                     Assets tmpYellowProductionResult = parseAssets(yellowProductionResult);
                     tmpYellowProductionResultList.add(tmpYellowProductionResult);
                 }
+
+                if(cardNode.path(YELLOW_COUNCIL_FAVOUR_AMOUNT).isInt()){
+                    int tmpYellowCouncilFavour;
+                    tmpYellowCouncilFavour = cardNode.path(YELLOW_COUNCIL_FAVOUR_AMOUNT).asInt();
+                    tmpYellowProductionResultList.add(tmpYellowCouncilFavour);
+                }
             }
         }
         Strengths tmpYellowActionStrengths = new Strengths();
@@ -517,11 +523,6 @@ public class Parser {
             tmpYellowBonusMultiplier = cardNode.path(YELLOW_BONUS_MULTIPLIER).asText();
         }
 
-        int tmpYellowCouncilFavour = 0;
-        if(cardNode.path(YELLOW_COUNCIL_FAVOUR_AMOUNT).isInt()){
-            tmpYellowCouncilFavour = cardNode.path(YELLOW_COUNCIL_FAVOUR_AMOUNT).asInt();
-        }
-
         return new YellowCard(
                 cardName,
                 cardAge,
@@ -530,8 +531,7 @@ public class Parser {
                 tmpYellowProductionCostList,
                 tmpYellowProductionResultList,
                 tmpYellowActionStrengths,
-                tmpYellowBonusMultiplier,
-                tmpYellowCouncilFavour
+                tmpYellowBonusMultiplier
         );
     }
 
