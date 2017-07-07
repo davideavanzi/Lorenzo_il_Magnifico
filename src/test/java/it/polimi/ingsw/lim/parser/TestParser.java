@@ -38,7 +38,8 @@ public class TestParser{
                 assetsCostExpected,
                 iEffectExpected,
                 harvestResultExpected,
-                actionStrengthExpected
+                actionStrengthExpected,
+                0
         );
     }
 
@@ -102,7 +103,8 @@ public class TestParser{
                 productionCosts,
                 productionResults,
                 actionStrengthExpected,
-                bonusMultiplierExpected
+                bonusMultiplierExpected,
+                0
         );
     }
 

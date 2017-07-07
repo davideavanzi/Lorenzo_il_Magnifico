@@ -391,6 +391,10 @@ public class Parser {
             JsonNode greenActionStrengths = cardNode.path(GREEN_ACTION_STRENGTHS);
             tmpGreenActionStrengths = parseStrengths(greenActionStrengths);
         }
+        int tmpGreenCouncilFavour = 0;
+        if(cardNode.path(GREEN_COUNCIL_FAVOUR_AMOUNT).isInt()){
+            tmpGreenCouncilFavour = cardNode.path(GREEN_COUNCIL_FAVOUR_AMOUNT).asInt();
+        }
 
         return new GreenCard(
                 cardName,
@@ -398,7 +402,8 @@ public class Parser {
                 tmpCardAssetsCost,
                 immediateEffects,
                 tmpGreenHarvestResult,
-                tmpGreenActionStrengths
+                tmpGreenActionStrengths,
+                tmpGreenCouncilFavour
         );
     }
 
@@ -512,6 +517,11 @@ public class Parser {
             tmpYellowBonusMultiplier = cardNode.path(YELLOW_BONUS_MULTIPLIER).asText();
         }
 
+        int tmpYellowCouncilFavour = 0;
+        if(cardNode.path(YELLOW_COUNCIL_FAVOUR_AMOUNT).isInt()){
+            tmpYellowCouncilFavour = cardNode.path(YELLOW_COUNCIL_FAVOUR_AMOUNT).asInt();
+        }
+
         return new YellowCard(
                 cardName,
                 cardAge,
@@ -520,7 +530,8 @@ public class Parser {
                 tmpYellowProductionCostList,
                 tmpYellowProductionResultList,
                 tmpYellowActionStrengths,
-                tmpYellowBonusMultiplier
+                tmpYellowBonusMultiplier,
+                tmpYellowCouncilFavour
         );
     }
 

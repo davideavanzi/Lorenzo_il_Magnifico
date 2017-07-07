@@ -119,7 +119,11 @@
               "coin": 3
             }
           }
-        }
+        },
+        "greenActionStrengths": {
+          "harvestBonus": 5
+        },
+        "greenCouncilFavoursAmount": 1
       },
       {
         "cardName":"Gold Mine",
@@ -648,7 +652,8 @@
         "yellowActionStrengths":
         {
           "productionBonus": 1
-        }
+        },
+        "yellowCouncilFavoursAmount": 1
       },
       {
         "cardName": "Marketplace",
@@ -1055,8 +1060,15 @@
               "faithPoints":2
             },
             "yellowProductionCost":{
-              "wood": 1,
-              "stone":1
+              "wood": 1
+            }
+          },
+          {
+            "yellowProductionResult": {
+              "faithPoints":2
+            },
+            "yellowProductionCost":{
+              "stone": 1
             }
           }
         ],

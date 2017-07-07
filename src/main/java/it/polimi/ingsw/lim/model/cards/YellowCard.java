@@ -26,12 +26,14 @@ public class YellowCard extends Card {
                       ArrayList<Assets> productionCosts,
                       ArrayList<Assets> productionResults,
                       Strengths actionStrength,
-                      String bonusMultiplier) {
+                      String bonusMultiplier,
+                      int councilFavourAmount) {
         super(name, age, cost, iEffects);
         this.productionCosts = productionCosts;
         this.productionResults = productionResults;
         this.actionStrength = actionStrength;
         this.cardMultiplier = bonusMultiplier;
+        this.councilFavourAmount = councilFavourAmount;
 
     }
 
@@ -39,6 +41,16 @@ public class YellowCard extends Card {
         super();
         this.productionCosts = new ArrayList<>();
         this.productionResults = new ArrayList<>();
+    }
+
+    private int councilFavourAmount;
+
+    public int getCouncilFavourAmount(){
+        return councilFavourAmount;
+    }
+
+    public void setCouncilFavourAmount(int councilFavourAmount){
+        this.councilFavourAmount = councilFavourAmount;
     }
 
     /**

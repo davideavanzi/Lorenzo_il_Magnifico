@@ -17,10 +17,12 @@ public class GreenCard extends Card {
     public GreenCard(String name, int age, Assets cost,
                      ArrayList<ImmediateEffect> iEffects,
                      Assets harvestResult,
-                     Strengths actionStrength) {
+                     Strengths actionStrength,
+                     int councilFavourAmount) {
         super(name, age, cost, iEffects);
         this.actionStrength = actionStrength;
         this.harvestResult = harvestResult;
+        this.councilFavourAmount = councilFavourAmount;
     }
 
     public GreenCard(){super();}
@@ -34,6 +36,17 @@ public class GreenCard extends Card {
      * This is the strength required to perform this action
      */
     private Strengths actionStrength;
+
+
+    private int councilFavourAmount;
+
+    public int getCouncilFavourAmount(){
+        return councilFavourAmount;
+    }
+
+    public void setCouncilFavourAmount(int councilFavourAmount){
+        this.councilFavourAmount = councilFavourAmount;
+    }
 
     public Assets getHarvestResult(){
         return this.harvestResult;

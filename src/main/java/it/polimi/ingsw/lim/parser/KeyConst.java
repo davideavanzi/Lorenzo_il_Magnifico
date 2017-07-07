@@ -55,6 +55,8 @@ class KeyConst {
 
     protected static final String GREEN_HARVEST_RESULT = "greenHarvestResult";
     protected static final String GREEN_ACTION_STRENGTHS = "greenActionStrengths";
+    protected static final String GREEN_COUNCIL_FAVOUR_AMOUNT = "greenCouncilFavoursAmount";
+
 
     protected static final String BLUE_PERMANENT_BONUS = "bluePermanentBonus";
     protected static final String BLUE_GREEN_DISCOUNT = "blueGreenDiscount";
@@ -69,6 +71,7 @@ class KeyConst {
     protected static final String YELLOW_PRODUCTION_RESULT = "yellowProductionResult";
     protected static final String YELLOW_ACTION_STRENGTHS = "yellowActionStrengths";
     protected static final String YELLOW_BONUS_MULTIPLIER = "yellowBonusMultiplier";
+    protected static final String YELLOW_COUNCIL_FAVOUR_AMOUNT = "yellowCouncilFavoursAmount";
 
     protected static final String PURPLE_END_GAME_BONUS = "purpleEndGameBonus";
     protected static final String PURPLE_OPTIONAL_BATTLE_POINTS_REQUIREMENT = "purpleOptionalBattlePointsRequirement";
