@@ -247,13 +247,30 @@ public class Assets implements Serializable {
      * Write here more adders if needed.
      * @return the object itself (used in game setup)
      */
-    public Assets addCoins(int amount) { return new Assets(this).addCoins(amount); }
 
-    public Assets addServants(int amount) { return new Assets(this).addServants(amount); }
+    private void setCoins(int amount) { this.coins = amount; }
 
-    public Assets addVictoryPoints(int amount) { return new Assets(this).addVictoryPoints(amount); }
+    public Assets addCoins(int amount) {
+        Assets result =  new Assets(this);
+        result.setCoins(this.getCoins()+amount);
+        return result;
+    }
 
-    public Assets subtractCoins(int amount) { this.coins -= amount; return this;}
+    private void setServants(int amount) { this.servants = amount; }
+
+    public Assets addServants(int amount) {
+        Assets result =  new Assets(this);
+        result.setServants(this.getServants()+amount);
+        return result;
+    }
+
+    private void setVictoryPoints(int amount) { this.victoryPoints = amount; }
+
+    public Assets addVictoryPoints(int amount) {
+        Assets result =  new Assets(this);
+        result.setVictoryPoints(this.getVictoryPoints()+amount);
+        return result;
+    }
 
     public int sumAll() {
         return coins+wood+stone+servants;
