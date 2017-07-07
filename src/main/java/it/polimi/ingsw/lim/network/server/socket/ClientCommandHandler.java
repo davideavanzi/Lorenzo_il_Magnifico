@@ -34,9 +34,9 @@ class ClientCommandHandler {
     GameController gameController;
 
     /**
-     * Array used to store the command send by client.
+     * Store the input command.
      */
-    String[] command;
+    Object[] command;
 
     public ClientCommandHandler() {
         gameController = handlerCallback.getUser().getRoom().getGameController();
@@ -47,10 +47,10 @@ class ClientCommandHandler {
      * @param obj
      */
     void requestHandler(Object obj) {
-        getLog().log(Level.INFO,() -> "[COMMAND_HANDLER]: Handling command: "+obj);
         if(obj instanceof Object[]) {
-            Object[] command = (Object[])obj;
+            command = (Object[]) obj;
             String commandID = (String)command[0];
+            getLog().log(Level.INFO,() -> "[COMMAND_HANDLER]: Handling command: "+commandID);
             if (commandID.equals(CHAT)) {
                 handlerCallback.getUser().getRoom().chatMessageToRoom((String)command[1], (String)command[2]);
             } else if (commandID.equals(FAMILY_MEMBER)) {
@@ -117,20 +117,20 @@ class ClientCommandHandler {
     }
 
     private void placeFMcmd() throws BadRequestException {
-        FamilyMember fm = handlerCallback.getUser().getPlayer().getFamilyMember(command[1]);
-        int servants = Integer.parseInt(command[4]);
-        if (command[2].contains(TOWER)) {
-            String twrColor = command[2].replace(" Tower", "");
-            int floor = Integer.parseInt(command[3]);
+        FamilyMember fm = handlerCallback.getUser().getPlayer().getFamilyMember((String)command[1]);
+        int servants = Integer.parseInt((String)command[4]);
+        if (((String)command[2]).contains(TOWER)) {
+            String twrColor = ((String)command[2]).replace(" Tower", "");
+            int floor = (Integer)command[3];
             gameController.moveInTower(fm, twrColor, floor, servants);
-        } else if (command[2].equalsIgnoreCase(MARKET)) {
-            int marketSlot = Integer.parseInt(command[3]);
+        } else if (((String)command[2]).equalsIgnoreCase(MARKET)) {
+            int marketSlot = (Integer)command[3];
             gameController.moveInMarket(fm, marketSlot, servants);
-        } else if (command[2].equalsIgnoreCase(PRODUCTION)) {
+        } else if (((String)command[2]).equalsIgnoreCase(PRODUCTION)) {
             gameController.moveInProduction(fm, servants);
-        } else if (command[2].equalsIgnoreCase(HARVEST)) {
+        } else if (((String)command[2]).equalsIgnoreCase(HARVEST)) {
             gameController.moveInHarvest(fm, servants);
-        } else if (command[2].equalsIgnoreCase(COUNCIL)) {
+        } else if (((String)command[2]).equalsIgnoreCase(COUNCIL)) {
             gameController.moveInCouncil(fm, servants);
         }
     }

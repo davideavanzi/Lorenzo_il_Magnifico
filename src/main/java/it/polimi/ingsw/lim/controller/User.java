@@ -186,7 +186,8 @@ public abstract class User implements Serializable{
     public abstract void sendGameUpdate(Board board, ArrayList<Player> players);
 
     /**
-     * //todo javadoc
+     * This method is called by game controller in the beginning of every turn;
+     * It notify all client
      * @param isPlaying
      */
     @JsonIgnore

@@ -1,9 +1,13 @@
 package it.polimi.ingsw.lim.ui;
 
+import it.polimi.ingsw.lim.Lock;
+
 /**
  * Created by nico.
  */
 public abstract class AbsUI {
+
+    public abstract Lock getLock();
 
     public abstract void commandAdder(String commandr);
 

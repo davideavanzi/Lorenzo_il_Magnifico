@@ -15,6 +15,7 @@ public class MainClient {
         splashScreen();
         UIController client = new UIController(setUI());
         client.startGame();
+        client.getClientUI().waitForRequest();
     }
 
     private static void splashScreen() {

@@ -27,6 +27,8 @@ class ServerCommandHandler {
      */
     private UIController uiCallback;
 
+    Object[] command;
+
     /**
      * Constructor.
      * @param clientCallback
@@ -43,7 +45,7 @@ class ServerCommandHandler {
      */
     void requestHandler(Object obj) throws LoginFailedException {
         if (obj instanceof Object[]) {
-            Object[] command = (Object[]) obj;
+            command = (Object[]) obj;
             String commandID = (String) command[0];
             if (commandID.equals(LOGIN_REQUEST)) {
                 String[] loginInfo = uiCallback.sendLoginInfo();
@@ -53,7 +55,7 @@ class ServerCommandHandler {
                     uiCallback.getClientUI().printError(e.getMessage());
                 }
             } else if (commandID.equals(LOGIN_SUCCESSFUL)) {
-                uiCallback.getClientUI().waitForRequest();
+                uiCallback.getClientUI().getLock().unlock();
             } else if (commandID.equals(LOGIN_FAILED)) {
                 uiCallback.getClientUI().printError((String)command[1]);
             } else if (commandID.equals(TURN)) {
@@ -84,13 +86,21 @@ class ServerCommandHandler {
                 uiCallback.getTmpVar().setMinServantsHarv((Integer)command[1]);
             } else if (commandID.equals(CMD_VALIDATOR)) {
                 uiCallback.getClientUI().commandManager((String)command[1], (String)command[2], (Boolean)command[3]);
+            } else if (commandID.equals("BOARD")) {
+                uiCallback.updateBoard((Board)command[1]);
+            } else if (commandID.equals("PLAYER")) {
+                uiCallback.updatePlayers((ArrayList<Player>)command[1]);
+            } else {
+                System.out.println(commandID);
             }
-        } else if (obj instanceof Board) {
+        } /*else if (obj instanceof Board) {
+            System.out.println("Entro in Board");
             Board board = (Board)obj;
             uiCallback.updateBoard(board);
-        } else if (obj instanceof Player) {
-            ArrayList<Player> players = new ArrayList<>(); //TODO: how can i convert obj in an arrayList of player
+        } else {
+            System.out.println("Entro in Arraylistplayer");
+            ArrayList<Player> players = (ArrayList<Player>)obj;
             uiCallback.updatePlayers(players);
-        }
+        }*/
     }
 }

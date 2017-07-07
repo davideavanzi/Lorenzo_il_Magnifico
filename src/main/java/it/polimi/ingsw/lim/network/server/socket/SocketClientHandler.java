@@ -34,7 +34,7 @@ public class SocketClientHandler implements Runnable {
     /**
      * User's reference.
      */
-    private User user = null;
+    private User user;
 
     /**
      * Show if the client is logged.
@@ -108,7 +108,9 @@ public class SocketClientHandler implements Runnable {
      * @param message
      */
     void chatMessageToClient(String sender, String message) {
-        sendObjectToClient(new Object[] {CHAT, sender ,message});
+        System.out.println("Server socjet prechat");
+        sendObjectToClient(new Object[] {LOGIN_SUCCESSFUL});
+        sendObjectToClient(new Object[] {CHAT, sender, message});
     }
 
     /**
@@ -117,8 +119,9 @@ public class SocketClientHandler implements Runnable {
      * @param players
      */
     void sendGameToClient(Board board, ArrayList<Player> players) {
-        sendObjectToClient(board);
-        sendObjectToClient(players);
+        System.out.println("PREINVIO");
+        sendObjectToClient(new Object[] {"BOARD", board});
+        sendObjectToClient(new Object[] {"PLAYER", players});
     }
 
     void sendIfUserPlaying(boolean isPlaying) {
@@ -134,7 +137,7 @@ public class SocketClientHandler implements Runnable {
         try {
             objFromServer.writeObject(obj);
             objFromServer.flush();
-            objFromServer.reset();
+            //objFromServer.reset();
         } catch (IOException e) {
             getLog().log(Level.SEVERE, "[SOCKET]: Could not send object to the client", e);
         }
@@ -144,7 +147,8 @@ public class SocketClientHandler implements Runnable {
         try {
             if (MainServer.getJDBC().isAlreadySelectedUserName(username)) {
                 if (MainServer.getJDBC().isUserContained(username, password)) {
-                    addUserToRoom(new SocketUser(username, handlerCallback));
+                    this.user = new SocketUser(username, handlerCallback);
+                    addUserToRoom(this.user);
                     Log.getLog().log(Level.INFO, "[LOGIN]: Login successful. Welcome back ".concat(username));
                 } else {
                     Log.getLog().log(Level.SEVERE, "[LOGIN]: Bad password or username ".concat(username).concat(" already selected?"));

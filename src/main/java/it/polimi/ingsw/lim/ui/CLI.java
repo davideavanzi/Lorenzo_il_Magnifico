@@ -48,6 +48,10 @@ public class CLI extends AbsUI {
         initializeCommandLine();
     }
 
+    public Lock getLock() {
+        return lock;
+    }
+
     private void askForFastHarvest() {
 
     }
@@ -338,17 +342,17 @@ public class CLI extends AbsUI {
 
     @Override
     public void waitForRequest() {
+        lock.lock();
         while (true) {
             printCmd();
             printGameMessage("Enter a command: ");
             input = userInput.next().toLowerCase().trim();
-            printBoard(); //todo only for test
+            //printBoard(); //todo only for test
             try {
                 cmdExecutor(input);
             } catch (InvalidInputException e) {
                 printError(e.getMessage());
             }
-            lock.lock();
         }
     }
 
