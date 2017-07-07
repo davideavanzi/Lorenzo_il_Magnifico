@@ -32,6 +32,7 @@ public class Room {
     private ArrayList<String> playOrder;
     private PlayerRound round;
     private int id;
+    private ExcommunicationRound excommunicationRound;
 
     public Room(User user, int id) {
         usersList = new ArrayList<>();
@@ -53,6 +54,14 @@ public class Room {
 
     public int getId(){
         return id;
+    }
+
+    public ExcommunicationRound getExcommunicationRound() {
+        return excommunicationRound;
+    }
+
+    public void setExcommunicationRound(ExcommunicationRound excommunicationRound) {
+        this.excommunicationRound = excommunicationRound;
     }
 
     public void setExcommLock(Lock excommLock){
@@ -117,7 +126,7 @@ public class Room {
         usersList.forEach(user -> user.broadcastMessage(message));
     }
 
-    public List<User> getUsersList() {
+    public ArrayList<User> getUsersList() {
         return usersList;
     }
 

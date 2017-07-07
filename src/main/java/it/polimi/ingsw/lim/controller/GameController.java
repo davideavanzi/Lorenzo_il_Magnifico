@@ -493,6 +493,10 @@ public class GameController {
         playersToExcomm.forEach(player -> game.excommunicatePlayer(player));
     }
 
+    public void applyExcommunication(ArrayList<Player> toExcommunicate) {
+        //Excommunicate given players, reset fp of players that won't be excommunicated
+    }
+
     private class PendingTowerMove {
         String tower;
         int floor;
