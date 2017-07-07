@@ -16,7 +16,7 @@ import static it.polimi.ingsw.lim.Log.getLog;
 import static java.lang.Thread.sleep;
 
 /**
- * Created by nico.
+ *
  */
 public class RMIUser extends User {
     /**
@@ -36,9 +36,82 @@ public class RMIUser extends User {
         new Thread(new RMIAliveness(this)).start();
     }
 
-    RMIUser(){
+    RMIUser() {
         super();
         new Thread(new RMIAliveness(this)).start();
+    }
+
+    public void setRci(RMIClientInterf rci) {
+        this.rci = rci;
+    }
+
+    public RMIClientInterf getRci() {
+        return rci;
+    }
+
+
+    @Override
+    public void notifyFastHarvest(int baseStr) {
+        try {
+            RMIServer.askClientForFastHarvest(baseStr, this.rci);
+        } catch (RemoteException e) {
+            getLog().log(Level.SEVERE, "[RMI]: Remote error sending bonus harvest action request to client.");
+        }
+    }
+
+    @Override
+    public void notifyFastProduction(int baseStr) {
+        try {
+            RMIServer.askClientForFastProduction(baseStr, this.rci);
+        } catch (RemoteException e) {
+            getLog().log(Level.SEVERE, "[RMI]: Remote error sending bonus production action request to client.");
+        }
+    }
+
+    @Override
+    public void notifyFastTowerMove(HashMap<String, Integer> baseStr, Assets optionalPickDiscount) {
+        try {
+            RMIServer.askClientForFastTowerMove(baseStr,optionalPickDiscount, this.rci);
+        } catch (RemoteException e) {
+            getLog().log(Level.SEVERE, "[RMI]: Remote error sending bonus tower action request to client.");
+        }
+    }
+
+    @JsonIgnore
+    @Override
+    public void askForProductionOptions(ArrayList<ArrayList<Object[]>> options) {
+        try {
+            RMIServer.askClientForProductionOptions(options, this.rci);
+        } catch (RemoteException e) {
+            getLog().log(Level.SEVERE, "[RMI]: Remote error sending production choice request to client.");
+        }
+    }
+
+    @Override
+    public void askForOptionalBpPick() {
+        try {
+            RMIServer.askClientForOptionalBpPick(this.rci);
+        } catch (RemoteException e) {
+            getLog().log(Level.SEVERE, "[RMI]: Remote error sending BP/resources request to client.");
+        }
+    }
+
+    @Override
+    public void askForExcommunication() {
+        try {
+            RMIServer.askClientForExcommunication(this.rci);
+        } catch (RemoteException e) {
+            getLog().log(Level.SEVERE, "[RMI]: Remote error sending board and arrayList of player to client.");
+        }
+    }
+
+    @Override
+    public void askForCouncilFavor(int favorAmount) {
+        try {
+            RMIServer.askClientForFavor(favorAmount, this.rci);
+        } catch (RemoteException e) {
+            getLog().log(Level.SEVERE, "[RMI]: Remote error sending favour to client.");
+        }
     }
 
     @Override
@@ -57,6 +130,11 @@ public class RMIUser extends User {
         } catch (RemoteException e) {
             getLog().log(Level.SEVERE, "[RMI]: Remote error sending game message to client.");
         }
+    }
+
+    @Override
+    public void broadcastMessage(String message) {
+
     }
 
     /**
@@ -81,57 +159,6 @@ public class RMIUser extends User {
         } catch (RemoteException e) {
             getLog().log(Level.SEVERE, "[RMI]: Remote error sending board and arrayList of player to client.");
         }
-    }
-
-    public void askProductionOptions(ArrayList<ArrayList<Assets[]>> options) {
-
-    }
-
-    @Override
-    public void chooseFavor(int favorAmount) {
-        try {
-            RMIServer.askClientForFavor(favorAmount, this.rci);
-        } catch (RemoteException e) {
-            getLog().log(Level.SEVERE, "[RMI]: Remote error sending favour  to client.");
-        }
-    }
-
-    @Override
-    public void broadcastMessage(String message) {
-    }
-
-    @Override
-    public void askForOptionalBpPick() {
-        //RMIServer.askClientForOptionalBpPick(this.rci);
-    }
-
-    @Override
-    public void askForExcommunication() {
-        try {
-            RMIServer.askClientForExcommunication(this.rci);
-        } catch (RemoteException e) {
-            getLog().log(Level.SEVERE, "[RMI]: Remote error sending board and arrayList of player to client.");
-        }
-    }
-
-    @Override
-    public void notifyFastTowerMove(HashMap<String, Integer> baseStr, Assets optionalPickDiscount) {
-
-    }
-
-    @Override
-    public void notifyFastProduction(int baseStr) {
-
-    }
-
-    @Override
-    public void notifyFastHarvest(int baseStr) {
-
-    }
-
-    @Override
-    public void gameError(String message) {
-
     }
 
     private void ping() throws RemoteException {

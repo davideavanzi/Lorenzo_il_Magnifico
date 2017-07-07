@@ -14,12 +14,11 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 import static it.polimi.ingsw.lim.Settings.*;
-import static it.polimi.ingsw.lim.parser.Writer.*;
 import static it.polimi.ingsw.lim.ui.UIController.*;
 import static it.polimi.ingsw.lim.ui.UIController.UIConstant.*;
 
 /**
- * This is the client commandInput line interface
+ * This is the client command line interface.
  */
 public class CLI extends AbsUI {
 
@@ -49,7 +48,34 @@ public class CLI extends AbsUI {
         initializeCommandLine();
     }
 
-    private void askForBpPick() {
+    private void askForFastHarvest() {
+
+    }
+
+    private void askForFastProduction() {
+
+    }
+
+    private void askForFastTowerMove() {
+
+    }
+
+    private void askForProductionOptions() {
+        printGameMessageln("You can activate a production!");
+        for (ArrayList<Object[]> card : uiCallback.getTmpVar().getOptions()) {
+            for (Object[] prod : card) {
+                if (prod instanceof Assets[]) {
+
+                } else {
+
+                }
+            }
+        }
+        uiCallback.sendProductionOption(/*ArrayList<Integer>*/);
+        lock.unlock();
+    }
+
+    private void askForOptionalBpPick() {
         printGameMessageln("You have picked a card that can be payed in two ways, using resources or battle points.\n" +
                 "How do you prefer to pay?\n1) Battle Points\n2) Resources");
         do {
@@ -62,9 +88,9 @@ public class CLI extends AbsUI {
 
     private void askForFavor() {
         ArrayList<Integer> favorChoice = new ArrayList<>();
-        printGameMessage("You can choose between" + uiCallback.getFavorAmount() + "council's favors: ");
+        printGameMessage("You can choose between" + uiCallback.getTmpVar().getFavorAmount() + "council's favors: ");
         printCouncilFavors();
-        for (int count = 0; userInput.hasNext() && count < uiCallback.getFavorAmount(); count++)
+        for (int count = 0; userInput.hasNext() && count < uiCallback.getTmpVar().getFavorAmount(); count++)
             favorChoice.add(userInput.nextInt());
         availableCmdList.remove(CHOOSE_FAVOR);
         uiCallback.sendFavorChoice(favorChoice);
@@ -72,7 +98,7 @@ public class CLI extends AbsUI {
     }
 
     private void askForExcommunication() {
-        printGameMessageln("Do you want to suffer of the excommunication?");
+        printGameMessageln("Do you want to suffer the excommunication?");
         printMessageln("1) yes\n2) no");
         do {
             inputNum = userInput.nextInt();
@@ -104,7 +130,7 @@ public class CLI extends AbsUI {
         int count = 1;
         printGameMessageln("Where would you like to put it?");
 
-        //Two players
+        //Two/Three players
         if (uiCallback.getLocalPlayers().size() < 3) {
             for (String pos : board4Player)
                 printMessageln(count + ") " + pos);
@@ -123,30 +149,6 @@ public class CLI extends AbsUI {
                 do {
                     inputNum = userInput.nextInt();
                 } while (inputNum-1 >= 0 && inputNum-1 < 2);
-                destination.add(inputNum.toString());
-            }
-            return destination;
-        }
-
-        //Three players
-        if (uiCallback.getLocalPlayers().size() < 4) {
-            for (String pos : board4Player)
-                printMessageln(count + ") " + pos);
-            do {
-                inputNum = userInput.nextInt();
-            } while (inputNum-1 >= 0 && inputNum-1 < 8);
-            destination.add(board4Player[inputNum]);
-            if (inputNum-1 >= 0 && inputNum-1 < 4) { //If tower, select the floor
-                printGameMessage("Please select the floor: (1/2/3/4) ");
-                do {
-                    inputNum = userInput.nextInt();
-                } while (inputNum-1 >= 0 && inputNum-1 < 4);
-                destination.add(inputNum.toString());
-            } else if (inputNum == 8) { //If market, select the slot
-                printGameMessage("Please select the market slot: (1/2/3) ");
-                do {
-                    inputNum = userInput.nextInt();
-                } while (inputNum-1 >= 0 && inputNum-1 < 3);
                 destination.add(inputNum.toString());
             }
             return destination;
@@ -295,22 +297,33 @@ public class CLI extends AbsUI {
         }
     }
 
+    /**
+     * Populate the Available Command HashMap.
+     */
     private void initializeAvailableCmdList() {
         availableCmdList.put(CHAT, () -> chat());
         availableCmdList.put(TURN, () -> turnOrder());
         availableCmdList.put(INFO, () -> showPersonalInfo());
     }
 
+    /**
+     * Populate the Command HashMap.
+     */
     private void initializeCmdList() {
         cmdList.put(FAMILY_MEMBER, () -> placeFamilyMember());
         //cmdList.put(LEADER_CARD, () -> );
         cmdList.put(EXCOMMUNICATION, () -> askForExcommunication());
         cmdList.put(CHOOSE_FAVOR, () -> askForFavor());
-        cmdList.put(OPTIONAL_BP_PICK, () -> askForBpPick());
-        //cmdList.put(CHOOSE_PRODUCTION, () -> );
-        //cmdList.put(CHOOSE_HARVEST, () -> );
+        cmdList.put(OPTIONAL_BP_PICK, () -> askForOptionalBpPick());
+        cmdList.put(CHOOSE_PRODUCTION, () -> askForProductionOptions());
+        cmdList.put(SERVANTS_PRODUCTION, () -> askForFastProduction());
+        cmdList.put(SERVANTS_HARVEST, () -> askForFastHarvest());
+        cmdList.put(PICK_FROM_TOWER, () -> askForFastTowerMove());
     }
 
+    /**
+     * Populate the Description HashMap.
+     */
     private void initializeCmdDescr() {
         cmdDescr.put(CHAT, CHAT_DESCR);
         cmdDescr.put(TURN, TURN_DESCR);
@@ -321,15 +334,18 @@ public class CLI extends AbsUI {
         cmdDescr.put(CHOOSE_FAVOR, CHOOSE_FAVOR_DESCR);
         cmdDescr.put(OPTIONAL_BP_PICK, OPTIONAL_BP_PICK_DESCR);
         cmdDescr.put(CHOOSE_PRODUCTION, CHOOSE_PRODUCTION_DESCR);
+        cmdDescr.put(SERVANTS_PRODUCTION, SERVANTS_PRODUCTION_DESCR);
+        cmdDescr.put(SERVANTS_HARVEST, SERVANTS_HARVEST_DESCR);
+        cmdDescr.put(PICK_FROM_TOWER, PICK_FROM_TOWER_DESCR);
     }
 
     private void initializeCommandLine() {
         cmdDescr = new HashMap<>();
         availableCmdList = new HashMap<>();
         cmdList = new HashMap<>();
-        initializeCmdDescr();           //Populate Description HashMap
-        initializeCmdList();            //Populate Command HashMap
-        initializeAvailableCmdList();   //Populate Available Command HashMap
+        initializeCmdDescr();
+        initializeCmdList();
+        initializeAvailableCmdList();
         if(uiCallback.getIsMyTurn()) {
             commandAdder(FAMILY_MEMBER);
             commandAdder(LEADER_CARD);
@@ -359,7 +375,7 @@ public class CLI extends AbsUI {
     }
 
     /**
-     * Choose the connection protocol and connect to the server
+     * Choose the connection protocol and connect to the server.
      */
     @Override
     public String setNetworkSettings() {

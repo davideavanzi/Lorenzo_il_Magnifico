@@ -14,7 +14,7 @@ import static it.polimi.ingsw.lim.Settings.*;
  */
 public class Tower implements Serializable {
 
-    public Tower(){
+    Tower(){
         this.floors = new Floor[TOWER_HEIGHT];
     }
 
@@ -27,7 +27,7 @@ public class Tower implements Serializable {
      * Default constructor
      * TODO: can I do better?
      */
-    public Tower(Assets[] slotsBonuses) {
+    Tower(Assets[] slotsBonuses) {
         //Creating floors
         this.floors = new Floor[TOWER_HEIGHT];
         //Adding bonuses to each floor, ordered
@@ -56,7 +56,7 @@ public class Tower implements Serializable {
      * Setter that picks an arraylist of cards and puts them in the tower's card slots
      * uses a lambda expression
      */
-    public void addCards(ArrayList<Card> cards){
+    void addCards(ArrayList<Card> cards){
         Arrays.stream(floors).forEach(floor -> floor.setCardSlot(cards.remove(0)));
     }
 

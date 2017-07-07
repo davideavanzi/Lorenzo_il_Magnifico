@@ -1,13 +1,10 @@
 package it.polimi.ingsw.lim.controller;
 
 
-import it.polimi.ingsw.lim.Log;
-import it.polimi.ingsw.lim.exceptions.ControllerException;
 import it.polimi.ingsw.lim.model.*;
 import it.polimi.ingsw.lim.model.immediateEffects.*;
 
 import java.util.HashMap;
-import java.util.logging.Level;
 
 /**
  * Created by ava on 15/06/17.
@@ -61,7 +58,7 @@ public class EffectHandler {
     private static void activateCouncilFavorsEffect(CouncilFavorsEffect effect, User recipient) {
         recipient.gameMessage("You're about to activate "+effect.getAmount()+" council favors provided to you " +
                 "by the card you picked.");
-        recipient.chooseFavor(effect.getAmount());
+        recipient.askForCouncilFavor(effect.getAmount());
     }
 
     public static void activateImmediateEffect(ImmediateEffect iEffect, User recipient, Game game) {

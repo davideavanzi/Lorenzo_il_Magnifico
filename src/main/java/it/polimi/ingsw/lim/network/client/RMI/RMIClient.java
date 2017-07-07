@@ -1,11 +1,11 @@
 package it.polimi.ingsw.lim.network.client.RMI;
 
 import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
+import it.polimi.ingsw.lim.model.Assets;
 import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.Player;
 import it.polimi.ingsw.lim.network.client.ServerInterface;
 import it.polimi.ingsw.lim.network.server.RMI.RMIServerInterf;
-import it.polimi.ingsw.lim.ui.CLI;
 import it.polimi.ingsw.lim.ui.UIController;
 
 import java.net.MalformedURLException;
@@ -15,6 +15,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static it.polimi.ingsw.lim.network.CommunicationConstants.*;
 
@@ -66,13 +67,52 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
     }
 
     @Override
-    public void isUserPlaying(Boolean state) throws RemoteException {
-        uiCallback.setIsMyTurn(state);
+    public void commandValidator(String command, String message, boolean outcome) throws RemoteException {
+        uiCallback.getClientUI().commandManager(command, message, outcome);
     }
 
     @Override
-    public void commandValidator(String command, String message, boolean outcome) throws RemoteException {
-        uiCallback.getClientUI().commandManager(command, message, outcome);
+    public void fastHarvest(/*devo passare quello che voglio tornare al server dalla CLI*/) throws ClientNetworkException {
+
+    }
+
+    @Override
+    public void askPlayerForFastHarvest(int basestr) throws RemoteException {
+        uiCallback.getClientUI().commandAdder(SERVANTS_HARVEST);
+    }
+
+    @Override
+    public void fastProduction(/*devo passare quello che voglio tornare al server dalla CLI*/) throws ClientNetworkException {
+
+    }
+
+    @Override
+    public void askPlayerForFastProduction(int baseStr) throws RemoteException {
+        uiCallback.getClientUI().commandAdder(SERVANTS_PRODUCTION);
+    }
+
+    @Override
+    public void fastTowerMove(/*devo passare quello che voglio tornare al server dalla CLI*/) throws ClientNetworkException {
+
+    }
+
+    @Override
+    public void askPlayerForFastTowerMove(HashMap<String, Integer> baseStr, Assets optionalPickDiscount) throws RemoteException {
+        uiCallback.getClientUI().commandAdder(PICK_FROM_TOWER);
+    }
+
+    @Override
+    public void productionOption(ArrayList<Integer> prodChoice, String username) throws ClientNetworkException {
+        try {
+            rmiServer.productionOption(prodChoice, username, this);
+        } catch (RemoteException e) {
+            throw new ClientNetworkException("[RMI]: Could not send battle point payment request to server", e);
+        }
+    }
+
+    @Override
+    public void askPlayerProductionOptions(ArrayList<ArrayList<Object[]>> options) throws RemoteException {
+        uiCallback.getClientUI().commandAdder(CHOOSE_PRODUCTION);
     }
 
     @Override
@@ -101,7 +141,7 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
     @Override
     public void askPlayerForFavor(int favorAmount) throws RemoteException {
         uiCallback.getClientUI().commandAdder(CHOOSE_FAVOR);
-        uiCallback.setFavorAmount(favorAmount);
+        uiCallback.getTmpVar().setFavorAmount(favorAmount);
     }
 
     @Override
@@ -168,6 +208,11 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
     @Override
     public void receiveGameMessageFromServer(String message) throws RemoteException {
         uiCallback.getClientUI().printGameMessage(message);
+    }
+
+    @Override
+    public void isUserPlaying(Boolean state) throws RemoteException {
+        uiCallback.setIsMyTurn(state);
     }
 
     @Override

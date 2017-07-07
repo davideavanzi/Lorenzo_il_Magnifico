@@ -4,9 +4,7 @@ import it.polimi.ingsw.lim.ui.UIController;
 
 import static it.polimi.ingsw.lim.ui.UIController.setUI;
 
-/**
- * Created by nico.
- */
+
 public class MainClient {
 
     /**

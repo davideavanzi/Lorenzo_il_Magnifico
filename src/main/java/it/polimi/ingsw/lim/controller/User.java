@@ -140,7 +140,7 @@ public abstract class User implements Serializable{
      * Assets objects: the first is the cost, the second is the result.
      * @param options production options the player can choose from.
      */
-    public abstract void askProductionOptions(ArrayList<ArrayList<Assets[]>> options);
+    public abstract void askForProductionOptions(ArrayList<ArrayList<Object[]>> options);
 
     /**
      * This method is called when a player can pick a purple card both paying normal cost and
@@ -156,7 +156,7 @@ public abstract class User implements Serializable{
     /**
      * Ask the user which one of the possible favors wants to receive.
      */
-    public abstract void chooseFavor(int favorAmount);
+    public abstract void askForCouncilFavor(int favorAmount);
     
     /**
      * Send chat message to client.

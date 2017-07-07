@@ -5,6 +5,7 @@ import it.polimi.ingsw.lim.controller.GameController;
 import it.polimi.ingsw.lim.controller.User;
 import it.polimi.ingsw.lim.exceptions.BadRequestException;
 import it.polimi.ingsw.lim.exceptions.LoginFailedException;
+import it.polimi.ingsw.lim.model.Assets;
 import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.FamilyMember;
 import it.polimi.ingsw.lim.model.Player;
@@ -18,6 +19,7 @@ import java.rmi.registry.*;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 
 import static it.polimi.ingsw.lim.network.CommunicationConstants.*;
@@ -35,14 +37,70 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
     public RMIServer() throws RemoteException {}
 
     @Override
+    public void fastHarvest() throws RemoteException {
+        try {
+            //TODO metodo sul GC
+            rmiClient.commandValidator(SERVANTS_HARVEST, SERVANTS_HARVEST_OK , true);
+        } catch (BadRequestException e) {
+            rmiClient.commandValidator(SERVANTS_HARVEST, e.getMessage() , false);
+        }
+    }
+
+    static void askClientForFastHarvest(int baseStr, RMIClientInterf rmiClient) throws RemoteException {
+        rmiClient.askPlayerForFastHarvest(baseStr);
+    }
+
+    @Override
+    public void fastProduction(/*passare param*/) throws RemoteException {
+        try {
+            //TODO metodo sul GC
+            rmiClient.commandValidator(SERVANTS_PRODUCTION, SERVANTS_PRODUCTION_OK , true);
+        } catch (BadRequestException e) {
+            rmiClient.commandValidator(SERVANTS_PRODUCTION, e.getMessage() , false);
+        }
+    }
+
+    static void askClientForFastProduction(int baseStr, RMIClientInterf rmiClient) throws RemoteException {
+        rmiClient.askPlayerForFastProduction(baseStr);
+    }
+
+    @Override
+    public void fastTowerMove(/*PARAMETRRIRIIR*/) throws RemoteException {
+        try {
+            //TODO metodo sul GC
+            rmiClient.commandValidator(PICK_FROM_TOWER_OK, PICK_FROM_TOWER_OK, true);
+        } catch (BadRequestException e) {
+            rmiClient.commandValidator(PICK_FROM_TOWER, e.getMessage(), false);
+        }
+    }
+
+    static void askClientForFastTowerMove(HashMap<String, Integer> baseStr, Assets optionalPickDiscount, RMIClientInterf rmiClient) throws RemoteException {
+        rmiClient.askPlayerForFastTowerMove(baseStr, optionalPickDiscount);
+    }
+
+    @Override
+    public void productionOption(/*MANCANO PARAMETRI da cli a server*/) throws RemoteException {
+        try {
+            //TODO metodo sul GC a
+            rmiClient.commandValidator(CHOOSE_PRODUCTION, CHOOSE_PRODUCTION_OK, true);
+        } catch (BadRequestException e) {
+            rmiClient.commandValidator(CHOOSE_PRODUCTION, e.getMessage(), false);
+        }
+    }
+
+    static void askClientForProductionOptions(ArrayList<ArrayList<Object[]>> options, RMIClientInterf rmiClient) throws RemoteException {
+        rmiClient.askPlayerProductionOptions(options);
+    }
+
+    @Override
     public void optionalBpPick(boolean bpPayment, String username, RMIClientInterf rmiClient) throws RemoteException {
         GameController gc = MainServer.getUserFromUsername(username).getRoom().getGameController();
-        /*try {
-            TODO metodo sul GC a cui passo bpPayment
-            rmiClient.commandValidator(OPTIONAL_BP_PICK, OPTIONAL_BP_PICK_OK , true);
+        try {
+            //TODO metodo sul GC a cui passo bpPayment
+            rmiClient.commandValidator(OPTIONAL_BP_PICK, OPTIONAL_BP_PICK_OK, true);
         } catch (BadRequestException e) {
-            rmiClient.commandValidator(OPTIONAL_BP_PICK, e.getMessage() , false);
-        }*/
+            rmiClient.commandValidator(OPTIONAL_BP_PICK, e.getMessage(), false);
+        }
     }
 
     static void askClientForOptionalBpPick(RMIClientInterf rmiClient) throws RemoteException {
@@ -54,9 +112,9 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
         GameController gc = MainServer.getUserFromUsername(username).getRoom().getGameController();
         try {
             gc.performCfActivation(favorChoice);
-            rmiClient.commandValidator(CHOOSE_FAVOR, CHOOSE_FAVOR_OK , true);
+            rmiClient.commandValidator(CHOOSE_FAVOR, CHOOSE_FAVOR_OK, true);
         } catch (BadRequestException e) {
-            rmiClient.commandValidator(CHOOSE_FAVOR, e.getMessage() , false);
+            rmiClient.commandValidator(CHOOSE_FAVOR, e.getMessage(), false);
         }
 
     }
@@ -67,12 +125,14 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
 
     @Override
     public void excommunicationChoice(boolean choice, String username, RMIClientInterf rmiClient) throws RemoteException {
-        /*try {
-            TODO metodo su gameController a cui passo choice
-            rmiClient.commandValidator(EXCOMMUNICATION, EXCOMMUNICATION_OK , true);
+        GameController gc = MainServer.getUserFromUsername(username).getRoom().getGameController();
+        try {
+            gc.getRoomCallback().getExcommunicationRound()
+                    .applyExcommAnswer();
+            rmiClient.commandValidator(EXCOMMUNICATION, EXCOMMUNICATION_OK, true);
         } catch (BadRequestException e) {
-            rmiClient.commandValidator(EXCOMMUNICATION, e.getMessage() , false);
-        }*/
+            rmiClient.commandValidator(EXCOMMUNICATION, e.getMessage(), false);
+        }*
     }
 
     static void askClientForExcommunication(RMIClientInterf rmiClient) throws RemoteException {
@@ -85,9 +145,9 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
         FamilyMember fm = MainServer.getUserFromUsername(username).getPlayer().getFamilyMember(fmColor);
         try {
             gc.moveInCouncil(fm, servants);
-            rmiClient.commandValidator(FAMILY_MEMBER, FAMILY_MEMBER_OK , true);
+            rmiClient.commandValidator(FAMILY_MEMBER, FAMILY_MEMBER_OK, true);
         } catch (BadRequestException e) {
-            rmiClient.commandValidator(FAMILY_MEMBER, e.getMessage() , false);
+            rmiClient.commandValidator(FAMILY_MEMBER, e.getMessage(), false);
         }
     }
 
@@ -97,9 +157,9 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
         FamilyMember fm = MainServer.getUserFromUsername(username).getPlayer().getFamilyMember(fmColor);
         try {
             gc.moveInHarvest(fm, servants);
-            rmiClient.commandValidator(FAMILY_MEMBER, FAMILY_MEMBER_OK , true);
+            rmiClient.commandValidator(FAMILY_MEMBER, FAMILY_MEMBER_OK, true);
         } catch (BadRequestException e) {
-            rmiClient.commandValidator(FAMILY_MEMBER, e.getMessage() , false);
+            rmiClient.commandValidator(FAMILY_MEMBER, e.getMessage(), false);
         }
     }
 
@@ -109,9 +169,9 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
         FamilyMember fm = MainServer.getUserFromUsername(username).getPlayer().getFamilyMember(fmColor);
         try {
             gc.moveInProduction(fm, servants);
-            rmiClient.commandValidator(FAMILY_MEMBER, FAMILY_MEMBER_OK , true);
+            rmiClient.commandValidator(FAMILY_MEMBER, FAMILY_MEMBER_OK, true);
         } catch (BadRequestException e) {
-            rmiClient.commandValidator(FAMILY_MEMBER, e.getMessage() , false);
+            rmiClient.commandValidator(FAMILY_MEMBER, e.getMessage(), false);
         }
     }
 
@@ -121,9 +181,9 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
         FamilyMember fm = MainServer.getUserFromUsername(username).getPlayer().getFamilyMember(fmColor);
         try {
             gc.moveInMarket(fm, marketSlot, servants);
-            rmiClient.commandValidator(FAMILY_MEMBER, FAMILY_MEMBER_OK , true);
+            rmiClient.commandValidator(FAMILY_MEMBER, FAMILY_MEMBER_OK, true);
         } catch (BadRequestException e) {
-            rmiClient.commandValidator(FAMILY_MEMBER, e.getMessage() , false);
+            rmiClient.commandValidator(FAMILY_MEMBER, e.getMessage(), false);
         }
     }
 
@@ -133,9 +193,9 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
         FamilyMember fm = MainServer.getUserFromUsername(username).getPlayer().getFamilyMember(fmColor);
         try {
             gc.moveInTower(fm, twrColor, floor, servants);
-            rmiClient.commandValidator(FAMILY_MEMBER, FAMILY_MEMBER_OK , true);
+            rmiClient.commandValidator(FAMILY_MEMBER, FAMILY_MEMBER_OK, true);
         } catch (BadRequestException e) {
-            rmiClient.commandValidator(FAMILY_MEMBER, e.getMessage() , false);
+            rmiClient.commandValidator(FAMILY_MEMBER, e.getMessage(), false);
         }
     }
 
@@ -192,7 +252,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
                     Log.getLog().log(Level.INFO, "[LOGIN]: Success login. Welcome back ".concat(username));
                 } else {
                     Log.getLog().log(Level.SEVERE, "[LOGIN]: Bad password or username ".concat(username).concat("already selected?"));
-                    return;
+                    throw new LoginFailedException("[LOGIN]: Bad password or username ".concat(username).concat(" already selected?"));
                 }
             } else {
                 MainServer.getJDBC().insertRecord(username, password);
@@ -201,8 +261,8 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
                 Log.getLog().log(Level.INFO, "[LOGIN]: Success login");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             Log.getLog().log(Level.SEVERE, "[SQL]: Login failed");
+            throw new LoginFailedException("[SQL]: Login failed");
         }
     }
 

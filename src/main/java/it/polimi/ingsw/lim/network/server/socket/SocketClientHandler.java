@@ -6,7 +6,6 @@ import it.polimi.ingsw.lim.exceptions.LoginFailedException;
 import it.polimi.ingsw.lim.model.Assets;
 import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.Player;
-import it.polimi.ingsw.lim.model.cards.PurpleCard;
 import it.polimi.ingsw.lim.network.server.MainServer;
 
 import static it.polimi.ingsw.lim.Log.*;
@@ -18,6 +17,7 @@ import java.net.Socket;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.logging.Level;
 
 /**
@@ -39,7 +39,7 @@ public class SocketClientHandler implements Runnable {
     /**
      * Show if the client is logged.
      */
-    private boolean isClientLogged = false;
+    private boolean isClientLogged = true;
 
     /**
      * Input and output stream for the client-server communication.
@@ -67,19 +67,37 @@ public class SocketClientHandler implements Runnable {
     public User getUser() { return user; }
 
     void commandValidator(String command, String message, boolean outcome) {
-        sendObjectToClient(CMD_VALIDATOR + SPLITTER + command + SPLITTER + message + SPLITTER + outcome);
+        sendObjectToClient(new String[] {CMD_VALIDATOR, command, message, String.valueOf(outcome)});
+    }
+
+    void askClientForFastHarvest(int baseStr) {
+        sendObjectToClient(new String[] {SERVANTS_HARVEST, String.valueOf(baseStr)});
+    }
+
+    void askClientForFastProduction(int baseStr) {
+        sendObjectToClient(new String[] {SERVANTS_PRODUCTION, String.valueOf(baseStr)});
+    }
+
+    void askClientForFastTowerMove(HashMap<String, Integer> baseStr, Assets optionalPickDiscount) {
+        //TODO capire come passare baseStr e optional
+        sendObjectToClient(PICK_FROM_TOWER + SPLITTER + baseStr + SPLITTER + optionalPickDiscount);
+    }
+
+    void askClientForProductionOption(ArrayList<ArrayList<Object[]>> options) {
+        sendObjectToClient(new String[] {CHOOSE_PRODUCTION, //TODO capire come passare options
+                });
     }
 
     void askClientForOptionalBpPick() {
-        sendObjectToClient(OPTIONAL_BP_PICK);
+        sendObjectToClient(new String[] {OPTIONAL_BP_PICK});
     }
 
     void askClientForFavor(int favorAmount) {
-        sendObjectToClient(CHOOSE_FAVOR + SPLITTER + favorAmount);
+        sendObjectToClient(new String[] {CHOOSE_FAVOR, String.valueOf(favorAmount)});
     }
 
     void askClientForExcommunication() {
-        sendObjectToClient(EXCOMMUNICATION);
+        sendObjectToClient(new String[] {EXCOMMUNICATION});
     }
 
     /**
@@ -88,11 +106,11 @@ public class SocketClientHandler implements Runnable {
      * @param message
      */
     void chatMessageToClient(String sender, String message) {
-        sendObjectToClient(CHAT + SPLITTER + sender + SPLITTER + message);
+        sendObjectToClient(new String[] {CHAT, sender ,message});
     }
 
     void gameMessageToClient(String message) {
-        sendObjectToClient(GAME_MSG + SPLITTER + message);
+        sendObjectToClient(new String[] {GAME_MSG, message});
     }
 
     /**
@@ -106,7 +124,7 @@ public class SocketClientHandler implements Runnable {
     }
 
     void sendIfUserPlaying(boolean isPlaying) {
-        sendObjectToClient(TURN + SPLITTER + isPlaying);
+        sendObjectToClient(new String[] {TURN, String.valueOf(isPlaying)});
     }
 
     /**
@@ -131,8 +149,8 @@ public class SocketClientHandler implements Runnable {
                     addUserToRoom(new SocketUser(username, handlerCallback));
                     Log.getLog().log(Level.INFO, "[LOGIN]: Login successful. Welcome back ".concat(username));
                 } else {
-                    Log.getLog().log(Level.SEVERE, "[LOGIN]: Bad password or username ".concat(username).concat("already selected?"));
-                    return;
+                    Log.getLog().log(Level.SEVERE, "[LOGIN]: Bad password or username ".concat(username).concat(" already selected?"));
+                    throw new LoginFailedException("[LOGIN]: Bad password or username ".concat(username).concat(" already selected?"));
                 }
             } else {
                 MainServer.getJDBC().insertRecord(username, password);
@@ -142,7 +160,7 @@ public class SocketClientHandler implements Runnable {
             }
         } catch (SQLException e) {
             Log.getLog().log(Level.SEVERE, "[SQL]: Login failed");
-            return;
+            throw new LoginFailedException("[SQL]: Login failed");
         }
     }
 
@@ -173,9 +191,9 @@ public class SocketClientHandler implements Runnable {
             sendObjectToClient(LOGIN_REQUEST);
             try {
                 Object loginInfo = objToServer.readObject();
-                ArrayList<String> command = new ArrayList<>(Arrays.asList(((String) loginInfo).split(SPLITTER_REGEX)));
-                if (command.get(0).equals(LOGIN)) {
-                    login(command.get(1), command.get(2), this);
+                Object[] command = (Object[])loginInfo;
+                if (command[0].equals(LOGIN)) {
+                    login((String)command[1], (String)command[2], this);
                     sendObjectToClient(LOGIN_SUCCESSFUL);
                     return isClientLogged = true;
                 }
@@ -187,7 +205,7 @@ public class SocketClientHandler implements Runnable {
                     return isClientLogged = false;
                 }
             } catch (LoginFailedException e) {
-                sendObjectToClient(LOGIN_FAILED + SPLITTER + e.getMessage());
+                sendObjectToClient(new String[] {LOGIN_FAILED, e.getMessage()});
             }
         }
     }

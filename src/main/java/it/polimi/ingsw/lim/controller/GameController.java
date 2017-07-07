@@ -279,7 +279,7 @@ public class GameController {
                 //don't ask user, complete directly production skipping excomm malus (already given)
                 actor.getPlayer().setResources(actor.getPlayer().getResources().add(currentProductionAccumulator));
             } else {
-                actor.askProductionOptions(currentProductionOptions);
+                actor.askForProductionOptions(currentProductionOptions);
             }
         }
         //TODO : EXC
@@ -421,7 +421,7 @@ public class GameController {
             //don't ask user, complete directly production skipping excomm malus
             actor.getPlayer().setResources(actor.getPlayer().getResources().add(currentProductionAccumulator));
         } else {
-            actor.askProductionOptions(currentProductionOptions);
+            actor.askForProductionOptions(currentProductionOptions);
         }
     }
 
@@ -446,7 +446,7 @@ public class GameController {
         }
         if (!this.game.isFastTowerMoveAllowed(towerColor, floor,actor.getPlayer(), optPickDiscount) ||
                 !fastActor.getUsername().equals(actor.getUsername())) {
-            actor.gameError("Fast action not valid");
+            //actor.gameError("Fast action not valid");
             return;
         }
         Card card = this.game.getTower(towerColor).getFloor(floor).getCardSlot();
@@ -476,7 +476,7 @@ public class GameController {
 
     //TODO:USELESS?
     public void giveCouncilFavors(int amount) {
-        roomCallback.getPlayingUser().chooseFavor(amount);
+        roomCallback.getPlayingUser().askForCouncilFavor(amount);
     }
 
     public void performCfActivation(ArrayList<Integer> choices) throws BadRequestException {

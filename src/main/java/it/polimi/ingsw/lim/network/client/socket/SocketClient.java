@@ -8,11 +8,8 @@ import it.polimi.ingsw.lim.ui.UIController;
 
 import java.io.*;
 import java.net.Socket;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.logging.Level;
 
-import static it.polimi.ingsw.lim.Log.getLog;
 import static it.polimi.ingsw.lim.network.CommunicationConstants.*;
 
 /**
@@ -82,9 +79,33 @@ public class SocketClient implements Runnable, ServerInterface {
     private int getPort() {return port;}
 
     @Override
+    public void fastHarvest(/*devo passare quello che voglio tornare al server dalla CLI*/) throws ClientNetworkException {
+
+    }
+
+    @Override
+    public void fastProduction(/*devo passare quello che voglio tornare al server dalla CLI*/) throws ClientNetworkException {
+
+    }
+
+    @Override
+    public void fastTowerMove(/*devo passare quello che voglio tornare al server dalla CLI*/) throws ClientNetworkException {
+
+    }
+
+    @Override
+    public void productionOption(ArrayList<Integer> prodChoice, String username) throws ClientNetworkException {
+        try {
+            sendObjToServer(createSocketPacket(CHOOSE_PRODUCTION, prodChoice));
+        } catch (IOException e) {
+            throw new ClientNetworkException("[SOCKET]: Could not send battle point payment request to server", e);
+        }
+    }
+
+    @Override
     public void optionalBpPick(boolean bpPayment, String username) throws ClientNetworkException {
         try {
-            sendObjToServer(OPTIONAL_BP_PICK + SPLITTER + bpPayment);
+            sendObjToServer(new String[] {OPTIONAL_BP_PICK, String.valueOf(bpPayment)});
         } catch (IOException e) {
             throw new ClientNetworkException("[SOCKET]: Could not send battle point payment request to server", e);
         }
@@ -93,7 +114,7 @@ public class SocketClient implements Runnable, ServerInterface {
     @Override
     public void favorChoice(ArrayList<Integer> favorChoice, String username) throws ClientNetworkException {
         try {
-            sendObjToServer(CHOOSE_FAVOR + SPLITTER + favorChoice);
+            sendObjToServer(createSocketPacket(CHOOSE_FAVOR, favorChoice));
         } catch (IOException e) {
             throw new ClientNetworkException("[SOCKET]: Could not send council's favor's choice to server", e);
         }
@@ -102,7 +123,7 @@ public class SocketClient implements Runnable, ServerInterface {
     @Override
     public void excommunicationChoice(boolean choice, String username) throws ClientNetworkException {
         try {
-            sendObjToServer(EXCOMMUNICATION + SPLITTER + choice);
+            sendObjToServer(new String[] {EXCOMMUNICATION, String.valueOf(choice)});
         } catch (IOException e) {
             throw new ClientNetworkException("[SOCKET]: Could not send excommunication's choice to server", e);
         }
@@ -112,9 +133,9 @@ public class SocketClient implements Runnable, ServerInterface {
     public void placeFM(String color, ArrayList<String> destination, String servants, String username) throws ClientNetworkException {
         try {
             if (destination.get(1) == null)
-                sendObjToServer(FAMILY_MEMBER + SPLITTER + color + SPLITTER + destination.get(0) + SPLITTER + servants);
+                sendObjToServer(new String[] {FAMILY_MEMBER, color, destination.get(0), servants});
             else
-                sendObjToServer(FAMILY_MEMBER + SPLITTER + color + SPLITTER + destination.get(0) + SPLITTER + destination.get(1) + SPLITTER + servants);
+                sendObjToServer(new String[] {FAMILY_MEMBER, color, destination.get(0), destination.get(1), servants});
         } catch (IOException e) {
             throw new ClientNetworkException("[SOCKET]: Could not contact the server to place family member", e);
         }
@@ -128,7 +149,7 @@ public class SocketClient implements Runnable, ServerInterface {
     @Override
     public void sendChatMessageToServer(String sender, String message) throws ClientNetworkException {
         try {
-            sendObjToServer(CHAT + SPLITTER + sender + SPLITTER + message);
+            sendObjToServer(new String[] {CHAT, sender, message});
         } catch (IOException e) {
             throw new ClientNetworkException("[SOCKET]: Could not send chat message to server", e);
         }
@@ -141,10 +162,26 @@ public class SocketClient implements Runnable, ServerInterface {
      */
     public void login(String username, String password) throws ClientNetworkException {
         try {
-            sendObjToServer(LOGIN + SPLITTER + username + SPLITTER + password);
+            sendObjToServer(new String[] {LOGIN, username, password});
         } catch (IOException e) {
             throw new ClientNetworkException("[SOCKET]: Could not send login information to server", e);
         }
+    }
+
+    /**
+     * This method is used for create a packet that will be sent to the server with socket.
+     * @param selection input arrayList
+     * @return the packet
+     */
+    private String[] createSocketPacket(String command, ArrayList<Integer> selection) {
+        String[] pkg = new String[selection.size()];
+        int count = 1;
+        pkg[0] = command;
+        for (Integer favor : selection) {
+            pkg[count] = String.valueOf(favor);
+            count++;
+        }
+        return pkg;
     }
 
     /**

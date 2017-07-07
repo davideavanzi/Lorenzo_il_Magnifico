@@ -38,22 +38,22 @@ public class SocketUser extends User {
 
     @Override
     public void notifyFastHarvest(int baseStr) {
-
+        this.sch.askClientForFastHarvest(baseStr);
     }
 
     @Override
     public void notifyFastProduction(int baseStr) {
-
+        this.sch.askClientForFastProduction(baseStr);
     }
 
     @Override
     public void notifyFastTowerMove(HashMap<String, Integer> baseStr, Assets optionalPickDiscount) {
-
+        this.sch.askClientForFastTowerMove(baseStr, optionalPickDiscount);
     }
 
     @Override
-    public void askProductionOptions(ArrayList<ArrayList<Assets[]>> options) {
-
+    public void askForProductionOptions(ArrayList<ArrayList<Object[]>> options) {
+        this.sch.askClientForProductionOption(options);
     }
 
     @Override
@@ -67,7 +67,7 @@ public class SocketUser extends User {
     }
 
     @Override
-    public void chooseFavor(int favorAmount) {
+    public void askForCouncilFavor(int favorAmount) {
         this.sch.askClientForFavor(favorAmount);
     }
 
@@ -105,12 +105,5 @@ public class SocketUser extends User {
     public void isPlayerTurn(boolean isPlaying) {
         this.sch.sendIfUserPlaying(isPlaying);
     }
-
-    @Override
-    public void gameError(String message) {
-
-    }
-
-
 }
 

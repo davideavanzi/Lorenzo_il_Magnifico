@@ -1,11 +1,13 @@
 package it.polimi.ingsw.lim.network.client.RMI;
 
+import it.polimi.ingsw.lim.model.Assets;
 import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.Player;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Nico.
@@ -15,6 +17,14 @@ public interface RMIClientInterf extends Remote {
     void updateClientGame(Board board, ArrayList<Player> players) throws RemoteException;
 
     void commandValidator(String command, String message, boolean outcome) throws RemoteException;
+
+    void askPlayerForFastHarvest(int basestr) throws RemoteException;
+
+    void askPlayerForFastProduction(int baseStr) throws RemoteException;
+
+    void askPlayerForFastTowerMove(HashMap<String, Integer> baseStr, Assets optionalPickDiscount) throws RemoteException;
+
+    void askPlayerProductionOptions(ArrayList<ArrayList<Object[]>> options) throws RemoteException;
 
     void askPlayerForBpPick() throws RemoteException;
 
