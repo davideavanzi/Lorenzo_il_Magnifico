@@ -3,6 +3,7 @@ package it.polimi.ingsw.lim.controller;
 import it.polimi.ingsw.lim.Lock;
 import it.polimi.ingsw.lim.Log;
 import it.polimi.ingsw.lim.model.Player;
+import it.polimi.ingsw.lim.parser.Parser;
 import it.polimi.ingsw.lim.parser.Writer;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
@@ -36,6 +37,8 @@ public class Room implements Serializable{
     private int id;
     @JsonIgnore
     private transient ExcommunicationRound excommunicationRound;
+    private int timerPlayMove;
+    private int timerStartingGame;
 
     public Room(User user, int id) {
         usersList = new ArrayList<>();
@@ -45,6 +48,8 @@ public class Room implements Serializable{
         excommLock = new Lock();
         getLog().log(Level.INFO, () -> "Room created, adding "+ user.getUsername() +" to room");
         this.id = id;
+        timerPlayMove = Parser.parseTimerPlayMove(//todo path to directory);
+        timerStartingGame = Parser.parseTimerStartGame(//todo path to directory);
     }
 
     public boolean getRoomOpen() {
@@ -105,7 +110,7 @@ public class Room implements Serializable{
                 usersList.add(user);
             }
         }
-        new TimerEnd(20, this); //todo timer solo se ci sono tutti o solo 2
+        new TimerEnd(timerStartingGame, this); //todo timer solo se ci sono tutti o solo 2
     }
 
     public void setId(int id){this.id = id;}
@@ -132,7 +137,7 @@ public class Room implements Serializable{
             getLog().log(Level.INFO, () -> "The room is now full");
         }
         if(this.usersList.size() == 2){
-            new TimerEnd(20, this);//todo make configurable time
+            new TimerEnd(timerStartingGame, this);//todo make configurable time
         }
     }
 
@@ -176,7 +181,7 @@ public class Room implements Serializable{
         Log.getLog().info("player ".concat(round.getUserName()).concat(" ending round"));
         for (int i = 0; i < playOrder.size(); i++)
             if (this.getUser(playOrder.get(i)).isAlive()) {
-                this.round = new PlayerRound(this.getUser(playOrder.get(i)));
+                this.round = new PlayerRound(this.getUser(playOrder.get(i)), timerPlayMove);
                 Log.getLog().info("player ".concat(round.getUserName()).concat(" now can play ")
                         .concat("in room" + this.getUser(round.getUserName()).getRoom().toString()));
                 Log.getLog().info("[WRITER]: saving game info");
@@ -257,7 +262,7 @@ public class Room implements Serializable{
         this.gameController.startNewTurn();
         for (int i = 0; i < playOrder.size(); i++)
             if (this.getUser(playOrder.get(i)).isAlive()) {
-                this.round = new PlayerRound(this.getUser(playOrder.get(i)));
+                this.round = new PlayerRound(this.getUser(playOrder.get(i)), timerPlayMove);
                 return;
             } else {
                 playOrder.remove(i);

@@ -25,11 +25,11 @@ public class PlayerRound implements Round, Serializable{
      * constructor
      * @param user the player who is playing the round
      */
-    public PlayerRound(User user) {
+    public PlayerRound(User user, int timerPlayMove) {
         this.user = user;
         Log.getLog().info("player ".concat(this.getUserName()).concat(" can play now"));
-        new RoundTimer(5, this);
-        Log.getLog().info("player ".concat(this.getUserName()).concat(" has 5 second to play"));
+        new RoundTimer(timerPlayMove, this);
+        Log.getLog().info("player ".concat(this.getUserName()).concat(" has " + timerPlayMove + " second to play"));
     }
 
     /**

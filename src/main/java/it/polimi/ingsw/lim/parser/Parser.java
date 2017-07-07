@@ -885,7 +885,7 @@ public class Parser {
      * @return ArrayList of assets containing the player board assets bonus
      * @throws IOException if in the given path do not exist the file needed
      */
-    private  ArrayList<Assets> parseBoardPlayerHarvestBonus (String pathToConfiguratorBonusAssetsFile)
+    private ArrayList<Assets> parseBoardPlayerHarvestBonus (String pathToConfiguratorBonusAssetsFile)
             throws IOException{
         byte[] jsonData = Files.readAllBytes(Paths.get(pathToConfiguratorBonusAssetsFile));
 
@@ -900,15 +900,16 @@ public class Parser {
     /**
      * the task of this method is to parse a timer (from a Json File). this timer will be used when a new player create
      * a new room (is the waiting time for the new player that wants to join this room). it must be at least 60 second
-     * @param pathToConfiguratorTimersFile is the path to the config timers file (from the root or
+     * @param pathToDirectory is the path to the config timers file (from the root or
      *                                      from the working directory)
      * @return an int (value of the timer in second)
      * @throws IOException if in the given path do not exist the file needed
      * @throws InvalidTimerException if the time is not specified or invalid
      */
-    public int parseTimerStartGame (String pathToConfiguratorTimersFile)
+    public static int parseTimerStartGame (String pathToDirectory)
             throws IOException, InvalidTimerException{
-        byte[] jsonData = Files.readAllBytes(Paths.get(pathToConfiguratorTimersFile));
+
+        byte[] jsonData = Files.readAllBytes(Paths.get(pathToDirectory.concat(CONFIGURATOR_TIMERS_FILE_NAME)));
 
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -916,7 +917,7 @@ public class Parser {
         JsonNode timersNode = rootNode.path(TIMERS);
         if(timersNode.path(START_GAME_TIMER).isInt()){
             //by default at least 60 seconds
-            if(timersNode.path(START_GAME_TIMER).asInt() >= 60) {
+            if(timersNode.path(START_GAME_TIMER).asInt() >= MINIUMUM_GAME_TIMER) {
                 return timersNode.path(START_GAME_TIMER).asInt();
             }
         }
@@ -926,15 +927,15 @@ public class Parser {
     /**
      * the task of this method is to parse a timer (from a Json File). this timer will be used during the turn of a
      * player (is the maximum time to play a move). it must be at least 60 second.
-     * @param pathToConfiguratorTimersFile is the path to the config timers file (from the root or
+     * @param pathToDirectory is the path to the config timers file (from the root or
      *                                      from the working directory)
      * @return an int (value of the timer in second)
      * @throws IOException if in the given path do not exist the file needed
      * @throws InvalidTimerException if the time is not specified or invalid
      */
-    public int parseTimerPlayMove (String pathToConfiguratorTimersFile)
+    public static int parseTimerPlayMove (String pathToDirectory)
             throws IOException, InvalidTimerException {
-        byte[] jsonData = Files.readAllBytes(Paths.get(pathToConfiguratorTimersFile));
+        byte[] jsonData = Files.readAllBytes(Paths.get(pathToDirectory.concat(CONFIGURATOR_TIMERS_FILE_NAME)));
 
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -942,7 +943,7 @@ public class Parser {
         JsonNode timersNode = rootNode.path(TIMERS);
         if (timersNode.path(PLAY_MOVE_TIMER).isInt()) {
             //by default at least 60 seconds
-            if (timersNode.path(PLAY_MOVE_TIMER).asInt() >= 60) {
+            if (timersNode.path(PLAY_MOVE_TIMER).asInt() >= MINIUMUM_MOVE_TIMER) {
                 return timersNode.path(PLAY_MOVE_TIMER).asInt();
             }
         }

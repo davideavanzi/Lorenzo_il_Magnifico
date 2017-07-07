@@ -118,7 +118,10 @@ class KeyConst {
     protected static final String TIMERS = "timers";
     protected static final String START_GAME_TIMER = "startGameTimer";
     protected static final String PLAY_MOVE_TIMER = "playMoveTimer";
-    
+
+    protected static final int MINIUMUM_GAME_TIMER = 10;
+    protected static final int MINIUMUM_MOVE_TIMER = 2;
+
     //writer
     protected static final String PATH_TO_WRITER_GAME_FILE = "src/main/gameData/configs/writer/game/gameWriter_";
     protected static final String PATH_TO_WRITER_ROOM_FILE = "src/main/gameData/configs/writer/room/roomWriter_";
