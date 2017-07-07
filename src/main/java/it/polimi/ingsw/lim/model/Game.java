@@ -730,10 +730,12 @@ public class Game {
                     costAccumulator += (card.getCost().getWood() + card.getCost().getStone());
                 pl.setResources(pl.getResources()
                         .subtractToZero(excomm.getProductionCardCostMalus().multiply(costAccumulator)));
+            } else if (excomm.getOnAssetsMalus(1) == null) {
+                pl.setResources(pl.getResources().subtractToZero(excomm.getOnAssetsMalus(0)
+                        .multiply(pl.getResources().sumAll())));
             } else {
-                pl.setResources(pl.getResources()
-                        .subtractToZero(excomm.getOnAssetsMalus(0).multiply(pl.getResources()
-                                .divide(excomm.getOnAssetsMalus(1)))));
+                pl.setResources(pl.getResources().subtractToZero(excomm.getOnAssetsMalus(0)
+                        .multiply(pl.getResources().divide(excomm.getOnAssetsMalus(1)))));
             }
         }
     }
