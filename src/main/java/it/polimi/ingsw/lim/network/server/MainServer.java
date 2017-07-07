@@ -71,8 +71,10 @@ public class MainServer {
         roomList = new ArrayList<>();
         try {
             for (File file : new File("src/main/gameData/configs/writer/room/").listFiles()) {
-                roomList.add(Writer.readerRoom(file));
-                Log.getLog().info("[SERVER]: importing room");
+                if(file.getName().contains(".json")) {
+                    roomList.add(Writer.readerRoom(file));
+                    Log.getLog().info("[SERVER]: importing room");
+                }
             }
             System.out.println("SIZE" + roomList.size()); //todo test
         }catch (NullPointerException e){

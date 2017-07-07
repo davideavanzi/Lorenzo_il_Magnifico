@@ -43,6 +43,14 @@ public class Room {
         this.id = id;
     }
 
+    public Room(){
+        usersList = new ArrayList<>();
+        playOrder = new ArrayList<>();
+        excommLock = new Lock();
+        gameController = new GameController();
+    }
+
+
     public int getId(){
         return id;
     }
@@ -71,18 +79,10 @@ public class Room {
                 usersList.add(user);
             }
         }
-        //gameController.setGame(Writer.gameReader(this.getId()));
-        gameController.restartGame(this);
+        new TimerEnd(20, this); //todo timer solo se ci sono tutti o solo 2
     }
 
     public void setId(int id){this.id = id;}
-
-    public Room(){
-        usersList = new ArrayList<>();
-        playOrder = new ArrayList<>();
-        excommLock = new Lock();
-        gameController = new GameController();
-    }
 
     public void setUsersList(ArrayList<User> usersList){
         this.usersList = usersList;
@@ -249,7 +249,11 @@ public class Room {
             public void run(){
                 roomCallback.closeRoom();
                 gameController.createGame();
+                Writer.gameWriter(roomCallback.getGameController().getGame(), id);
+                Writer.roomWriter(roomCallback, id);
                 roomCallback.startNewTurn();
+                Writer.gameWriter(roomCallback.getGameController().getGame(), id);
+                Writer.roomWriter(roomCallback, id);
                 timer.cancel();
             }
         }

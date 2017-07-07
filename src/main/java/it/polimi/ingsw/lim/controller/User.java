@@ -12,6 +12,7 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonSubTypes;
 import org.codehaus.jackson.annotate.JsonTypeInfo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -33,7 +34,7 @@ import static it.polimi.ingsw.lim.Log.getLog;
 
         @JsonSubTypes.Type(value = SocketUser.class, name = "SocketUser"),
 })
-public abstract class User {
+public abstract class User implements Serializable{
 
     /**
      * The user's nickname.
@@ -64,9 +65,29 @@ public abstract class User {
         this.username = username;
     }
 
+    /**
+     * dummy User constructor
+     */
     public User(){}
 
     public boolean getIsAlive(){
+        return this.isAlive;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public Room getRoom() {
+        return room;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    @JsonIgnore
+    boolean isAlive() {
         return this.isAlive;
     }
 
@@ -78,45 +99,21 @@ public abstract class User {
         this.isAlive = isAlive;
     }
 
-    /**
-     * @return the username
-     */
-    public String getUsername() {
-        return username;
-    }
-
-    public Room getRoom() {
-        return room;
-    }
-
     public void setRoom(Room room) {
         this.room = room;
     }
 
-    /**
-     * @return the correspondent player.
-     */
-    public Player getPlayer() {
-        return player;
-    }
-
-    /**
-     * Set the players.
-     * @param player
-     */
     public void setPlayer(Player player) {
         this.player = player;
     }
 
+    /**
+     * set isAlive to false if the player has disconnected
+     */
     @JsonIgnore
     public void hasDied() {
         getLog().log(Level.INFO, () -> "User "+this.getUsername()+" has disconnected.");
         this.isAlive = false;
-    }
-
-    @JsonIgnore
-    boolean isAlive() {
-        return this.isAlive;
     }
 
     /**
@@ -126,8 +123,16 @@ public abstract class User {
      */
     public abstract void notifyFastHarvest(int baseStr);
 
+    /**
+     * This method notifies the user that has gained a fast production action. It also tells the base strength
+     * of the bonus action
+     * @param baseStr the action strength
+     */
     public abstract void notifyFastProduction(int baseStr);
 
+    /**
+     * This method notifies the user that has gained a fast tower move.
+     */
     public abstract void notifyFastTowerMove(HashMap<String, Integer> baseStr, Assets optionalPickDiscount);
 
     /**
@@ -160,6 +165,7 @@ public abstract class User {
      */
     public abstract void sendChatMessage(String sender, String message);
 
+
     public abstract void gameError(String message);
 
     /**
@@ -181,6 +187,11 @@ public abstract class User {
      */
     public abstract void sendGameUpdate(Board board, ArrayList<Player> players);
 
+    /**
+     * //todo javadoc
+     * @param isPlaying
+     */
     @JsonIgnore
     public abstract void isPlayerTurn(boolean isPlaying);
+
 }

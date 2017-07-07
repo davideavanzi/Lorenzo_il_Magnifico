@@ -4,10 +4,16 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * Created by ava on 29/06/17.
+ *
  */
 public class RoundTimer {
     private Timer timer;
+
+    /**
+     *
+     * @param seconds
+     * @param roundCallback
+     */
     public RoundTimer(int seconds, Round roundCallback){
         timer = new Timer();
         timer.schedule(new EndTimer(roundCallback), seconds * 1000 /*by default ms (1s = 1000ms)*/);

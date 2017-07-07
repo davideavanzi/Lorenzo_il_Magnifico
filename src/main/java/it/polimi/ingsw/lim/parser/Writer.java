@@ -16,6 +16,12 @@ import static it.polimi.ingsw.lim.parser.KeyConst.*;
  * The task of this class is to write in a file all the game parameters, in order to make the game persistent
  */
 public class Writer {
+    /**
+     * this method is needed to write a game on a .json file
+     * @param game this is the game to be written on the file
+     * @param id is the id of the game's room
+     * @return the path to the file
+     */
     public static String gameWriter(Game game, int id) {
         String pathToWriterFile = (PATH_TO_WRITER_GAME_FILE + id).concat(EXTENTION);
         ObjectMapper mapper = new ObjectMapper();
@@ -32,6 +38,12 @@ public class Writer {
         return pathToWriterFile;
     }
 
+    /**
+     * this method is needed to read a game from a .json file
+     * @param id is the id of the game's room
+     * @return the game red
+     * @throws IOException if the file isn't found in the path
+     */
     public static Game gameReader(int id) throws IOException{
         ObjectMapper mapper = new ObjectMapper();
         Game game;
@@ -40,6 +52,11 @@ public class Writer {
         return game;
     }
 
+    /**
+     * this method is needed to write a room on a .json file
+     * @param id is the id of the room
+     * @return the path to the file
+     */
     public static String roomWriter(Room room, int id){
         String pathToWriterFile = (PATH_TO_WRITER_ROOM_FILE + id).concat(EXTENTION);
         ObjectMapper mapper = new ObjectMapper();
@@ -55,6 +72,11 @@ public class Writer {
         return pathToWriterFile;
     }
 
+    /**
+     * this method is needed to read a room from a .json file
+     * @return the room red
+     * @throws IOException if the file isn't found in the path
+     */
     public static Room readerRoom(File file){
         ObjectMapper mapper = new ObjectMapper();
         Room room = null;

@@ -24,11 +24,6 @@ import static it.polimi.ingsw.lim.Settings.*;
 public class GameController {
     private Game game;
     private Room roomCallback;
-
-    public GameController(Room roomCallback) { this.roomCallback = roomCallback; }
-
-    public GameController() { game = new Game(); }
-
     private ArrayList<ArrayList<Assets[]>> currentProductionOptions;
     private Assets currentProductionAccumulator;
     private Strengths fastActionStr;
@@ -36,71 +31,24 @@ public class GameController {
     private User fastActor;
     private PendingTowerMove pendingTowerMove;
 
+    /**
+     * constructor
+     * @param roomCallback the room that the game controller belong to
+     */
+    public GameController(Room roomCallback) { this.roomCallback = roomCallback; }
+
+    /**
+     * dummy constructor
+     */
+    public GameController() { game = new Game(); }
+
+
     public Game getGame(){
         return this.game;
     }
 
     public void setGame(Game game){
         this.game = game;
-    }
-
-
-    public static void main(String[] args){
-
-        createLogFile();
-        getLog().info("Creating new game instance.");
-        GameController contr = new GameController();
-        contr.createGame();
-        contr.game.addPlayer("CIAONE");
-        contr.game.addPlayer("HELLONE");
-        contr.game.addPlayer("HOLAONE");
-
-        //contr.moveInTower(contr.game.getPlayer("CIAONE").pullFamilyMember(BLACK_COLOR), GREEN_COLOR,1,1);
-        //System.out.println("SIZE FM: "+contr.game.getPlayer("CIAONE").getFamilyMemberSlot().size());
-        //contr.moveInHarvest(contr.game.getPlayer("CIAONE").pullFamilyMember(WHITE_COLOR));
-        /*
-        Game game = new Game();
-        String defaultPath = "default/";
-        getLog().log(Level.INFO, () -> "Parsing game data from path: " + CONFIGS_PATH+defaultPath);
-
-        //TODO: handle exception in a proper place
-        Parser parsedGame = new Parser();
-        try {
-            parsedGame.parser(CONFIGS_PATH+defaultPath);
-        } catch (Exception e) {
-            getLog().severe("PARSER ERROR:\n"+e.getMessage());
-        }
-
-        getLog().info("Validating game data with current settings.");
-        //TODO: how to call validating method?
-        if(validateParsedData(parsedGame))
-            getLog().severe("[ERROR] - parsed data are incorrect");
-
-
-        //building game
-        getLog().info("Setting up game with parsed data");
-        //TODO: add players before setting up the game!;
-        game.addPlayer("CIAONE");
-        game.addPlayer("HELLONE");
-        game.addPlayer("HOLAONE");
-        try {
-            game.setUpGame(parsedGame);
-        } catch (GameSetupException e) {
-            getLog().severe(e.getMessage());
-        }
-        game.setUpTurn();
-        game.getTower("GREEN").getFloor(1).getCardSlot().printCard();
-
-        moveInTower(game.getPlayer("CIAONE").pullFamilyMember(BLACK_COLOR), GREEN_COLOR,1);
-
-        System.out.println("Carte verdi in ciaone: "+game.getPlayer("CIAONE").getCardsOfColor(GREEN_COLOR).size());
-
-        System.out.println("La torre verde al piano uno ha la carta? "+game.getTower(GREEN_COLOR).getFloor(1).hasCard());
-        System.out.println("DICE COLORS:");
-        DICE_COLORS.forEach(color -> System.out.println(color+": "+game.getDice().get(color)));
-        System.out.println(game.isHarvestMoveAllowed(new FamilyMember(ORANGE_COLOR, GREEN_COLOR)));
-
-        */
     }
 
     /**
@@ -157,8 +105,14 @@ public class GameController {
         }
     }
 
+    /**
+     * this method try to resume a game from a file
+     * @param roomCallback the room that the game controller belong to
+     * @return true if the game is successfully restored false otherwise
+     */
     public boolean restartGame(Room roomCallback) {
         try {
+            this.game = new Game();
             this.game = Writer.gameReader(roomCallback.getId());
             return true;
         }catch (IOException e){
@@ -234,6 +188,11 @@ public class GameController {
         roomCallback.fmPlaced();
     }
 
+    /**
+     * this method activate the immediate effect of a card piked by user
+     * @param card the card to be activated
+     * @param actor the user who picked the card
+     */
     public void activatePickedCard(Card card, User actor){
         //Activate before all resources bonus, then actions.
         card.getImmediateEffects().stream().filter(ie -> ie instanceof AssetsEffect
@@ -273,6 +232,12 @@ public class GameController {
         }
     }
 
+    /**
+     * this method is called when a player go to production with a family member, and (optional) using servants
+     * @param fm the family member put in production
+     * @param servantsDeployed the num of the servants deployed by the user
+     * @throws BadRequestException if //todo
+     */
     public void moveInProduction (FamilyMember fm, int servantsDeployed) throws BadRequestException {
         User actor = roomCallback.getPlayingUser(); //only the playing user can perform the action
         if(this.game.isProductionMoveAllowed(fm)){
@@ -297,14 +262,32 @@ public class GameController {
         }
     }
 
+    /**
+     * this method is called when a player go to market with a family member, and (optional) using servants
+     * @param fm the family member put in the market
+     * @param marketSlot is the position in the market in which the user intend to move to
+     * @param servantsDeployed the num of the servants deployed by the user
+     * @throws BadRequestException if //todo
+     */
     public void moveInMarket(FamilyMember fm, int marketSlot, int servantsDeployed) throws BadRequestException {
 
     }
 
+    /**
+     * this method is called when a player go to council with a family member, and (optional) using servants
+     * @param fm the family member put in the council
+     * @param servantsDeployed the num of the servants deployed by the user
+     * @throws BadRequestException if //todo
+     */
     public void moveInCouncil(FamilyMember fm, int servantsDeployed) throws BadRequestException {
 
     }
 
+    /**
+     * //todo
+     * @param choices
+     * @throws BadRequestException
+     */
     public void confirmProduction(ArrayList<Integer> choices) throws BadRequestException {
         if (choices.size() != currentProductionOptions.size()) {
             getLog().log(Level.SEVERE, "Wrong amount of player production choices!");

@@ -8,7 +8,6 @@ import java.util.Timer;
 import static it.polimi.ingsw.lim.Settings.DEPLOYABLE_FM_PER_ROUND;
 
 /**
- * Created by ava on 16/06/17.
  * This class represent the single turn phase of a player .
  */
 public class PlayerRound implements Round {
@@ -18,7 +17,13 @@ public class PlayerRound implements Round {
      */
     private User user;
     private Timer timer;
+    private int fmToDeploy = DEPLOYABLE_FM_PER_ROUND;
 
+
+    /**
+     * constructor
+     * @param user the player who is playing the round
+     */
     public PlayerRound(User user) {
         this.user = user;
         Log.getLog().info("player ".concat(this.getUserName()).concat(" can play now"));
@@ -26,20 +31,10 @@ public class PlayerRound implements Round {
         Log.getLog().info("player ".concat(this.getUserName()).concat(" has 5 second to play"));
     }
 
-    public PlayerRound(){super();}
-
-    public void setUser(User user){
-        this.user = user;
-    }
     /**
-     *
+     * dummy constructor
      */
-    private int fmToDeploy = DEPLOYABLE_FM_PER_ROUND;
-
-    //Do we need them?
-    private int bonusTowerAction = 0;
-    private int bonusHarvestAction = 0;
-    private int bonusProductionAction = 0;
+    public PlayerRound(){super();}
 
     @JsonIgnore
     public String getUserName(){
@@ -50,42 +45,39 @@ public class PlayerRound implements Round {
         return this.user;
     }
 
-    public void decreaseFmAmount() { this.fmToDeploy--; }
 
-    @Override
-    public void timerEnded() {
-        this.endTurn();
+    public void setUser(User user){
+        this.user = user;
     }
-
-    public void playerEnded(){
-        this.timer.cancel();
-        this.endTurn();
-    }
-
-    public void endTurn (){
-        Log.getLog().info("turn player ".concat(this.getUserName()).concat(" has ended "));
-        this.user.getRoom().switchRound();
-    }
-
 
     public void setTimer(Timer timer){
         this.timer = timer;
     }
 
-    /*
-    private class TimerEnd{
-        private Timer timer;
-        private TimerEnd(int seconds, PlayerRound turnCallback){
-            timer = new Timer();
-            timer.schedule(new EndTurnTimer(), (long) (seconds * 1000));
-            turnCallback.setTimer(timer);
-        }
-        private class EndTurnTimer extends TimerTask {
-            @Override
-            public void run(){
-                endTurn("timer ending");
-                timer.cancel();
-            }
-        }
-    }*/
+    public void decreaseFmAmount() { this.fmToDeploy--; }
+
+    /**
+     * this method is called if the player explicitly says that is turn is ended
+     */
+    public void playerEnded(){
+        this.timer.cancel();
+        this.endTurn();
+    }
+
+    /**
+     * end the turn switching the round
+     */
+    public void endTurn (){
+        Log.getLog().info("turn player ".concat(this.getUserName()).concat(" has ended "));
+        this.user.getRoom().switchRound();
+    }
+
+    /**
+     * timer to check the duration of a player round
+     */
+    @Override
+    public void timerEnded() {
+        this.endTurn();
+    }
+
 }
