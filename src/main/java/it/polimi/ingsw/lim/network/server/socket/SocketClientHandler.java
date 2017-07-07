@@ -67,15 +67,15 @@ public class SocketClientHandler implements Runnable {
     public User getUser() { return user; }
 
     void commandValidator(String command, String message, boolean outcome) {
-        sendObjectToClient(new String[] {CMD_VALIDATOR, command, message, String.valueOf(outcome)});
+        sendObjectToClient(new Object[] {CMD_VALIDATOR, command, message, String.valueOf(outcome)});
     }
 
     void askClientForFastHarvest(int baseStr) {
-        sendObjectToClient(new String[] {SERVANTS_HARVEST, String.valueOf(baseStr)});
+        sendObjectToClient(new Object[] {SERVANTS_HARVEST, String.valueOf(baseStr)});
     }
 
     void askClientForFastProduction(int baseStr) {
-        sendObjectToClient(new String[] {SERVANTS_PRODUCTION, String.valueOf(baseStr)});
+        sendObjectToClient(new Object[] {SERVANTS_PRODUCTION, String.valueOf(baseStr)});
     }
 
     void askClientForFastTowerMove(HashMap<String, Integer> baseStr, Assets optionalPickDiscount) {
@@ -83,20 +83,23 @@ public class SocketClientHandler implements Runnable {
     }
 
     void askClientForProductionOption(ArrayList<ArrayList<Object[]>> options) {
-        sendObjectToClient(new String[] {CHOOSE_PRODUCTION, //TODO capire come passare options
-                });
+        sendObjectToClient(new Object[] {CHOOSE_PRODUCTION, options});
     }
 
     void askClientForOptionalBpPick() {
-        sendObjectToClient(new String[] {OPTIONAL_BP_PICK});
+        sendObjectToClient(new Object[] {OPTIONAL_BP_PICK});
     }
 
     void askClientForFavor(int favorAmount) {
-        sendObjectToClient(new String[] {CHOOSE_FAVOR, String.valueOf(favorAmount)});
+        sendObjectToClient(new Object[] {CHOOSE_FAVOR, favorAmount});
     }
 
     void askClientForExcommunication() {
-        sendObjectToClient(new String[] {EXCOMMUNICATION});
+        sendObjectToClient(new Object[] {EXCOMMUNICATION});
+    }
+
+    void gameMessageToClient(String message) {
+        sendObjectToClient(new Object[] {GAME_MSG, message});
     }
 
     /**
@@ -105,11 +108,7 @@ public class SocketClientHandler implements Runnable {
      * @param message
      */
     void chatMessageToClient(String sender, String message) {
-        sendObjectToClient(new String[] {CHAT, sender ,message});
-    }
-
-    void gameMessageToClient(String message) {
-        sendObjectToClient(new String[] {GAME_MSG, message});
+        sendObjectToClient(new Object[] {CHAT, sender ,message});
     }
 
     /**
@@ -123,7 +122,7 @@ public class SocketClientHandler implements Runnable {
     }
 
     void sendIfUserPlaying(boolean isPlaying) {
-        sendObjectToClient(new String[] {TURN, String.valueOf(isPlaying)});
+        sendObjectToClient(new Object[] {TURN, isPlaying});
     }
 
     /**
@@ -187,13 +186,13 @@ public class SocketClientHandler implements Runnable {
     private boolean loginRequest() {
         int loginFailed = 0;
         while (true) {
-            sendObjectToClient(LOGIN_REQUEST);
+            sendObjectToClient(new Object[] {LOGIN_REQUEST});
             try {
                 Object loginInfo = objToServer.readObject();
                 Object[] command = (Object[])loginInfo;
                 if (command[0].equals(LOGIN)) {
                     login((String)command[1], (String)command[2], this);
-                    sendObjectToClient(LOGIN_SUCCESSFUL);
+                    sendObjectToClient(new Object[] {LOGIN_SUCCESSFUL});
                     return isClientLogged = true;
                 }
             } catch (IOException | ClassNotFoundException e) {
@@ -204,7 +203,7 @@ public class SocketClientHandler implements Runnable {
                     return isClientLogged = false;
                 }
             } catch (LoginFailedException e) {
-                sendObjectToClient(new String[] {LOGIN_FAILED, e.getMessage()});
+                sendObjectToClient(new Object[] {LOGIN_FAILED, e.getMessage()});
             }
         }
     }
