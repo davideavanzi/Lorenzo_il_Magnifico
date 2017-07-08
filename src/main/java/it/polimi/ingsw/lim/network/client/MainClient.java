@@ -1,6 +1,5 @@
 package it.polimi.ingsw.lim.network.client;
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import com.diogonunes.jcdp.color.ColoredPrinter;
 import com.diogonunes.jcdp.color.api.Ansi;
 import it.polimi.ingsw.lim.ui.UIController;

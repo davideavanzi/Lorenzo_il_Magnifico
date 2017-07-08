@@ -102,7 +102,6 @@ public class GameController {
                     user.setPlayer(game.addPlayer(user.getUsername())));
             Collections.shuffle(game.getPlayers());
             String defaultPath = "default/";
-            //TODO: handle exception in a proper place
             Parser parsedGame = new Parser();
             try {
                 parsedGame.parser(CONFIGS_PATH + defaultPath);
@@ -110,7 +109,6 @@ public class GameController {
                 getLog().severe("PARSER ERROR:\n" + e.getMessage());
             }
             getLog().info("Validating game data with current settings.");
-            //TODO: how to call validating method?
             if (validateParsedData(parsedGame))
                 getLog().severe("[ERROR] - parsed data are incorrect");
             //building game
@@ -144,8 +142,6 @@ public class GameController {
      * @param fm
      * @param towerColor
      * @param floor
-     * TODO: do we have to split the legality checks from the actual move?
-     * TODO: handle max card number and battle points requirements for green card
      */
     public void moveInTower (FamilyMember fm, String towerColor, int floor, int servantsDeployed)
             throws BadRequestException {
@@ -498,6 +494,8 @@ public class GameController {
             throw new BadRequestException("Wrong user");
         if (!game.isLeaderDeployable(id, actor.getPlayer()))
             throw new BadRequestException("Leader not deployable");
+        if (Leaders.getLeaderById(id) instanceof PermanentLeader)
+            LeaderHandler.activatePermanentLeader(id, actor);
         game.deployLeader(id, actor.getPlayer());
     }
 
@@ -506,6 +504,7 @@ public class GameController {
             throw new BadRequestException("Wrong user");
         if (!game.isLeaderActivable(id, actor.getPlayer()))
             throw new BadRequestException("Leader not activable");
+        LeaderHandler.activateActivableLeader(id, actor);
     }
 
     public void discardLeader(int id, User actor) throws BadRequestException {
@@ -519,6 +518,12 @@ public class GameController {
 
     public void setPendingLeaderCopy(ArrayList<String> pendingLeaderCopy) {
         this.pendingLeaderCopy = pendingLeaderCopy;
+    }
+
+    public void applyLeaderFmBonus(String fmColor, User actor) throws BadRequestException {
+        if (!actor.getUsername().equals(fastActor.getUsername()))
+            throw new BadRequestException("Wrong user");
+        actor.getPlayer().getDiceOverride().put(fmColor, MONTEFELTRO_FM_BONUS);
     }
 
     public void applyLeaderCopyChoice(int choice, User actor) throws BadRequestException{
@@ -585,7 +590,14 @@ public class GameController {
     }
 
     void applyExcommunication(ArrayList<Player> toExcommunicate) {
-        //Excommunicate given players, reset fp of players that won't be excommunicated
+        toExcommunicate.forEach(player -> game.excommunicatePlayer(player));
+        ArrayList<Player> notToExcomm = new ArrayList<>(game.getPlayers());
+        notToExcomm.removeAll(toExcommunicate);
+        notToExcomm.forEach(player -> {
+            int fp = player.getResources().getFaithPoints();
+            player.resetFaithPoints();
+            game.giveAssetsToPlayer(game.getBoard().getFaithTrack()[fp], player);
+            if (game.playerHasActiveLeader(14, player)) game.giveAssetsToPlayer(SISTOIV_CHURCH_BONUS, player);});
     }
 
     private class PendingTowerMove {

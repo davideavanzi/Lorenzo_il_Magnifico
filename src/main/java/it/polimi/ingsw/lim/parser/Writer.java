@@ -1,9 +1,7 @@
 package it.polimi.ingsw.lim.parser;
 
-import com.sun.xml.internal.ws.developer.SerializationFeature;
 import it.polimi.ingsw.lim.Log;
 import it.polimi.ingsw.lim.controller.Room;
-import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.Game;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
