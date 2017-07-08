@@ -117,8 +117,8 @@ public class SocketClientHandler implements Runnable {
      * @param players
      */
     void sendGameToClient(Board board, ArrayList<Player> players) {
-        sendObjectToClient(board);
-        sendObjectToClient(players);
+        sendObjectToClient(new Object[] {BOARD, board});
+        sendObjectToClient(new Object[] {PLAYERS, players});
     }
 
     void sendIfUserPlaying(boolean isPlaying) {

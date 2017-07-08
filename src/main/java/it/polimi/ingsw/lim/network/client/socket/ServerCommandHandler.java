@@ -86,14 +86,16 @@ class ServerCommandHandler {
                 uiCallback.getTmpVar().setMinServantsHarv((Integer)command[1]);
             } else if (commandID.equals(CMD_VALIDATOR)) {
                 uiCallback.getClientUI().commandManager((String)command[1], (String)command[2], (Boolean)command[3]);
-            } else if (commandID.equals("BOARD")) {
+            } else if (commandID.equals(BOARD)) {
                 uiCallback.updateBoard((Board)command[1]);
-            } else if (commandID.equals("PLAYER")) {
+            } else if (commandID.equals(PLAYERS)) {
                 uiCallback.updatePlayers((ArrayList<Player>)command[1]);
             } else {
                 System.out.println(commandID);
             }
-        } /*else if (obj instanceof Board) {
+        }
+
+        /*else if (obj instanceof Board) {
             System.out.println("Entro in Board");
             Board board = (Board)obj;
             uiCallback.updateBoard(board);

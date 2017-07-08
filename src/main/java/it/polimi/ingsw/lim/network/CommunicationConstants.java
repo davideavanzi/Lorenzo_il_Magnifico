@@ -18,6 +18,9 @@ public class CommunicationConstants {
     public static final String CHAT = "CHAT";
     public static final String TURN = "TURN";
 
+    public static final String BOARD = "BOARD";
+    public static final String PLAYERS = "PLAYERS";
+
     public static final String FAMILY_MEMBER = "FAMILY_MEMBER";
     public static final String FAMILY_MEMBER_OK = "You have placed family member correctly on board";
 
