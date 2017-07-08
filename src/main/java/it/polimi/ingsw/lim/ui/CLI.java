@@ -614,7 +614,6 @@ public class CLI extends AbsUI {
         cp.println(EmojiParser.parseToUnicode(":email:  ")+"[CHAT] message from "+sender+" : " +message,
                 Ansi.Attribute.BOLD, Ansi.FColor.BLUE, Ansi.BColor.WHITE);
         cp.clear();
-        printBoard();
     }
 
     @Override

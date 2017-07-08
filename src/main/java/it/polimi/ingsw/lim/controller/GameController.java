@@ -6,9 +6,9 @@ import it.polimi.ingsw.lim.exceptions.GameSetupException;
 import it.polimi.ingsw.lim.model.*;
 import it.polimi.ingsw.lim.model.cards.*;
 import it.polimi.ingsw.lim.model.immediateEffects.*;
-import it.polimi.ingsw.lim.model.leaders.Leaders;
 import it.polimi.ingsw.lim.parser.Parser;
 import it.polimi.ingsw.lim.parser.Writer;
+import java.util.TreeMap;
 
 import java.io.IOException;
 import java.util.*;
@@ -567,9 +567,16 @@ public class GameController {
         return roomCallback;
     }
 
-    ArrayList<String> buildRanking() {
+    ArrayList<Player> buildRanking() {
         game.getPlayers().forEach(player -> game.calcEndGameBonus(player));
-        return new ArrayList<>();
+        game.applyVpOnBpRank();
+        HashMap<Player, Integer> playerWithPoints = new HashMap<>(game.getPlayers().stream().collect(
+                Collectors.toMap (player -> player, player -> player.getResources().getVictoryPoints())));
+        ArrayList<Integer> orderPoints = new ArrayList<>(playerWithPoints.values());
+        Collections.sort(orderPoints, Collections.reverseOrder());
+        return new ArrayList<>(playerWithPoints.entrySet().stream()
+                .filter(pl -> pl.getValue().equals(orderPoints.get(0)))
+                .map(Map.Entry::getKey).collect(Collectors.toList()));
     }
 
     void applyEndGameExcomm() {

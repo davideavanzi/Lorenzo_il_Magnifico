@@ -208,4 +208,15 @@ public class RMIUser extends User {
             Thread.currentThread().interrupt();
         }
     }
+
+    @Override
+    public void notifyEndGame(ArrayList<Player> players){
+        //todo implementare
+    }
+
+
+    public void chooseLeaderToCopy(ArrayList<String> copyableLeaders){
+        //todo implementare
+    }
+
 }

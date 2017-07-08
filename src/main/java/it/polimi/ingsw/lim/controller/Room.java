@@ -208,6 +208,10 @@ public class Room implements Serializable{
         Log.getLog().info("player ".concat(playOrder.get(0)).concat(" ending round"));
         playOrder.remove(0);
         if (playOrder.isEmpty()) {
+            if(this.getGameController().getGame().getAge() == AGES_NUMBER &&
+                    this.getGameController().getGame().getTurn() == TURNS_PER_AGE){
+                endGame();
+            }
             startNewTurn();
             Log.getLog().info("[WRITER]: saving game info");
             Writer.gameWriter(this.gameController.getGame(), id);
@@ -313,9 +317,10 @@ public class Room implements Serializable{
      * This method handles the game end and builds the ranking based on victory points and final scoring
      */
     void endGame(){
-        usersList.forEach(user -> user.gameMessage("The game has ended. Ranking will be built now."));
+        Log.getLog().info("The game has ended. Ranking will be built now.");
         gameController.applyEndGameExcomm();
-        ArrayList<String> ranking = gameController.buildRanking();
+        ArrayList<Player> ranking = gameController.buildRanking();
+        usersList.forEach(user -> user.notifyEndGame(ranking));
         try {
             for (File file : new File("src/main/gameData/configs/writer/room/").listFiles()) {
                 if (file.getName().contains(((Integer)id).toString())) {

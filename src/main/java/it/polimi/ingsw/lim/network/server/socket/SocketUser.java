@@ -116,5 +116,10 @@ public class SocketUser extends User {
     public void notifyGameStart() {
         this.sch.sendNoficationStartGame();
     }
+
+    @Override
+    public void notifyEndGame(ArrayList<Player> players){
+        //todo implementare
+    }
 }
 

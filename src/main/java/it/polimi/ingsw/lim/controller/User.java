@@ -200,4 +200,6 @@ public abstract class User implements Serializable{
 
     public abstract void notifyGameStart();
 
+    public abstract void notifyEndGame(ArrayList<Player> players);
+
 }
