@@ -145,7 +145,7 @@ public class UIController {
         return getLocalPlayers().stream().filter(pl -> pl.getNickname().equals(username)).findFirst().orElse(null);
     }
 
-    void sendFastHarvest (int servantDeployes) {
+    void sendFastHarvest(int servantDeployes) {
         try {
             clientProtocol.fastHarvest(servantDeployes);
         } catch (ClientNetworkException e) {
@@ -257,6 +257,9 @@ public class UIController {
         System.out.print("$ ");
         return userInput.nextLine().toLowerCase();
     }
+
+
+
 
     /**
      * This class is used to save the variables sent by the server in the first part of communication,
@@ -402,10 +405,11 @@ public class UIController {
         static final String CHAT = "chat";
         static final String TURN = "showTurn";
         static final String INFO = "showPersonalInfo";
-
-        static final String CARD = "showCard"; //todo chiedere utente(username, title) O torre(colore, floor)
+        static final String CARD = "showCard";
+        static final String ALL_PLAYER_INFO = "showAllPlayerInfo";
         static final String FAMILY_MEMBER = "putFamilyMember";
         static final String LEADER_CARD = "leaderCard";
+
         static final String EXCOMMUNICATION = "excommunication";
         static final String CHOOSE_FAVOR = "askForCouncilFavor";
         static final String OPTIONAL_BP_PICK = "purpleCardPayment";

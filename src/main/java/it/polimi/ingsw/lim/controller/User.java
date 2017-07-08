@@ -187,11 +187,12 @@ public abstract class User implements Serializable{
     public abstract void sendGameUpdate(Board board, ArrayList<Player> players);
 
     /**
-     * This method is called by game controller in the beginning of every turn;
+     * This method is called by game controller in the beginning of every round;
      * It notify all client
      * @param isPlaying
      */
     @JsonIgnore
-    public abstract void isPlayerTurn(boolean isPlaying);
+    public abstract void isPlayerRound(boolean isPlaying);
 
+    public abstract void notifyStartGame();
 }

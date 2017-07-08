@@ -57,19 +57,36 @@ public class CLI extends AbsUI {
         return lock;
     }
 
-    private void askForFastHarvest() {
+    private int askForServant() {
+        do {
+            while (!userInput.hasNextInt()) {
+                input = userInput.next();
+                System.out.printf("\"%s\" is not a valid number.\n", input);
+            }
+            inputNum = userInput.nextInt();
+        } while (inputNum < 0);
+        return inputNum;
+    }
 
+    private void askForFastHarvest() {
+        printGameMessageln("How many servants do you like to deploy for this harvest? ");
+        uiCallback.sendFastHarvest(askForServant());
     }
 
     private void askForFastProduction() {
-
+        printGameMessageln("How many servants do you like to deploy for this production? ");
+        uiCallback.sendFastProduction(askForServant());
     }
 
     private void askForFastTowerMove() {
         ArrayList<String> tower = new ArrayList<>();
-        printGameMessageln("You can activate a fast tower move!");
+        printGameMessageln("You can activate a bonus tower move!");
         printMessageln("How many Servants would you like to deploy to support your move?");
         do {
+            while (!userInput.hasNextInt()) {
+                input = userInput.next();
+                System.out.printf("\"%s\" is not a valid number.\n", input);
+            }
             inputNum = userInput.nextInt();
         } while (inputNum < 0);
         int servantsDeployed = inputNum;
@@ -86,13 +103,21 @@ public class CLI extends AbsUI {
         }
         if(uiCallback.getLocalPlayers().size() < 5) {
             do {
+                while (!userInput.hasNextInt()) {
+                    input = userInput.next();
+                    System.out.printf("\"%s\" is not a valid number.\n", input);
+                }
                 inputNum = userInput.nextInt();
-            } while (inputNum < 0 || inputNum > 5);
+            } while (inputNum < 0 || inputNum < 5);
         }
         if(uiCallback.getLocalPlayers().size() == 5) {
             do {
+                while (!userInput.hasNextInt()) {
+                    input = userInput.next();
+                    System.out.printf("\"%s\" is not a valid number.\n", input);
+                }
                 inputNum = userInput.nextInt();
-            } while (inputNum < 0 || inputNum > 6);
+            } while (inputNum < 0 || inputNum < 6);
         }
         int chosenTower = inputNum;
         String towerColor = null;
@@ -115,8 +140,12 @@ public class CLI extends AbsUI {
         }
         printMessageln("In which flow of ".concat(towerColor.toLowerCase()).concat(" you would you like to pick a card?"));
         do {
+            while (!userInput.hasNextInt()) {
+                input = userInput.next();
+                System.out.printf("\"%s\" is not a valid number.\n", input);
+            }
             inputNum = userInput.nextInt();
-        } while (inputNum < 0 || inputNum > TOWER_HEIGHT);
+        } while (inputNum < 0 || inputNum < TOWER_HEIGHT);
         int floor = inputNum;
         uiCallback.sendFastTowerMove(servantsDeployed, towerColor, floor);
     }
@@ -161,8 +190,12 @@ public class CLI extends AbsUI {
                     }
                 }
                 do {
+                    while (!userInput.hasNextInt()) {
+                        input = userInput.next();
+                        System.out.printf("\"%s\" is not a valid number.\n", input);
+                    }
                     inputNum = userInput.nextInt();
-                } while (inputNum < 0 || inputNum > card.size());
+                } while (inputNum < 0 || inputNum < card.size());
                 choose.add(inputNum);
             }
         }
@@ -174,8 +207,12 @@ public class CLI extends AbsUI {
         printGameMessageln("You have picked a card that can be payed in two ways, using resources or battle points.\n".concat(
                 "How do you prefer to pay?\n1) Battle Points\n2) Resources"));
         do {
+            while (!userInput.hasNextInt()) {
+                input = userInput.next();
+                System.out.printf("\"%s\" is not a valid number.\n", input);
+            }
             inputNum = userInput.nextInt();
-        } while (!inputNum.equals(1) && !inputNum.equals(2));
+        } while (!(inputNum.equals(1) || inputNum.equals(2)));
         availableCmdList.remove(OPTIONAL_BP_PICK);
         uiCallback.sendOptionalBpPick(inputNum.equals(1));
         lock.unlock();
@@ -183,11 +220,18 @@ public class CLI extends AbsUI {
 
     private void askForFavor() {
         ArrayList<Integer> favorChoice = new ArrayList<>();
-        printGameMessage("You can choose between" + uiCallback.getTmpVar().getFavorAmount() + "council's favors: ");
+        int count = 0;
+        printGameMessage("You can choose " + uiCallback.getTmpVar().getFavorAmount() + "council's favors: ");
         printMessageln("");
         printCouncilFavors();
-        for (int count = 0; userInput.hasNext() && count < uiCallback.getTmpVar().getFavorAmount(); count++)
-            favorChoice.add(userInput.nextInt());
+        do {
+            while (!userInput.hasNextInt()) {
+                input = userInput.next();
+                System.out.printf("\"%s\" is not a valid number.\n", input);
+            }
+            inputNum = userInput.nextInt();
+            favorChoice.add(inputNum);
+        } while (count < uiCallback.getTmpVar().getFavorAmount() && inputNum >= 0);
         availableCmdList.remove(CHOOSE_FAVOR);
         uiCallback.sendFavorChoice(favorChoice);
         lock.unlock();
@@ -197,8 +241,12 @@ public class CLI extends AbsUI {
         printGameMessageln("Do you want to suffer the excommunication?");
         printMessageln("1) yes\n2) no");
         do {
+            while (!userInput.hasNextInt()) {
+                input = userInput.next();
+                System.out.printf("\"%s\" is not a valid number.\n", input);
+            }
             inputNum = userInput.nextInt();
-        } while (!inputNum.equals(1) && !inputNum.equals(2));
+        } while (!(inputNum.equals(1) || inputNum.equals(2)));
         availableCmdList.remove(EXCOMMUNICATION);
         uiCallback.sendExcommunicationChoice(inputNum.equals(1));
         lock.unlock();
@@ -212,30 +260,45 @@ public class CLI extends AbsUI {
     private String fmServant() {
         printGameMessage("How many servants would you like to put here? ");
         do {
+            while (!userInput.hasNextInt()) {
+                input = userInput.next();
+                System.out.printf("\"%s\" is not a valid number.\n", input);
+            }
             inputNum = userInput.nextInt();
         } while (inputNum >= 0);
         return inputNum.toString();
     }
 
-    private ArrayList<String> chooseDestination(String[] board, int numBoard, int numFloor, int marketSlot) {
+    private ArrayList<String> chooseDestination(String[] board, int numBoard, int marketSlot) {
         int count = 1;
         ArrayList<String> destination = new ArrayList<>();
-
         for (String pos : board)
             printMessageln(count + ") " + pos);
         do {
+            while (!userInput.hasNextInt()) {
+                input = userInput.next();
+                System.out.printf("\"%s\" is not a valid number.\n", input);
+            }
             inputNum = userInput.nextInt();
         } while (inputNum-1 >= 0 && inputNum-1 < numBoard);
         destination.add(board[inputNum]);
         if (inputNum-1 >= 0 && inputNum-1 < 4) { //If tower, select the floor
             printGameMessage("Please select the floor: (1/2/3/4) ");
             do {
+                while (!userInput.hasNextInt()) {
+                    input = userInput.next();
+                    System.out.printf("\"%s\" is not a valid number.\n", input);
+                }
                 inputNum = userInput.nextInt();
-            } while (inputNum-1 >= 0 && inputNum-1 < numFloor);
+            } while (inputNum-1 >= 0 && inputNum-1 < 4);
             destination.add(inputNum.toString());
         } else if (inputNum == 8) { //If market, select the slot
             printGameMessage("Please select the market slot: (1/2) ");
             do {
+                while (!userInput.hasNextInt()) {
+                    input = userInput.next();
+                    System.out.printf("\"%s\" is not a valid number.\n", input);
+                }
                 inputNum = userInput.nextInt();
             } while (inputNum-1 >= 0 && inputNum-1 < marketSlot);
             destination.add(inputNum.toString());
@@ -253,17 +316,17 @@ public class CLI extends AbsUI {
 
         //Two/Three players
         if (uiCallback.getLocalPlayers().size() < 3) {
-            return chooseDestination(board4Player, 8, 4, 2);
+            return chooseDestination(board4Player, 8, 2);
         }
 
         //Four players
         if (uiCallback.getLocalPlayers().size() < 5) {
-            return chooseDestination(board4Player, 8, 4, 4);
+            return chooseDestination(board4Player, 8, 4);
         }
 
         //Five players
         if (uiCallback.getLocalPlayers().size() < 6) {
-            return chooseDestination(board5Player, 9, 4, 5);
+            return chooseDestination(board5Player, 9, 5);
         }
         return null;
     }
@@ -276,6 +339,10 @@ public class CLI extends AbsUI {
             count++;
         }
         do {
+            while (!userInput.hasNextInt()) {
+                input = userInput.next();
+                System.out.printf("\"%s\" is not a valid number.\n", input);
+            }
             inputNum = userInput.nextInt();
         } while (inputNum > 0 && inputNum <= count);
         return uiCallback.getPlayer(uiCallback.getUsername()).getFamilyMembers().get(inputNum - 1).getDiceColor();
@@ -285,6 +352,55 @@ public class CLI extends AbsUI {
         availableCmdList.remove(FAMILY_MEMBER);
         uiCallback.sendPlaceFM(fmColor(), fmDestination(), fmServant());
         lock.unlock();
+    }
+
+    private void showCard() {
+        printGameMessage("Select the position of the card of which you want to see information: ");
+        printGameMessageln("1) Player's Board (nameCard, namePlayer)\n2) Tower(color, floor)");
+        do {
+            while (!userInput.hasNextInt()) {
+                input = userInput.next();
+                System.out.printf("\"%s\" is not a valid number.\n", input);
+            }
+            inputNum = userInput.nextInt();
+        } while (!(inputNum.equals(1) || inputNum.equals(2)));
+        if (inputNum.equals(1)) {
+            printGameMessage("Enter the name of the card: ");
+            String cardName = userInput.nextLine().trim();
+            printGameMessage("Enter the name of the player: ");
+            String playerName = userInput.nextLine().trim();
+            printPlayerSingleCard(cardName, uiCallback.getPlayer(playerName));
+        } else {
+            ArrayList<String> twrColor = new ArrayList<>();
+            twrColor.add("Green");
+            twrColor.add("Yellow");
+            twrColor.add("Blue");
+            twrColor.add("Purple");
+            twrColor.add("Black");
+            printGameMessage("Select the tower's color: ");
+            int count = 1;
+            for (String color : twrColor) {
+                printMessage(count + ") " + color);
+            }
+            do {
+                while (!userInput.hasNextInt()) {
+                    input = userInput.next();
+                    System.out.printf("\"%s\" is not a valid number.\n", input);
+                }
+                inputNum = userInput.nextInt();
+            } while ((inputNum < 1 || inputNum > 4) || (inputNum.equals(5) && (uiCallback.getLocalPlayers().size() == 5)));
+            int color = inputNum;
+            printGameMessage("Please select the floor: (1/2/3/4) ");
+            do {
+                while (!userInput.hasNextInt()) {
+                    input = userInput.next();
+                    System.out.printf("\"%s\" is not a valid number.\n", input);
+                }
+                inputNum = userInput.nextInt();
+            } while (inputNum-1 >= 0 && inputNum-1 < 4);
+            int floor = inputNum;
+            printCardInTower(twrColor.get(inputNum), floor);
+        }
     }
 
     private void showPersonalInfo() {
@@ -318,9 +434,15 @@ public class CLI extends AbsUI {
         lock.unlock();
     }
 
+    private void commandRemover(String command) {
+        if (availableCmdList.get(command) != null)
+            availableCmdList.remove(command);
+    }
+
     @Override
     public void commandAdder(String command) {
-        availableCmdList.put(command, cmdList.get(command));
+        if (availableCmdList.get(command) == null)
+            availableCmdList.put(command, cmdList.get(command));
     }
 
     @Override
@@ -345,14 +467,28 @@ public class CLI extends AbsUI {
         printMessage("");
     }
 
+    public void notifyStartRound(boolean isMyTurn) {
+        if (isMyTurn) {
+            commandAdder(FAMILY_MEMBER);
+            commandAdder(LEADER_CARD);
+        } else {
+            commandRemover(FAMILY_MEMBER);
+            commandRemover(LEADER_CARD);
+        }
+    }
+
+    public void notifyStartGame () {
+        commandAdder(TURN);
+        commandAdder(INFO);
+    }
+
     @Override
     public void waitForRequest() {
         lock.lock();
+        printCmd();
         while (true) {
-            printCmd();
             printGameMessage("Enter a command: ");
             input = userInput.next().toLowerCase().trim();
-            //printBoard(); //todo only for test
             try {
                 cmdExecutor(input);
             } catch (InvalidInputException e) {
@@ -362,18 +498,14 @@ public class CLI extends AbsUI {
     }
 
     /**
-     * Populate the Available Command HashMap.
-     */
-    private void initializeAvailableCmdList() {
-        availableCmdList.put(CHAT, () -> chat());
-        availableCmdList.put(TURN, () -> turnOrder());
-        availableCmdList.put(INFO, () -> showPersonalInfo());
-    }
-
-    /**
      * Populate the Command HashMap.
      */
     private void initializeCmdList() {
+        cmdList.put(CHAT, () -> chat());
+        cmdList.put(TURN, () -> turnOrder());
+        cmdList.put(INFO, () -> showPersonalInfo());
+        cmdList.put(ALL_PLAYER_INFO, () -> printPlayerBoard());
+        cmdList.put(CARD, () -> showCard());
         cmdList.put(FAMILY_MEMBER, () -> placeFamilyMember());
         //cmdList.put(LEADER_CARD, () -> );
         cmdList.put(EXCOMMUNICATION, () -> askForExcommunication());
@@ -392,6 +524,7 @@ public class CLI extends AbsUI {
         cmdDescr.put(CHAT, CHAT_DESCR);
         cmdDescr.put(TURN, TURN_DESCR);
         cmdDescr.put(INFO, INFO_DESCR);
+        cmdDescr.put(CARD, CARD_DESCR);
         cmdDescr.put(FAMILY_MEMBER, FAMILY_MEMBER_DESCR);
         cmdDescr.put(LEADER_CARD, LEADER_CARD_DESCR);
         cmdDescr.put(EXCOMMUNICATION, EXCOMMUNICATION_DESCR);
@@ -409,11 +542,7 @@ public class CLI extends AbsUI {
         cmdList = new HashMap<>();
         initializeCmdDescr();
         initializeCmdList();
-        initializeAvailableCmdList();
-        if(uiCallback.getIsMyTurn()) {
-            commandAdder(FAMILY_MEMBER);
-            commandAdder(LEADER_CARD);
-        }
+        commandAdder(CHAT);
     }
 
     /**

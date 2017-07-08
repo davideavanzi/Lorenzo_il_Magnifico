@@ -1,8 +1,13 @@
 package it.polimi.ingsw.lim.network.client;
 
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import com.diogonunes.jcdp.color.ColoredPrinter;
 import com.diogonunes.jcdp.color.api.Ansi;
 import it.polimi.ingsw.lim.ui.UIController;
+
+import java.io.IOException;
+import java.util.InputMismatchException;
+import java.util.Scanner;
 
 import static it.polimi.ingsw.lim.ui.UIController.setUI;
 
@@ -15,6 +20,20 @@ public class MainClient {
      */
     public static void main(String[] args) {
         splashScreen();
+        Scanner userInput = new Scanner(System.in);
+        String input;
+        int inputNum;
+        do {
+
+            System.out.println("Please enter a positive number: ");
+            System.out.print("$ ");
+            while (!userInput.hasNextInt()) {
+                input = userInput.next();
+                System.out.printf("\"%s\" is not a valid number.\n", input);
+            }
+            System.out.print("$ ");
+            inputNum = userInput.nextInt();
+        } while (inputNum < 0);
         UIController client = new UIController(setUI());
         client.startGame();
         client.getClientUI().waitForRequest();

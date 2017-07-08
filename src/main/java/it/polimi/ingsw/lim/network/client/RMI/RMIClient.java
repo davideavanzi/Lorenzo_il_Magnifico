@@ -224,7 +224,12 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
 
     @Override
     public void isUserPlaying(Boolean state) throws RemoteException {
-        uiCallback.setIsMyTurn(state);
+        uiCallback.getClientUI().notifyStartRound(state);
+    }
+
+    @Override
+    public void sendToClientStartGameNotification() throws RemoteException {
+        uiCallback.getClientUI().notifyStartGame();
     }
 
     @Override
