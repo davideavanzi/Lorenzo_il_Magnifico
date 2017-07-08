@@ -1169,13 +1169,13 @@ public class CLI extends AbsUI {
             System.out.format(format, StringUtils.center(("MARKET " + i), 20));
             System.out.format(format, "_  _  _  _  _  _  _ ");
             System.out.format(format, "");
-            System.out.println(market[i].getClass());
             if(market[i] instanceof Assets){
                 printAsset((Assets)market[i]);
             }
             else if (market[i] instanceof Integer){
                 System.out.format(format, StringUtils.center((" " + ((int)market[i])), 20));
             }
+            System.out.format(format, "");
             printMessageln(s);
             if(this.uiCallback.getLocalBoard().getMarket().isPositionOccupied(i+1)){
                 printMessageln("");

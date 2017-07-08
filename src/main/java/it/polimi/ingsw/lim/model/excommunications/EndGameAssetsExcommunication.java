@@ -1,6 +1,8 @@
 package it.polimi.ingsw.lim.model.excommunications;
 import it.polimi.ingsw.lim.Log;
 import it.polimi.ingsw.lim.model.Assets;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonTypeInfo;
 
 /**
  * This excommunication gives a malus to the player at the end of the game
@@ -30,12 +32,14 @@ public class EndGameAssetsExcommunication extends Excommunication {
      * Player will loose as many assets in the first element of the array as the result of the division
      * between it's resources and the second assets element of this array
      */
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, defaultImpl = Assets[].class)
     private Assets[] onAssetsMalus;
 
     public Assets getProductionCardCostMalus(){
         return productionCardCostMalus;
     }
 
+    @JsonIgnore
     public Assets getOnAssetsMalus(int i){
         return onAssetsMalus[i];
     }
@@ -48,6 +52,11 @@ public class EndGameAssetsExcommunication extends Excommunication {
         this.onAssetsMalus = new Assets[2];
         this.onAssetsMalus = onAssetsMalus;
     }
+
+    public Assets[] getOnAssetsMalus() {
+        return onAssetsMalus;
+    }
+
 
     @Override
     public boolean equals(Object other){
