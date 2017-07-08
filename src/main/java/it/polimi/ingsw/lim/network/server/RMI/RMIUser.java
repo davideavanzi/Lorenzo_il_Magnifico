@@ -233,4 +233,9 @@ public class RMIUser extends User {
         //todo implementare
     }
 
+    @Override
+    public void askFmToBoost(){
+        //todo implementare
+    }
+
 }

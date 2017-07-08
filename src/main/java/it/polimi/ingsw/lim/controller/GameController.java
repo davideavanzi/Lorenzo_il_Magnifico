@@ -567,9 +567,14 @@ public class GameController {
         return roomCallback;
     }
 
-    ArrayList<String> buildRanking() {
-        game.getPlayers().forEach(player -> game.calcEndGameBonus(player));
-        return new ArrayList<>();
+    ArrayList<Player> buildRanking() {
+        HashMap<Player, Integer> playerWithPoints = new HashMap<>(game.getPlayers().stream().collect(
+                Collectors.toMap(player -> player, player -> player.getResources().getVictoryPoints())));
+        ArrayList<Integer> orderPoints = new ArrayList<>(playerWithPoints.values());
+        Collections.sort(orderPoints, Collections.reverseOrder());
+        return new ArrayList<>(playerWithPoints.entrySet().stream()
+                .filter(pl -> pl.getValue().equals(orderPoints.get(0)))
+                .map(Map.Entry::getKey).collect(Collectors.toList()));
     }
 
     void applyEndGameExcomm() {

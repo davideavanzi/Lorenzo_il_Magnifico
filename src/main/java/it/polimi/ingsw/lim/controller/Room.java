@@ -66,6 +66,7 @@ public class Room implements Serializable{
         playOrder = new ArrayList<>();
         excommLock = new Lock();
         gameController = new GameController(this);
+
     }
 
     public boolean getRoomOpen() {

@@ -121,5 +121,11 @@ public class SocketUser extends User {
     public void notifyEndGame(ArrayList<Player> players){
         //todo implementare
     }
+
+    @Override
+    public void askFmToBoost(){
+        //todo implementare
+    }
+
 }
 
