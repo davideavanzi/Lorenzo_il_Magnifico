@@ -1,5 +1,6 @@
 package it.polimi.ingsw.lim.model;
 import it.polimi.ingsw.lim.Log;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 import static it.polimi.ingsw.lim.utils.Utils.*;
@@ -12,7 +13,6 @@ import java.util.*;
  * in terms of resources are represented with objects of this class.
  */
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 
 public class Assets implements Serializable {
 
@@ -114,6 +114,7 @@ public class Assets implements Serializable {
         return diff;
     }
 
+    @JsonIgnore
     public boolean isGreaterOrEqual(Assets operand) {
         return (this.coins >= operand.getCoins() &&
                 this.wood >= operand.getWood() &&
@@ -125,6 +126,7 @@ public class Assets implements Serializable {
         );
     }
 
+    @JsonIgnore
     public boolean isNegative() {
         return (this.coins < 0 &&
                 this.wood < 0 &&
@@ -217,6 +219,7 @@ public class Assets implements Serializable {
     public int getBattlePoints(){ return this.battlePoints; }
     public int getVictoryPoints(){ return this.victoryPoints; }
 
+    @JsonIgnore
     public boolean isNotNull(){
         if(this.getCoins() != 0){
             return true;
@@ -248,7 +251,7 @@ public class Assets implements Serializable {
      * @return the object itself (used in game setup)
      */
 
-    private void setCoins(int amount) { this.coins = amount; }
+    private void setCoins(int coins) { this.coins = coins; }
 
     public Assets addCoins(int amount) {
         Assets result =  new Assets(this);
@@ -256,7 +259,7 @@ public class Assets implements Serializable {
         return result;
     }
 
-    private void setServants(int amount) { this.servants = amount; }
+    private void setServants(int servants) { this.servants = servants; }
 
     public Assets addServants(int amount) {
         Assets result =  new Assets(this);
@@ -264,7 +267,23 @@ public class Assets implements Serializable {
         return result;
     }
 
-    private void setVictoryPoints(int amount) { this.victoryPoints = amount; }
+    public void setWood(int wood){
+        this.wood = wood;
+    }
+
+    public void setStone(int stone){
+        this.stone = stone;
+    }
+
+    public void setFaithPoints (int faithPoints){
+        this.faithPoints = faithPoints;
+    }
+
+    public void setBattlePoints(int battlePoints) {
+        this.battlePoints = battlePoints;
+    }
+
+    private void setVictoryPoints(int victoryPoints) { this.victoryPoints = victoryPoints; }
 
     public Assets addVictoryPoints(int amount) {
         Assets result =  new Assets(this);

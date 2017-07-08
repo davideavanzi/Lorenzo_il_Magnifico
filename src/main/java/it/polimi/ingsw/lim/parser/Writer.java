@@ -1,5 +1,6 @@
 package it.polimi.ingsw.lim.parser;
 
+import com.sun.xml.internal.ws.developer.SerializationFeature;
 import it.polimi.ingsw.lim.Log;
 import it.polimi.ingsw.lim.controller.Room;
 import it.polimi.ingsw.lim.model.Board;
@@ -26,6 +27,7 @@ public class Writer {
         String pathToWriterFile = (PATH_TO_WRITER_GAME_FILE + id).concat(EXTENTION);
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS, false);
+        mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
         File file = new File(pathToWriterFile);
         try{
             file.createNewFile();
@@ -61,6 +63,7 @@ public class Writer {
         String pathToWriterFile = (PATH_TO_WRITER_ROOM_FILE + id).concat(EXTENTION);
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS, false);
+        mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
         File file = new File(pathToWriterFile);
         try{
             file.createNewFile();

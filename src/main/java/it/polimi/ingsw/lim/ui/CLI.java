@@ -1176,7 +1176,6 @@ public class CLI extends AbsUI {
             else if (market[i] instanceof Integer){
                 System.out.format(format, StringUtils.center((" " + ((int)market[i])), 20));
             }
-            System.out.format(format, "");
             printMessageln(s);
             if(this.uiCallback.getLocalBoard().getMarket().isPositionOccupied(i+1)){
                 printMessageln("");

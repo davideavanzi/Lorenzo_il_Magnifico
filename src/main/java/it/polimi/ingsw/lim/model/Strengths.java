@@ -1,4 +1,5 @@
 package it.polimi.ingsw.lim.model;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 import java.io.Serializable;
@@ -9,8 +10,6 @@ import static it.polimi.ingsw.lim.Settings.*;
 /**
  * This class holds values for strengths that affect the player while performing an action.
  */
-
-@JsonIgnoreProperties(ignoreUnknown = true)
 
 public class Strengths implements Serializable {
 
@@ -104,6 +103,7 @@ public class Strengths implements Serializable {
         return sum;
     }
 
+    @JsonIgnore
     public int getTowerStrength(String color) {
         return this.towerStrengths.get(color);
     }
@@ -124,6 +124,27 @@ public class Strengths implements Serializable {
         return productionBonus;
     }
 
+    public HashMap<String, Integer> getTowerStrengths() {
+        return towerStrengths;
+    }
+
+    public void setDiceBonus(HashMap<String, Integer> diceBonus) {
+        this.diceBonus = diceBonus;
+    }
+
+    public void setHarvestBonus(int harvestBonus) {
+        this.harvestBonus = harvestBonus;
+    }
+
+    public void setProductionBonus(int productionBonus) {
+        this.productionBonus = productionBonus;
+    }
+
+    public void setTowerStrengths(HashMap<String, Integer> towerStrengths) {
+        this.towerStrengths = towerStrengths;
+    }
+
+    @JsonIgnore
     public boolean isNotNull(){
         boolean exist = false;
         if(this.getTowerStrength(GREEN_COLOR) != 0 ){
@@ -156,7 +177,7 @@ public class Strengths implements Serializable {
         return exist;
     }
 
-
+    @JsonIgnore
     public void setTowerStrength(String color, int value) {
         this.towerStrengths.replace(color, value);
     }

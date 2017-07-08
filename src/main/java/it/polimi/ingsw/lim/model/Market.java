@@ -1,6 +1,7 @@
 package it.polimi.ingsw.lim.model;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonTypeInfo;
 
 import static it.polimi.ingsw.lim.Settings.*;
 import java.io.Serializable;
@@ -39,6 +40,7 @@ public class Market implements Serializable {
     /**
      * 
      */
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, defaultImpl = Objects[].class)
     private Object[] bonuses;
 
     public void addFamilyMember(FamilyMember fm, int position){
@@ -47,6 +49,7 @@ public class Market implements Serializable {
         this.slots[marketPos] = fm;
     }
 
+    @JsonIgnore
     public Object getBonuses(int position){
         int marketPos = position - 1;
         return this.bonuses[marketPos];
@@ -68,10 +71,12 @@ public class Market implements Serializable {
         this.bonuses = bonuses;
     }
 
+    @JsonIgnore
     public boolean isPositionAvailable(int position) {
         return position > 0 && position < slots.length;
     }
 
+    @JsonIgnore
     public boolean isPositionOccupied(int position){
         if(this.slots[position-1] != null)
             return true;
