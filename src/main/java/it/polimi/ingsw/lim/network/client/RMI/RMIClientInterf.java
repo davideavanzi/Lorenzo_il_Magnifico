@@ -14,8 +14,6 @@ import java.util.HashMap;
  */
 public interface RMIClientInterf extends Remote {
 
-    void updateClientGame(Board board, ArrayList<Player> players) throws RemoteException;
-
     void commandValidator(String command, String message, boolean outcome) throws RemoteException;
 
     void askPlayerForFastHarvest(int basestr) throws RemoteException;
@@ -41,6 +39,10 @@ public interface RMIClientInterf extends Remote {
     String[] askLogin(String errorMsg) throws RemoteException;
 
     void startListenToInput() throws RemoteException;
+
+    void updateClientGame(Board board, ArrayList<Player> players) throws RemoteException;
+
+    void sendToClientStartGameNotification() throws RemoteException;
 
     void isAlive() throws RemoteException;
 }

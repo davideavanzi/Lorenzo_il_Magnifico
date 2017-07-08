@@ -15,6 +15,10 @@ public abstract class AbsUI {
 
     public abstract void waitForRequest();
 
+    public abstract void notifyStartRound(boolean isMyTurn);
+
+    public abstract void notifyStartGame();
+
     public abstract String[] loginForm();
 
     /**

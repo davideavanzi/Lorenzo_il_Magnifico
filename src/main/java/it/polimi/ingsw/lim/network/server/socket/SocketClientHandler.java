@@ -125,6 +125,10 @@ public class SocketClientHandler implements Runnable {
         sendObjectToClient(new Object[] {TURN, isPlaying});
     }
 
+    void sendNoficationStartGame() {
+        sendObjectToClient(new Object[] {START_GAME});
+    }
+
     /**
      * This method is the only that write object to the socket client.
      * @param obj

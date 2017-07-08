@@ -8,6 +8,9 @@ public class CommunicationConstants {
     /**
      * Used for login.
      */
+
+    public static final String START_GAME = "START_GAME";
+
     public static final String LOGIN = "LOGIN";
     public static final String LOGIN_REQUEST = "LOGIN_REQUEST";
     public static final String LOGIN_SUCCESSFUL = "LOGIN_SUCCESSFUL";

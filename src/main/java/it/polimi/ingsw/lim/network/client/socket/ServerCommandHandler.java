@@ -58,8 +58,10 @@ class ServerCommandHandler {
                 uiCallback.getClientUI().getLock().unlock();
             } else if (commandID.equals(LOGIN_FAILED)) {
                 uiCallback.getClientUI().printError((String)command[1]);
+            } else if (commandID.equals(START_GAME)) {
+                uiCallback.getClientUI().notifyStartGame();
             } else if (commandID.equals(TURN)) {
-                uiCallback.setIsMyTurn((Boolean)command[1]);
+                uiCallback.getClientUI().notifyStartRound((Boolean)command[1]);
             } else if (commandID.equals(CHAT)) {
                 uiCallback.getClientUI().printChatMessage((String)command[1], (String)command[2]);
             } else if (commandID.equals(GAME_MSG)) {

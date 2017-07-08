@@ -275,6 +275,10 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
         rmiClient.isUserPlaying(state);
     }
 
+    static void sendStartGameNotification(RMIClientInterf rmiClient) throws RemoteException {
+        rmiClient.sendToClientStartGameNotification();
+    }
+
     /**
      * The rmi login method. It's used for users authentication.
      * @param username

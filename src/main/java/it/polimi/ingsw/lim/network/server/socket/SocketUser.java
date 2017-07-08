@@ -102,8 +102,14 @@ public class SocketUser extends User {
     }
 
     @Override
-    public void isPlayerTurn(boolean isPlaying) {
+    public void isPlayerRound(boolean isPlaying) {
         if (this.getIsAlive()) this.sch.sendIfUserPlaying(isPlaying);
+        this.sch.sendIfUserPlaying(isPlaying);
+    }
+
+    @Override
+    public void notifyStartGame() {
+        this.sch.sendNoficationStartGame();
     }
 }
 

@@ -163,10 +163,19 @@ public class RMIUser extends User {
 
     @JsonIgnore
     @Override
-    public void isPlayerTurn(boolean isPlaying) {
+    public void isPlayerRound(boolean isPlaying) {
         if (!this.getIsAlive()) return;
         try {
             RMIServer.setPlayerTurn(isPlaying, this.rci);
+        } catch (RemoteException e) {
+            getLog().log(Level.SEVERE, "[RMI]: Remote error sending board and arrayList of player to client.");
+        }
+    }
+
+    @Override
+    public void notifyStartGame() {
+        try {
+            RMIServer.sendStartGameNotification(this.rci);
         } catch (RemoteException e) {
             getLog().log(Level.SEVERE, "[RMI]: Remote error sending board and arrayList of player to client.");
         }
