@@ -1,6 +1,7 @@
 package it.polimi.ingsw.lim.model;
 
 import it.polimi.ingsw.lim.model.cards.Card;
+import it.polimi.ingsw.lim.model.leaders.LeaderCard;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 import java.io.Serializable;

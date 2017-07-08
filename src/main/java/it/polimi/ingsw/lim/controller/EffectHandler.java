@@ -20,6 +20,7 @@ public class EffectHandler {
      */
     private static void activateActionEffect(ActionEffect effect, User recipient) {
         recipient.gameMessage("You're about to activate an immediate Action effect from the card you picked.");
+
         if (effect.getStrength().getHarvestBonus() > 0) {
             //Perform fast harvest action
             recipient.getRoom().getGameController()
