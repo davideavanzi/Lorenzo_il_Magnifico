@@ -50,7 +50,6 @@ public abstract class User implements Serializable{
     /**
      * A reference to the corresponding player of the game.
      */
-    @JsonIgnore
     private Player player;
 
     /**

@@ -133,6 +133,7 @@ public class Room implements Serializable{
         User userToReplace = usersList.stream()
                 .filter(oldUser -> oldUser.getUsername().equals(user.getUsername())).findFirst().orElse(null);
         user.setPlayer(userToReplace.getPlayer());
+        System.out.println(user.getPlayer().getNickname());
         usersList.set(usersList.indexOf(userToReplace), user);
 
         if(getNumAlive() == 2) {
