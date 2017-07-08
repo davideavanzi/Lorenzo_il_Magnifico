@@ -40,6 +40,8 @@ public class EffectHandler {
         recipient.gameMessage("An immediate assets bonus is being provided to you from the card you picked.");
         Player pl = recipient.getPlayer();
         game.giveAssetsToPlayer(effect.getBonus(), pl);
+        if (game.playerHasActiveLeader(16, pl))
+            game.giveAssetsToPlayer(effect.getBonus(), pl);
     }
 
     private static void activateAssetsMultipliedEffect(AssetsMultipliedEffect effect, User recipient, Game game) {
@@ -47,6 +49,8 @@ public class EffectHandler {
                 "multiplied by your resources.");
         Player pl = recipient.getPlayer();
         game.giveAssetsToPlayer(effect.getBonus().multiply(pl.getResources().divide(effect.getMultiplier())),pl);
+        if (game.playerHasActiveLeader(16, pl))
+            game.giveAssetsToPlayer(effect.getBonus().multiply(pl.getResources().divide(effect.getMultiplier())),pl);
     }
 
     private static void activateCardMultipliedEffect(CardMultipliedEffect effect, User recipient, Game game) {
@@ -54,6 +58,9 @@ public class EffectHandler {
                 "multiplied by your amount of "+effect.getMultiplierColor()+" cards.");
         Player pl = recipient.getPlayer();
         game.giveAssetsToPlayer(effect.getBonus().multiply(pl.getCardsAmount(effect.getMultiplierColor())),pl);
+        if (game.playerHasActiveLeader(16, pl))
+            game.giveAssetsToPlayer(effect.getBonus().multiply(pl.getCardsAmount(effect.getMultiplierColor())),pl);
+
     }
 
     private static void activateCouncilFavorsEffect(CouncilFavorsEffect effect, User recipient) {
@@ -62,7 +69,8 @@ public class EffectHandler {
         recipient.askForCouncilFavor(effect.getAmount());
     }
 
-    public static void activateImmediateEffect(ImmediateEffect iEffect, User recipient, Game game) {
+    public static void activateImmediateEffect(ImmediateEffect iEffect, User recipient) {
+        Game game = recipient.getRoom().getGameController().getGame();
         if (iEffect instanceof ActionEffect) activateActionEffect((ActionEffect)iEffect, recipient);
         if (iEffect instanceof AssetsEffect) activateAssetsEffect((AssetsEffect)iEffect, recipient, game);
         if (iEffect instanceof AssetsMultipliedEffect) activateAssetsMultipliedEffect((AssetsMultipliedEffect)iEffect, recipient, game);

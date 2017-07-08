@@ -1,5 +1,6 @@
 package it.polimi.ingsw.lim.controller;
 
+import it.polimi.ingsw.lim.model.leaders.ActivableLeader;
 import it.polimi.ingsw.lim.model.leaders.LeaderCard;
 import it.polimi.ingsw.lim.model.leaders.PermanentLeader;
 
@@ -23,7 +24,18 @@ public class LeaderHandler {
             ArrayList<String> availableChoices = actor.getRoom().getGameController().getGame().getAllDeployedLeaders();
             actor.chooseLeaderToCopy(availableChoices);
             actor.getRoom().getGameController().setPendingLeaderCopy(availableChoices);
+        } else if (id == 10) {
+            DICE_COLORS.forEach(color -> actor.getPlayer().getDiceOverride().put(color, 5));
         }
+    }
+
+    public static void activateActivableLeader(int id, User actor) {
+        ActivableLeader leader = (ActivableLeader)actor.getPlayer().getLeaderById(id);
+
+        if(id == 12) actor.askFmToBoost();
+
+        leader.setActivated(true);
+        EffectHandler.activateImmediateEffect(leader.getEffect(), actor);
     }
 
 }

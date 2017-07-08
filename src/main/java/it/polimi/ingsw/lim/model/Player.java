@@ -20,7 +20,6 @@ import static it.polimi.ingsw.lim.Settings.*;
 public class Player implements Serializable{
 
     public Player(){
-
     }
 
     /**
@@ -34,6 +33,7 @@ public class Player implements Serializable{
         this.leaderCards = new ArrayList<>();
         this.familyMembers = new ArrayList<>();
         this.pickDiscounts = new HashMap<>();
+        this.diceOverride = new HashMap<>();
         this.defaultHarvestBonus = new Assets();
         this.defaultProductionBonus = new Assets();
         this.color = color;
@@ -62,6 +62,8 @@ public class Player implements Serializable{
      * These are the strengths of the player. Elements inside it could be both positive and negative.
      */
     private Strengths strengths;
+
+    private HashMap<String, Integer> diceOverride;
 
     /**
      * 
@@ -197,6 +199,10 @@ public class Player implements Serializable{
         return null; */
     }
 
+    public void resetFaithPoints() {
+        this.resources.setFaithPoints(0);
+    }
+
     public Strengths getStrengths() {
         return this.strengths;
     }
@@ -221,6 +227,14 @@ public class Player implements Serializable{
 
     public Assets getDefaultProductionBonus() {
         return defaultProductionBonus;
+    }
+
+    public HashMap<String, Integer> getDiceOverride() {
+        return diceOverride;
+    }
+
+    public void setDiceOverride(HashMap<String, Integer> diceOverride) {
+        this.diceOverride = diceOverride;
     }
 
     //Used in lambda to generate rank

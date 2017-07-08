@@ -202,4 +202,11 @@ public abstract class User implements Serializable{
 
     public abstract void notifyEndGame(ArrayList<Player> players);
 
+
+    /**
+     * This method is called when the user activates the leader card "Federico da Montefeltro".
+     * The game asks the user what family member he wants to activate.
+     */
+    public abstract void askFmToBoost();
+
 }
