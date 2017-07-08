@@ -52,6 +52,7 @@ public class RMIUser extends User {
 
     @Override
     public void notifyFastHarvest(int baseStr) {
+        if (!this.getIsAlive()) return;
         try {
             RMIServer.askClientForFastHarvest(baseStr, this.rci);
         } catch (RemoteException e) {
@@ -61,6 +62,7 @@ public class RMIUser extends User {
 
     @Override
     public void notifyFastProduction(int baseStr) {
+        if (!this.getIsAlive()) return;
         try {
             RMIServer.askClientForFastProduction(baseStr, this.rci);
         } catch (RemoteException e) {
@@ -70,6 +72,7 @@ public class RMIUser extends User {
 
     @Override
     public void notifyFastTowerMove(HashMap<String, Integer> baseStr, Assets optionalPickDiscount) {
+        if (!this.getIsAlive()) return;
         try {
             RMIServer.askClientForFastTowerMove(baseStr,optionalPickDiscount, this.rci);
         } catch (RemoteException e) {
@@ -80,6 +83,7 @@ public class RMIUser extends User {
     @JsonIgnore
     @Override
     public void askForProductionOptions(ArrayList<ArrayList<Object[]>> options) {
+        if (!this.getIsAlive()) return;
         try {
             RMIServer.askClientForProductionOptions(options, this.rci);
         } catch (RemoteException e) {
@@ -89,6 +93,7 @@ public class RMIUser extends User {
 
     @Override
     public void askForOptionalBpPick() {
+        if (!this.getIsAlive()) return;
         try {
             RMIServer.askClientForOptionalBpPick(this.rci);
         } catch (RemoteException e) {
@@ -98,6 +103,7 @@ public class RMIUser extends User {
 
     @Override
     public void askForExcommunication() {
+        if (!this.getIsAlive()) return;
         try {
             RMIServer.askClientForExcommunication(this.rci);
         } catch (RemoteException e) {
@@ -107,6 +113,7 @@ public class RMIUser extends User {
 
     @Override
     public void askForCouncilFavor(int favorAmount) {
+        if (!this.getIsAlive()) return;
         try {
             RMIServer.askClientForFavor(favorAmount, this.rci);
         } catch (RemoteException e) {
@@ -116,6 +123,7 @@ public class RMIUser extends User {
 
     @Override
     public void sendChatMessage(String sender, String message) {
+        if (!this.getIsAlive()) return;
         try {
             RMIServer.sendChatMessageToClient(sender, message, this.rci);
         } catch (RemoteException e) {
@@ -125,6 +133,7 @@ public class RMIUser extends User {
 
     @Override
     public void gameMessage(String message) {
+        if (!this.getIsAlive()) return;
         try {
             RMIServer.sendGameMessageToClient(message, this.rci);
         } catch (RemoteException e) {
@@ -144,6 +153,7 @@ public class RMIUser extends User {
      */
     @Override
     public void sendGameUpdate(Board board, ArrayList<Player> players) {
+        if (!this.getIsAlive()) return;
         try {
             RMIServer.sendGameToClient(board, players, this.rci);
         } catch (RemoteException e) {
@@ -154,6 +164,7 @@ public class RMIUser extends User {
     @JsonIgnore
     @Override
     public void isPlayerTurn(boolean isPlaying) {
+        if (!this.getIsAlive()) return;
         try {
             RMIServer.setPlayerTurn(isPlaying, this.rci);
         } catch (RemoteException e) {
@@ -166,6 +177,7 @@ public class RMIUser extends User {
     }
 
     private class RMIAliveness implements Runnable{
+
         private RMIUser user;
 
         RMIAliveness(RMIUser user) {

@@ -488,6 +488,12 @@ public class GameController {
         }
     }
 
+    public void deployLeader(int id, User actor) throws BadRequestException {
+        if (!actor.getUsername().equals(fastActor.getUsername()))
+            throw new BadRequestException("Wrong user");
+        if (game.isLeaderDeployable(id, actor.getPlayer()));
+    }
+
     //------------------------------ COUNCIL
 
     public void giveCouncilFavors(int amount) {

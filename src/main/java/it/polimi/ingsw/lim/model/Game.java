@@ -5,6 +5,7 @@ import it.polimi.ingsw.lim.exceptions.GameSetupException;
 import it.polimi.ingsw.lim.model.cards.Card;
 import it.polimi.ingsw.lim.model.cards.PurpleCard;
 import it.polimi.ingsw.lim.model.excommunications.*;
+import it.polimi.ingsw.lim.model.leaders.LeaderCard;
 import it.polimi.ingsw.lim.parser.Parser;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
@@ -805,9 +806,20 @@ public class Game {
                 ((EndGameCardsExcommunication) endGameExcomm).getBlockedCardColor().equals(color));
     }
 
-    /**
-     * FOLLOWING METHODS ARE USED ONLY FOR TESTING PURPOSES
-     */
+    public boolean isLeaderDeployable(int leaderId, Player pl) {
+        LeaderCard leader = pl.getLeaderById(leaderId);
+        if (leader.getAssetsRequirement().isGreaterOrEqual(pl.getResources())) return false;
+
+        for (String color : leader.getCardsRequirement().keySet()) {
+            if (leader.getCardsRequirement().get(color) > pl.getCardsOfColor(color).size())
+                return false;
+            else if (leader.getLeaderCardId() == 16 && leader.getCardsRequirement().get(color) <=
+                    pl.getCardsOfColor(color).size())
+                return true;
+        }
+        return true;
+    }
+
     @JsonIgnore
     public ArrayList<FamilyMember> getHarvest() {
         return this.board.getHarvest();

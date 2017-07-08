@@ -96,6 +96,10 @@ public class Player implements Serializable{
      *
      */
 
+    public LeaderCard getLeaderById(int id) {
+        return leaderCards.stream().filter(leader -> leader.getLeaderCardId() == id).findFirst().orElse(null);
+    }
+
     public void setLeaderCards(ArrayList<LeaderCard> leaderCards){
         this.leaderCards = leaderCards;
     }

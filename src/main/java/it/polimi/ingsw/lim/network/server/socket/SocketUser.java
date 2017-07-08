@@ -38,37 +38,37 @@ public class SocketUser extends User {
 
     @Override
     public void notifyFastHarvest(int baseStr) {
-        this.sch.askClientForFastHarvest(baseStr);
+        if (this.getIsAlive()) this.sch.askClientForFastHarvest(baseStr);
     }
 
     @Override
     public void notifyFastProduction(int baseStr) {
-        this.sch.askClientForFastProduction(baseStr);
+        if (this.getIsAlive()) this.sch.askClientForFastProduction(baseStr);
     }
 
     @Override
     public void notifyFastTowerMove(HashMap<String, Integer> baseStr, Assets optionalPickDiscount) {
-        this.sch.askClientForFastTowerMove(baseStr, optionalPickDiscount);
+        if (this.getIsAlive()) this.sch.askClientForFastTowerMove(baseStr, optionalPickDiscount);
     }
 
     @Override
     public void askForProductionOptions(ArrayList<ArrayList<Object[]>> options) {
-        this.sch.askClientForProductionOption(options);
+        if (this.getIsAlive()) this.sch.askClientForProductionOption(options);
     }
 
     @Override
     public void askForOptionalBpPick() {
-        this.sch.askClientForOptionalBpPick();
+        if (this.getIsAlive()) this.sch.askClientForOptionalBpPick();
     }
 
     @Override
     public void askForExcommunication() {
-        this.sch.askClientForExcommunication();
+        if (this.getIsAlive()) this.sch.askClientForExcommunication();
     }
 
     @Override
     public void askForCouncilFavor(int favorAmount) {
-        this.sch.askClientForFavor(favorAmount);
+        if (this.getIsAlive()) this.sch.askClientForFavor(favorAmount);
     }
 
     /**
@@ -78,12 +78,12 @@ public class SocketUser extends User {
      */
     @Override
     public void sendChatMessage(String sender, String message) {
-        this.sch.chatMessageToClient(sender, message);
+        if (this.getIsAlive()) this.sch.chatMessageToClient(sender, message);
     }
 
     @Override
     public void gameMessage(String message) {
-        this.sch.gameMessageToClient(message);
+        if (this.getIsAlive()) this.sch.gameMessageToClient(message);
     }
 
     @Override
@@ -98,12 +98,12 @@ public class SocketUser extends User {
      */
     @Override
     public void sendGameUpdate(Board board, ArrayList<Player> players) {
-        this.sch.sendGameToClient(board, players);
+        if (this.getIsAlive()) this.sch.sendGameToClient(board, players);
     }
 
     @Override
     public void isPlayerTurn(boolean isPlaying) {
-        this.sch.sendIfUserPlaying(isPlaying);
+        if (this.getIsAlive()) this.sch.sendIfUserPlaying(isPlaying);
     }
 }
 
