@@ -108,9 +108,7 @@ public class SocketClientHandler implements Runnable {
      * @param message
      */
     void chatMessageToClient(String sender, String message) {
-        System.out.println("Server socjet prechat");
-        sendObjectToClient(new Object[] {LOGIN_SUCCESSFUL});
-        sendObjectToClient(new Object[] {CHAT, sender, message});
+        sendObjectToClient(new Object[] {CHAT, sender ,message});
     }
 
     /**
@@ -119,9 +117,8 @@ public class SocketClientHandler implements Runnable {
      * @param players
      */
     void sendGameToClient(Board board, ArrayList<Player> players) {
-        System.out.println("PREINVIO");
-        sendObjectToClient(new Object[] {"BOARD", board});
-        sendObjectToClient(new Object[] {"PLAYER", players});
+        sendObjectToClient(board);
+        sendObjectToClient(players);
     }
 
     void sendIfUserPlaying(boolean isPlaying) {
@@ -137,7 +134,7 @@ public class SocketClientHandler implements Runnable {
         try {
             objFromServer.writeObject(obj);
             objFromServer.flush();
-            //objFromServer.reset();
+            objFromServer.reset();
         } catch (IOException e) {
             getLog().log(Level.SEVERE, "[SOCKET]: Could not send object to the client", e);
         }
@@ -177,7 +174,7 @@ public class SocketClientHandler implements Runnable {
                 clientCommandHandler.requestHandler(command);
             } catch (IOException | ClassNotFoundException e) {
                 getLog().log(Level.SEVERE, "[SOCKET]: Could not receive object from client, " +
-                        "maybe client is offline?\nRetrying " + (2 - tries) + " times.", e);
+                        "maybe client is offline?\nRetrying " + (2 - tries) + " times.");
                 tries++;
                 if (tries == 3) {
                     this.user.hasDied();

@@ -1,5 +1,8 @@
 package it.polimi.ingsw.lim.ui;
 
+import com.diogonunes.jcdp.color.ColoredPrinter;
+import com.diogonunes.jcdp.color.api.Ansi;
+import com.vdurmont.emoji.EmojiParser;
 import it.polimi.ingsw.lim.Lock;
 import it.polimi.ingsw.lim.exceptions.InvalidInputException;
 import it.polimi.ingsw.lim.model.*;
@@ -40,6 +43,8 @@ public class CLI extends AbsUI {
     private UIController uiCallback;
 
     private Lock lock;
+
+    private ColoredPrinter cp = new ColoredPrinter.Builder(1, false).build();
 
     protected CLI(UIController uiCallback) {
         lock = new Lock();
@@ -461,7 +466,10 @@ public class CLI extends AbsUI {
      */
     @Override
     public void printChatMessage(String sender, String message) {
-        printMessageln("[CHAT]: message from "+sender+": "+message);
+        //printMessageln("[CHAT]: message from "+sender+": "+message);
+        cp.println(EmojiParser.parseToUnicode(":email:  ")+"[CHAT] message from "+sender+" : " +message,
+                Ansi.Attribute.BOLD, Ansi.FColor.BLUE, Ansi.BColor.WHITE);
+        cp.clear();
     }
 
     @Override
@@ -485,7 +493,7 @@ public class CLI extends AbsUI {
      */
     @Override
     public void printMessageln(String message) {
-        System.out.println(message);
+        System.out.println(EmojiParser.parseToUnicode(message));
     }
 
     /**
@@ -494,7 +502,7 @@ public class CLI extends AbsUI {
      */
     @Override
     public void printMessage(String message) {
-        System.out.print(message);
+        System.out.print(EmojiParser.parseToUnicode(message));
     }
 
     /**

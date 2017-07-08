@@ -229,7 +229,7 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
 
     @Override
     public void startListenToInput() throws RemoteException {
-        uiCallback.getClientUI().waitForRequest();
+        uiCallback.getClientUI().getLock().unlock();
     }
 
     @Override
