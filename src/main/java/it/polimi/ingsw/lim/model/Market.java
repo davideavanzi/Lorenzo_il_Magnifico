@@ -24,7 +24,7 @@ public class Market implements Serializable {
         if(playersNumber <= MAX_USERS_PER_ROOM && playersNumber > 3) //do we have to check if there are more than 6 players?
             slotsNumber = playersNumber;
         this.slots = new FamilyMember[slotsNumber];
-        this.bonuses = new Assets[slotsNumber];
+        this.bonuses = new Object[slotsNumber];
         for (int i = 0; i < slotsNumber; i++)
             this.bonuses[i] = marketBonuses[i];
     }

@@ -1295,14 +1295,14 @@ public class CLI extends AbsUI {
         for(int i = 0; i < marketSize; i++){
             printMessageln(s);
             System.out.format(format, "", 20);
-            System.out.format(format, StringUtils.center(("MARKET " + i), 20));
+            System.out.format(format, StringUtils.center(("MARKET " + (i + 1)), 20));
             System.out.format(format, "_  _  _  _  _  _  _ ");
             System.out.format(format, "");
             if(market[i] instanceof Assets){
                 printAsset((Assets)market[i]);
             }
             else if (market[i] instanceof Integer){
-                System.out.format(format, StringUtils.center((" " + ((int)market[i])), 20));
+                System.out.format(format, StringUtils.center(("Different Favour: " + ((int)market[i])), 20));
             }
             System.out.format(format, "");
             printMessageln(s);
