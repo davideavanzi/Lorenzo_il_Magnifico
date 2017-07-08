@@ -85,6 +85,7 @@ public class MainServer {
                 for (File file : new File("src/main/gameData/configs/writer/room/").listFiles()) {
                     if (file.getName().contains(".json")) {
                         roomList.add(Writer.readerRoom(file));
+                        roomList.get(roomList.size()-1).getUsersList().forEach(user -> user.hasDied());
                         Log.getLog().info("[SERVER]: importing room");
                     }
                 }
