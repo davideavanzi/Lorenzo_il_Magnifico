@@ -769,7 +769,7 @@ public class Game {
     }
 
     public void excommunicatePlayer (Player pl) {
-        Excommunication ex = this.board.getExcommunications().get(this.board.getAge());
+        Excommunication ex = this.board.getExcommunicationsByAge(this.board.getAge());
         ex.addExcommunicated(pl);
         if (ex instanceof StrengthsExcommunication) pl.setStrengths(pl.getStrengths()
                 .add(((StrengthsExcommunication) ex).getMalus()));

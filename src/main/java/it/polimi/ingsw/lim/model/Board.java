@@ -166,4 +166,8 @@ public class Board implements Serializable {
     public HashMap<String, Integer> getDice() {
         return dice;
     }
+
+    public Excommunication getExcommunicationsByAge(int age) {
+        return this.excommunications.get(age - 1);
+    }
 }
