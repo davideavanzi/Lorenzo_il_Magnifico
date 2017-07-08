@@ -12,6 +12,7 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import static it.polimi.ingsw.lim.Log.getLog;
 import static it.polimi.ingsw.lim.Settings.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.*;
@@ -54,8 +55,9 @@ public class Room implements Serializable{
             timerPlayMove = Parser.parseTimerPlayMove(CONFIGS_PATH+"default/");
             timerStartingGame = Parser.parseTimerStartGame(CONFIGS_PATH+"default/");
         } catch (InvalidTimerException | IOException e) {
-            System.out.println(e.getMessage());
-        }
+            timerPlayMove = 60;
+            timerStartingGame = 60;
+            e.printStackTrace();        }
 
     }
 
@@ -93,6 +95,7 @@ public class Room implements Serializable{
         this.excommunicationRound = excommunicationRound;
     }
 
+    @JsonIgnore
     public void setExcommLock(Lock excommLock){
         this.excommLock = excommLock;
     }
@@ -101,6 +104,7 @@ public class Room implements Serializable{
         this.roomOpen = roomOpen;
     }
 
+    @JsonIgnore
     public Lock getExcommLock(){
         return excommLock;
     }
@@ -275,6 +279,20 @@ public class Room implements Serializable{
         usersList.forEach(user -> user.gameMessage("The game has ended. Ranking will be built now."));
         gameController.applyEndGameExcomm();
         ArrayList<String> ranking = gameController.buildRanking();
+        try {
+            for (File file : new File("src/main/gameData/configs/writer/room/").listFiles()) {
+                if (file.getName().contains(((Integer)id).toString())) {
+                    file.delete();
+                }
+            }
+            for (File file : new File("src/main/gameData/configs/writer/game/").listFiles()) {
+                if (file.getName().contains(((Integer)id).toString())) {
+                    file.delete();
+                }
+            }
+        } catch (NullPointerException e) {
+            Log.getLog().info("[ROOM]: No room/game file in src/main/gameData/configs/writer/room/ with id: ".concat(((Integer)id).toString()));
+        }
     }
 
     public void closeRoom(){

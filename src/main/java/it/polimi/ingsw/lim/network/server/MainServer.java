@@ -14,7 +14,9 @@ import java.io.File;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.logging.Level;
 
 
@@ -65,20 +67,45 @@ public class MainServer {
         socketServer = new SocketServer();
         try {
             rmiServer = new RMIServer();
-        } catch(RemoteException e) {
+        } catch (RemoteException e) {
             getLog().log(Level.SEVERE, "[RMI]: Could not create RMIServer's instance", e);
         }
         roomList = new ArrayList<>();
+        System.out.println("[SERVER]: Please, enter 1 to reload saved server status, any other key will erase all the saved file.");
+        int decision;
         try {
-            for (File file : new File("src/main/gameData/configs/writer/room/").listFiles()) {
-                if(file.getName().contains(".json")) {
-                    roomList.add(Writer.readerRoom(file));
-                    Log.getLog().info("[SERVER]: importing room");
+            Scanner resume = new Scanner(System.in);
+            decision = resume.nextInt();
+        }
+        catch (InputMismatchException e){
+            decision = 0;
+        }
+        if (decision == 1) {
+            try {
+                for (File file : new File("src/main/gameData/configs/writer/room/").listFiles()) {
+                    if (file.getName().contains(".json")) {
+                        roomList.add(Writer.readerRoom(file));
+                        Log.getLog().info("[SERVER]: importing room");
+                    }
                 }
+            } catch (NullPointerException e) {
+                Log.getLog().info("[SERVER]: No room file in src/main/gameData/configs/writer/room/");
             }
-            System.out.println("SIZE" + roomList.size()); //todo test
-        }catch (NullPointerException e){
-            Log.getLog().info("[SERVER]: No room file in src/main/gameData/configs/writer/room/v");
+        } else {
+            try {
+                for (File file : new File("src/main/gameData/configs/writer/room/").listFiles()) {
+                    if (file.getName().contains(".json")) {
+                        file.delete();
+                    }
+                }
+                for (File file : new File("src/main/gameData/configs/writer/game/").listFiles()) {
+                    if (file.getName().contains(".json")) {
+                        file.delete();
+                    }
+                }
+            } catch (NullPointerException e) {
+                Log.getLog().info("[SERVER]: No room file in src/main/gameData/configs/writer/room/");
+            }
         }
         connectedUsers = new ArrayList<>();
         try {
@@ -131,6 +158,8 @@ public class MainServer {
         for(Room room: roomList){
             for(User u: room.getUsersList()){
                 if(u.getUsername().equals(user.getUsername()) && !u.getIsAlive()){
+                    //todo chiedi se vuole entrare oppure no
+
                     Log.getLog().info("Player " + u.getUsername()+" has rejoined");
                     room.readdUser(user);
                     return roomList.get(roomList.size()-1);
