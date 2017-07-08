@@ -36,7 +36,7 @@ public class Room implements Serializable{
     private ArrayList<User> usersList;
     private ArrayList<String> playOrder;
     @JsonIgnore
-    private PlayerRound round;
+    private transient PlayerRound round;
     private int id;
     @JsonIgnore
     private transient ExcommunicationRound excommunicationRound;
@@ -57,8 +57,15 @@ public class Room implements Serializable{
         } catch (InvalidTimerException | IOException e) {
             timerPlayMove = 60;
             timerStartingGame = 60;
-            e.printStackTrace();        }
+        }
 
+    }
+
+    public Room(){
+        usersList = new ArrayList<>();
+        playOrder = new ArrayList<>();
+        excommLock = new Lock();
+        gameController = new GameController(this);
     }
 
     public boolean getRoomOpen() {
@@ -85,17 +92,10 @@ public class Room implements Serializable{
         return playOrder;
     }
 
+    @JsonIgnore
     public PlayerRound getRound() {
         return round;
     }
-
-    public Room(){
-        usersList = new ArrayList<>();
-        playOrder = new ArrayList<>();
-        excommLock = new Lock();
-        gameController = new GameController(this);
-    }
-
 
     public int getId(){
         return id;
@@ -133,12 +133,11 @@ public class Room implements Serializable{
         User userToReplace = usersList.stream()
                 .filter(oldUser -> oldUser.getUsername().equals(user.getUsername())).findFirst().orElse(null);
         user.setPlayer(userToReplace.getPlayer());
-        System.out.println(user.getPlayer().getNickname());
         usersList.set(usersList.indexOf(userToReplace), user);
 
         if(getNumAlive() == 2) {
             new TimerEnd(timerStartingGame, this);
-        }//todo timer solo se ci sono tutti o solo 2
+        }//todo verifica che se uno entra dopo che e' ripreso il timer viene rimesso al posto giusto
     }
 
     private int getNumAlive(){
@@ -175,7 +174,7 @@ public class Room implements Serializable{
             getLog().log(Level.INFO, () -> "The room is now full");
         }
         if(this.usersList.size() == 2){
-            new TimerEnd(timerStartingGame, this);//todo make configurable time
+            new TimerEnd(timerStartingGame, this);
         }
     }
 
@@ -192,7 +191,7 @@ public class Room implements Serializable{
     }
 
     public boolean isFull() {
-        return (this.usersList.size() >= MAX_USERS_PER_ROOM);
+        return this.usersList.size() >= MAX_USERS_PER_ROOM;
     }
 
     @JsonIgnore
@@ -202,7 +201,6 @@ public class Room implements Serializable{
 
     /**
      * This method is called when a round has ended and switches the round to the next player.
-     * TODO: handle disconnected players
      */
     void switchRound(){
         Log.getLog().info("player ".concat(playOrder.get(0)).concat(" ending round"));
@@ -292,7 +290,7 @@ public class Room implements Serializable{
      * If it is the right time, it also triggers the activation of the excommunication round
      */
     private void startNewTurn(){
-        //Send game state to players TODO: there's no need to update this everytime?
+        //Send game state to players
         ArrayList<Player> players = new ArrayList<>();
         usersList.forEach(user -> players.add(user.getPlayer()));
         getConnectedUsers().forEach(user -> user.sendGameUpdate(this.gameController.getBoard(), players));
@@ -301,7 +299,8 @@ public class Room implements Serializable{
             excommLock.lock();
             new Thread(new ExcommunicationRound(this,10000,excommLock)).start();
         }
-        if (excommLock.isLocked()) excommLock.lock();
+        if (excommLock.isLocked())
+            excommLock.lock();
         this.gameController.startNewTurn();
         for (int i = 0; i < playOrder.size(); i++)
             if (this.getUser(playOrder.get(i)).isAlive()) {
@@ -345,7 +344,7 @@ public class Room implements Serializable{
         private Timer timer;
         private TimerEnd(int seconds, Room roomCallback){
             timer = new Timer();
-            timer.schedule(new RoomTimer(roomCallback), seconds * 1000 /*by default ms (1s = 1000ms)*/);
+            timer.schedule(new RoomTimer(roomCallback), (long) (seconds * 1000) /*by default ms (1s = 1000ms)*/);
         }
         private class RoomTimer extends TimerTask{
             private Room roomCallback;

@@ -66,6 +66,7 @@ public class CLI extends AbsUI {
         initializeCommandLine();
     }
 
+    @Override
     public Lock getLock() {
         return lock;
     }
@@ -482,6 +483,7 @@ public class CLI extends AbsUI {
         printMessage("");
     }
 
+    @Override
     public void notifyStartRound(boolean isMyTurn) {
         if (isMyTurn) {
             availableCmdList.put(FAMILY_MEMBER, cmdList.get(FAMILY_MEMBER));
@@ -492,6 +494,7 @@ public class CLI extends AbsUI {
         }
     }
 
+    @Override
     public void notifyStartGame () {
         availableCmdList.put(TURN, cmdList.get(TURN));
         availableCmdList.put(INFO, cmdList.get(INFO));
@@ -610,7 +613,6 @@ public class CLI extends AbsUI {
      */
     @Override
     public void printChatMessage(String sender, String message) {
-        //printMessageln("[CHAT]: message from "+sender+": "+message);
         cp.println(EmojiParser.parseToUnicode(":email:  ")+"[CHAT] message from "+sender+" : " +message,
                 Ansi.Attribute.BOLD, Ansi.FColor.BLUE, Ansi.BColor.WHITE);
         cp.clear();
@@ -656,8 +658,6 @@ public class CLI extends AbsUI {
         this.printTowers();
         this.printMarket();
         this.printExcommunications();
-        //this.printFaithPointsTrack();
-        //this.printVictoryPointsTrack();
     }
 
     private void printExcommunications(){

@@ -11,7 +11,7 @@ import static it.polimi.ingsw.lim.Settings.DEPLOYABLE_FM_PER_ROUND;
 /**
  * This class represent the single turn phase of a player .
  */
-public class PlayerRound implements Round, Serializable{
+public class PlayerRound implements Round{
 
     /**
      * The user playing the game
@@ -51,6 +51,7 @@ public class PlayerRound implements Round, Serializable{
         this.user = user;
     }
 
+    @Override
     public void setTimer(Timer timer){
         this.timer = timer;
     }

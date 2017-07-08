@@ -262,9 +262,9 @@ public class UIController {
      */
     public void startGame() {
         String protocol = clientUI.setNetworkSettings();
-        if (protocol.equals("socket")) {
+        if ("socket".equals(protocol) ){
             new Thread(new SocketClient(this)).start();
-        } else if (protocol.equals("rmi")) {
+        } else if ("rmi".equals(protocol)) {
             clientProtocol = new RMIClient(this);
         }
 

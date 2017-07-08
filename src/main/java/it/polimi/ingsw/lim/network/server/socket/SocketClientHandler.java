@@ -264,14 +264,16 @@ public class SocketClientHandler implements Runnable {
                 if (command[0].equals(LOGIN)) {
                     login((String)command[1], (String)command[2], this);
                     sendObjectToClient(new Object[] {LOGIN_SUCCESSFUL});
-                    return isClientLogged = true;
+                    isClientLogged = true;
+                    return isClientLogged;
                 }
             } catch (IOException | ClassNotFoundException e) {
                 getLog().log(Level.SEVERE, ("[SOCKET]: Could not receive login information from client, retrying "
                         + (2 - loginFailed) + " times"), e);
                 loginFailed++;
                 if (loginFailed == 3) {
-                    return isClientLogged = false;
+                    isClientLogged = false;
+                    return isClientLogged;
                 }
             } catch (LoginFailedException e) {
                 sendObjectToClient(new Object[] {LOGIN_FAILED, e.getMessage()});
@@ -297,6 +299,7 @@ public class SocketClientHandler implements Runnable {
     /**
      * Create the I/O socket stream, run until the login is successful then listen for a client command
      */
+    @Override
     public void run() {
         createStream();
         if (loginRequest())

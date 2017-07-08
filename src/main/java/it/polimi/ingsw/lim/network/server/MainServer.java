@@ -25,45 +25,6 @@ import java.util.logging.Level;
 public class MainServer {
 
     /**
-     * Socket Server Port Number.
-     */
-    private int socketPort = 8989;
-
-    /**
-     * RMI Server Port Number.
-     */
-    private int RMIPort = 1099;
-
-    /**
-     * ArrayList of room.
-     */
-    private static ArrayList<Room> roomList;
-
-    /**
-     * ArrayList of connected users.
-     */
-    private static ArrayList<User> connectedUsers;
-
-    /**
-     * Declaration of SocketServer and RMIServer class.
-     */
-    private SocketServer socketServer;
-    private RMIServer rmiServer;
-
-    /**
-     * User database.
-     */
-    private static JDBC jdbc;
-
-    /**
-     * Getters.
-     * @return the user DB.
-     */
-    public static JDBC getJDBC(){
-        return jdbc;
-    }
-
-    /**
      * MainServer Constructor.
      */
     private MainServer() {
@@ -117,12 +78,50 @@ public class MainServer {
             jdbc = new JDBC();
         } catch (SQLException e){
             getLog().severe("[SQL]: Some errors in SQL query ");
-            e.printStackTrace();
         } catch (ClassNotFoundException e){
             getLog().severe("[SQL]: Can't locate driver for SQLite ");
-            e.printStackTrace();
         }
     }
+
+    /**
+     * Socket Server Port Number.
+     */
+    private int socketPort = 8989;
+
+    /**
+     * RMI Server Port Number.
+     */
+    private int RMIPort = 1099;
+
+    /**
+     * ArrayList of room.
+     */
+    private static ArrayList<Room> roomList;
+
+    /**
+     * ArrayList of connected users.
+     */
+    private static ArrayList<User> connectedUsers;
+
+    /**
+     * Declaration of SocketServer and RMIServer class.
+     */
+    private SocketServer socketServer;
+    private RMIServer rmiServer;
+
+    /**
+     * User database.
+     */
+    private static JDBC jdbc;
+
+    /**
+     * Getters.
+     * @return the user DB.
+     */
+    public static JDBC getJDBC(){
+        return jdbc;
+    }
+
 
     /**
      * @return the roomList's ArrayList.
@@ -132,9 +131,6 @@ public class MainServer {
     }
 
     public static User getUserFromUsername (String name) {
-        /*
-        return roomList.forEach(room -> room.getUsersList().stream()
-                .filter(user -> user.getUsername().equals(name)).findFirst().orElse(null)); */
         for (Room room : roomList) {
             for (User user : room.getUsersList())
                 if (user.getUsername().equals(name))
@@ -147,7 +143,6 @@ public class MainServer {
      * This method searches a user from the list of connected users, if it is not present, it returns null
      * @param username the user name to search
      * @return the user, if not found null.
-     * TODO: is this really useful?
      */
     public static User getConnectedUser(String username) {
         return connectedUsers.stream().filter(user -> user.getUsername().equals(username)).findFirst().orElse(null);
@@ -163,7 +158,6 @@ public class MainServer {
         for(Room room: roomList){
             for(User u: room.getUsersList()){
                 if(u.getUsername().equals(user.getUsername()) && !u.getIsAlive()){
-                    //todo chiedi se vuole entrare oppure no
 
                     Log.getLog().info("Player " + u.getUsername()+" has rejoined");
                     room.readdUser(user);
