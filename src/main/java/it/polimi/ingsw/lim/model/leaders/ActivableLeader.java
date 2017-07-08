@@ -25,6 +25,9 @@ public class ActivableLeader extends LeaderCard {
      */
     private ImmediateEffect effect;
 
+    public ImmediateEffect getEffect() {
+        return effect;
+    }
 
     private boolean activated;
 

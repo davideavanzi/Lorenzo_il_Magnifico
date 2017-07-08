@@ -6,9 +6,9 @@ import it.polimi.ingsw.lim.exceptions.GameSetupException;
 import it.polimi.ingsw.lim.model.*;
 import it.polimi.ingsw.lim.model.cards.*;
 import it.polimi.ingsw.lim.model.immediateEffects.*;
+import it.polimi.ingsw.lim.model.leaders.*;
 import it.polimi.ingsw.lim.parser.Parser;
 import it.polimi.ingsw.lim.parser.Writer;
-import java.util.TreeMap;
 
 import java.io.IOException;
 import java.util.*;
@@ -217,9 +217,9 @@ public class GameController {
         card.getImmediateEffects().stream().filter(ie -> ie instanceof AssetsEffect
                 || ie instanceof AssetsMultipliedEffect || ie instanceof CardMultipliedEffect
                 || ie instanceof CouncilFavorsEffect)
-                .forEach(ie -> EffectHandler.activateImmediateEffect(ie, actor, game));
+                .forEach(ie -> EffectHandler.activateImmediateEffect(ie, actor));
         card.getImmediateEffects().stream().filter(ie -> ie instanceof ActionEffect)
-                .forEach(ie -> EffectHandler.activateImmediateEffect(ie, actor, game));
+                .forEach(ie -> EffectHandler.activateImmediateEffect(ie, actor));
         if (card instanceof BlueCard) CardHandler.activateBlueCard((BlueCard)card, actor.getPlayer());
     }
 
@@ -567,16 +567,9 @@ public class GameController {
         return roomCallback;
     }
 
-    ArrayList<Player> buildRanking() {
+    ArrayList<String> buildRanking() {
         game.getPlayers().forEach(player -> game.calcEndGameBonus(player));
-        game.applyVpOnBpRank();
-        HashMap<Player, Integer> playerWithPoints = new HashMap<>(game.getPlayers().stream().collect(
-                Collectors.toMap (player -> player, player -> player.getResources().getVictoryPoints())));
-        ArrayList<Integer> orderPoints = new ArrayList<>(playerWithPoints.values());
-        Collections.sort(orderPoints, Collections.reverseOrder());
-        return new ArrayList<>(playerWithPoints.entrySet().stream()
-                .filter(pl -> pl.getValue().equals(orderPoints.get(0)))
-                .map(Map.Entry::getKey).collect(Collectors.toList()));
+        return new ArrayList<>();
     }
 
     void applyEndGameExcomm() {

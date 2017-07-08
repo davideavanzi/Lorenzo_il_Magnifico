@@ -145,5 +145,9 @@ public class Leaders {
         return buildLeaders().stream().filter(leader -> leader.getCardName().equals(name)).findFirst().orElse(null);
     }
 
+    public static final int MONTEFELTRO_FM_BONUS = 6;
+    public static final int MORO_FM_BONUS = 5;
+    public static final Assets SISTOIV_CHURCH_BONUS = new Assets(0,0,0,0,5,0,0);
+    public static final Assets MIRANDOLA_PICK_BONUS = new Assets(3,0,0,0,0,0,0);
 
 }

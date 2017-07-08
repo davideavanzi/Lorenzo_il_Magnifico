@@ -7,6 +7,7 @@ import it.polimi.ingsw.lim.model.cards.PurpleCard;
 import it.polimi.ingsw.lim.model.excommunications.*;
 import it.polimi.ingsw.lim.model.leaders.ActivableLeader;
 import it.polimi.ingsw.lim.model.leaders.LeaderCard;
+import it.polimi.ingsw.lim.model.leaders.PermanentLeader;
 import it.polimi.ingsw.lim.parser.Parser;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
@@ -16,6 +17,8 @@ import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.lim.Settings.*;
 import static it.polimi.ingsw.lim.Log.*;
+import static it.polimi.ingsw.lim.model.leaders.Leaders.MIRANDOLA_PICK_BONUS;
+import static it.polimi.ingsw.lim.model.leaders.Leaders.MORO_FM_BONUS;
 
 /**
  * THE GAME INSTANCE
@@ -103,11 +106,10 @@ public class Game {
 
     // ############################################################# METHODS AHEAD
 
-
-
-    //TODO:implement leadercard effect here
     public int getFmStrength(FamilyMember fm) {
-        if (fm.getDiceColor().equals(NEUTRAL_COLOR)) return NEUTRAL_FM_STRENGTH;
+        if (getPlayerFromColor(fm.getOwnerColor()).getDiceOverride().get(fm.getDiceColor()) != null)
+            return getPlayerFromColor(fm.getOwnerColor()).getDiceOverride().get(fm.getDiceColor());
+        if (playerHasActiveLeader(10, getPlayerFromColor(fm.getOwnerColor()))) return MORO_FM_BONUS;
         return this.board.getDice().get(fm.getDiceColor())+getPlayerFromColor(fm.getOwnerColor())
                 .getStrengths().getDiceBonus().get(fm.getDiceColor());
     }
@@ -196,6 +198,7 @@ public class Game {
         getLog().info("Resetting activated leaders");
         this.players.forEach(player -> player.getActivatedLeaders()
                 .forEach(leaderCard -> ((ActivableLeader)leaderCard).setActivated(false)));
+        this.players.forEach(player -> player.getDiceOverride().clear());
 
         getLog().info("[NEW_TURN_SETUP_END]");
     }
@@ -255,14 +258,6 @@ public class Game {
     }
 
     /**
-     * Tells if it's time to excommunicate players
-     * @return true if the game is in the last turn of the age.
-     */
-    public boolean excommunicationTime() {
-        return this.board.getTurn() >= TURNS_PER_AGE;
-    }
-
-    /**
      * This method checks if a player is able to put a family member in a tower on a specified floor.
      * it checks if that floor is occupied, if there are others family members of that player in the tower and
      * if the player has enough strength to perform the action
@@ -299,7 +294,7 @@ public class Game {
         Player pl = getPlayerFromColor(fm.getOwnerColor());
         if (pl.getCardsOfColor(towerColor).size() >= 6) return false;
         if (pl.getResources().getBattlePoints() >=
-                PLAYER_TERRITORIES_REQ[pl.getCardsOfColor(GREEN_COLOR).size()-1])
+                PLAYER_TERRITORIES_REQ[pl.getCardsOfColor(GREEN_COLOR).size()-1] && !playerHasActiveLeader(15, pl))
             return false;
         return true;
      }
@@ -321,7 +316,8 @@ public class Game {
                         (pl.getPickDiscount(towerColor));
         Assets additionalCost = new Assets();
         Assets playerAssets = new Assets(pl.getResources());
-        if (this.isTowerOccupied(towerColor) && pl.getResources().getCoins() > COINS_TO_ENTER_OCCUPIED_TOWER)
+        if (this.isTowerOccupied(towerColor) && playerHasActiveLeader(3, getPlayerFromColor(fm.getOwnerColor())) &&
+                pl.getResources().getCoins() > COINS_TO_ENTER_OCCUPIED_TOWER)
             cardCost.addCoins(COINS_TO_ENTER_OCCUPIED_TOWER);
         else return false;
         if (this.isTowerOccupied(towerColor) && !playerAssets.isGreaterOrEqual(additionalCost))
@@ -338,6 +334,7 @@ public class Game {
     public boolean isCardAffordable(Card card, Player actor, String towerColor, Assets optionalPickDiscount) {
         Assets cardCost = card.getCost().subtractToZero
                 (actor.getPickDiscount(towerColor).subtractToZero(optionalPickDiscount));
+        if (playerHasActiveLeader(20, actor)) cardCost.subtractToZero(MIRANDOLA_PICK_BONUS);
         return (actor.getResources().isGreaterOrEqual(cardCost));
     }
     @JsonIgnore
@@ -361,12 +358,13 @@ public class Game {
         //Action cost is different whether the player wants to pay the card's cost or the purple's card bp cost.
         Assets actionCost = (useBp) ? new Assets().addServants(((PurpleCard)card).getOptionalBpCost()) :
                 new Assets(card.getCost()).addServants(servantsDeployed);
+        if (playerHasActiveLeader(20, actor)) actionCost.subtractToZero(MIRANDOLA_PICK_BONUS);
         if(this.isTowerOccupied(towerColor))
             actionCost.addCoins(COINS_TO_ENTER_OCCUPIED_TOWER);
         destination.setFamilyMemberSlot(actor.pullFamilyMember(fm.getDiceColor()));
         actionCost.subtractToZero(actor.getPickDiscount(towerColor));
         if (this.isPlayerTowerBonusAllowed(actor)) giveAssetsToPlayer(destination.getInstantBonus(), actor);
-        actor.getResources().subtract(actionCost);
+        removeAssetsFromPlayer(actionCost, actor);
         actor.addCard(card, towerColor);
         return card;
     }
@@ -379,6 +377,7 @@ public class Game {
         //TODO: ???? .adds(pp
         Assets actionCost = (useBp) ? new Assets().addServants(((PurpleCard)card).getOptionalBpCost()) :
                 new Assets(card.getCost()).addServants(servantsDeployed);
+        if (playerHasActiveLeader(20, actor)) actionCost.subtractToZero(MIRANDOLA_PICK_BONUS);
         if(this.isTowerOccupied(towerColor))
             actionCost.addCoins(COINS_TO_ENTER_OCCUPIED_TOWER);
         if(this.isPlayerTowerBonusAllowed(actor))
@@ -400,6 +399,7 @@ public class Game {
         Floor destination = this.board.getTowers().get(towerColor).getFloor(floor);
         if (!destination.hasCard()) return false;
         Assets actionCost = destination.getCardSlot().getCost();
+        if (playerHasActiveLeader(20, pl)) actionCost.subtractToZero(MIRANDOLA_PICK_BONUS);
         if (this.isTowerOccupied(towerColor) && pl.getResources().getCoins() > COINS_TO_ENTER_OCCUPIED_TOWER)
             actionCost.addCoins(COINS_TO_ENTER_OCCUPIED_TOWER);
         else return false;
@@ -430,7 +430,8 @@ public class Game {
      */
     @JsonIgnore
     public boolean isHarvestMoveAllowed(FamilyMember fm) {
-        if(this.players.size() == 2 && !this.board.getHarvest().isEmpty())
+        if(this.players.size() == 2 && (!this.board.getHarvest().isEmpty() ||
+                playerHasActiveLeader(2, getPlayerFromColor(fm.getOwnerColor()))))
             return false;
         for (FamilyMember f : this.board.getHarvest())
             if (f.getOwnerColor().equals(fm.getOwnerColor()) && ((f.getDiceColor().equals(NEUTRAL_COLOR)) ==
@@ -446,7 +447,6 @@ public class Game {
      * @param fm the family member used in this action
      */
     public void harvestMove(FamilyMember fm, int servantsDeployed) {
-        //TODO: pick deployed family member?
         this.board.getHarvest().add(fm);
         getPlayerFromColor(fm.getOwnerColor()).pullFamilyMember(fm.getDiceColor());
         Assets actionCost = new Assets().addServants(servantsDeployed);
@@ -473,7 +473,8 @@ public class Game {
      */
     public int servantsForProductionAction(FamilyMember fm, int baseStr) {
         int baseStrength = (fm == null) ? baseStr : this.getFmStrength(fm);
-        int actionCost = (this.board.getHarvest().size() <= PRODUCTION_DEFAULTSPACE_SIZE)
+        int actionCost = (this.board.getHarvest().size() <= PRODUCTION_DEFAULTSPACE_SIZE &&
+                !playerHasActiveLeader(2, getPlayerFromColor(fm.getOwnerColor())))
                 ? PRODUCTION_DEFAULT_STR : PRODUCTION_STR_MALUS;
         int actionStr = baseStrength +
                 getPlayerFromColor(fm.getOwnerColor()).getStrengths().getHarvestBonus();
@@ -488,11 +489,11 @@ public class Game {
      * Action cost - Dice strength + Player bonus(or malus if negative)
      * @param fm
      * @return
-     * TODO: add excomm malus ? is it already in the player?
      */
     public int servantsForHarvestAction(FamilyMember fm, int baseStr) {
         int baseStrength = (fm == null) ? baseStr : this.getFmStrength(fm);
-        int actionCost = (this.board.getHarvest().size() <= HARVEST_DEFAULTSPACE_SIZE)
+        int actionCost = (this.board.getHarvest().size() <= HARVEST_DEFAULTSPACE_SIZE &&
+                !playerHasActiveLeader(2, getPlayerFromColor(fm.getOwnerColor())))
                 ? HARVEST_DEFAULT_STR : HARVEST_STR_MALUS;
         int actionStr = baseStrength +
                 getPlayerFromColor(fm.getOwnerColor()).getStrengths().getHarvestBonus();
@@ -514,7 +515,8 @@ public class Game {
         int baseStr = (fm == null) ? tmpActionStr : this.getFmStrength(fm);
         if (isPlayerServantsExcommunicated(getPlayerFromColor(fm.getOwnerColor())))
             servantsDeployed /= 2; //it should be always a even number, because the client doubled the amount of servants while deploying
-        if (this.board.getHarvest().size() <= HARVEST_DEFAULTSPACE_SIZE) baseStr -= HARVEST_STR_MALUS;
+        if (this.board.getHarvest().size() >= HARVEST_DEFAULTSPACE_SIZE  &&
+                !playerHasActiveLeader(2, getPlayerFromColor(fm.getOwnerColor()))) baseStr -= HARVEST_STR_MALUS;
         return baseStr+servantsDeployed+getPlayerFromColor(fm.getOwnerColor()).getStrengths().getHarvestBonus();
     }
 
@@ -530,12 +532,15 @@ public class Game {
         int baseStr = (fm == null) ? tmpActionStr : this.getFmStrength(fm);
         if (isPlayerServantsExcommunicated(actor))
             servantsDeployed /= 2;
-        if (this.board.getProduction().size() <= PRODUCTION_DEFAULTSPACE_SIZE) baseStr -= PRODUCTION_STR_MALUS;
+        if (this.board.getProduction().size() >= PRODUCTION_DEFAULTSPACE_SIZE  &&
+                !playerHasActiveLeader(2, getPlayerFromColor(fm.getOwnerColor()))) baseStr -= PRODUCTION_STR_MALUS;
         return baseStr+servantsDeployed+actor.getStrengths().getProductionBonus();
     }
+
     @JsonIgnore
     public boolean isProductionMoveAllowed(FamilyMember fm) {
-        if(this.players.size() == 2 && !this.board.getProduction().isEmpty())
+        if(this.players.size() == 2 && (!this.board.getProduction().isEmpty() ||
+                playerHasActiveLeader(2, getPlayerFromColor(fm.getOwnerColor()))))
             return false;
         for (FamilyMember f : this.board.getProduction())
             if (f.getOwnerColor().equals(fm.getOwnerColor()) && ((f.getDiceColor().equals(NEUTRAL_COLOR)) ==
@@ -618,7 +623,8 @@ public class Game {
 
     public boolean isMarketMoveAllowed(FamilyMember fm, int position) {
         Market market = this.getBoard().getMarket();
-        return market.isPositionAvailable(position) && market.isPositionOccupied(position);
+        return market.isPositionAvailable(position) && (market.isPositionOccupied(position) ||
+                playerHasActiveLeader(2, getPlayerFromColor(fm.getOwnerColor())));
     }
 
     public void marketMove(FamilyMember fm, int position, int servantsDeployed) {
@@ -858,6 +864,16 @@ public class Game {
 
     public void replaceLeader(LeaderCard leader, Player pl) {
         pl.getLeaderCards().set(pl.getLeaderCards().indexOf(pl.getLeaderById(13)),leader);
+    }
+
+    public boolean playerHasActiveLeader(int id, Player pl) {
+        LeaderCard leader = pl.getLeaderById(id);
+        if (leader == null) return false;
+        if (leader instanceof PermanentLeader && leader.isDeployed())
+            return true;
+        if (leader instanceof ActivableLeader && leader.isDeployed() && ((ActivableLeader) leader).isActivated())
+            return true;
+        return false;
     }
 
     @JsonIgnore
