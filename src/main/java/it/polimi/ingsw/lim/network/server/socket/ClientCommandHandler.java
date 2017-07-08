@@ -110,6 +110,12 @@ class ClientCommandHandler {
                 } catch (BadRequestException e) {
                     handlerCallback.commandValidator(PICK_FROM_TOWER, e.getMessage(), false);
                 }
+            } else if (commandID.equals(ACTIVATE_LEADER)) {
+
+            } else if (commandID.equals(DEPLOY_LEADER)) {
+
+            } else if (commandID.equals(DISCARD_LEADER)) {
+
             } else {
                 getLog().log(Level.SEVERE, () ->"[COMMAND_HANDLER]: Invalid message identifier: "+commandID);
             }

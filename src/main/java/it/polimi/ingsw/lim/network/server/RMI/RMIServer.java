@@ -26,7 +26,7 @@ import static it.polimi.ingsw.lim.network.CommunicationConstants.*;
 import static it.polimi.ingsw.lim.network.server.MainServer.addUserToRoom;
 
 /**
- * Created by Nico.
+ *
  */
 public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
 
@@ -280,10 +280,13 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
     }
 
     /**
-     * The rmi login method. It's used for users authentication.
-     * @param username
-     * @param rmiClient
-     * @throws RemoteException
+     * Login method.
+     * Add to database the username and the password of new client.
+     * Check if the inserted password is correct, then add user to room.
+     * @param username the player's name
+     * @param password the player's password
+     * @param rmiClient is the stub (rmi client interface)
+     * @throws LoginFailedException if username or password are wrong
      */
     public void login(String username, String password, RMIClientInterf rmiClient) throws RemoteException, LoginFailedException {
         try {

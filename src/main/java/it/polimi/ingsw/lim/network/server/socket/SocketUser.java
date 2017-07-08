@@ -37,6 +37,11 @@ public class SocketUser extends User {
     }
 
     @Override
+    public void chooseLeaderToCopy(ArrayList<String> copyableLeaders) {
+        if (this.getIsAlive()) this.sch.askClientToChooseLeaderToCopy(copyableLeaders);
+    }
+
+    @Override
     public void notifyFastHarvest(int baseStr) {
         if (this.getIsAlive()) this.sch.askClientForFastHarvest(baseStr);
     }
@@ -108,7 +113,7 @@ public class SocketUser extends User {
     }
 
     @Override
-    public void notifyStartGame() {
+    public void notifyGameStart() {
         this.sch.sendNoficationStartGame();
     }
 }

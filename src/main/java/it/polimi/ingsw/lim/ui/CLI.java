@@ -40,12 +40,25 @@ public class CLI extends AbsUI {
      */
     private Integer inputNum;
 
+    /**
+     * UI controller callback.
+     */
     private UIController uiCallback;
 
+    /**
+     * Lock
+     */
     private Lock lock;
 
+    /**
+     * It's used for color the output.
+     */
     private ColoredPrinter cp = new ColoredPrinter.Builder(1, false).build();
 
+    /**
+     * Package local constructor.
+     * @param uiCallback ui controller callback
+     */
     protected CLI(UIController uiCallback) {
         lock = new Lock();
         lock.lock();
@@ -61,7 +74,7 @@ public class CLI extends AbsUI {
         do {
             while (!userInput.hasNextInt()) {
                 input = userInput.next();
-                System.out.printf("\"%s\" is not a valid number.\n", input);
+                printError(input.concat(" is not a valid number."));
             }
             inputNum = userInput.nextInt();
         } while (inputNum < 0);
@@ -85,7 +98,7 @@ public class CLI extends AbsUI {
         do {
             while (!userInput.hasNextInt()) {
                 input = userInput.next();
-                System.out.printf("\"%s\" is not a valid number.\n", input);
+                printError(input.concat(" is not a valid number."));
             }
             inputNum = userInput.nextInt();
         } while (inputNum < 0);
@@ -105,7 +118,7 @@ public class CLI extends AbsUI {
             do {
                 while (!userInput.hasNextInt()) {
                     input = userInput.next();
-                    System.out.printf("\"%s\" is not a valid number.\n", input);
+                    printError(input.concat(" is not a valid number."));
                 }
                 inputNum = userInput.nextInt();
             } while (inputNum < 0 || inputNum < 5);
@@ -114,7 +127,7 @@ public class CLI extends AbsUI {
             do {
                 while (!userInput.hasNextInt()) {
                     input = userInput.next();
-                    System.out.printf("\"%s\" is not a valid number.\n", input);
+                    printError(input.concat(" is not a valid number."));
                 }
                 inputNum = userInput.nextInt();
             } while (inputNum < 0 || inputNum < 6);
@@ -142,7 +155,7 @@ public class CLI extends AbsUI {
         do {
             while (!userInput.hasNextInt()) {
                 input = userInput.next();
-                System.out.printf("\"%s\" is not a valid number.\n", input);
+                printError(input.concat(" is not a valid number."));
             }
             inputNum = userInput.nextInt();
         } while (inputNum < 0 || inputNum < TOWER_HEIGHT);
@@ -192,7 +205,7 @@ public class CLI extends AbsUI {
                 do {
                     while (!userInput.hasNextInt()) {
                         input = userInput.next();
-                        System.out.printf("\"%s\" is not a valid number.\n", input);
+                        printError(input.concat(" is not a valid number."));
                     }
                     inputNum = userInput.nextInt();
                 } while (inputNum < 0 || inputNum < card.size());
@@ -209,7 +222,7 @@ public class CLI extends AbsUI {
         do {
             while (!userInput.hasNextInt()) {
                 input = userInput.next();
-                System.out.printf("\"%s\" is not a valid number.\n", input);
+                printError(input.concat(" is not a valid number."));
             }
             inputNum = userInput.nextInt();
         } while (!(inputNum.equals(1) || inputNum.equals(2)));
@@ -227,7 +240,7 @@ public class CLI extends AbsUI {
         do {
             while (!userInput.hasNextInt()) {
                 input = userInput.next();
-                System.out.printf("\"%s\" is not a valid number.\n", input);
+                printError(input.concat(" is not a valid number."));
             }
             inputNum = userInput.nextInt();
             favorChoice.add(inputNum);
@@ -243,7 +256,7 @@ public class CLI extends AbsUI {
         do {
             while (!userInput.hasNextInt()) {
                 input = userInput.next();
-                System.out.printf("\"%s\" is not a valid number.\n", input);
+                printError(input.concat(" is not a valid number."));
             }
             inputNum = userInput.nextInt();
         } while (!(inputNum.equals(1) || inputNum.equals(2)));
@@ -262,7 +275,7 @@ public class CLI extends AbsUI {
         do {
             while (!userInput.hasNextInt()) {
                 input = userInput.next();
-                System.out.printf("\"%s\" is not a valid number.\n", input);
+                printError(input.concat(" is not a valid number."));
             }
             inputNum = userInput.nextInt();
         } while (inputNum >= 0);
@@ -277,7 +290,7 @@ public class CLI extends AbsUI {
         do {
             while (!userInput.hasNextInt()) {
                 input = userInput.next();
-                System.out.printf("\"%s\" is not a valid number.\n", input);
+                printError(input.concat(" is not a valid number."));
             }
             inputNum = userInput.nextInt();
         } while (inputNum-1 >= 0 && inputNum-1 < numBoard);
@@ -287,7 +300,7 @@ public class CLI extends AbsUI {
             do {
                 while (!userInput.hasNextInt()) {
                     input = userInput.next();
-                    System.out.printf("\"%s\" is not a valid number.\n", input);
+                    printError(input.concat(" is not a valid number."));
                 }
                 inputNum = userInput.nextInt();
             } while (inputNum-1 >= 0 && inputNum-1 < 4);
@@ -297,7 +310,7 @@ public class CLI extends AbsUI {
             do {
                 while (!userInput.hasNextInt()) {
                     input = userInput.next();
-                    System.out.printf("\"%s\" is not a valid number.\n", input);
+                    printError(input.concat(" is not a valid number."));
                 }
                 inputNum = userInput.nextInt();
             } while (inputNum-1 >= 0 && inputNum-1 < marketSlot);
@@ -341,7 +354,7 @@ public class CLI extends AbsUI {
         do {
             while (!userInput.hasNextInt()) {
                 input = userInput.next();
-                System.out.printf("\"%s\" is not a valid number.\n", input);
+                printError(input.concat(" is not a valid number."));
             }
             inputNum = userInput.nextInt();
         } while (inputNum > 0 && inputNum <= count);
@@ -360,7 +373,7 @@ public class CLI extends AbsUI {
         do {
             while (!userInput.hasNextInt()) {
                 input = userInput.next();
-                System.out.printf("\"%s\" is not a valid number.\n", input);
+                printError(input.concat(" is not a valid number."));
             }
             inputNum = userInput.nextInt();
         } while (!(inputNum.equals(1) || inputNum.equals(2)));
@@ -385,7 +398,7 @@ public class CLI extends AbsUI {
             do {
                 while (!userInput.hasNextInt()) {
                     input = userInput.next();
-                    System.out.printf("\"%s\" is not a valid number.\n", input);
+                    printError(input.concat(" is not a valid number."));
                 }
                 inputNum = userInput.nextInt();
             } while ((inputNum < 1 || inputNum > 4) || (inputNum.equals(5) && (uiCallback.getLocalPlayers().size() == 5)));
@@ -394,12 +407,12 @@ public class CLI extends AbsUI {
             do {
                 while (!userInput.hasNextInt()) {
                     input = userInput.next();
-                    System.out.printf("\"%s\" is not a valid number.\n", input);
+                    printError(input.concat(" is not a valid number."));
                 }
                 inputNum = userInput.nextInt();
             } while (inputNum-1 >= 0 && inputNum-1 < 4);
             int floor = inputNum;
-            printCardInTower(twrColor.get(inputNum), floor);
+            printCardInTower(twrColor.get(color), floor);
         }
     }
 
@@ -441,8 +454,10 @@ public class CLI extends AbsUI {
 
     @Override
     public void commandAdder(String command) {
-        if (availableCmdList.get(command) == null)
+        if (availableCmdList.get(command) == null) {
             availableCmdList.put(command, cmdList.get(command));
+            printCmd();
+        }
     }
 
     @Override
@@ -469,8 +484,8 @@ public class CLI extends AbsUI {
 
     public void notifyStartRound(boolean isMyTurn) {
         if (isMyTurn) {
-            commandAdder(FAMILY_MEMBER);
-            commandAdder(LEADER_CARD);
+            availableCmdList.put(FAMILY_MEMBER, cmdList.get(FAMILY_MEMBER));
+            availableCmdList.put(LEADER_CARD, cmdList.get(LEADER_CARD));
         } else {
             commandRemover(FAMILY_MEMBER);
             commandRemover(LEADER_CARD);
@@ -478,8 +493,8 @@ public class CLI extends AbsUI {
     }
 
     public void notifyStartGame () {
-        commandAdder(TURN);
-        commandAdder(INFO);
+        availableCmdList.put(TURN, cmdList.get(TURN));
+        availableCmdList.put(INFO, cmdList.get(INFO));
     }
 
     @Override
@@ -542,7 +557,7 @@ public class CLI extends AbsUI {
         cmdList = new HashMap<>();
         initializeCmdDescr();
         initializeCmdList();
-        commandAdder(CHAT);
+        availableCmdList.put(CHAT, cmdList.get(CHAT));
     }
 
     /**

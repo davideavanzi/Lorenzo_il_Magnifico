@@ -5,7 +5,6 @@ import static it.polimi.ingsw.lim.Log.*;
 import it.polimi.ingsw.lim.Log;
 import it.polimi.ingsw.lim.controller.Room;
 import it.polimi.ingsw.lim.controller.User;
-import it.polimi.ingsw.lim.model.Player;
 import it.polimi.ingsw.lim.network.server.RMI.RMIServer;
 import it.polimi.ingsw.lim.network.server.socket.SocketServer;
 import it.polimi.ingsw.lim.parser.Writer;
@@ -21,7 +20,6 @@ import java.util.logging.Level;
 
 
 /**
- * Created by nico.
  * This is the server command line interface.
  */
 public class MainServer {
@@ -53,15 +51,21 @@ public class MainServer {
     private RMIServer rmiServer;
 
     /**
-     * MainServer Constructor.
+     * User database.
      */
-
     private static JDBC jdbc;
 
+    /**
+     * Getters.
+     * @return the user DB.
+     */
     public static JDBC getJDBC(){
         return jdbc;
     }
 
+    /**
+     * MainServer Constructor.
+     */
     private MainServer() {
         createLogFile();
         socketServer = new SocketServer();

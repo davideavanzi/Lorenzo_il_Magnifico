@@ -5,10 +5,6 @@ package it.polimi.ingsw.lim.network;
  */
 public class CommunicationConstants {
 
-    /**
-     * Used for login.
-     */
-
     public static final String START_GAME = "START_GAME";
 
     public static final String LOGIN = "LOGIN";
@@ -50,6 +46,14 @@ public class CommunicationConstants {
 
     public static final String PICK_FROM_TOWER = "PICK_FROM_TOWER";
     public static final String PICK_FROM_TOWER_OK = "The server has received your pick card from tower action correctly";
+
+    /**
+     * Leader card command.
+     */
+    public static final String ACTIVATE_LEADER = "ACTIVATE_LEADER";
+    public static final String DEPLOY_LEADER = "DEPLOY_LEADER";
+    public static final String DISCARD_LEADER = "DISCARD_LEADER";
+    public static final String LORENZO_MEDICI = "LORENZO_MEDICI";
 
     /**
      * Constant for socket place family member method.

@@ -20,20 +20,6 @@ public class MainClient {
      */
     public static void main(String[] args) {
         splashScreen();
-        Scanner userInput = new Scanner(System.in);
-        String input;
-        int inputNum;
-        do {
-
-            System.out.println("Please enter a positive number: ");
-            System.out.print("$ ");
-            while (!userInput.hasNextInt()) {
-                input = userInput.next();
-                System.out.printf("\"%s\" is not a valid number.\n", input);
-            }
-            System.out.print("$ ");
-            inputNum = userInput.nextInt();
-        } while (inputNum < 0);
         UIController client = new UIController(setUI());
         client.startGame();
         client.getClientUI().waitForRequest();

@@ -92,8 +92,11 @@ class ServerCommandHandler {
                 uiCallback.updateBoard((Board)command[1]);
             } else if (commandID.equals(PLAYERS)) {
                 uiCallback.updatePlayers((ArrayList<Player>)command[1]);
+            } else if (commandID.equals(LORENZO_MEDICI)) {
+                uiCallback.getClientUI().commandAdder(commandID);
+                uiCallback.getTmpVar().setCopyableLeaders((ArrayList<String>)command[1]);
             } else {
-                System.out.println(commandID);
+                uiCallback.getClientUI().printError("Command not found: ".concat(commandID));
             }
         }
 

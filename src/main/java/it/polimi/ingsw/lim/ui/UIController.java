@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 /**
- * Created by nico.
+ * 
  */
 public class UIController {
     /**
@@ -70,7 +70,7 @@ public class UIController {
     private boolean isMyTurn = false;
 
     /**
-     *
+     * It store the temporary variables of socket communication
      */
     private TemporaryVariables tmpVar;
 
@@ -90,9 +90,6 @@ public class UIController {
         tmpVar = new TemporaryVariables();
     }
 
-    /**
-     * @return the abstract UI of client.
-     */
     public AbsUI getClientUI() {
         return clientUI;
     }
@@ -106,12 +103,6 @@ public class UIController {
     }
 
     ArrayList<Player> getLocalPlayers() { return localPlayers; }
-
-    boolean getIsMyTurn() { return isMyTurn; }
-
-    public void setIsMyTurn(boolean isMyTurn) {
-        this.isMyTurn = isMyTurn;
-    }
 
     public TemporaryVariables getTmpVar() {
         return tmpVar;
@@ -145,6 +136,10 @@ public class UIController {
         return getLocalPlayers().stream().filter(pl -> pl.getNickname().equals(username)).findFirst().orElse(null);
     }
 
+    /**
+     * Send to server a bonus harvest action.
+     * @param servantDeployes num of servants deployed
+     */
     void sendFastHarvest(int servantDeployes) {
         try {
             clientProtocol.fastHarvest(servantDeployes);
@@ -153,6 +148,10 @@ public class UIController {
         }
     }
 
+    /**
+     * Send to server a bonus production action.
+     * @param servantDeployes num of servants deployed
+     */
     void sendFastProduction(int servantDeployes) {
         try {
             clientProtocol.fastProduction(servantDeployes);
@@ -161,6 +160,12 @@ public class UIController {
         }
     }
 
+    /**
+     * Send to server a bonus tower action.
+     * @param servantsDeployed num of servants deployed
+     * @param towerColor the tower's color
+     * @param floor the tower's floor
+     */
     void sendFastTowerMove (int servantsDeployed, String towerColor, int floor) {
         try {
             clientProtocol.fastTowerMove(servantsDeployed, towerColor, floor);
@@ -169,6 +174,10 @@ public class UIController {
         }
     }
 
+    /**
+     * Send to server the production that the player want activate.
+     * @param prodChoice ArrayList contain the index of the production to activate
+     */
     void sendProductionOption(ArrayList<Integer> prodChoice) {
         try {
             clientProtocol.productionOption(prodChoice);
@@ -177,6 +186,10 @@ public class UIController {
         }
     }
 
+    /**
+     * Send to server the optional battle point payment for purple card.
+     * @param bpPayment if the player want to pay with BP is set to true
+     */
     void sendOptionalBpPick(boolean bpPayment) {
         try {
             clientProtocol.optionalBpPick(bpPayment);
@@ -185,6 +198,10 @@ public class UIController {
         }
     }
 
+    /**
+     * Send to server the council favor choice.
+     * @param favorChoice
+     */
     void sendFavorChoice(ArrayList<Integer> favorChoice) {
         try {
             clientProtocol.favorChoice(favorChoice);
@@ -193,6 +210,10 @@ public class UIController {
         }
     }
 
+    /**
+     * Send to server the player's excommunication choice.
+     * @param choice boolean
+     */
     void sendExcommunicationChoice(boolean choice) {
         try {
             clientProtocol.excommunicationChoice(choice);
@@ -201,6 +222,12 @@ public class UIController {
         }
     }
 
+    /**
+     * Send place familiar member command to server.
+     * @param color familiar color
+     * @param destination where put the familiar
+     * @param servants the servants' number used to deploy familiar
+     */
     void sendPlaceFM(String color, ArrayList<String> destination, String servants) {
         try {
             clientProtocol.placeFM(color, destination, servants);
@@ -209,6 +236,10 @@ public class UIController {
         }
     }
 
+    /**
+     * Send chat message to server with the selected protocol.
+     * @param message
+     */
     void sendChatMessage(String message) {
         try {
             clientProtocol.sendChatMessageToServer(username, message);
@@ -294,18 +325,10 @@ public class UIController {
          */
         private ArrayList<ArrayList<Object[]>> optionsProd;
 
-        /**
-         * Getters.
-         * @return optionsProd
-         */
         public ArrayList<ArrayList<Object[]>> getOptionsProd() {
             return optionsProd;
         }
 
-        /**
-         * Setters.
-         * @param optionsProd
-         */
         public void setOptionsProd(ArrayList<ArrayList<Object[]>> optionsProd) {
             this.optionsProd = optionsProd;
         }
@@ -316,18 +339,10 @@ public class UIController {
          */
         private HashMap<String, Integer> tower;
 
-        /**
-         * Getters.
-         * @return tower
-         */
         public HashMap<String, Integer> getTower() {
             return tower;
         }
 
-        /**
-         * Setters.
-         * @param tower
-         */
         public void setTower(HashMap<String, Integer> tower) {
             this.tower = tower;
         }
@@ -337,40 +352,23 @@ public class UIController {
          */
         private Assets optionalPickDiscount;
 
-        /**
-         * Getters.
-         * @return optionalPickDiscount
-         */
         public Assets getAssets() {
             return optionalPickDiscount;
         }
 
-        /**
-         * Setters.
-         * @param optionalPickDiscount
-         */
         public void setAssets(Assets optionalPickDiscount) {
             this.optionalPickDiscount = optionalPickDiscount;
         }
-
 
         /**
          * It store the minimum number of servants that the player must deploy for a specific production.
          */
         private int minServantsProd;
 
-        /**
-         * Getters.
-         * @return minServantProd
-         */
         public int getMinServantsProd() {
             return minServantsProd;
         }
 
-        /**
-         * Setters.
-         * @param minServantsProd
-         */
         public void setMinServantsProd(int minServantsProd) {
             this.minServantsProd = minServantsProd;
         }
@@ -380,20 +378,27 @@ public class UIController {
          */
         private int minServantsHarv;
 
-        /**
-         * Getters.
-         * @return minServantsHarv
-         */
+
         public int getMinServantsHarv() {
             return minServantsHarv;
         }
 
-        /**
-         * Setters.
-         * @param minServantsHarv
-         */
+
         public void setMinServantsHarv(int minServantsHarv) {
             this.minServantsHarv = minServantsHarv;
+        }
+
+        /**
+         * The list of copyable leader by Lorenzo De Medici.
+         */
+        private ArrayList<String> copyableLeaders;
+
+        public ArrayList<String> getCopyableLeaders() {
+            return copyableLeaders;
+        }
+
+        public void setCopyableLeaders(ArrayList<String> copyableLeaders) {
+            this.copyableLeaders = copyableLeaders;
         }
     }
 

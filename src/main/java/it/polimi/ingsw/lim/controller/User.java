@@ -118,6 +118,11 @@ public abstract class User implements Serializable{
     }
 
     /**
+     * This method is called when a player activates the leader Lorenzo de Medici.
+     */
+    public abstract void chooseLeaderToCopy(ArrayList<String> copyableLeaders);
+
+    /**
      * This method notifies the user that has gained a fast harvest action. It also tells the base strength
      * of the bonus action
      * @param baseStr the action strength
@@ -194,9 +199,5 @@ public abstract class User implements Serializable{
     public abstract void isPlayerRound(boolean isPlaying);
 
     public abstract void notifyGameStart();
-    /**
-     * This method is called when a player activates the leader Lorenzo de Medici.
-     */
-    public abstract void chooseLeaderToCopy(ArrayList<String> copyableLeaders);
 
 }

@@ -173,7 +173,7 @@ public class RMIUser extends User {
     }
 
     @Override
-    public void notifyStartGame() {
+    public void notifyGameStart() {
         try {
             RMIServer.sendStartGameNotification(this.rci);
         } catch (RemoteException e) {
