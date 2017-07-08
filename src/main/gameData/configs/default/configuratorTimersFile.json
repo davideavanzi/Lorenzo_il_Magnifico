@@ -1,6 +1,6 @@
 {
   "timers":{
     "startGameTimer": 10,
-    "playMoveTimer": 20
+    "playMoveTimer": 2
   }
 }

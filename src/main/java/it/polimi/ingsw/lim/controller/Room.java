@@ -207,8 +207,10 @@ public class Room implements Serializable{
         Log.getLog().info("player ".concat(playOrder.get(0)).concat(" ending round"));
         playOrder.remove(0);
         if (playOrder.isEmpty()) {
+            System.out.println("PlayerOrder empty age" + this.getGameController().getGame().getAge() + " turn " + this.getGameController().getGame().getTurn());
             if(this.getGameController().getGame().getAge() == AGES_NUMBER &&
                     this.getGameController().getGame().getTurn() == TURNS_PER_AGE){
+                System.out.println("end game");
                 endGame();
             }
             startNewTurn();
@@ -296,12 +298,14 @@ public class Room implements Serializable{
         usersList.forEach(user -> players.add(user.getPlayer()));
         getConnectedUsers().forEach(user -> user.sendGameUpdate(this.gameController.getBoard(), players));
         buildTurnOrder();
+        System.out.println("before lock");
         if(this.gameController.getTime()[1] >= TURNS_PER_AGE) {
             excommLock.lock();
             new Thread(new ExcommunicationRound(this,10000,excommLock)).start();
         }
         if (excommLock.isLocked())
             excommLock.lock();
+        System.out.println("after lock");
         this.gameController.startNewTurn();
         for (int i = 0; i < playOrder.size(); i++)
             if (this.getUser(playOrder.get(i)).isAlive()) {
@@ -321,6 +325,7 @@ public class Room implements Serializable{
         gameController.applyEndGameExcomm();
         ArrayList<Player> ranking = gameController.buildRanking();
         usersList.forEach(user -> user.notifyEndGame(ranking));
+        ranking.forEach(Player -> System.out.println("end game " + Player.getNickname()));
         try {
             for (File file : new File("src/main/gameData/configs/writer/room/").listFiles()) {
                 if (file.getName().contains(((Integer)id).toString())) {

@@ -23,6 +23,7 @@ public class ExcommunicationRound implements Runnable, Round {
 
 
     public ExcommunicationRound(Room roomCallback, int millisTimer, Lock excommLock) {
+        System.out.println("in excomm round costrutt");
         this.excommLock = excommLock;
         this.roomCallback = roomCallback;
         roomCallback.setExcommunicationRound(this);
@@ -30,6 +31,7 @@ public class ExcommunicationRound implements Runnable, Round {
         this.toExcommunicate = new ArrayList<>();
         this.toExcommunicate.addAll(usersToCheck.stream().map(user -> user.getPlayer())
                 .collect(Collectors.toList()));
+        System.out.println("starting timer excomm");
         new RoundTimer(20, this);
     }
 
@@ -40,8 +42,13 @@ public class ExcommunicationRound implements Runnable, Round {
 
     @Override
     public void timerEnded() {
+        System.out.println("before unlock, timer end");
         roomCallback.getGameController().applyExcommunication(toExcommunicate);
         excommLock.unlock();
+        Lock roomLock = new Lock();
+        roomLock.unlock();
+        this.roomCallback.setExcommLock(roomLock);
+        System.out.println("unlock");
     }
 
     @Override
