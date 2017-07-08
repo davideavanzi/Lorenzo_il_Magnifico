@@ -113,15 +113,11 @@ public class Room implements Serializable{
         user.setRoom(this);
         getLog().log(Level.INFO, () -> "REadding "+ user.getUsername() +" to existing room");
         user.setIsAlive(true);
-        for(Iterator<User> u = usersList.iterator(); u.hasNext();){
-            if(u.next().getUsername().equals(user.getUsername())
-                    && !u.next().isAlive()){
-                System.out.println(u.next().getUsername());
-                //user.setPlayer(u.next().getPlayer());
-                usersList.remove(usersList.indexOf(u));
-                usersList.add(user);
-            }
-        }
+
+        User userToReplace = usersList.stream()
+                .filter(oldUser -> oldUser.getUsername().equals(user.getUsername())).findFirst().orElse(null);
+        usersList.set(usersList.indexOf(userToReplace), user);
+
         new TimerEnd(timerStartingGame, this); //todo timer solo se ci sono tutti o solo 2
     }
 
