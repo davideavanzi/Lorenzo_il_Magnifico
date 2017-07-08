@@ -31,7 +31,7 @@ public class Writer {
             file.createNewFile();
             mapper.writeValue(file, game);
         }catch (IOException e){
-            Log.getLog().severe("[WRITER]:Unable to open or create board writer file");
+            Log.getLog().severe("[WRITER]:Unable to open or create game writer file "+id);
             e.printStackTrace();
             return null;
         }
@@ -66,7 +66,7 @@ public class Writer {
             file.createNewFile();
             mapper.writeValue(file, room);
         }catch (IOException e){
-            Log.getLog().severe("[WRITER]:Unable to open or create room writer file");
+            Log.getLog().severe("[WRITER]:Unable to open or create room writer file "+id);
             e.printStackTrace();
         }
         return pathToWriterFile;
@@ -75,18 +75,16 @@ public class Writer {
     /**
      * this method is needed to read a room from a .json file
      * @return the room red
-     * @throws IOException if the file isn't found in the path
      */
-    public static Room readerRoom(File file){
+    public static Room readerRoom(File file) {
         ObjectMapper mapper = new ObjectMapper();
         Room room = null;
         try {
             room = mapper.readValue(file, Room.class);
-        }catch (IOException e){
-            Log.getLog().severe("[READER]:Unable to open board writer file");
+        } catch (IOException e) {
+            Log.getLog().severe("[READER]:Unable to open room writer file");
             e.printStackTrace();
         }
         return room;
     }
-
 }

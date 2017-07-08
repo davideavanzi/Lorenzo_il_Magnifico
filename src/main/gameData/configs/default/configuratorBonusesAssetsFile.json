@@ -21,7 +21,16 @@
     ],
     "councilBonus": {"coin": 1},
     "councilFavours": 1,
-    "startingGameBonus": {"coin": 5, "wood": 3, "stone": 3, "servants": 3}
+    "startingGameBonus": {"coin": 5, "wood": 3, "stone": 3, "servants": 3},
+    "boardPlayerProductionBonus":[
+      {"servants":1, "coin": 2}, {"servants":1, "battlePoints": 2}, {"servants":2, "coin": 1}, {"coin":1, "battlePoints": 2}
+    ],
+    "boardPlayerHarvestBonus":[
+      {"wood":1, "stone":1, "battlePoints": 1},
+      {"wood":1, "stone":1, "coin": 1},
+      {"wood":1, "stone":1, "battlePoints": 1},
+      {"wood":1, "stone":1, "servants": 1}
+    ]
   }
 }
 
