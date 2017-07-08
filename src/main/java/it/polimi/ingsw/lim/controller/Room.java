@@ -113,10 +113,11 @@ public class Room implements Serializable{
         user.setRoom(this);
         getLog().log(Level.INFO, () -> "REadding "+ user.getUsername() +" to existing room");
         user.setIsAlive(true);
-        for(User u: usersList){
-            if(u.getUsername().equals(user.getUsername()) && !u.isAlive()){
-                System.out.println(u.getUsername());
-                user.setPlayer(u.getPlayer());
+        for(Iterator<User> u = usersList.iterator(); u.hasNext();){
+            if(u.next().getUsername().equals(user.getUsername())
+                    && !u.next().isAlive()){
+                System.out.println(u.next().getUsername());
+                //user.setPlayer(u.next().getPlayer());
                 usersList.remove(usersList.indexOf(u));
                 usersList.add(user);
             }
