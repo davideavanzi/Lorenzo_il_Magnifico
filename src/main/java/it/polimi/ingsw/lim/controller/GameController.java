@@ -6,6 +6,7 @@ import it.polimi.ingsw.lim.exceptions.GameSetupException;
 import it.polimi.ingsw.lim.model.*;
 import it.polimi.ingsw.lim.model.cards.*;
 import it.polimi.ingsw.lim.model.immediateEffects.*;
+import it.polimi.ingsw.lim.model.leaders.Leaders;
 import it.polimi.ingsw.lim.parser.Parser;
 import it.polimi.ingsw.lim.parser.Writer;
 
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.lim.Log.*;
 import static it.polimi.ingsw.lim.Settings.*;
+import static it.polimi.ingsw.lim.model.leaders.Leaders.*;
 
 /**
  * This class is the main game controller.
@@ -29,6 +31,7 @@ public class GameController {
     private Assets optPickDiscount;
     private User fastActor;
     private PendingTowerMove pendingTowerMove;
+    private ArrayList<String> pendingLeaderCopy;
 
     /**
      * constructor
@@ -234,7 +237,7 @@ public class GameController {
                     servantsDeployed > this.game.getPlayerFromColor(fm.getOwnerColor()).getResources().getServants()) {
                 return;
             }
-            this.game.harvestMove(fm);
+            this.game.harvestMove(fm, servantsDeployed);
             int actionStrength = game.calcHarvestActionStr(fm, servantsDeployed, 0);
             for (Card card: game.getPlayerFromColor(fm.getOwnerColor()).getCardsOfColor(GREEN_COLOR)) {
                 GreenCard activeCard = (GreenCard) card;
@@ -271,6 +274,7 @@ public class GameController {
         }
         if (this.currentProductionOptions.size() == 0) {
             //don't ask user, complete directly production skipping excomm malus (already given)
+            game.productionMove(fm, servantsDeployed);
             actor.getPlayer().setResources(actor.getPlayer().
                     getResources().add(pendingProduction.getAssetsAccumulator()));
             if (pendingProduction.getCouncilFavorsAccumulator() > 0)
@@ -435,6 +439,7 @@ public class GameController {
             //don't ask user, complete directly production skipping excomm malus (already given)
             actor.getPlayer().setResources(actor.getPlayer().getResources()
                     .add(pendingProduction.getAssetsAccumulator()));
+            game.removeAssetsFromPlayer(new Assets().addServants(servantsDeployed),actor.getPlayer());
             if (pendingProduction.getCouncilFavorsAccumulator() > 0)
                 giveCouncilFavors(pendingProduction.getCouncilFavorsAccumulator());
         } else {
@@ -491,7 +496,35 @@ public class GameController {
     public void deployLeader(int id, User actor) throws BadRequestException {
         if (!actor.getUsername().equals(fastActor.getUsername()))
             throw new BadRequestException("Wrong user");
-        if (game.isLeaderDeployable(id, actor.getPlayer()));
+        if (!game.isLeaderDeployable(id, actor.getPlayer()))
+            throw new BadRequestException("Leader not deployable");
+        game.deployLeader(id, actor.getPlayer());
+    }
+
+    public void activateLeader(int id, User actor) throws BadRequestException {
+        if (!actor.getUsername().equals(fastActor.getUsername()))
+            throw new BadRequestException("Wrong user");
+        if (!game.isLeaderActivable(id, actor.getPlayer()))
+            throw new BadRequestException("Leader not activable");
+    }
+
+    public void discardLeader(int id, User actor) throws BadRequestException {
+        if (!actor.getUsername().equals(fastActor.getUsername()))
+            throw new BadRequestException("Wrong user");
+        if (!game.isLeaderDiscardable(id, actor.getPlayer()))
+            throw new BadRequestException("Leader not discardable");
+        game.discardLeader(id, actor.getPlayer());
+        giveCouncilFavors(1);
+    }
+
+    public void setPendingLeaderCopy(ArrayList<String> pendingLeaderCopy) {
+        this.pendingLeaderCopy = pendingLeaderCopy;
+    }
+
+    public void applyLeaderCopyChoice(int choice, User actor) throws BadRequestException{
+        if (!actor.getUsername().equals(fastActor.getUsername()))
+            throw new BadRequestException("Wrong user");
+        game.replaceLeader(getLeaderByName(pendingLeaderCopy.get(choice)), actor.getPlayer());
     }
 
     //------------------------------ COUNCIL

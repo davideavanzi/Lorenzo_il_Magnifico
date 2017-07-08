@@ -5,6 +5,7 @@ import it.polimi.ingsw.lim.exceptions.GameSetupException;
 import it.polimi.ingsw.lim.model.cards.Card;
 import it.polimi.ingsw.lim.model.cards.PurpleCard;
 import it.polimi.ingsw.lim.model.excommunications.*;
+import it.polimi.ingsw.lim.model.leaders.ActivableLeader;
 import it.polimi.ingsw.lim.model.leaders.LeaderCard;
 import it.polimi.ingsw.lim.parser.Parser;
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -191,6 +192,11 @@ public class Game {
                 DICE_COLORS.forEach(color ->
                         player.addFamilyMember((new FamilyMember(color, player.getColor())))));
         this.board.rollDices();
+
+        getLog().info("Resetting activated leaders");
+        this.players.forEach(player -> player.getActivatedLeaders()
+                .forEach(leaderCard -> ((ActivableLeader)leaderCard).setActivated(false)));
+
         getLog().info("[NEW_TURN_SETUP_END]");
     }
 
@@ -225,7 +231,6 @@ public class Game {
 
     /**
      * This method adds a player to the game.
-     * TODO: do we have to check again if there are more than 5?
      */
     public Player addPlayer(String nickname) {
         String color = this.availablePlayerColors.remove(0);
@@ -440,19 +445,23 @@ public class Game {
      * Performs a move to the harvest site.
      * @param fm the family member used in this action
      */
-    public void harvestMove(FamilyMember fm) {
+    public void harvestMove(FamilyMember fm, int servantsDeployed) {
         //TODO: pick deployed family member?
         this.board.getHarvest().add(fm);
         getPlayerFromColor(fm.getOwnerColor()).pullFamilyMember(fm.getDiceColor());
+        Assets actionCost = new Assets().addServants(servantsDeployed);
+        removeAssetsFromPlayer(actionCost, getPlayerFromColor(fm.getOwnerColor()));
     }
 
     /**
      * Performs a move to the harvest site.
      * @param fm the family member used in this action
      */
-    public void productionMove(FamilyMember fm) {
+    public void productionMove(FamilyMember fm, int servantsDeployed) {
         this.board.getProduction().add(fm);
         getPlayerFromColor(fm.getOwnerColor()).pullFamilyMember(fm.getDiceColor());
+        Assets actionCost = new Assets().addServants(servantsDeployed);
+        removeAssetsFromPlayer(actionCost, getPlayerFromColor(fm.getOwnerColor()));
     }
 
     /**
@@ -659,7 +668,6 @@ public class Game {
      * @param pl
      */
     public void giveAssetsToPlayer(Assets assets, Player pl) {
-        //Player pl = getPlayerFromColor(player);
         pl.setResources(pl.getResources().add(apllyExcommMalus(assets, pl)));
     }
 
@@ -798,6 +806,8 @@ public class Game {
                 secondAgeExcomm.getExcommunicated().contains(pl.getColor()));
     }
 
+    //-------------------------------------------------------------------------------- LEADERS
+
     @JsonIgnore
     private boolean isPlayerEndCardExcommunicated(Player pl, String color){
         Excommunication endGameExcomm = board.getExcommunications().get(2);
@@ -808,16 +818,46 @@ public class Game {
 
     public boolean isLeaderDeployable(int leaderId, Player pl) {
         LeaderCard leader = pl.getLeaderById(leaderId);
-        if (leader.getAssetsRequirement().isGreaterOrEqual(pl.getResources())) return false;
-
-        for (String color : leader.getCardsRequirement().keySet()) {
-            if (leader.getCardsRequirement().get(color) > pl.getCardsOfColor(color).size())
-                return false;
-            else if (leader.getLeaderCardId() == 16 && leader.getCardsRequirement().get(color) <=
-                    pl.getCardsOfColor(color).size())
-                return true;
-        }
+        if (leader.isDeployed()) return false;
+        if (leader.getAssetsRequirement() != null && leader.getAssetsRequirement().isGreaterOrEqual(pl.getResources())) return false;
+        if (leader.getCardsRequirement() != null)
+            for (String color : leader.getCardsRequirement().keySet()) {
+                if (leader.getCardsRequirement().get(color) > pl.getCardsOfColor(color).size())
+                    return false;
+                else if (leader.getLeaderCardId() == 16 && leader.getCardsRequirement().get(color) <=
+                        pl.getCardsOfColor(color).size())
+                    return true;
+            }
         return true;
+    }
+
+    public void deployLeader(int leaderId, Player pl) {
+        pl.getLeaderById(leaderId).setDeployed(true);
+    }
+
+    public void discardLeader(int leaderId, Player pl) {
+        pl.getLeaderById(leaderId).setDiscarded(true);
+    }
+
+    public boolean isLeaderActivable(int leaderId, Player pl) {
+        if (!(pl.getLeaderById(leaderId) instanceof ActivableLeader)) return false;
+        ActivableLeader leader = (ActivableLeader)pl.getLeaderById(leaderId);
+        return (leader.isDeployed() && !leader.isActivated());
+    }
+
+    public boolean isLeaderDiscardable(int leaderId, Player pl) {
+        return (!pl.getLeaderById(leaderId).isDiscarded());
+    }
+
+    public ArrayList<String> getAllDeployedLeaders() {
+        ArrayList<String> leaderNames = new ArrayList<>();
+        players.forEach(player -> leaderNames.addAll(player.getDeployedLeaders().stream()
+                .map(LeaderCard::getCardName).collect(Collectors.toList())));
+        return leaderNames;
+    }
+
+    public void replaceLeader(LeaderCard leader, Player pl) {
+        pl.getLeaderCards().set(pl.getLeaderCards().indexOf(pl.getLeaderById(13)),leader);
     }
 
     @JsonIgnore

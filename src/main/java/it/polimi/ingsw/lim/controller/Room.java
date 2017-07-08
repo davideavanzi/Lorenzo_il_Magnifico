@@ -264,6 +264,16 @@ public class Room implements Serializable{
         return new ArrayList<>(usersList.stream().filter(user -> user.isAlive()).collect(Collectors.toList()));
     }
 
+    private void notifyGameStart() {
+        usersList.forEach(user -> user.notifyGameStart());
+    }
+
+    private void notifyTurnStart(String username) {
+        getUser(username).isPlayerRound(true);
+        usersList.stream().filter(user -> !user.getUsername().equals(username))
+                .forEach(user -> user.isPlayerRound(false));
+    }
+
     @JsonIgnore
     public GameController getGameController() {
         return gameController;
@@ -343,6 +353,7 @@ public class Room implements Serializable{
                 gameController.createGame();
                 Writer.gameWriter(roomCallback.getGameController().getGame(), id);
                 Writer.roomWriter(roomCallback, id);
+                roomCallback.notifyGameStart();
                 roomCallback.startNewTurn();
                 Writer.gameWriter(roomCallback.getGameController().getGame(), id);
                 Writer.roomWriter(roomCallback, id);

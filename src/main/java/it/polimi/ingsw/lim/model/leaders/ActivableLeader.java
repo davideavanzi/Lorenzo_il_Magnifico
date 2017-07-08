@@ -17,6 +17,7 @@ public class ActivableLeader extends LeaderCard {
     protected ActivableLeader(Builder builder) {
         super(builder);
         effect = builder.immediateEffect;
+        activated = false;
     }
 
     /**
@@ -24,12 +25,16 @@ public class ActivableLeader extends LeaderCard {
      */
     private ImmediateEffect effect;
 
-    /**
-     * This List of integers is updated everytime the player activates this card. The integer represents the number
-     * of the game turn. This is useful for checking whether a card has been played in one turn or not.
-     */
-    private ArrayList<Integer> roundsActivated;
 
+    private boolean activated;
+
+    public boolean isActivated() {
+        return this.activated;
+    }
+
+    public void setActivated(boolean activated) {
+        this.activated = activated;
+    }
 
     public static class Builder extends LeaderCard.Builder<Builder> {
 

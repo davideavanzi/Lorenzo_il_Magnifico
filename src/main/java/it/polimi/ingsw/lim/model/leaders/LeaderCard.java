@@ -35,14 +35,18 @@ public abstract class LeaderCard {
      */
     private HashMap<String, Integer> cardsRequirement;
 
+    private boolean deployed;
+
+    private boolean discarded;
+
 
     protected LeaderCard(Builder builder) {
         cardName = builder.cardName;
         leaderCardId = builder.leaderId;
         assetsRequirement = builder.assetsRequirement;
         cardsRequirement = builder.cardsRequirement;
+        deployed = false;
     }
-
 
     public abstract static class Builder<T extends Builder<T>> {
 
@@ -63,9 +67,20 @@ public abstract class LeaderCard {
 
         public LeaderCard build() { return new LeaderCard(this) {
         }; }
+    }
 
+    public boolean isDeployed() { return this.deployed; }
 
+    public void setDeployed(boolean deployed) {
+        this.deployed = deployed;
+    }
 
+    public boolean isDiscarded() {
+        return discarded;
+    }
+
+    public void setDiscarded(boolean discarded) {
+        this.discarded = discarded;
     }
 
     public void setCardName(String cardName){

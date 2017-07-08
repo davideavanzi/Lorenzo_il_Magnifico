@@ -1,12 +1,14 @@
 package it.polimi.ingsw.lim.model;
 
 import it.polimi.ingsw.lim.model.cards.Card;
+import it.polimi.ingsw.lim.model.leaders.ActivableLeader;
 import it.polimi.ingsw.lim.model.leaders.LeaderCard;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 import java.io.Serializable;
 import java.util.*;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.lim.Log.getLog;
 import static it.polimi.ingsw.lim.Settings.*;
@@ -98,6 +100,17 @@ public class Player implements Serializable{
 
     public LeaderCard getLeaderById(int id) {
         return leaderCards.stream().filter(leader -> leader.getLeaderCardId() == id).findFirst().orElse(null);
+    }
+
+    public ArrayList<LeaderCard> getDeployedLeaders() {
+        return new ArrayList<>(leaderCards.stream().filter(leader -> leader.isDeployed())
+                .collect(Collectors.toList()));
+    }
+
+    public ArrayList<LeaderCard> getActivatedLeaders() {
+        return new ArrayList<>(leaderCards.stream().filter(leader -> leader instanceof ActivableLeader &&
+                ((ActivableLeader) leader).isActivated())
+                .collect(Collectors.toList()));
     }
 
     public void setLeaderCards(ArrayList<LeaderCard> leaderCards){

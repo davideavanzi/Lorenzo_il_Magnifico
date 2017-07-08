@@ -193,5 +193,10 @@ public abstract class User implements Serializable{
     @JsonIgnore
     public abstract void isPlayerRound(boolean isPlaying);
 
-    public abstract void notifyStartGame();
+    public abstract void notifyGameStart();
+    /**
+     * This method is called when a player activates the leader Lorenzo de Medici.
+     */
+    public abstract void chooseLeaderToCopy(ArrayList<String> copyableLeaders);
+
 }

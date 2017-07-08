@@ -16,7 +16,7 @@ import static it.polimi.ingsw.lim.Settings.*;
  */
 public class Leaders {
 
-    public static ArrayList<LeaderCard> buildLeaders() {
+    private static ArrayList<LeaderCard> buildLeaders() {
         ArrayList<LeaderCard> leaders = new ArrayList<>();
         HashMap<String, Integer> cardsRequirement = new HashMap<>();
         cardsRequirement.put(PURPLE_COLOR, 5);
@@ -132,5 +132,18 @@ public class Leaders {
 
         return leaders;
     }
+
+    public static ArrayList<LeaderCard> getAllLeaders() {
+        return buildLeaders();
+    }
+
+    public static LeaderCard getLeaderById(int id) {
+        return buildLeaders().stream().filter(leader -> leader.getLeaderCardId() == id).findFirst().orElse(null);
+    }
+
+    public static LeaderCard getLeaderByName(String name) {
+        return buildLeaders().stream().filter(leader -> leader.getCardName().equals(name)).findFirst().orElse(null);
+    }
+
 
 }
