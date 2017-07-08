@@ -65,6 +65,22 @@ public class Room implements Serializable{
         return roomOpen;
     }
 
+    public int getTimerPlayMove(){
+        return timerPlayMove;
+    }
+
+    public int getTimerStartingGame() {
+        return timerStartingGame;
+    }
+
+    public void setTimerPlayMove(int timerPlayMove) {
+        this.timerPlayMove = timerPlayMove;
+    }
+
+    public void setTimerStartingGame(int timerStartingGame) {
+        this.timerStartingGame = timerStartingGame;
+    }
+
     public ArrayList<String> getPlayOrder() {
         return playOrder;
     }
@@ -77,7 +93,7 @@ public class Room implements Serializable{
         usersList = new ArrayList<>();
         playOrder = new ArrayList<>();
         excommLock = new Lock();
-        gameController = new GameController();
+        gameController = new GameController(this);
     }
 
 
@@ -116,9 +132,22 @@ public class Room implements Serializable{
 
         User userToReplace = usersList.stream()
                 .filter(oldUser -> oldUser.getUsername().equals(user.getUsername())).findFirst().orElse(null);
+        user.setPlayer(userToReplace.getPlayer());
         usersList.set(usersList.indexOf(userToReplace), user);
 
-        new TimerEnd(timerStartingGame, this); //todo timer solo se ci sono tutti o solo 2
+        if(getNumAlive() == 2) {
+            new TimerEnd(timerStartingGame, this);
+        }//todo timer solo se ci sono tutti o solo 2
+    }
+
+    private int getNumAlive(){
+        int i = 0;
+        for(User u: usersList){
+            if(u.isAlive()){
+                i++;
+            }
+        }
+        return i;
     }
 
     public void setId(int id){this.id = id;}
@@ -175,6 +204,7 @@ public class Room implements Serializable{
      * TODO: handle disconnected players
      */
     void switchRound(){
+        Log.getLog().info("player ".concat(playOrder.get(0)).concat(" ending round"));
         playOrder.remove(0);
         if (playOrder.isEmpty()) {
             startNewTurn();
@@ -183,7 +213,6 @@ public class Room implements Serializable{
             Writer.roomWriter(this, id);
             return;
         }
-        Log.getLog().info("player ".concat(round.getUserName()).concat(" ending round"));
         for (int i = 0; i < playOrder.size(); i++)
             if (this.getUser(playOrder.get(i)).isAlive()) {
                 this.round = new PlayerRound(this.getUser(playOrder.get(i)), timerPlayMove);
