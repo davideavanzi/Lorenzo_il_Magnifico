@@ -309,7 +309,6 @@ public class TestParser{
             assertEquals(testParser.getTimerStartGame(), 62);
             getLog().info("***Timer equals***");
         }catch (AssertionFailedError e) {
-            e.printStackTrace();
             getLog().info("TimerNotEquals");
         }
 

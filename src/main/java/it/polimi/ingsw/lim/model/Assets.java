@@ -116,7 +116,7 @@ public class Assets implements Serializable {
                 this.stone >= operand.getStone() &&
                 this.servants >= operand.getServants() &&
                 this.faithPoints >= operand.getFaithPoints() &&
-                this.battlePoints >= operand.getFaithPoints() &&
+                this.battlePoints >= operand.getBattlePoints() &&
                 this.victoryPoints >= operand.getVictoryPoints()
         );
     }
@@ -257,7 +257,7 @@ public class Assets implements Serializable {
         if(this.getWood() != 0){
             return true;
         }
-        if(this.getWood() != 0){
+        if(this.getStone() != 0){
             return true;
         }
         if(this.getServants() != 0){
