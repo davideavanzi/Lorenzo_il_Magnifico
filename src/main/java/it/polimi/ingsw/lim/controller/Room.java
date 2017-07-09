@@ -208,10 +208,13 @@ public class Room implements Serializable{
         playOrder.remove(0);
         if (playOrder.isEmpty()) {
             System.out.println("PlayerOrder empty age" + this.getGameController().getGame().getAge() + " turn " + this.getGameController().getGame().getTurn());
-            boolean ended = startNewTurn();
-            if(ended){
+            if(this.gameController.getTime()[0] == AGES_NUMBER &&
+                    this.gameController.getTime()[1] == TURNS_PER_AGE){
+                System.out.println("end game");
+                endGame();
                 return;
             }
+            startNewTurn();
             Log.getLog().info("[WRITER]: saving game info");
             Writer.gameWriter(this.gameController.getGame(), id);
             Writer.roomWriter(this, id);
@@ -290,7 +293,7 @@ public class Room implements Serializable{
      * This method is called upon the end of a turn and handles the creation of the next one.
      * If it is the right time, it also triggers the activation of the excommunication round
      */
-    private boolean startNewTurn(){
+    private void startNewTurn(){
         //Send game state to players
         ArrayList<Player> players = new ArrayList<>();
         usersList.forEach(user -> players.add(user.getPlayer()));
@@ -304,22 +307,15 @@ public class Room implements Serializable{
         if (excommLock.isLocked())
             excommLock.lock();
         System.out.println("after lock");
-        if(this.getGameController().getGame().getAge() == AGES_NUMBER &&
-                this.getGameController().getGame().getTurn() == TURNS_PER_AGE){
-            System.out.println("end game");
-            endGame();
-            return true;
-        }
         this.gameController.startNewTurn();
         for (int i = 0; i < playOrder.size(); i++)
             if (this.getUser(playOrder.get(i)).isAlive()) {
                 this.round = new PlayerRound(this.getUser(playOrder.get(i)), timerPlayMove);
-                return false;
+                return;
             } else {
                 playOrder.remove(i);
                 i--;
             }
-        return false;
     }
 
     /**

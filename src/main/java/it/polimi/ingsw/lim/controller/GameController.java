@@ -72,6 +72,8 @@ public class GameController {
         if(excommunicationAge < AGES_NUMBER){
             return false;
         }
+        if(parsedGame.getFaithTrackBonuses().length != FAITH_TRACK_LENGTH)
+            return false;
         for (String color : DEFAULT_TOWERS_COLORS)
             if(parsedGame.getTowerbonuses(color).length != TOWER_HEIGHT)
                 return false;
@@ -83,9 +85,6 @@ public class GameController {
         )
             return false;
         if(parsedGame.getCouncilFavourBonuses().length < 3){ /* at least 3 slots (the maximum num of different favours that a player can pick) */
-            return false;
-        }
-        if(parsedGame.getFaithTrackBonuses().length < FIRST_EXCOMM_FP + AGES_NUMBER -1) { /* slots amount should cover last excommunication */
             return false;
         }
         return true;

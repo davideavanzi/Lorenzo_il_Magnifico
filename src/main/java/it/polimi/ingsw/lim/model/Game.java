@@ -139,10 +139,14 @@ public class Game {
         getLog().info("Creating council with bonuses");
         this.board.setCouncil(new Council(parsedGame.getCouncilFavors(), parsedGame.getCouncilBonus()));
         getLog().info("Adding bonuses to faith track");
-        int i = 0;
-        for (Assets bonus : parsedGame.getFaithTrackBonuses())
-            this.board.getFaithTrack()[i] = bonus;
-        for (i = 1; i <= AGES_NUMBER; i++) {
+        this.board.setFaithTrack(parsedGame.getFaithTrackBonuses());
+        getLog().info("Giving each user a random production/harvest default bonus");
+        this.players.forEach(player -> {
+            int choice = randomGenerator.nextInt(parsedGame.getBoardPlayersHarvestBonus().size());
+            player.setDefaultHarvestBonus(parsedGame.getBoardPlayersHarvestBonus().get(choice));
+            player.setDefaultProductionBonus(parsedGame.getBoardPlayersProductionBonus().get(choice));
+        });
+        for (int i = 1; i <= AGES_NUMBER; i++) {
             this.board.addExcommunication(parsedGame.getExcommunications().get(i)
                     .get(randomGenerator.nextInt(parsedGame.getExcommunications().get(i).size())));
         }
