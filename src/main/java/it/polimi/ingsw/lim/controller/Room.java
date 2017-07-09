@@ -357,12 +357,12 @@ public class Room implements Serializable{
         usersList.forEach(user -> user.notifyEndGame(ranking));
         ranking.forEach(Player -> System.out.println("end game " + Player.getNickname()));
         try {
-            for (File file : new File("src/main/gameData/configs/writer/room/").listFiles()) {
+            for (File file : new File(DUMPS_PATH+ "room/").listFiles()) {
                 if (file.getName().contains(((Integer)id).toString())) {
                     file.delete();
                 }
             }
-            for (File file : new File("src/main/gameData/configs/writer/game/").listFiles()) {
+            for (File file : new File(DUMPS_PATH+ "game/").listFiles()) {
                 if (file.getName().contains(((Integer)id).toString())) {
                     file.delete();
                 }

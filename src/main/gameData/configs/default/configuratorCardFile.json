@@ -1938,7 +1938,7 @@
         }
       },
       {
-        "cardName": "incendiare l'accampamento nemico",
+        "cardName": "Burn the village",
         "cardAge": 1,
         "cardType": "blackCard",
         "cardAssetsCost":{
@@ -1954,7 +1954,7 @@
         }
       },
       {
-        "cardName": "Sacco della cappella",
+        "cardName": "Chapel Sack",
         "cardAge": 1,
         "cardType": "blackCard",
         "cardAssetsCost":{
@@ -1968,7 +1968,7 @@
         }
       },
       {
-        "cardName": "Assecondare il generale",
+        "cardName": "Pander the lieutenant",
         "cardAge": 1,
         "cardType": "blackCard",
         "cardAssetsCost":{
@@ -1981,15 +1981,14 @@
               "greenBonus": 2,
               "blueBonus": 2,
               "yellowBonus": 2,
-              "purpleBonus": 2,
-              "blackBonus": 2
+              "purpleBonus": 2
             }
           },
           "councilFavoursEffectAmount": 1
         }
       },
       {
-        "cardName": "Vendere gli schiavi",
+        "cardName": "Sell Prisoners",
         "cardAge": 1,
         "cardType": "blackCard",
         "cardAssetsCost":{
@@ -1998,12 +1997,12 @@
         },
         "cardImmediateEffect": {
           "assetsEffect": {
-            "coin": 7
+            "coin": 3
           }
         }
       },
       {
-        "cardName": "Comprare gli schiavi",
+        "cardName": "Buy Prisoners",
         "cardAge": 1,
         "cardType": "blackCard",
         "cardAssetsCost":{
@@ -2013,12 +2012,12 @@
         },
         "cardImmediateEffect": {
           "assetsEffect": {
-            "servants": 7
+            "servants": 3
           }
         }
       },
       {
-        "cardName": "Rapire la Nipote dell'Imperatore",
+        "cardName": "Kidnap the priest",
         "cardAge": 1,
         "cardType": "blackCard",
         "cardAssetsCost":{
@@ -2026,11 +2025,11 @@
           "faithPoints": 1
         },
         "cardImmediateEffect": {
-          "councilFavoursEffectAmount": 2
+          "councilFavoursEffectAmount": 1
         }
       },
       {
-        "cardName": "Tradire il Sacerdote",
+        "cardName": "Betray the priest",
         "cardAge": 1,
         "cardType": "blackCard",
         "cardAssetsCost": {
@@ -2049,7 +2048,7 @@
         }
       },
       {
-        "cardName": "Corrompere il Messo Papale",
+        "cardName": "Bribe the guard",
         "cardAge": 1,
         "cardType": "blackCard",
         "cardAssetsCost":{
@@ -2062,7 +2061,260 @@
             "stone":3
           }
         }
+      },
+
+      {
+        "cardName": "Burn the city",
+        "cardAge": 2,
+        "cardType": "blackCard",
+        "cardAssetsCost":{
+          "wood": 2,
+          "faithPoints": 2
+        },
+        "cardImmediateEffect": {
+          "assetsEffect":{
+            "servants": 3,
+            "battlePoints": 3,
+            "victoryPoints": 2
+          }
+        }
+      },
+      {
+        "cardName": "Church Sack",
+        "cardAge": 2,
+        "cardType": "blackCard",
+        "cardAssetsCost":{
+          "faithPoints": 2
+        },
+        "cardImmediateEffect": {
+          "assetsEffect":{
+            "stone": 3,
+            "wood": 3
+          }
+        }
+      },
+      {
+        "cardName": "Pander the lieutenant",
+        "cardAge": 2,
+        "cardType": "blackCard",
+        "cardAssetsCost":{
+          "battlePoints": 2,
+          "faithPoints": 2
+        },
+        "cardImmediateEffect": {
+          "actionEffect":{
+            "actionEffectStrength": {
+              "greenBonus": 4,
+              "blueBonus": 4,
+              "yellowBonus": 4,
+              "purpleBonus": 4
+            }
+          },
+          "councilFavoursEffectAmount": 2
+        }
+      },
+      {
+        "cardName": "Sell Slaves",
+        "cardAge": 2,
+        "cardType": "blackCard",
+        "cardAssetsCost":{
+          "servants": 3,
+          "faithPoints": 3
+        },
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "coin": 5
+          }
+        }
+      },
+      {
+        "cardName": "Buy Slaves",
+        "cardAge": 2,
+        "cardType": "blackCard",
+        "cardAssetsCost":{
+          "coin": 3,
+          "faithPoints": 3
+
+        },
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "servants": 5
+          }
+        }
+      },
+      {
+        "cardName": "Kidnap the bishop",
+        "cardAge": 2,
+        "cardType": "blackCard",
+        "cardAssetsCost":{
+          "battlePoints": 3,
+          "faithPoints": 2
+        },
+        "cardImmediateEffect": {
+          "councilFavoursEffectAmount": 2
+        }
+      },
+      {
+        "cardName": "Betray the bishop",
+        "cardAge": 2,
+        "cardType": "blackCard",
+        "cardAssetsCost": {
+          "faithPoints": 3
+        },
+        "cardImmediateEffect": {
+          "actionEffect": {
+            "actionEffectStrength": {
+              "greenBonus": 4,
+              "blueBonus": 4,
+              "yellowBonus": 4,
+              "purpleBonus": 4,
+              "blackBonus": 4
+            }
+          }
+        }
+      },
+      {
+        "cardName": "Bribe the papal",
+        "cardAge": 2,
+        "cardType": "blackCard",
+        "cardAssetsCost":{
+          "coin":3,
+          "faithPoints": 3
+        },
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "wood": 6,
+            "stone": 6
+          }
+        }
+      },
+
+      {
+        "cardName": "Burn the capital",
+        "cardAge": 3,
+        "cardType": "blackCard",
+        "cardAssetsCost":{
+          "wood": 4,
+          "faithPoints": 4
+        },
+        "cardImmediateEffect": {
+          "assetsEffect":{
+            "servants": 5,
+            "battlePoints": 5,
+            "victoryPoints": 3
+          }
+        }
+      },
+      {
+        "cardName": "Cathedral Sack",
+        "cardAge": 3,
+        "cardType": "blackCard",
+        "cardAssetsCost":{
+          "faithPoints": 4
+        },
+        "cardImmediateEffect": {
+          "assetsEffect":{
+            "stone": 5,
+            "wood": 5
+          }
+        }
+      },
+      {
+        "cardName": "Pander the lieutenant",
+        "cardAge": 3,
+        "cardType": "blackCard",
+        "cardAssetsCost":{
+          "battlePoints": 3,
+          "faithPoints": 4
+        },
+        "cardImmediateEffect": {
+          "actionEffect":{
+            "actionEffectStrength": {
+              "greenBonus": 6,
+              "blueBonus": 6,
+              "yellowBonus": 6,
+              "purpleBonus": 6
+            }
+          },
+          "councilFavoursEffectAmount": 3
+        }
+      },
+      {
+        "cardName": "Sell Prostitutes",
+        "cardAge": 3,
+        "cardType": "blackCard",
+        "cardAssetsCost":{
+          "servants": 4,
+          "faithPoints": 4
+        },
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "coin": 10
+          }
+        }
+      },
+      {
+        "cardName": "Buy Prostitutes",
+        "cardAge": 3,
+        "cardType": "blackCard",
+        "cardAssetsCost":{
+          "coin": 4,
+          "faithPoints": 4
+
+        },
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "servants": 10
+          }
+        }
+      },
+      {
+        "cardName": "Kidnap the cardinal",
+        "cardAge": 3,
+        "cardType": "blackCard",
+        "cardAssetsCost":{
+          "battlePoints": 4,
+          "faithPoints": 3
+        },
+        "cardImmediateEffect": {
+          "councilFavoursEffectAmount": 3
+        }
+      },
+      {
+        "cardName": "Betray the cardinal",
+        "cardAge": 3,
+        "cardType": "blackCard",
+        "cardAssetsCost": {
+          "faithPoints": 3
+        },
+        "cardImmediateEffect": {
+          "actionEffect": {
+            "actionEffectStrength": {
+              "greenBonus": 6,
+              "blueBonus": 6,
+              "yellowBonus": 6,
+              "purpleBonus": 6,
+              "blackBonus" : 6
+            }
+          }
+        }
+      },
+      {
+        "cardName": "Bribe the courtier",
+        "cardAge": 3,
+        "cardType": "blackCard",
+        "cardAssetsCost":{
+          "coin":4,
+          "faithPoints": 4
+        },
+        "cardImmediateEffect": {
+          "assetsEffect": {
+            "wood": 8,
+            "stone": 8
+          }
+        }
       }
+
     ]
 }
 

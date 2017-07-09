@@ -1,13 +1,27 @@
 package it.polimi.ingsw.lim.model.leaders;
 
 import it.polimi.ingsw.lim.model.Assets;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonSubTypes;
+import org.codehaus.jackson.annotate.JsonTypeInfo;
 
 import java.io.Serializable;
 import java.util.HashMap;
 
+
+
 /**
  * 
  */
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = ActivableLeader.class, name = "ActivableLeader"),
+
+        @JsonSubTypes.Type(value = PermanentLeader.class, name = "PermanentLeader")
+})
+
 public abstract class LeaderCard implements Serializable {
 
     /**

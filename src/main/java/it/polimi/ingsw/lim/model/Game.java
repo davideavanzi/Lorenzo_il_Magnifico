@@ -58,14 +58,11 @@ public class Game {
      * Constructor. Sets starting age and turn. These go from 1 inclusive to their MAX value defined in the settings
      */
     public Game(GameController controllerCallback) {
-        getLog().info("Creating game instance");
+        this.controllerCallback = controllerCallback;
         this.board = new Board();
-        this.board.setAge(1);
-        this.board.setTurn(0); //it is updated by one as soon as the game starts.
         this.players = new ArrayList<>();
         this.cardsDeck = new CardsDeck();
         this.availablePlayerColors = new ArrayList<>(PLAYER_COLORS);
-        this.controllerCallback = controllerCallback;
         this.randomGenerator = new Random();
     }
 
@@ -73,7 +70,10 @@ public class Game {
      * Empty constructor, setters and getters are used to save and retrieve game from file.
      */
     public Game(){
+        getLog().info("Creating game instance");
+        this.board = new Board();
         this.players = new ArrayList<>();
+        this.cardsDeck = new CardsDeck();
         this.availablePlayerColors = new ArrayList<>(PLAYER_COLORS);
         this.randomGenerator = new Random();
     }
@@ -158,6 +158,8 @@ public class Game {
      */
     public void setUpGame(Parser parsedGame) throws GameSetupException {
         getLog().info("[GAME SETUP BEGIN]");
+        this.board.setAge(1);
+        this.board.setTurn(0); //it is updated by one as soon as the game starts.
         int playersNumber = this.players.size();
         if (playersNumber < 2 || playersNumber > 5)
             throw new GameSetupException("Wrong player number on game setup");

@@ -6,18 +6,22 @@ import it.polimi.ingsw.lim.exceptions.GameSetupException;
 import it.polimi.ingsw.lim.model.*;
 import it.polimi.ingsw.lim.model.cards.*;
 import it.polimi.ingsw.lim.model.immediateEffects.*;
-import it.polimi.ingsw.lim.model.leaders.*;
+import it.polimi.ingsw.lim.model.leaders.Leaders;
+import it.polimi.ingsw.lim.model.leaders.PermanentLeader;
 import it.polimi.ingsw.lim.parser.Parser;
 import it.polimi.ingsw.lim.parser.Writer;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
-import static it.polimi.ingsw.lim.utils.Log.*;
 import static it.polimi.ingsw.lim.Settings.*;
 import static it.polimi.ingsw.lim.model.leaders.Leaders.*;
+import static it.polimi.ingsw.lim.utils.Log.getLog;
 
 /**
  * This class is the main game controller.
@@ -253,7 +257,7 @@ public class GameController {
      * this method is called when a player go to production with a family member, and (optional) using servants
      * @param fm the family member put in production
      * @param servantsDeployed the num of the servants deployed by the user
-     * @throws BadRequestException if //todo
+     * @throws BadRequestException if the move is not valid
      */
     public void moveInProduction (FamilyMember fm, int servantsDeployed) throws BadRequestException {
         User actor = roomCallback.getPlayingUser(); //only the playing user can perform the action
@@ -326,7 +330,6 @@ public class GameController {
     public void confirmProduction(ArrayList<Integer> choices) throws BadRequestException {
         if (choices.size() != currentProductionOptions.size())
             throw new BadRequestException("Production move not allowed, wrong choices number!");
-        //TODO: CHECK IF FASTACTOR IS THE SAME AS THE ONE PLAYING?
         currentProductionOptions.forEach(option -> {
             Assets costOption = ((Assets)option.get(choices.indexOf(option))[0]);
             Object resultOption = option.get(choices.indexOf(option))[1];
