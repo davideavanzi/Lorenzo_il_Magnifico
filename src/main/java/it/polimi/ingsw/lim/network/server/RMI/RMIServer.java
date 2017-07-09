@@ -1,6 +1,6 @@
 package it.polimi.ingsw.lim.network.server.RMI;
 
-import it.polimi.ingsw.lim.Log;
+import it.polimi.ingsw.lim.utils.Log;
 import it.polimi.ingsw.lim.controller.GameController;
 import it.polimi.ingsw.lim.controller.User;
 import it.polimi.ingsw.lim.exceptions.BadRequestException;
@@ -10,7 +10,7 @@ import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.FamilyMember;
 import it.polimi.ingsw.lim.model.Player;
 import it.polimi.ingsw.lim.network.client.RMI.RMIClientInterf;
-import it.polimi.ingsw.lim.network.server.MainServer;
+import it.polimi.ingsw.lim.MainServer;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -23,7 +23,8 @@ import java.util.HashMap;
 import java.util.logging.Level;
 
 import static it.polimi.ingsw.lim.network.CommunicationConstants.*;
-import static it.polimi.ingsw.lim.network.server.MainServer.addUserToRoom;
+import static it.polimi.ingsw.lim.MainServer.addUserToRoom;
+import static it.polimi.ingsw.lim.MainServer.isUserAlreadyLoggedIn;
 
 /**
  *
@@ -296,6 +297,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
         try {
             if (MainServer.getJDBC().isAlreadySelectedUserName(username)) {
                 if (MainServer.getJDBC().isUserContained(username, password)) {
+                    if (isUserAlreadyLoggedIn(username)) throw new LoginFailedException("You are already logged in!");
                     addUserToRoom(new RMIUser(username, rmiClient));
                     Log.getLog().log(Level.INFO, "[LOGIN]: Success login. Welcome back ".concat(username));
                 } else {

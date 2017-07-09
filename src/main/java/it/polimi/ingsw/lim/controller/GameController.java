@@ -15,7 +15,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
-import static it.polimi.ingsw.lim.Log.*;
+import static it.polimi.ingsw.lim.utils.Log.*;
 import static it.polimi.ingsw.lim.Settings.*;
 import static it.polimi.ingsw.lim.model.leaders.Leaders.*;
 
@@ -158,10 +158,9 @@ public class GameController {
                     boolean useBp = false;
                     int servantsForTowerAction = this.game.servantsForTowerAction(fm, towerColor, floor);
                     if (servantsDeployed < servantsForTowerAction || servantsDeployed >
-                            actor.getPlayer().getResources().getServants()) {
-                        actor.gameMessage("You did not set the right amount of servants to deploy to perform the action");
-                        return;
-                    }
+                            actor.getPlayer().getResources().getServants())
+                        throw new BadRequestException("You did not set the right amount of servants to deploy " +
+                                "to perform the action");
                     if (cardAffordable && purpleAffordable) {
                         //let the client choose and save the action state.
                         this.pendingTowerMove = new PendingTowerMove(towerColor, floor, fm, servantsDeployed, actor);
@@ -177,12 +176,17 @@ public class GameController {
                     }
                 } else {
                     getLog().log(Level.INFO, "But the card is not affordable");
+                    throw new BadRequestException("the card is not affordable");
+
                 }
             } else {
                 getLog().log(Level.INFO, "But the move is not affordable");
+                throw new BadRequestException("the tower move is not affordable");
+
             }
         } else {
             getLog().log(Level.INFO, "But the move is not allowed");
+            throw new BadRequestException("the tower move is not allowed");
         }
     }
 
@@ -228,9 +232,9 @@ public class GameController {
             Player actor = this.game.getPlayerFromColor(fm.getOwnerColor());
             int servantsForHarvestAction = this.game.servantsForHarvestAction(fm, 0);
             this.game.giveAssetsToPlayer(actor.getDefaultHarvestBonus(), actor);
-            if (servantsDeployed < servantsForHarvestAction || //TODO: do better
+            if (servantsDeployed < servantsForHarvestAction ||
                     servantsDeployed > this.game.getPlayerFromColor(fm.getOwnerColor()).getResources().getServants()) {
-                return;
+                throw new BadRequestException("Wrong amount of servants deployed for harvest move");
             }
             this.game.harvestMove(fm, servantsDeployed);
             int actionStrength = game.calcHarvestActionStr(fm, servantsDeployed, 0);
@@ -531,7 +535,9 @@ public class GameController {
         game.replaceLeader(getLeaderByName(pendingLeaderCopy.get(choice)), actor.getPlayer());
     }
 
-    //------------------------------ COUNCIL
+    public void giveLeadersToUser(ArrayList<Integer> leaderIds, User recipient) {
+        leaderIds.forEach(id -> game.giveLeaderToPlayer(id, recipient.getPlayer()));
+    }
 
     public void giveCouncilFavors(int amount) {
         roomCallback.getPlayingUser().askForCouncilFavor(amount);

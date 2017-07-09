@@ -1,6 +1,6 @@
 package it.polimi.ingsw.lim.network.server.socket;
 
-import static it.polimi.ingsw.lim.Log.*;
+import static it.polimi.ingsw.lim.utils.Log.*;
 
 import java.io.IOException;
 import java.net.ServerSocket;

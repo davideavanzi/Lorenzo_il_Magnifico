@@ -1,4 +1,4 @@
-package it.polimi.ingsw.lim.network.client;
+package it.polimi.ingsw.lim;
 
 import com.diogonunes.jcdp.color.ColoredPrinter;
 import com.diogonunes.jcdp.color.api.Ansi;

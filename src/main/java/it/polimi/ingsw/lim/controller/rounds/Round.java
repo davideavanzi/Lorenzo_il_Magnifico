@@ -9,5 +9,4 @@ public interface Round{
 
     void timerEnded();
 
-    void setTimer(Timer timer);
 }

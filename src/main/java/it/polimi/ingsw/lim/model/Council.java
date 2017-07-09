@@ -2,7 +2,7 @@ package it.polimi.ingsw.lim.model;
 import java.io.Serializable;
 import java.util.*;
 
-import static it.polimi.ingsw.lim.Log.getLog;
+import static it.polimi.ingsw.lim.utils.Log.getLog;
 
 /**
  * This class represents the council. Players will put family members here. At the end of the turn, the gaming

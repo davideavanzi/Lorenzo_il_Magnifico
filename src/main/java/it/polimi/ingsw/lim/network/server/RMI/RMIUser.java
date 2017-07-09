@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
 
-import static it.polimi.ingsw.lim.Log.getLog;
+import static it.polimi.ingsw.lim.utils.Log.getLog;
 import static java.lang.Thread.sleep;
 
 /**
@@ -241,4 +241,8 @@ public class RMIUser extends User {
 
     }
 
+    @Override
+    public void askLeaderDraft(ArrayList<Integer> leaderOptions) {
+        //todo implementare
+    }
 }

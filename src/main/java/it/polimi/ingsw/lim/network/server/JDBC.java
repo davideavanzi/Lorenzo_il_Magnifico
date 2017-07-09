@@ -1,6 +1,6 @@
 package it.polimi.ingsw.lim.network.server;
 
-import it.polimi.ingsw.lim.Log;
+import it.polimi.ingsw.lim.utils.Log;
 
 import java.sql.*;
 

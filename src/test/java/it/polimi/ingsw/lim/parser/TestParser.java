@@ -1,6 +1,6 @@
 package it.polimi.ingsw.lim.parser;
 
-import it.polimi.ingsw.lim.Log;
+import it.polimi.ingsw.lim.utils.Log;
 import it.polimi.ingsw.lim.exceptions.InvalidCardException;
 import it.polimi.ingsw.lim.exceptions.InvalidExcommunicationException;
 import it.polimi.ingsw.lim.exceptions.InvalidTimerException;
@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import static it.polimi.ingsw.lim.Settings.*;
-import static it.polimi.ingsw.lim.Log.getLog;
+import static it.polimi.ingsw.lim.utils.Log.getLog;
 import static junit.framework.TestCase.assertEquals;
 
 /**

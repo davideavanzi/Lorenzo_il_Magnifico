@@ -10,7 +10,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
-import static it.polimi.ingsw.lim.Log.getLog;
+import static it.polimi.ingsw.lim.utils.Log.getLog;
 import static it.polimi.ingsw.lim.Settings.*;
 
 /**
@@ -99,6 +99,10 @@ public class Player implements Serializable{
     /**
      *
      */
+
+    void addLeader(LeaderCard leader) {
+        this.leaderCards.add(leader);
+    }
 
     public LeaderCard getLeaderById(int id) {
         return leaderCards.stream().filter(leader -> leader.getLeaderCardId() == id).findFirst().orElse(null);

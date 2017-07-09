@@ -1,5 +1,5 @@
 package it.polimi.ingsw.lim.model.immediateEffects;
-import it.polimi.ingsw.lim.Log;
+import it.polimi.ingsw.lim.utils.Log;
 
 /**
  * This effect gives the player a specified amount of council favors.

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.lim.ui;
 
-import it.polimi.ingsw.lim.Lock;
+import it.polimi.ingsw.lim.utils.Lock;
 
 /**
  * Created by nico.

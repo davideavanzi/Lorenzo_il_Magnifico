@@ -1,4 +1,4 @@
-package it.polimi.ingsw.lim;
+package it.polimi.ingsw.lim.utils;
 
 import java.io.IOException;
 import java.text.DateFormat;

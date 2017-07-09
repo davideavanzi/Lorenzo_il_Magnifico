@@ -7,6 +7,7 @@ import it.polimi.ingsw.lim.model.cards.PurpleCard;
 import it.polimi.ingsw.lim.model.excommunications.*;
 import it.polimi.ingsw.lim.model.leaders.ActivableLeader;
 import it.polimi.ingsw.lim.model.leaders.LeaderCard;
+import it.polimi.ingsw.lim.model.leaders.Leaders;
 import it.polimi.ingsw.lim.model.leaders.PermanentLeader;
 import it.polimi.ingsw.lim.parser.Parser;
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -16,7 +17,7 @@ import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.lim.Settings.*;
-import static it.polimi.ingsw.lim.Log.*;
+import static it.polimi.ingsw.lim.utils.Log.*;
 import static it.polimi.ingsw.lim.model.leaders.Leaders.MIRANDOLA_PICK_BONUS;
 import static it.polimi.ingsw.lim.model.leaders.Leaders.MORO_FM_BONUS;
 
@@ -829,6 +830,10 @@ public class Game {
         return (endGameExcomm instanceof EndGameCardsExcommunication &&
                 endGameExcomm.getExcommunicated().contains(pl.getColor()) &&
                 ((EndGameCardsExcommunication) endGameExcomm).getBlockedCardColor().equals(color));
+    }
+
+    public void giveLeaderToPlayer(int leaderId, Player pl) {
+        pl.addLeader(Leaders.getLeaderById(leaderId));
     }
 
     public boolean isLeaderDeployable(int leaderId, Player pl) {

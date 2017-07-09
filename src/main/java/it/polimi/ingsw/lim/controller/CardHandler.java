@@ -1,11 +1,10 @@
 package it.polimi.ingsw.lim.controller;
 
-import it.polimi.ingsw.lim.Log;
+import it.polimi.ingsw.lim.utils.Log;
 import it.polimi.ingsw.lim.model.*;
 import it.polimi.ingsw.lim.model.cards.BlueCard;
 import it.polimi.ingsw.lim.model.cards.GreenCard;
 import it.polimi.ingsw.lim.model.cards.YellowCard;
-import org.codehaus.jackson.annotate.JsonTypeInfo;
 
 import java.util.ArrayList;
 import java.util.logging.Level;

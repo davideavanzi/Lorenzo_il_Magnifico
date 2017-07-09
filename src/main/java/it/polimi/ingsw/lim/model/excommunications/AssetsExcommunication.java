@@ -1,5 +1,5 @@
 package it.polimi.ingsw.lim.model.excommunications;
-import it.polimi.ingsw.lim.Log;
+import it.polimi.ingsw.lim.utils.Log;
 import it.polimi.ingsw.lim.model.Assets;
 
 /**

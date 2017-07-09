@@ -1,16 +1,17 @@
 package it.polimi.ingsw.lim.network.server.socket;
 
-import it.polimi.ingsw.lim.Log;
+import it.polimi.ingsw.lim.utils.Log;
 import it.polimi.ingsw.lim.controller.User;
 import it.polimi.ingsw.lim.exceptions.LoginFailedException;
 import it.polimi.ingsw.lim.model.Assets;
 import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.Player;
-import it.polimi.ingsw.lim.network.server.MainServer;
+import it.polimi.ingsw.lim.MainServer;
 
-import static it.polimi.ingsw.lim.Log.*;
+import static it.polimi.ingsw.lim.utils.Log.*;
 import static it.polimi.ingsw.lim.network.CommunicationConstants.*;
-import static it.polimi.ingsw.lim.network.server.MainServer.addUserToRoom;
+import static it.polimi.ingsw.lim.MainServer.addUserToRoom;
+import static it.polimi.ingsw.lim.MainServer.isUserAlreadyLoggedIn;
 
 import java.io.*;
 import java.net.Socket;
@@ -205,6 +206,7 @@ public class SocketClientHandler implements Runnable {
         try {
             if (MainServer.getJDBC().isAlreadySelectedUserName(username)) {
                 if (MainServer.getJDBC().isUserContained(username, password)) {
+                    if (isUserAlreadyLoggedIn(username)) throw new LoginFailedException("You are already logged in!");
                     this.user = new SocketUser(username, handlerCallback);
                     addUserToRoom(this.user);
                     Log.getLog().log(Level.INFO, "[LOGIN]: Login successful. Welcome back ".concat(username));

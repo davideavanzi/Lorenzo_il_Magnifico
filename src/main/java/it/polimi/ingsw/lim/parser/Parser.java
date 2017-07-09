@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import static it.polimi.ingsw.lim.Log.getLog;
+import static it.polimi.ingsw.lim.utils.Log.getLog;
 import static it.polimi.ingsw.lim.Settings.*;
 import static it.polimi.ingsw.lim.parser.KeyConst.*;
 

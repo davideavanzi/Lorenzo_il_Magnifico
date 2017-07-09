@@ -1,4 +1,4 @@
-package it.polimi.ingsw.lim;
+package it.polimi.ingsw.lim.utils;
 
 import java.util.logging.Level;
 

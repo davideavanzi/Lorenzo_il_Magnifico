@@ -126,5 +126,9 @@ public class SocketUser extends User {
         //todo implementare
     }
 
+    @Override
+    public void askLeaderDraft(ArrayList<Integer> leaderOptions) {
+        //todo implementare
+    }
 }
 

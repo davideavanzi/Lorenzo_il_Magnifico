@@ -1,6 +1,6 @@
 package it.polimi.ingsw.lim.network.client.socket;
 
-import it.polimi.ingsw.lim.Lock;
+import it.polimi.ingsw.lim.utils.Lock;
 import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
 import it.polimi.ingsw.lim.exceptions.LoginFailedException;
 import it.polimi.ingsw.lim.network.client.ServerInterface;

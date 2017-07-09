@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
 
-import static it.polimi.ingsw.lim.Log.getLog;
+import static it.polimi.ingsw.lim.utils.Log.getLog;
 
 /**
  * Created by Davide on 26/05/2017.
@@ -209,5 +209,12 @@ public abstract class User implements Serializable{
 
 
     public abstract void notifyGameStart();
+
+    /**
+     * This method notifies the user that can perform a leader draft, giving him an array of integers where
+     * are saved the leader's ids. Player will answer with the id of the leader he chose.
+     * @param leaderOptions the list of leaders to choose from
+     */
+    public abstract void askLeaderDraft(ArrayList<Integer> leaderOptions);
 
 }

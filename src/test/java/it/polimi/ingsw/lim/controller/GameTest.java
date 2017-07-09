@@ -1,14 +1,4 @@
 package it.polimi.ingsw.lim.controller;
-import it.polimi.ingsw.lim.model.FamilyMember;
-import it.polimi.ingsw.lim.model.Game;
-
-import static it.polimi.ingsw.lim.Log.getLog;
-import static it.polimi.ingsw.lim.Settings.*;
-
-import it.polimi.ingsw.lim.model.Player;
-import it.polimi.ingsw.lim.parser.Parser;
-import org.junit.Test;
-import static org.junit.Assert.*;
 
 
 /**

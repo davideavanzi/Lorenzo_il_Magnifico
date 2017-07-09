@@ -1,6 +1,6 @@
 package it.polimi.ingsw.lim.parser;
 
-import it.polimi.ingsw.lim.Log;
+import it.polimi.ingsw.lim.utils.Log;
 import it.polimi.ingsw.lim.controller.Room;
 import it.polimi.ingsw.lim.model.Game;
 import org.codehaus.jackson.map.ObjectMapper;

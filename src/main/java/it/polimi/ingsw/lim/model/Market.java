@@ -7,7 +7,7 @@ import static it.polimi.ingsw.lim.Settings.*;
 import java.io.Serializable;
 import java.util.*;
 
-import static it.polimi.ingsw.lim.Log.getLog;
+import static it.polimi.ingsw.lim.utils.Log.getLog;
 
 /**
  * This class represents the market. Slots and bonuses are mapped one-to-one

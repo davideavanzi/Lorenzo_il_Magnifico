@@ -1,7 +1,6 @@
 package it.polimi.ingsw.lim.model;
-import it.polimi.ingsw.lim.Log;
+import it.polimi.ingsw.lim.utils.Log;
 import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 import static it.polimi.ingsw.lim.utils.Utils.*;
 

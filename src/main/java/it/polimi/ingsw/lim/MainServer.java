@@ -1,8 +1,10 @@
-package it.polimi.ingsw.lim.network.server;
+package it.polimi.ingsw.lim;
 
-import static it.polimi.ingsw.lim.Log.*;
+import static it.polimi.ingsw.lim.Settings.DUMPS_PATH;
+import static it.polimi.ingsw.lim.utils.Log.*;
 
-import it.polimi.ingsw.lim.Log;
+import it.polimi.ingsw.lim.network.server.JDBC;
+import it.polimi.ingsw.lim.utils.Log;
 import it.polimi.ingsw.lim.controller.Room;
 import it.polimi.ingsw.lim.controller.User;
 import it.polimi.ingsw.lim.network.server.RMI.RMIServer;
@@ -47,7 +49,7 @@ public class MainServer {
         }
         if (decision == 1) {
             try {
-                for (File file : new File("src/main/gameData/configs/writer/room/").listFiles()) {
+                for (File file : new File(DUMPS_PATH+"room/").listFiles()) {
                     if (file.getName().contains(".json")) {
                         roomList.add(Writer.readerRoom(file));
                         roomList.get(roomList.size()-1).getUsersList().forEach(user -> user.hasDied());
@@ -55,25 +57,25 @@ public class MainServer {
                     }
                 }
             } catch (NullPointerException e) {
-                Log.getLog().info("[SERVER]: No room file in src/main/gameData/configs/writer/room/");
+                Log.getLog().info("[SERVER]: No room file in dumps path");
             }
         } else {
             try {
-                for (File file : new File("src/main/gameData/configs/writer/room/").listFiles()) {
+                for (File file : new File(DUMPS_PATH+"room/").listFiles()) {
                     if (file.getName().contains(".json")) {
                         file.delete();
                     }
                 }
-                for (File file : new File("src/main/gameData/configs/writer/game/").listFiles()) {
+                for (File file : new File(DUMPS_PATH+"game/").listFiles()) {
                     if (file.getName().contains(".json")) {
                         file.delete();
                     }
                 }
             } catch (NullPointerException e) {
-                Log.getLog().info("[SERVER]: No room file in src/main/gameData/configs/writer/room/");
+                Log.getLog().info("[SERVER]: No room file in dumps path");
             }
         }
-        connectedUsers = new ArrayList<>();
+
         try {
             jdbc = new JDBC();
         } catch (SQLException e){
@@ -97,11 +99,6 @@ public class MainServer {
      * ArrayList of room.
      */
     private static ArrayList<Room> roomList;
-
-    /**
-     * ArrayList of connected users.
-     */
-    private static ArrayList<User> connectedUsers;
 
     /**
      * Declaration of SocketServer and RMIServer class.
@@ -144,8 +141,15 @@ public class MainServer {
      * @param username the user name to search
      * @return the user, if not found null.
      */
-    public static User getConnectedUser(String username) {
-        return connectedUsers.stream().filter(user -> user.getUsername().equals(username)).findFirst().orElse(null);
+    public static boolean isUserAlreadyLoggedIn(String username) {
+        for(Room room: roomList) {
+            for(User u: room.getUsersList()){
+                if(u.getUsername().equals(username) && u.getIsAlive()){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -154,8 +158,7 @@ public class MainServer {
      * @return the room in which the user was added (the last of the list)
      */
     public static Room addUserToRoom(User user) {
-        connectedUsers.add(user);
-        for(Room room: roomList){
+        for(Room room: roomList) {
             for(User u: room.getUsersList()){
                 if(u.getUsername().equals(user.getUsername()) && !u.getIsAlive()){
 

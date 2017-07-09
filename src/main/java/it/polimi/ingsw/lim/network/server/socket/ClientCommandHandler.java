@@ -4,7 +4,7 @@ import it.polimi.ingsw.lim.controller.GameController;
 import it.polimi.ingsw.lim.exceptions.BadRequestException;
 import it.polimi.ingsw.lim.model.FamilyMember;
 
-import static it.polimi.ingsw.lim.Log.getLog;
+import static it.polimi.ingsw.lim.utils.Log.getLog;
 import static it.polimi.ingsw.lim.network.CommunicationConstants.*;
 
 import java.util.ArrayList;

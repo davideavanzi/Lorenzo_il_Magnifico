@@ -1,7 +1,8 @@
 package it.polimi.ingsw.lim.controller;
 
-import it.polimi.ingsw.lim.Lock;
-import it.polimi.ingsw.lim.Log;
+import it.polimi.ingsw.lim.utils.Lock;
+import it.polimi.ingsw.lim.utils.Log;
+import it.polimi.ingsw.lim.controller.rounds.DraftRound;
 import it.polimi.ingsw.lim.controller.rounds.ExcommunicationRound;
 import it.polimi.ingsw.lim.controller.rounds.PlayerRound;
 import it.polimi.ingsw.lim.exceptions.InvalidTimerException;
@@ -11,7 +12,7 @@ import it.polimi.ingsw.lim.parser.Writer;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
-import static it.polimi.ingsw.lim.Log.getLog;
+import static it.polimi.ingsw.lim.utils.Log.getLog;
 import static it.polimi.ingsw.lim.Settings.*;
 
 import java.io.File;
@@ -35,6 +36,8 @@ public class Room implements Serializable{
     private boolean roomOpen = true; // room open
     @JsonIgnore
     private transient Lock excommLock;
+    @JsonIgnore
+    private transient Lock draftLock;
     private ArrayList<User> usersList;
     private ArrayList<String> playOrder;
     @JsonIgnore
@@ -42,6 +45,8 @@ public class Room implements Serializable{
     private int id;
     @JsonIgnore
     private transient ExcommunicationRound excommunicationRound;
+    @JsonIgnore
+    private transient DraftRound draftRound;
     private int timerPlayMove;
     private int timerStartingGame;
 
@@ -51,6 +56,7 @@ public class Room implements Serializable{
         usersList.add(user);
         user.setRoom(this);
         excommLock = new Lock();
+        draftLock = new Lock();
         getLog().log(Level.INFO, () -> "Room created, adding "+ user.getUsername() +" to room");
         this.id = id;
         try {
@@ -110,9 +116,20 @@ public class Room implements Serializable{
     }
 
     @JsonIgnore
+    public DraftRound getDraftRound() {
+        return draftRound;
+    }
+
+    @JsonIgnore
     public void setExcommunicationRound(ExcommunicationRound excommunicationRound) {
         this.excommunicationRound = excommunicationRound;
     }
+
+    @JsonIgnore
+    public Lock getDraftLock(){
+        return draftLock;
+    }
+
 
     @JsonIgnore
     public void setExcommLock(Lock excommLock){
@@ -140,7 +157,7 @@ public class Room implements Serializable{
 
         if(getNumAlive() == 2) {
             new TimerEnd(timerStartingGame, this);
-        }//todo verifica che se uno entra dopo che e' ripreso il timer viene rimesso al posto giusto
+        }
     }
 
     private int getNumAlive(){
@@ -209,10 +226,8 @@ public class Room implements Serializable{
         Log.getLog().info("player ".concat(playOrder.get(0)).concat(" ending round"));
         playOrder.remove(0);
         if (playOrder.isEmpty()) {
-            System.out.println("PlayerOrder empty age" + this.getGameController().getGame().getAge() + " turn " + this.getGameController().getGame().getTurn());
             if(this.gameController.getTime()[0] == AGES_NUMBER &&
                     this.gameController.getTime()[1] == TURNS_PER_AGE){
-                System.out.println("end game");
                 endGame();
                 return;
             }
@@ -236,6 +251,10 @@ public class Room implements Serializable{
                 playOrder.remove(i);
                 i--;
             }
+        //Send game state to players
+        ArrayList<Player> players = new ArrayList<>();
+        usersList.forEach(user -> players.add(user.getPlayer()));
+        getConnectedUsers().forEach(user -> user.sendGameUpdate(this.gameController.getBoard(), players));
     }
 
     /**
@@ -294,22 +313,22 @@ public class Room implements Serializable{
 
     /**
      * This method is called upon the end of a turn and handles the creation of the next one.
+     * If the game has not started yed, it creates a draft round, then starts the first turn.
      * If it is the right time, it also triggers the activation of the excommunication round
      */
     private void startNewTurn(){
-        //Send game state to players
-        ArrayList<Player> players = new ArrayList<>();
-        usersList.forEach(user -> players.add(user.getPlayer()));
-        getConnectedUsers().forEach(user -> user.sendGameUpdate(this.gameController.getBoard(), players));
+        if (this.gameController.getTime()[1] == 0) {
+            draftLock.lock();
+            new Thread(new DraftRound(this, 15)).start();
+            draftLock.lock();
+        }
         buildTurnOrder();
-        System.out.println("before lock");
         if(this.gameController.getTime()[1] >= TURNS_PER_AGE) {
             excommLock.lock();
-            new Thread(new ExcommunicationRound(this,10000,excommLock)).start();
+            new Thread(new ExcommunicationRound(this,10)).start();
         }
         if (excommLock.isLocked())
             excommLock.lock();
-        System.out.println("after lock");
         this.gameController.startNewTurn();
         for (int i = 0; i < playOrder.size(); i++)
             if (this.getUser(playOrder.get(i)).isAlive()) {

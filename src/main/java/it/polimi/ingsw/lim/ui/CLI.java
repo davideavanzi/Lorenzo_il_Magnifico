@@ -3,7 +3,7 @@ package it.polimi.ingsw.lim.ui;
 import com.diogonunes.jcdp.color.ColoredPrinter;
 import com.diogonunes.jcdp.color.api.Ansi;
 import com.vdurmont.emoji.EmojiParser;
-import it.polimi.ingsw.lim.Lock;
+import it.polimi.ingsw.lim.utils.Lock;
 import it.polimi.ingsw.lim.exceptions.InvalidInputException;
 import it.polimi.ingsw.lim.model.*;
 import it.polimi.ingsw.lim.model.cards.*;

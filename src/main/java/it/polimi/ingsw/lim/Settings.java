@@ -4,36 +4,40 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * This class holds some settings of the game, not required to be set by users.
+ * This class holds some settings of the game.
+ * Some bonus settings are editable.
  */
+
 public class Settings {
 
     /**
-     * Misc settings.
+     * Misc settings. Modifying these settings may break the game or require specific input file data amount.
      */
     public static final int MAX_USERS_PER_ROOM = 5;
     public static final int FAITH_TRACK_LENGTH = 30;
     public static final int TOWER_HEIGHT = 4;
-    public static final int[] FLOORS_ACTION_COSTS = {1, 3, 5, 7};
-    public static final int[] PLAYER_TERRITORIES_REQ = {0, 0, 3, 7, 12, 18};
-    public static final int COUNCIL_FAVUORS_TYPES = 5;
     public static final int MARKET_MAX_SIZE = 5;
-    public static final int MARKET_ACTION_COST = 1;
-    public static final int COUNCIL_ACTION_COST = 1;
-    public static final int NEUTRAL_FM_STRENGTH = 0;
     public static final int DEPLOYABLE_FM_PER_ROUND = 1;
-
-    /**
-     * Faith points corresponding to the first excommunication.
-     * Following excommunications will be at +1 fp from their previous.
-     */
+    public static final int LEADERS_PER_PLAYER = 4;
     public static final int FIRST_EXCOMM_FP = 3;
-    public static final int COINS_TO_ENTER_OCCUPIED_TOWER = 3;
-
     public static final int ROUNDS_PER_TURN = 4;
     public static final int TURNS_PER_AGE = 2;
     public static final int AGES_NUMBER = 3;
+    public static final int COUNCIL_FAVUORS_TYPES = 5;
 
+    /**
+     * Misc settings. Editable.
+     */
+    public static final int NEUTRAL_FM_STRENGTH = 0;
+    public static final int[] FLOORS_ACTION_COSTS = {1, 3, 5, 7};
+    public static final int[] PLAYER_TERRITORIES_REQ = {0, 0, 3, 7, 12, 18};
+    public static final int COINS_TO_ENTER_OCCUPIED_TOWER = 3;
+    public static final int MARKET_ACTION_COST = 1;
+    public static final int COUNCIL_ACTION_COST = 1;
+
+    /**
+     * Harvest and production sites settings. Their size can be adjusted here.
+     */
     public static final int HARVEST_DEFAULT_STR = 1;
     public static final int HARVEST_STR_MALUS = 3;
     public static final int HARVEST_DEFAULTSPACE_SIZE = 1;
@@ -42,7 +46,9 @@ public class Settings {
     public static final int PRODUCTION_STR_MALUS = 3;
     public static final int PRODUCTION_DEFAULTSPACE_SIZE = 1;
 
-
+    /**
+     * End game settings, editable.
+     */
     public static final int[] ENDGAME_GREEN_CARDS_VP_BONUS = {0, 0, 1, 4, 10, 20};
     public static final int[] ENDGAME_BLUE_CARDS_VP_BONUS = {1, 3, 6, 10, 15, 21};
     public static final int ENDGAME_VP_ASSETS_DIVIDER = 5;
@@ -75,9 +81,10 @@ public class Settings {
             Arrays.asList(GREEN_COLOR, YELLOW_COLOR, BLUE_COLOR, RED_COLOR, PURPLE_COLOR);
 
     /**
-     * Game config path.
+     * Paths for dumps, logs and game configs.
      */
-    protected static final String LOG_PATH = "src/main/gameData/logs/";
+    static final String DUMPS_PATH = "src/main/gameData/dumps/";
+    public static final String LOG_PATH = "src/main/gameData/logs/";
     public static final String CONFIGS_PATH = "src/main/gameData/configs/";
 
 
