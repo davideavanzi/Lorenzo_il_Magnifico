@@ -1,4 +1,5 @@
 package it.polimi.ingsw.lim.model;
+
 import it.polimi.ingsw.lim.controller.GameController;
 import it.polimi.ingsw.lim.exceptions.ControllerException;
 import it.polimi.ingsw.lim.exceptions.GameSetupException;
@@ -17,9 +18,9 @@ import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.lim.Settings.*;
-import static it.polimi.ingsw.lim.utils.Log.*;
 import static it.polimi.ingsw.lim.model.leaders.Leaders.MIRANDOLA_PICK_BONUS;
 import static it.polimi.ingsw.lim.model.leaders.Leaders.MORO_FM_BONUS;
+import static it.polimi.ingsw.lim.utils.Log.getLog;
 
 /**
  * THE GAME INSTANCE
@@ -588,7 +589,6 @@ public class Game {
 
     /**
      * This method calculates the amount of servants that a player needs to perform a tower action
-     * TODO: CHECK CORRECT RESULT
      * @param fm
      * @param towerColor
      * @param floor

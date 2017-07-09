@@ -1,14 +1,14 @@
 package it.polimi.ingsw.lim.model.cards;
 
-import it.polimi.ingsw.lim.utils.Log;
 import it.polimi.ingsw.lim.model.Assets;
 import it.polimi.ingsw.lim.model.immediateEffects.ImmediateEffect;
+import it.polimi.ingsw.lim.utils.Log;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonSubTypes;
 import org.codehaus.jackson.annotate.JsonTypeInfo;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
 
 /**
  * This abstract class is responsible of representing a generic development card. Each subclass will define different
@@ -51,18 +51,6 @@ public abstract class Card implements Serializable {
      */
     private ArrayList<ImmediateEffect> immediateEffects;
 
-    public String getName(){
-        return this.name;
-    }
-
-    public int getAge(){
-        return this.age;
-    }
-
-    public ArrayList<ImmediateEffect> getImmediateEffects(){
-        return this.immediateEffects;
-    }
-
     /**
      * Contructor
      * @param name
@@ -71,7 +59,6 @@ public abstract class Card implements Serializable {
      * @param iEffects
      */
     public Card(String name, int age, Assets cost, ArrayList<ImmediateEffect> iEffects){
-        //TODO: a card must have a name and an age, otherwise throws exception
         this.name = name;
         this.cost = (cost == null) ? new Assets() : cost;
         this.age = age;
@@ -83,27 +70,38 @@ public abstract class Card implements Serializable {
      */
     public Card(){}
 
-
-    public Assets getCost () { return this.cost; }
-
-    public boolean hasCost(){
-        return this.cost.isNotNull();
+    public String getName(){
+        return this.name;
     }
 
     public void setName(String name){
         this.name = name;
     }
 
-    public void setCost(Assets cost){
-        this.cost = cost;
+    public int getAge(){
+        return this.age;
     }
 
     public void setAge(int age){
         this.age = age;
     }
 
+    public ArrayList<ImmediateEffect> getImmediateEffects(){
+        return this.immediateEffects;
+    }
+
     public void setImmediateEffects(ArrayList<ImmediateEffect> immediateEffects){
         this.immediateEffects = immediateEffects;
+    }
+
+    public Assets getCost () { return this.cost; }
+
+    public void setCost(Assets cost){
+        this.cost = cost;
+    }
+
+    public boolean hasCost(){
+        return this.cost.isNotNull();
     }
 
     /**
