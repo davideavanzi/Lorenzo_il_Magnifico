@@ -159,6 +159,9 @@ public class Strengths implements Serializable {
         if(this.getTowerStrength(PURPLE_COLOR) != 0 ){
             exist = true;
         }
+        if(this.getTowerStrength(BLACK_COLOR) != 0 ){
+            exist = true;
+        }
         if(this.getHarvestBonus() != 0){
             exist = true;
         }

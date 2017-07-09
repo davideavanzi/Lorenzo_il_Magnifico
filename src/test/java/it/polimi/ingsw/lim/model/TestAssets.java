@@ -9,7 +9,7 @@ import static it.polimi.ingsw.lim.utils.Log.getLog;
 import static junit.framework.TestCase.assertEquals;
 
 /**
- * Created by fabri on 09/07/17.
+ *
  */
 public class TestAssets {
     private static ArrayList<Assets> createAssets(){
@@ -86,7 +86,7 @@ public class TestAssets {
     
     private void testDivided(ArrayList<Assets> assets){
         try {
-            assertEquals(assets.get(0).divide(assets.get(0)), 0);//todo
+            assertEquals(assets.get(0).divide(assets.get(0)), 0);
             assertEquals(assets.get(9).divide(assets.get(8)), 2);
         }catch (AssertionFailedError e) {
             getLog().info("divided error");
