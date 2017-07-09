@@ -10,8 +10,8 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.logging.Level;
 
-import static it.polimi.ingsw.lim.utils.Log.getLog;
 import static it.polimi.ingsw.lim.Settings.LEADERS_PER_PLAYER;
+import static it.polimi.ingsw.lim.utils.Log.getLog;
 
 /**
  * Created by ava on 09/07/17.
@@ -58,14 +58,9 @@ public class DraftRound implements Round, Runnable {
     }
 
     /**
-     * this method executes a new draft phase, if any player has not chosen a card, it will be picked randomly
+     * this method executes a new draft phase.
      */
     private void newDraft() {
-        roomCallback.getUsersList().forEach(user -> {
-            if (chosenLeaders.get(user.getUsername()).size() < timerCounter)
-                chosenLeaders.get(user.getUsername()).add(leaderQueue.get(user.getUsername())
-                        .remove(randomGenerator.nextInt(leaderQueue.get(user.getUsername()).size())));
-        });
         ArrayList<String> names = new ArrayList<>(leaderQueue.keySet());
         ArrayList<Integer> tmpQueue = leaderQueue.get(names.get(0));
         for (int i = 0; i < names.size()-1; i++)
@@ -73,6 +68,17 @@ public class DraftRound implements Round, Runnable {
         leaderQueue.replace(names.get(names.size()-1), tmpQueue);
         this.timerCounter++;
         notifyDraft();
+    }
+
+    /**
+     * this method closes the current draft, giving random leaders to players who haven't decided yet
+     */
+    private void closeDraft(){
+        roomCallback.getUsersList().forEach(user -> {
+            if (chosenLeaders.get(user.getUsername()).size() < timerCounter)
+                chosenLeaders.get(user.getUsername()).add(leaderQueue.get(user.getUsername())
+                        .remove(randomGenerator.nextInt(leaderQueue.get(user.getUsername()).size())));
+        });
     }
 
     public void applyChoice(String username, int choice) {
@@ -83,11 +89,13 @@ public class DraftRound implements Round, Runnable {
     @Override
     public void timerEnded() {
         if(timerCounter == LEADERS_PER_PLAYER) {
+            closeDraft();
             roomCallback.getUsersList().forEach(user -> roomCallback.getGameController()
                     .giveLeadersToUser(chosenLeaders.get(user.getUsername()), user));
             roomCallback.getDraftLock().unlock();
         } else {
             new RoundTimer(this.timerDuration, this);
+            closeDraft();
             newDraft();
         }
     }

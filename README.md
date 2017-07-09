@@ -1,5 +1,5 @@
 # Lorenzo_il_Magnifico
-### Software Engineering final test Academic Academic Year 2016 - 2017
+### Software Engineering final test -  Academic Academic Year 2016 - 2017
 ### Authors: Avanzi Davide, Bocca Nicolò, Carsenzuola Fabrizio
 
 ### Project JavaDoc:
