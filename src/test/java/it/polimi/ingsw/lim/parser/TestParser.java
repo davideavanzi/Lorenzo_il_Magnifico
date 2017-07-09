@@ -9,6 +9,8 @@ import it.polimi.ingsw.lim.model.cards.*;
 import it.polimi.ingsw.lim.model.excommunications.*;
 import it.polimi.ingsw.lim.model.immediateEffects.*;
 import junit.framework.*;
+import org.junit.*;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,8 +22,8 @@ import static junit.framework.TestCase.assertEquals;
 /**
  * Created by FabCars. The task of this test class is to test if card parser work as expected
  */
-public class TestParser{
 
+public class TestParser{
     private static GreenCard createGreenCardExpected() {
         String nameExpected = "testGreenCard";
         int ageExpected = 1;
@@ -313,7 +315,8 @@ public class TestParser{
 
     }
 
-    private static void testParser() {
+    @Test
+    public void testParser() {
         try {
             Parser testParser = new Parser();
             testParser.parser(CONFIGS_PATH.concat("test/"));
@@ -322,24 +325,16 @@ public class TestParser{
             testTimerParser(testParser);
         }
         catch (IOException e) {
-            e.printStackTrace();
             getLog().info("IOException");
         }
         catch (InvalidTimerException e){
-            e.printStackTrace();
             getLog().info("InvalidTimersException");
         }
         catch (InvalidCardException e) {
-            e.printStackTrace();
             getLog().info("InvalidCardException");
         }
         catch (InvalidExcommunicationException e) {
-            e.printStackTrace();
             getLog().info("InvalidExcommunicationException");
         }
-    }
-
-    public static void main (String args[]){
-        testParser();
     }
 }

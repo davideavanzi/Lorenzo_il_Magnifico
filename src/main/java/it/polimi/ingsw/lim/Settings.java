@@ -86,7 +86,4 @@ public class Settings {
     public static final String DUMPS_PATH = "src/main/gameData/dumps/";
     public static final String LOG_PATH = "src/main/gameData/logs/";
     public static final String CONFIGS_PATH = "src/main/gameData/configs/";
-
-
-
 }
