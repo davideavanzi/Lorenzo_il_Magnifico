@@ -1,9 +1,9 @@
-package it.polimi.ingsw.lim.controller;
+package it.polimi.ingsw.lim.controller.rounds;
 
 import it.polimi.ingsw.lim.Log;
+import it.polimi.ingsw.lim.controller.User;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
-import java.io.Serializable;
 import java.util.Timer;
 
 import static it.polimi.ingsw.lim.Settings.DEPLOYABLE_FM_PER_ROUND;

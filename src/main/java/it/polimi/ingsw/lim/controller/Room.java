@@ -2,6 +2,8 @@ package it.polimi.ingsw.lim.controller;
 
 import it.polimi.ingsw.lim.Lock;
 import it.polimi.ingsw.lim.Log;
+import it.polimi.ingsw.lim.controller.rounds.ExcommunicationRound;
+import it.polimi.ingsw.lim.controller.rounds.PlayerRound;
 import it.polimi.ingsw.lim.exceptions.InvalidTimerException;
 import it.polimi.ingsw.lim.model.Player;
 import it.polimi.ingsw.lim.parser.Parser;
@@ -203,7 +205,7 @@ public class Room implements Serializable{
     /**
      * This method is called when a round has ended and switches the round to the next player.
      */
-    void switchRound(){
+    public void switchRound(){
         Log.getLog().info("player ".concat(playOrder.get(0)).concat(" ending round"));
         playOrder.remove(0);
         if (playOrder.isEmpty()) {

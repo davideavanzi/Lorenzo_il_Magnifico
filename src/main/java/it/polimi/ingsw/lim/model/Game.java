@@ -22,15 +22,14 @@ import static it.polimi.ingsw.lim.model.leaders.Leaders.MORO_FM_BONUS;
 
 /**
  * THE GAME INSTANCE
- * This class acts as a hub between all places of the game (model), it has links to others model classes and joins the
- * model with the main game controller.
- * It deals with all the low-level management (little logic) that isn't suitable for the main controller.
+ * This class acts as a hub between the instance of the game (model) and the main logic in the controller package,
+ * it has links to the board and all the others model classes.
+ * It deals with all the low-level game management (little logic) in order to make the main controller slimmer.
  */
 public class Game {
 
     /**
      * Constructor. Sets starting age and turn. These go from 1 inclusive to their MAX value defined in the settings
-     * TODO: should we leave them here?
      */
     public Game(GameController controllerCallback) {
         getLog().info("Creating game instance");
@@ -44,6 +43,9 @@ public class Game {
         this.randomGenerator = new Random();
     }
 
+    /**
+     * Empty constructor used to retrieve game from file.
+     */
     public Game(){
         this.players = new ArrayList<>();
         this.availablePlayerColors = new ArrayList<>(PLAYER_COLORS);
@@ -77,22 +79,22 @@ public class Game {
 
 
     /**
-     * The board, contains links to the structures
+     * The board, contains links to the structures (such as market, council etc.)
      */
     private Board board;
 
     /**
-     * List of all the players
+     * List of all the players in this game instance
      */
     private ArrayList<Player> players;
 
     /**
-     * Link to the cards container
+     * Link to the cards container, it holds all cards that are yet to be played
      */
     private CardsDeck cardsDeck;
 
     /**
-     *
+     * This list holds colors that are not picked by players yet
      */
     private List<String> availablePlayerColors;
 
@@ -104,8 +106,11 @@ public class Game {
     @JsonIgnore
     private Random randomGenerator;
 
-    // ############################################################# METHODS AHEAD
-
+    /**
+     * This method calculates the strength value of a given family member.
+     * @param fm the family member
+     * @return the calculated value
+     */
     public int getFmStrength(FamilyMember fm) {
         if (getPlayerFromColor(fm.getOwnerColor()).getDiceOverride().get(fm.getDiceColor()) != null)
             return getPlayerFromColor(fm.getOwnerColor()).getDiceOverride().get(fm.getDiceColor());
@@ -195,7 +200,7 @@ public class Game {
             });
         getLog().info("Allotting family members to players");
         this.players.forEach(player ->
-                DICE_COLORS.forEach(color ->
+                FM_COLORS.forEach(color ->
                         player.addFamilyMember((new FamilyMember(color, player.getColor())))));
         this.board.rollDices();
 

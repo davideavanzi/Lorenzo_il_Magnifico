@@ -1,4 +1,4 @@
-package it.polimi.ingsw.lim.controller;
+package it.polimi.ingsw.lim.controller.rounds;
 
 import java.util.Timer;
 import java.util.TimerTask;

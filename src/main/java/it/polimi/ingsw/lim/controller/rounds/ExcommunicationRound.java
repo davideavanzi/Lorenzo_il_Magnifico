@@ -1,13 +1,13 @@
-package it.polimi.ingsw.lim.controller;
+package it.polimi.ingsw.lim.controller.rounds;
 import it.polimi.ingsw.lim.Lock;
 import it.polimi.ingsw.lim.Log;
+import it.polimi.ingsw.lim.controller.Room;
+import it.polimi.ingsw.lim.controller.User;
 import it.polimi.ingsw.lim.exceptions.BadRequestException;
 import it.polimi.ingsw.lim.model.Player;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Timer;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
 /**

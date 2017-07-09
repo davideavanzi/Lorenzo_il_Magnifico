@@ -705,7 +705,7 @@ public class CLI extends AbsUI {
             System.out.format(format, StringUtils.center("Excommunication",20));
         }
         else if(excommunication instanceof RoundExcommunication){
-            System.out.format(format, StringUtils.center("Round",20));
+            System.out.format(format, StringUtils.center("rounds",20));
             System.out.format(format, StringUtils.center("Excommunication",20));
         }
         for(Player player: this.uiCallback.getLocalPlayers()){

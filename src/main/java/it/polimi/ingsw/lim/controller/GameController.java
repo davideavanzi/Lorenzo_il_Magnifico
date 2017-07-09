@@ -588,7 +588,7 @@ public class GameController {
         playersToExcomm.forEach(player -> game.excommunicatePlayer(player));
     }
 
-    void applyExcommunication(ArrayList<Player> toExcommunicate) {
+    public void applyExcommunication(ArrayList<Player> toExcommunicate) {
         toExcommunicate.forEach(player -> game.excommunicatePlayer(player));
         ArrayList<Player> notToExcomm = new ArrayList<>(game.getPlayers());
         notToExcomm.removeAll(toExcommunicate);

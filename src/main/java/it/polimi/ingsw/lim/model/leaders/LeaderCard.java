@@ -35,9 +35,9 @@ public abstract class LeaderCard {
      */
     private HashMap<String, Integer> cardsRequirement;
 
-    private boolean deployed;
+    private boolean deployed = false;
 
-    private boolean discarded;
+    private boolean discarded = false;
 
 
     protected LeaderCard(Builder builder) {
@@ -45,9 +45,14 @@ public abstract class LeaderCard {
         leaderCardId = builder.leaderId;
         assetsRequirement = builder.assetsRequirement;
         cardsRequirement = builder.cardsRequirement;
-        deployed = false;
     }
 
+    /**
+     * Leaders are built with the builder pattern.
+     * The idea of using a generics T to instantiate subclasses with the builder comes from:
+     * https://stackoverflow.com/questions/17164375/subclassing-a-java-builder-class
+     * @param <T> the generic builder passed from subclasses' builder instance
+     */
     public abstract static class Builder<T extends Builder<T>> {
 
         private String cardName;
