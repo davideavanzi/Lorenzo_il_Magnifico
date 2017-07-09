@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 /**
- * 
+ *
  */
 public class UIController {
     /**
@@ -122,6 +122,7 @@ public class UIController {
      */
     public void updatePlayers(ArrayList<Player> players) {
         localPlayers = players;
+        getClientUI().printGameBoard();
     }
 
     /**
@@ -406,29 +407,35 @@ public class UIController {
      * Constants used by UI.
      */
     class UIConstant {
-        //Command
+
+        /**
+         * Command
+         */
         static final String CHAT = "chat";
         static final String TURN = "showTurn";
         static final String INFO = "showPersonalInfo";
         static final String CARD = "showCard";
+        static final String BOARD = "showBoard";
         static final String ALL_PLAYER_INFO = "showAllPlayerInfo";
         static final String FAMILY_MEMBER = "putFamilyMember";
         static final String LEADER_CARD = "leaderCard";
-
         static final String EXCOMMUNICATION = "excommunication";
         static final String CHOOSE_FAVOR = "askForCouncilFavor";
         static final String OPTIONAL_BP_PICK = "purpleCardPayment";
         static final String CHOOSE_PRODUCTION = "chooseProduction";
         static final String SERVANTS_PRODUCTION = "servantsProduction";
         static final String SERVANTS_HARVEST = "servantsHarvest";
-
         static final String PICK_FROM_TOWER = "pickFromTower";
-        //Command description
+
+        /**
+         * Command description
+         */
         static final String CHAT_DESCR = "Broadcast a message to all client in your room";
         static final String TURN_DESCR = "Show the round order in this turn";
         static final String INFO_DESCR = "Show the personal information of a specific player";
-
         static final String CARD_DESCR = "Show information about a specific card";
+        static final String BOARD_DESCR = "Show the game board";
+        static final String ALL_PLAYER_INFO_DESCR = "Show the personal board of all board";
         static final String FAMILY_MEMBER_DESCR = "Place a family member on the board";
         static final String LEADER_CARD_DESCR = "Choose if discard or use a leader card";
         static final String EXCOMMUNICATION_DESCR = "Choose if you want take a excommunication";
@@ -438,6 +445,5 @@ public class UIController {
         static final String SERVANTS_PRODUCTION_DESCR = "Choose how many servants do you want to put in the production";
         static final String SERVANTS_HARVEST_DESCR = "Choose how many servants do you want to put in the harvest";
         static final String PICK_FROM_TOWER_DESCR = "From which tower do you want to pick the card";
-
     }
 }

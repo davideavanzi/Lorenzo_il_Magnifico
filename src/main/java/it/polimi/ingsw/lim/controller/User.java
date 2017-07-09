@@ -163,7 +163,13 @@ public abstract class User implements Serializable{
      * Ask the user which one of the possible favors wants to receive.
      */
     public abstract void askForCouncilFavor(int favorAmount);
-    
+
+    /**
+     * This method is called when the user activates the leader card "Federico da Montefeltro".
+     * The game asks the user what family member he wants to activate.
+     */
+    public abstract void askFmToBoost();
+
     /**
      * Send chat message to client.
      * @param sender
@@ -183,6 +189,9 @@ public abstract class User implements Serializable{
      */
     public abstract void broadcastMessage(String message);
 
+
+    public abstract void notifyEndGame(ArrayList<Player> players);
+
     /**
      * Calling this method the server will send the updated board and the list of the connected user to the client.
      * @param board the game board
@@ -198,15 +207,7 @@ public abstract class User implements Serializable{
     @JsonIgnore
     public abstract void isPlayerRound(boolean isPlaying);
 
+
     public abstract void notifyGameStart();
-
-    public abstract void notifyEndGame(ArrayList<Player> players);
-
-
-    /**
-     * This method is called when the user activates the leader card "Federico da Montefeltro".
-     * The game asks the user what family member he wants to activate.
-     */
-    public abstract void askFmToBoost();
 
 }

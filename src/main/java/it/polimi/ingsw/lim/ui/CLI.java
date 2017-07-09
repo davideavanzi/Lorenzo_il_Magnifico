@@ -2,6 +2,7 @@ package it.polimi.ingsw.lim.ui;
 
 import com.diogonunes.jcdp.color.ColoredPrinter;
 import com.diogonunes.jcdp.color.api.Ansi;
+import com.sun.org.apache.xpath.internal.SourceTree;
 import com.vdurmont.emoji.EmojiParser;
 import it.polimi.ingsw.lim.Lock;
 import it.polimi.ingsw.lim.exceptions.InvalidInputException;
@@ -46,7 +47,7 @@ public class CLI extends AbsUI {
     private UIController uiCallback;
 
     /**
-     * Lock
+     * Lock.
      */
     private Lock lock;
 
@@ -71,6 +72,10 @@ public class CLI extends AbsUI {
         return lock;
     }
 
+    /**
+     * The method that ask the player the number of servants.
+     * @return
+     */
     private int askForServant() {
         do {
             while (!userInput.hasNextInt()) {
@@ -82,16 +87,25 @@ public class CLI extends AbsUI {
         return inputNum;
     }
 
+    /**
+     * Ask the player how many servants he want to deploy to support a bonus harvest move.
+     */
     private void askForFastHarvest() {
         printGameMessageln("How many servants do you like to deploy for this harvest? ");
         uiCallback.sendFastHarvest(askForServant());
     }
 
+    /**
+     * Ask the player how many servants he want to deploy to support a bonus production move.
+     */
     private void askForFastProduction() {
         printGameMessageln("How many servants do you like to deploy for this production? ");
         uiCallback.sendFastProduction(askForServant());
     }
 
+    /**
+     * Ask the player the parameters to create a bonus tower move packet to sent to server.
+     */
     private void askForFastTowerMove() {
         ArrayList<String> tower = new ArrayList<>();
         printGameMessageln("You can activate a bonus tower move!");
@@ -103,18 +117,22 @@ public class CLI extends AbsUI {
             }
             inputNum = userInput.nextInt();
         } while (inputNum < 0);
+
         int servantsDeployed = inputNum;
         printMessageln("In which tower would you like to pick a Card?");
-        tower.add("1) Green Tower");
-        tower.add("2) Yellow Tower");
-        tower.add("3) Blue Tower");
-        tower.add("4) Purple Tower");
+        tower.add("Green Tower");
+        tower.add("Yellow Tower");
+        tower.add("Blue Tower");
+        tower.add("Purple Tower");
         if(uiCallback.getLocalPlayers().size() == 5){
-            tower.add("5) Black Tower");
+            tower.add("Black Tower");
         }
-        for(String color: tower){
-            printMessageln(color);
+        int count = 1;
+        for(String color : tower){
+            printMessageln(count + ") " + color);
         }
+
+        //Two/three/four players
         if(uiCallback.getLocalPlayers().size() < 5) {
             do {
                 while (!userInput.hasNextInt()) {
@@ -122,8 +140,9 @@ public class CLI extends AbsUI {
                     printError(input.concat(" is not a valid number."));
                 }
                 inputNum = userInput.nextInt();
-            } while (inputNum < 0 || inputNum < 5);
+            } while (inputNum < 0 || inputNum > 5);
         }
+        //Five players
         if(uiCallback.getLocalPlayers().size() == 5) {
             do {
                 while (!userInput.hasNextInt()) {
@@ -131,39 +150,27 @@ public class CLI extends AbsUI {
                     printError(input.concat(" is not a valid number."));
                 }
                 inputNum = userInput.nextInt();
-            } while (inputNum < 0 || inputNum < 6);
+            } while (inputNum < 0 || inputNum > 6);
         }
         int chosenTower = inputNum;
-        String towerColor = null;
-        switch (chosenTower){
-            case 1:
-                towerColor = "GREEN";
-                break;
-            case 2:
-                towerColor = "BLUE";
-                break;
-            case 3:
-                towerColor = "YELLOW";
-                break;
-            case 4:
-                towerColor = "PURPLE";
-                break;
-            case 5:
-                towerColor = "BLACK";
-                break;
-        }
-        printMessageln("In which flow of ".concat(towerColor.toLowerCase()).concat(" you would you like to pick a card?"));
+
+        String towerColor = tower.get(chosenTower-1);
+
+        printMessageln("In which floor of ".concat(towerColor.toLowerCase()).concat(" you would you like to pick a card?"));
         do {
             while (!userInput.hasNextInt()) {
                 input = userInput.next();
                 printError(input.concat(" is not a valid number."));
             }
             inputNum = userInput.nextInt();
-        } while (inputNum < 0 || inputNum < TOWER_HEIGHT);
+        } while (inputNum < 0 || inputNum > TOWER_HEIGHT);
         int floor = inputNum;
-        uiCallback.sendFastTowerMove(servantsDeployed, towerColor, floor);
+        uiCallback.sendFastTowerMove(servantsDeployed, tower.get(chosenTower-1), floor);
     }
 
+    /**
+     * Ask the player what production he want to activate.
+     */
     private void askForProductionOptions() {
         String format = "||%-20s||\n";
         String sRid = "||_  _  _  _  _  _  _ ||";
@@ -209,7 +216,7 @@ public class CLI extends AbsUI {
                         printError(input.concat(" is not a valid number."));
                     }
                     inputNum = userInput.nextInt();
-                } while (inputNum < 0 || inputNum < card.size());
+                } while (inputNum < 0 || inputNum > card.size());
                 choose.add(inputNum);
             }
         }
@@ -217,6 +224,9 @@ public class CLI extends AbsUI {
         lock.unlock();
     }
 
+    /**
+     * Ask the player if he want to pay with battle point or resources.
+     */
     private void askForOptionalBpPick() {
         printGameMessageln("You have picked a card that can be payed in two ways, using resources or battle points.\n".concat(
                 "How do you prefer to pay?\n1) Battle Points\n2) Resources"));
@@ -232,6 +242,9 @@ public class CLI extends AbsUI {
         lock.unlock();
     }
 
+    /**
+     * Ask the player which favor he wants.
+     */
     private void askForFavor() {
         ArrayList<Integer> favorChoice = new ArrayList<>();
         int count = 0;
@@ -251,6 +264,9 @@ public class CLI extends AbsUI {
         lock.unlock();
     }
 
+    /**
+     * Ask the player if he want suffer the excommunication
+     */
     private void askForExcommunication() {
         printGameMessageln("Do you want to suffer the excommunication?");
         printMessageln("1) yes\n2) no");
@@ -270,7 +286,10 @@ public class CLI extends AbsUI {
 
     }
 
-
+    /**
+     * Ask the player the servants' number to deploy to support the move.
+     * @return the servants' number
+     */
     private String fmServant() {
         printGameMessage("How many servants would you like to put here? ");
         do {
@@ -279,32 +298,47 @@ public class CLI extends AbsUI {
                 printError(input.concat(" is not a valid number."));
             }
             inputNum = userInput.nextInt();
-        } while (inputNum >= 0);
+        } while (inputNum <= 0);
         return inputNum.toString();
     }
 
+    /**
+     * Ask the player the destination.
+     * @param board the game board
+     * @param numBoard the number of player
+     * @param marketSlot the market slot's index
+     * @return the chosen destination
+     */
     private ArrayList<String> chooseDestination(String[] board, int numBoard, int marketSlot) {
         int count = 1;
         ArrayList<String> destination = new ArrayList<>();
-        for (String pos : board)
+        for (String pos : board) {
             printMessageln(count + ") " + pos);
+            count++;
+        }
         do {
             while (!userInput.hasNextInt()) {
                 input = userInput.next();
                 printError(input.concat(" is not a valid number."));
             }
             inputNum = userInput.nextInt();
-        } while (inputNum-1 >= 0 && inputNum-1 < numBoard);
-        destination.add(board[inputNum]);
-        if (inputNum-1 >= 0 && inputNum-1 < 4) { //If tower, select the floor
+        } while (inputNum-1 <= 0 && inputNum-1 > numBoard);
+
+        if (board[inputNum-1].contains("Tower"))
+            destination.add(board[inputNum-1].replace(" Tower", ""));
+        else
+            destination.add(board[inputNum-1]);
+
+        if (inputNum-1 >= 0 && inputNum-1 <4) { //If tower, select the floor
             printGameMessage("Please select the floor: (1/2/3/4) ");
+            //String twrColor = destination.get(0).replace(" Tower", "");
             do {
                 while (!userInput.hasNextInt()) {
                     input = userInput.next();
                     printError(input.concat(" is not a valid number."));
                 }
                 inputNum = userInput.nextInt();
-            } while (inputNum-1 >= 0 && inputNum-1 < 4);
+            } while (inputNum-1 <= 0 && inputNum-1 > 4);
             destination.add(inputNum.toString());
         } else if (inputNum == 8) { //If market, select the slot
             printGameMessage("Please select the market slot: (1/2) ");
@@ -314,12 +348,16 @@ public class CLI extends AbsUI {
                     printError(input.concat(" is not a valid number."));
                 }
                 inputNum = userInput.nextInt();
-            } while (inputNum-1 >= 0 && inputNum-1 < marketSlot);
+            } while (inputNum-1 <= 0 && inputNum-1 > marketSlot);
             destination.add(inputNum.toString());
         }
         return destination;
     }
 
+    /**
+     * Choose the familiar destination.
+     * @return the chosen destination
+     */
     private ArrayList<String> fmDestination() {
         String[] board4Player =
                 {"Green Tower", "Yellow Tower", "Blue Tower", "Purple Tower", "Council", "Production", "Harvest", "Market"};
@@ -345,6 +383,10 @@ public class CLI extends AbsUI {
         return null;
     }
 
+    /**
+     * Choose the familiar color.
+     * @return the chosen color
+     */
     private String fmColor() {
         printGameMessageln("What family member would you like to place?");
         int count = 1;
@@ -358,19 +400,26 @@ public class CLI extends AbsUI {
                 printError(input.concat(" is not a valid number."));
             }
             inputNum = userInput.nextInt();
-        } while (inputNum > 0 && inputNum <= count);
+        } while (inputNum < 0 && inputNum > count);
         return uiCallback.getPlayer(uiCallback.getUsername()).getFamilyMembers().get(inputNum - 1).getDiceColor();
     }
 
+    /**
+     * Create place family member packet and send it to the server.
+     */
     private void placeFamilyMember() {
         availableCmdList.remove(FAMILY_MEMBER);
         uiCallback.sendPlaceFM(fmColor(), fmDestination(), fmServant());
         lock.unlock();
     }
 
+    /**
+     * Show information about a specific card.
+     * The player must enter where is the card, only the card on board or in personal board are watchable.
+     */
     private void showCard() {
-        printGameMessage("Select the position of the card of which you want to see information: ");
-        printGameMessageln("1) Player's Board (nameCard, namePlayer)\n2) Tower(color, floor)");
+        printGameMessageln("Select the position of the card of which you want to see information: ");
+        printMessageln("1) Player's Board (nameCard, namePlayer)\n2) Tower(color, floor)");
         do {
             while (!userInput.hasNextInt()) {
                 input = userInput.next();
@@ -417,6 +466,10 @@ public class CLI extends AbsUI {
         }
     }
 
+    /**
+     * Print personal information about a specific player.
+     * The player's name is ask to player.
+     */
     private void showPersonalInfo() {
         printGameMessage("Enter the username of the player of which you want to see information: ");
         do {
@@ -435,6 +488,7 @@ public class CLI extends AbsUI {
             printMessage(count + ") " + pl.getNickname() + " ");
             count++;
         }
+        printMessageln("");
     }
 
     /**
@@ -448,11 +502,19 @@ public class CLI extends AbsUI {
         lock.unlock();
     }
 
+    /**
+     * Remove the command to the available command list.
+     * @param command to remove
+     */
     private void commandRemover(String command) {
         if (availableCmdList.get(command) != null)
             availableCmdList.remove(command);
     }
 
+    /**
+     * Add the command to the available command list.
+     * @param command the input command.
+     */
     @Override
     public void commandAdder(String command) {
         if (availableCmdList.get(command) == null) {
@@ -461,6 +523,12 @@ public class CLI extends AbsUI {
         }
     }
 
+    /**
+     * If a command failed it is re-inserted in the available command list.
+     * @param command
+     * @param message
+     * @param outcome
+     */
     @Override
     public void commandManager(String command, String message, boolean outcome) {
         printMessageln(("[").concat(command).concat("]: ").concat(message));
@@ -468,26 +536,38 @@ public class CLI extends AbsUI {
             availableCmdList.put(command, cmdList.get(command));
     }
 
+    /**
+     * cmdExecutor execute the command inserted.
+     * @param command command's name
+     * @throws InvalidInputException if the command does not correct
+     */
     private void cmdExecutor(String command) throws InvalidInputException {
-        if (cmdDescr.get(command) == null)
+        if (cmdList.get(command) == null)
             throw new InvalidInputException(("[COMMAND_LINE]: Command not found: ").concat(command));
         if (availableCmdList.get(command) == null)
             throw new InvalidInputException(("[COMMAND_LINE]: Command not available: ").concat(command));
         availableCmdList.get(command).run();
     }
 
+    /**
+     * Print the available command.
+     */
     private void printCmd() {
-        printGameMessageln("Available Command:");
-        printMessageln("");
         availableCmdList.keySet().forEach(command -> System.out.printf("%-30s%s%n", command, cmdDescr.get(command)));
         printMessage("");
     }
 
+    /**
+     * In the beginning of each round this method is called.
+     * @param isMyTurn
+     */
     @Override
     public void notifyStartRound(boolean isMyTurn) {
         if (isMyTurn) {
+            printSplitter();
             availableCmdList.put(FAMILY_MEMBER, cmdList.get(FAMILY_MEMBER));
             availableCmdList.put(LEADER_CARD, cmdList.get(LEADER_CARD));
+            printCmd();
         } else {
             commandRemover(FAMILY_MEMBER);
             commandRemover(LEADER_CARD);
@@ -495,18 +575,32 @@ public class CLI extends AbsUI {
     }
 
     @Override
+    public void printGameBoard() {
+        printBoard();
+    }
+
+    /**
+     * This method is called when the game is created.
+     */
+    @Override
     public void notifyStartGame () {
         availableCmdList.put(TURN, cmdList.get(TURN));
         availableCmdList.put(INFO, cmdList.get(INFO));
+        availableCmdList.put(CARD, cmdList.get(CARD));
+        availableCmdList.put(BOARD, cmdList.get(BOARD));
+        availableCmdList.put(ALL_PLAYER_INFO, cmdList.get(ALL_PLAYER_INFO));
     }
 
+    /**
+     * Listen for user command.
+     */
     @Override
     public void waitForRequest() {
         lock.lock();
         printCmd();
         while (true) {
-            printGameMessage("Enter a command: ");
-            input = userInput.next().toLowerCase().trim();
+            printGameMessageln("Enter a command: ");
+            input = userInput.next().trim();
             try {
                 cmdExecutor(input);
             } catch (InvalidInputException e) {
@@ -522,8 +616,9 @@ public class CLI extends AbsUI {
         cmdList.put(CHAT, () -> chat());
         cmdList.put(TURN, () -> turnOrder());
         cmdList.put(INFO, () -> showPersonalInfo());
-        cmdList.put(ALL_PLAYER_INFO, () -> printPlayerBoard());
         cmdList.put(CARD, () -> showCard());
+        cmdList.put(BOARD, () -> printBoard());
+        cmdList.put(ALL_PLAYER_INFO, () -> printPlayerBoard());
         cmdList.put(FAMILY_MEMBER, () -> placeFamilyMember());
         //cmdList.put(LEADER_CARD, () -> );
         cmdList.put(EXCOMMUNICATION, () -> askForExcommunication());
@@ -543,6 +638,8 @@ public class CLI extends AbsUI {
         cmdDescr.put(TURN, TURN_DESCR);
         cmdDescr.put(INFO, INFO_DESCR);
         cmdDescr.put(CARD, CARD_DESCR);
+        cmdDescr.put(BOARD, BOARD_DESCR);
+        cmdDescr.put(ALL_PLAYER_INFO, ALL_PLAYER_INFO_DESCR);
         cmdDescr.put(FAMILY_MEMBER, FAMILY_MEMBER_DESCR);
         cmdDescr.put(LEADER_CARD, LEADER_CARD_DESCR);
         cmdDescr.put(EXCOMMUNICATION, EXCOMMUNICATION_DESCR);
@@ -558,6 +655,7 @@ public class CLI extends AbsUI {
         cmdDescr = new HashMap<>();
         availableCmdList = new HashMap<>();
         cmdList = new HashMap<>();
+
         initializeCmdDescr();
         initializeCmdList();
         availableCmdList.put(CHAT, cmdList.get(CHAT));
@@ -618,14 +716,19 @@ public class CLI extends AbsUI {
         cp.clear();
     }
 
+    private void printSplitter() {
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~***" +
+                " IT'S YOUR TURN ***~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    }
+
     @Override
     public void printGameMessageln(String message) {
-        printMessageln("[GAME]: "+message);
+        System.out.println("[GAME]: "+message);
     }
 
     @Override
     public void printGameMessage(String message) {
-        printMessage("[GAME]: "+message);
+        System.out.print("[GAME]: "+message);
     }
 
     @Override

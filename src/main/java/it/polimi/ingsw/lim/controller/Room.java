@@ -225,6 +225,7 @@ public class Room implements Serializable{
         for (int i = 0; i < playOrder.size(); i++)
             if (this.getUser(playOrder.get(i)).isAlive()) {
                 this.round = new PlayerRound(this.getUser(playOrder.get(i)), timerPlayMove);
+                notifyRoundStart(playOrder.get(i));
                 Log.getLog().info("player ".concat(round.getUserName()).concat(" now can play ")
                         .concat("in room" + this.getUser(round.getUserName()).getRoom().toString()));
                 Log.getLog().info("[WRITER]: saving game info");
@@ -276,7 +277,7 @@ public class Room implements Serializable{
         usersList.forEach(user -> user.notifyGameStart());
     }
 
-    private void notifyTurnStart(String username) {
+    private void notifyRoundStart(String username) {
         getUser(username).isPlayerRound(true);
         usersList.stream().filter(user -> !user.getUsername().equals(username))
                 .forEach(user -> user.isPlayerRound(false));
@@ -313,6 +314,7 @@ public class Room implements Serializable{
         for (int i = 0; i < playOrder.size(); i++)
             if (this.getUser(playOrder.get(i)).isAlive()) {
                 this.round = new PlayerRound(this.getUser(playOrder.get(i)), timerPlayMove);
+                notifyRoundStart(playOrder.get(i));
                 return;
             } else {
                 playOrder.remove(i);

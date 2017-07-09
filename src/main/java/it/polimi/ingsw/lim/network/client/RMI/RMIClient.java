@@ -72,6 +72,11 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
     }
 
     @Override
+    public void askPlayerToChooseLeaderToCopy(ArrayList<String> copyableLeaders) throws RemoteException {
+
+    }
+
+    @Override
     public void fastHarvest(int servantsDeployed) throws ClientNetworkException {
         try {
             rmiServer.fastHarvest(servantsDeployed, uiCallback.getUsername(), this);

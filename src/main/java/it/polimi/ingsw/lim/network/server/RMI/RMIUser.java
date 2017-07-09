@@ -51,6 +51,15 @@ public class RMIUser extends User {
         return rci;
     }
 
+    @Override
+    public void chooseLeaderToCopy(ArrayList<String> copyableLeaders) {
+        if (!this.getIsAlive()) return;
+        try {
+            RMIServer.askClientToChooseLeaderToCopy(copyableLeaders, this.rci);
+        } catch (RemoteException e) {
+            getLog().log(Level.SEVERE, "[RMI]: Remote error sending bonus harvest action request to client.");
+        }
+    }
 
     @Override
     public void notifyFastHarvest(int baseStr) {
@@ -131,6 +140,11 @@ public class RMIUser extends User {
     }
 
     @Override
+    public void askFmToBoost(){
+        //todo implementare
+    }
+
+    @Override
     public void sendChatMessage(String sender, String message) {
         if (!this.getIsAlive())
             return;
@@ -173,6 +187,11 @@ public class RMIUser extends User {
         }
     }
 
+    @Override
+    public void notifyEndGame(ArrayList<Player> players){
+        //todo implementare
+    }
+
     @JsonIgnore
     @Override
     public void isPlayerRound(boolean isPlaying) {
@@ -205,7 +224,6 @@ public class RMIUser extends User {
         RMIAliveness(RMIUser user) {
             this.user = user;
         }
-
         @Override
         public void run() {
             try {
@@ -220,22 +238,7 @@ public class RMIUser extends User {
             }
             Thread.currentThread().interrupt();
         }
-    }
 
-    @Override
-    public void notifyEndGame(ArrayList<Player> players){
-        //todo implementare
-    }
-
-
-    @Override
-    public void chooseLeaderToCopy(ArrayList<String> copyableLeaders){
-        //todo implementare
-    }
-
-    @Override
-    public void askFmToBoost(){
-        //todo implementare
     }
 
 }

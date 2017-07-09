@@ -36,6 +36,10 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
      */
     public RMIServer() throws RemoteException {}
 
+    static void askClientToChooseLeaderToCopy(ArrayList<String> copyableLeaders, RMIClientInterf rmiClient) throws RemoteException {
+        rmiClient.askPlayerToChooseLeaderToCopy(copyableLeaders);
+    }
+
     @Override
     public void fastHarvest(int servantsDeployed, String username, RMIClientInterf rmiClient) throws RemoteException {
         User actor = MainServer.getUserFromUsername(username);

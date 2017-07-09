@@ -101,11 +101,9 @@ class ServerCommandHandler {
         }
 
         /*else if (obj instanceof Board) {
-            System.out.println("Entro in Board");
             Board board = (Board)obj;
             uiCallback.updateBoard(board);
         } else {
-            System.out.println("Entro in Arraylistplayer");
             ArrayList<Player> players = (ArrayList<Player>)obj;
             uiCallback.updatePlayers(players);
         }*/

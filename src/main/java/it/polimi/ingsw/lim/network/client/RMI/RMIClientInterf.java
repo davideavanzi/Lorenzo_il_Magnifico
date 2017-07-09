@@ -16,6 +16,8 @@ public interface RMIClientInterf extends Remote {
 
     void commandValidator(String command, String message, boolean outcome) throws RemoteException;
 
+    void askPlayerToChooseLeaderToCopy(ArrayList<String> copyableLeaders) throws RemoteException;
+
     void askPlayerForFastHarvest(int basestr) throws RemoteException;
 
     void askPlayerForFastProduction(int baseStr) throws RemoteException;
