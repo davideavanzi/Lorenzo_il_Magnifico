@@ -1,30 +1,31 @@
 package it.polimi.ingsw.lim.network.server.socket;
 
-import it.polimi.ingsw.lim.utils.Log;
+import it.polimi.ingsw.lim.MainServer;
 import it.polimi.ingsw.lim.controller.User;
 import it.polimi.ingsw.lim.exceptions.LoginFailedException;
 import it.polimi.ingsw.lim.model.Assets;
 import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.Player;
-import it.polimi.ingsw.lim.MainServer;
+import it.polimi.ingsw.lim.utils.Log;
 
-import static it.polimi.ingsw.lim.utils.Log.*;
-import static it.polimi.ingsw.lim.network.CommunicationConstants.*;
-import static it.polimi.ingsw.lim.MainServer.addUserToRoom;
-import static it.polimi.ingsw.lim.MainServer.isUserAlreadyLoggedIn;
-
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
 
+import static it.polimi.ingsw.lim.MainServer.addUserToRoom;
+import static it.polimi.ingsw.lim.MainServer.isUserAlreadyLoggedIn;
+import static it.polimi.ingsw.lim.network.CommunicationConstants.*;
+import static it.polimi.ingsw.lim.utils.Log.getLog;
+
 /**
  * This class handles the connection to a socket client.
  * Every client are on a thread that send command to this class.
- * The socket server is always listen for request, even if it is waiting for a specific response to an action.
- * The socket send to client the command game throw this class, sending Object to output stream.
+ * The socket server is sent the command game throw this class, sending Object to output stream.
  */
 public class SocketClientHandler implements Runnable {
 
@@ -189,7 +190,7 @@ public class SocketClientHandler implements Runnable {
             objFromServer.flush();
             objFromServer.reset();
         } catch (IOException e) {
-            getLog().log(Level.SEVERE, "[SOCKET]: Could not send object to the client", e);
+            getLog().log(Level.SEVERE, "[SOCKET]: Could not send object to the client, maybe he disconnected?");
         }
     }
 
@@ -270,8 +271,8 @@ public class SocketClientHandler implements Runnable {
                     return isClientLogged;
                 }
             } catch (IOException | ClassNotFoundException e) {
-                getLog().log(Level.SEVERE, ("[SOCKET]: Could not receive login information from client, retrying "
-                        + (2 - loginFailed) + " times"), e);
+                getLog().log(Level.SEVERE, ("[SOCKET]: Could not receive login information from client, " +
+                        "maybe he is disconnected?\n retrying " +(2 - loginFailed) + " times"));
                 loginFailed++;
                 if (loginFailed == 3) {
                     isClientLogged = false;

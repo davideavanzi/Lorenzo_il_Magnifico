@@ -1,13 +1,33 @@
 package it.polimi.ingsw.lim.model.leaders;
-import it.polimi.ingsw.lim.model.Assets;
-import it.polimi.ingsw.lim.model.leaders.ActivableLeader.Builder;
 
-import java.util.*;
+import it.polimi.ingsw.lim.model.Assets;
+
+import java.io.Serializable;
+import java.util.HashMap;
 
 /**
  * 
  */
-public abstract class LeaderCard {
+public abstract class LeaderCard implements Serializable {
+
+    /**
+     *
+     */
+    private String cardName;
+    /**
+     *
+     */
+    private int leaderCardId;
+    /**
+     *
+     */
+    private Assets assetsRequirement;
+    /**
+     *
+     */
+    private HashMap<String, Integer> cardsRequirement;
+    private boolean deployed = false;
+    private boolean discarded = false;
 
     /**
      * Default constructor
@@ -15,36 +35,58 @@ public abstract class LeaderCard {
     public LeaderCard() {
     }
 
-    /**
-     *
-     */
-    private String cardName;
-
-    /**
-     *
-     */
-    private int leaderCardId;
-
-    /**
-     *
-     */
-    private Assets assetsRequirement;
-
-    /**
-     *
-     */
-    private HashMap<String, Integer> cardsRequirement;
-
-    private boolean deployed = false;
-
-    private boolean discarded = false;
-
 
     protected LeaderCard(Builder builder) {
         cardName = builder.cardName;
         leaderCardId = builder.leaderId;
         assetsRequirement = builder.assetsRequirement;
         cardsRequirement = builder.cardsRequirement;
+    }
+
+    public boolean isDeployed() { return this.deployed; }
+
+    public void setDeployed(boolean deployed) {
+        this.deployed = deployed;
+    }
+
+    public boolean isDiscarded() {
+        return discarded;
+    }
+
+    public void setDiscarded(boolean discarded) {
+        this.discarded = discarded;
+    }
+
+    public Assets getAssetsRequirement() {
+        return assetsRequirement;
+    }
+
+    public void setAssetsRequirement(Assets assetsRequirement){
+        this.assetsRequirement = assetsRequirement;
+    }
+
+    public HashMap<String, Integer> getCardsRequirement() {
+        return cardsRequirement;
+    }
+
+    public void setCardsRequirement(HashMap<String, Integer> cardsRequirement){
+        this.cardsRequirement= cardsRequirement;
+    }
+
+    public int getLeaderCardId() {
+        return leaderCardId;
+    }
+
+    public void setLeaderCardId(int leaderCardId){
+        this.leaderCardId = leaderCardId;
+    }
+
+    public String getCardName() {
+        return cardName;
+    }
+
+    public void setCardName(String cardName){
+        this.cardName = cardName;
     }
 
     /**
@@ -72,52 +114,6 @@ public abstract class LeaderCard {
 
         public LeaderCard build() { return new LeaderCard(this) {
         }; }
-    }
-
-    public boolean isDeployed() { return this.deployed; }
-
-    public void setDeployed(boolean deployed) {
-        this.deployed = deployed;
-    }
-
-    public boolean isDiscarded() {
-        return discarded;
-    }
-
-    public void setDiscarded(boolean discarded) {
-        this.discarded = discarded;
-    }
-
-    public void setCardName(String cardName){
-        this.cardName = cardName;
-    }
-
-    public void setLeaderCardId(int leaderCardId){
-        this.leaderCardId = leaderCardId;
-    }
-
-    public void setAssetsRequirement(Assets assetsRequirement){
-        this.assetsRequirement = assetsRequirement;
-    }
-
-    public void setCardsRequirement(HashMap<String, Integer> cardsRequirement){
-        this.cardsRequirement= cardsRequirement;
-    }
-
-    public Assets getAssetsRequirement() {
-        return assetsRequirement;
-    }
-
-    public HashMap<String, Integer> getCardsRequirement() {
-        return cardsRequirement;
-    }
-
-    public int getLeaderCardId() {
-        return leaderCardId;
-    }
-
-    public String getCardName() {
-        return cardName;
     }
 
 }

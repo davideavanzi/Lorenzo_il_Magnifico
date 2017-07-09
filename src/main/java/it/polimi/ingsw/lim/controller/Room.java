@@ -1,7 +1,5 @@
 package it.polimi.ingsw.lim.controller;
 
-import it.polimi.ingsw.lim.utils.Lock;
-import it.polimi.ingsw.lim.utils.Log;
 import it.polimi.ingsw.lim.controller.rounds.DraftRound;
 import it.polimi.ingsw.lim.controller.rounds.ExcommunicationRound;
 import it.polimi.ingsw.lim.controller.rounds.PlayerRound;
@@ -9,18 +7,22 @@ import it.polimi.ingsw.lim.exceptions.InvalidTimerException;
 import it.polimi.ingsw.lim.model.Player;
 import it.polimi.ingsw.lim.parser.Parser;
 import it.polimi.ingsw.lim.parser.Writer;
+import it.polimi.ingsw.lim.utils.Lock;
+import it.polimi.ingsw.lim.utils.Log;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-
-import static it.polimi.ingsw.lim.utils.Log.getLog;
-import static it.polimi.ingsw.lim.Settings.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
+
+import static it.polimi.ingsw.lim.Settings.*;
+import static it.polimi.ingsw.lim.utils.Log.getLog;
 
 /**
  * Created by Davide on 26/05/2017.
@@ -81,16 +83,20 @@ public class Room implements Serializable{
         return roomOpen;
     }
 
+    public void setRoomOpen(boolean roomOpen){
+        this.roomOpen = roomOpen;
+    }
+
     public int getTimerPlayMove(){
         return timerPlayMove;
     }
 
-    public int getTimerStartingGame() {
-        return timerStartingGame;
-    }
-
     public void setTimerPlayMove(int timerPlayMove) {
         this.timerPlayMove = timerPlayMove;
+    }
+
+    public int getTimerStartingGame() {
+        return timerStartingGame;
     }
 
     public void setTimerStartingGame(int timerStartingGame) {
@@ -101,23 +107,29 @@ public class Room implements Serializable{
         return playOrder;
     }
 
+    public void setPlayOrder(ArrayList<String> playOrder){
+        this.playOrder = playOrder;
+    }
+
     @JsonIgnore
     public PlayerRound getRound() {
         return round;
+    }
+
+    @JsonIgnore
+    public void setRound(PlayerRound round){
+        this.round = round;
     }
 
     public int getId(){
         return id;
     }
 
+    public void setId(int id){this.id = id;}
+
     @JsonIgnore
     public ExcommunicationRound getExcommunicationRound() {
         return excommunicationRound;
-    }
-
-    @JsonIgnore
-    public DraftRound getDraftRound() {
-        return draftRound;
     }
 
     @JsonIgnore
@@ -126,23 +138,23 @@ public class Room implements Serializable{
     }
 
     @JsonIgnore
-    public Lock getDraftLock(){
-        return draftLock;
+    public DraftRound getDraftRound() {
+        return draftRound;
     }
-
 
     @JsonIgnore
-    public void setExcommLock(Lock excommLock){
-        this.excommLock = excommLock;
-    }
-
-    public void setRoomOpen(boolean roomOpen){
-        this.roomOpen = roomOpen;
+    public Lock getDraftLock(){
+        return draftLock;
     }
 
     @JsonIgnore
     public Lock getExcommLock(){
         return excommLock;
+    }
+
+    @JsonIgnore
+    public void setExcommLock(Lock excommLock){
+        this.excommLock = excommLock;
     }
 
     public void readdUser(User user){
@@ -168,21 +180,6 @@ public class Room implements Serializable{
             }
         }
         return i;
-    }
-
-    public void setId(int id){this.id = id;}
-
-    public void setUsersList(ArrayList<User> usersList){
-        this.usersList = usersList;
-    }
-
-    public void setPlayOrder(ArrayList<String> playOrder){
-        this.playOrder = playOrder;
-    }
-
-    @JsonIgnore
-    public void setRound(PlayerRound round){
-        this.round = round;
     }
 
     public void addUser(User user) {
@@ -215,6 +212,10 @@ public class Room implements Serializable{
 
     public ArrayList<User> getUsersList() {
         return usersList;
+    }
+
+    public void setUsersList(ArrayList<User> usersList){
+        this.usersList = usersList;
     }
 
     public boolean isFull() {
@@ -338,7 +339,7 @@ public class Room implements Serializable{
             if (this.getUser(playOrder.get(i)).isAlive()) {
                 this.round = new PlayerRound(this.getUser(playOrder.get(i)), timerPlayMove);
                 notifyRoundStart(playOrder.get(i));
-                return;
+                break;
             } else {
                 playOrder.remove(i);
                 i--;

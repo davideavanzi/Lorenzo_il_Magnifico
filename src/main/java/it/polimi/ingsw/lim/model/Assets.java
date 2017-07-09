@@ -1,11 +1,13 @@
 package it.polimi.ingsw.lim.model;
+
 import it.polimi.ingsw.lim.utils.Log;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
-import static it.polimi.ingsw.lim.utils.Utils.*;
-
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import static it.polimi.ingsw.lim.utils.Utils.min;
 
 /**
  * This class acts as a container for every kind of resource that a player can have. Also all kind of bonuses and costs
@@ -14,6 +16,35 @@ import java.util.*;
 
 
 public class Assets implements Serializable {
+
+    /**
+     * This integer represents the amount of coins in the object
+     */
+    private int coins;
+    /**
+     * This integer represents the amount of wood in the object
+     */
+    private int wood;
+    /**
+     * This integer represents the amount of stone in the object
+     */
+    private int stone;
+    /**
+     * This integer represents the amount of servants in the object
+     */
+    private int servants;
+    /**
+     * This integer represents the amount of faithPoints in the object
+     */
+    private int faithPoints;
+    /**
+     * This integer represents the amount of battlePoints in the object
+     */
+    private int battlePoints;
+    /**
+     * This integer represents the amount of victoryPoints in the object
+     */
+    private int victoryPoints;
 
     /**
      * Default constructor, puts every resource to 0
@@ -47,41 +78,6 @@ public class Assets implements Serializable {
                 copy.getBattlePoints(),
                 copy.getVictoryPoints());
     }
-
-    /**
-     * This integer represents the amount of coins in the object
-     */
-    private int coins;
-
-    /**
-     * This integer represents the amount of wood in the object
-     */
-    private int wood;
-
-    /**
-     * This integer represents the amount of stone in the object
-     */
-    private int stone;
-
-    /**
-     * This integer represents the amount of servants in the object
-     */
-    private int servants;
-
-    /**
-     * This integer represents the amount of faithPoints in the object
-     */
-    private int faithPoints;
-
-    /**
-     * This integer represents the amount of battlePoints in the object
-     */
-    private int battlePoints;
-
-    /**
-     * This integer represents the amount of victoryPoints in the object
-     */
-    private int victoryPoints;
 
     /**
      * This method executes a sum between two objects of this class.
@@ -211,15 +207,50 @@ public class Assets implements Serializable {
      * Single getters
      */
     public int getCoins(){ return this.coins; }
+
+    /**
+     * Single adders. At the moment we don't need direct setters
+     * Write here more adders if needed.
+     * @return the object itself (used in game setup)
+     */
+
+    private void setCoins(int coins) { this.coins = coins; }
+
     public int getWood(){ return this.wood; }
+
+    public void setWood(int wood){
+        this.wood = wood;
+    }
+
     public int getStone(){ return this.stone; }
+
+    public void setStone(int stone){
+        this.stone = stone;
+    }
+
     public int getServants(){ return this.servants; }
+
+    private void setServants(int servants) { this.servants = servants; }
+
     public int getFaithPoints(){ return this.faithPoints; }
+
+    public void setFaithPoints (int faithPoints){
+        this.faithPoints = faithPoints;
+    }
+
     public int getBattlePoints(){ return this.battlePoints; }
+
+    public void setBattlePoints(int battlePoints) {
+        this.battlePoints = battlePoints;
+    }
+
     public int getVictoryPoints(){ return this.victoryPoints; }
+
+    private void setVictoryPoints(int victoryPoints) { this.victoryPoints = victoryPoints; }
 
     @JsonIgnore
     public boolean isNotNull(){
+        if (this == null) return false;
         if(this.getCoins() != 0){
             return true;
         }
@@ -244,45 +275,17 @@ public class Assets implements Serializable {
         return false;
     }
 
-    /**
-     * Single adders. At the moment we don't need direct setters
-     * Write here more adders if needed.
-     * @return the object itself (used in game setup)
-     */
-
-    private void setCoins(int coins) { this.coins = coins; }
-
     public Assets addCoins(int amount) {
         Assets result =  new Assets(this);
         result.setCoins(this.getCoins()+amount);
         return result;
     }
 
-    private void setServants(int servants) { this.servants = servants; }
-
     public Assets addServants(int amount) {
         Assets result =  new Assets(this);
         result.setServants(this.getServants()+amount);
         return result;
     }
-
-    public void setWood(int wood){
-        this.wood = wood;
-    }
-
-    public void setStone(int stone){
-        this.stone = stone;
-    }
-
-    public void setFaithPoints (int faithPoints){
-        this.faithPoints = faithPoints;
-    }
-
-    public void setBattlePoints(int battlePoints) {
-        this.battlePoints = battlePoints;
-    }
-
-    private void setVictoryPoints(int victoryPoints) { this.victoryPoints = victoryPoints; }
 
     public Assets addVictoryPoints(int amount) {
         Assets result =  new Assets(this);

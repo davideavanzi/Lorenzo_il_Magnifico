@@ -18,52 +18,43 @@ import java.util.Scanner;
  */
 public class UIController {
     /**
-     * The abstract UI of the client.
-     */
-    private static AbsUI clientUI;
-
-    /**
-     * The interface for communicate with server.
-     */
-    private static ServerInterface clientProtocol;
-
-    /**
-     * Scanner for stdin.
-     */
-    private static Scanner userInput = new Scanner(System.in);
-
-    /**
-     * User's nickname.
-     */
-    private String username;
-
-    /**
-     * Updated game board.
-     */
-    private static Board localBoard;
-
-    /**
-     * List of player in the same Game, sort by turn order.
-     */
-    private static ArrayList<Player> localPlayers;
-
-    /**
      * Map that link a identification string to a method.
      * All command are stored here.
      */
     static Map<String, Runnable> cmdList;
-
     /**
      * Map that link a identification string to a method.
      * Only available commands are stored in this hashMap.
      */
     static Map<String, Runnable> availableCmdList;
-
     /**
      * Map that link a identification string to a description of the command.
      */
     static  Map<String, String> cmdDescr;
-
+    /**
+     * The abstract UI of the client.
+     */
+    private static AbsUI clientUI;
+    /**
+     * The interface for communicate with server.
+     */
+    private static ServerInterface clientProtocol;
+    /**
+     * Scanner for stdin.
+     */
+    private static Scanner userInput = new Scanner(System.in);
+    /**
+     * Updated game board.
+     */
+    private static Board localBoard;
+    /**
+     * List of player in the same Game, sort by turn order.
+     */
+    private static ArrayList<Player> localPlayers;
+    /**
+     * User's nickname.
+     */
+    private String username;
     /**
      * If true it indicates my turn.
      */
@@ -77,7 +68,6 @@ public class UIController {
     /**
      * The first thing to do is create a user interface, then the player must choose
      * the network protocol
-     * @param ui this String represent the User Interface chosen.
      */
     public UIController(/*String ui*/) {
         /*if(ui.equals("gui")) {
@@ -87,6 +77,23 @@ public class UIController {
         }*/
         clientUI = new CLI(this);
         tmpVar = new TemporaryVariables();
+    }
+
+    /**
+     * Calling this method the UI controller is link with the client socket.
+     * @param clientProtocol
+     */
+    public static void setClientProtocol(ServerInterface clientProtocol) {
+        UIController.clientProtocol = clientProtocol;
+    }
+
+    /**
+     * GUI not implemented yet.
+     * @return the chosen User Interface
+     */
+    public static String setUI() {
+        System.out.println("Choose your user interface: GUI or CLI (default)");
+        return userInput.nextLine().toLowerCase();
     }
 
     public AbsUI getClientUI() {
@@ -112,6 +119,7 @@ public class UIController {
      * @param board
      */
     public void updateBoard(Board board) {
+        System.out.println("BOARD RECEIVED!");
         localBoard = board;
     }
 
@@ -122,14 +130,6 @@ public class UIController {
     public void updatePlayers(ArrayList<Player> players) {
         localPlayers = players;
         getClientUI().printGameBoard();
-    }
-
-    /**
-     * Calling this method the UI controller is link with the client socket.
-     * @param clientProtocol
-     */
-    public static void setClientProtocol(ServerInterface clientProtocol) {
-        UIController.clientProtocol = clientProtocol;
     }
 
     Player getPlayer(String username) {
@@ -282,18 +282,6 @@ public class UIController {
     }
 
     /**
-     * GUI not implemented yet.
-     * @return the chosen User Interface
-     */
-    public static String setUI() {
-        System.out.println("Choose your user interface: GUI or CLI (default)");
-        return userInput.nextLine().toLowerCase();
-    }
-
-
-
-
-    /**
      * This class is used to save the variables sent by the server in the first part of communication,
      * in this way we avoid a continuous data change from server to client and viceversa creating
      * a single packet per command that is sent once.
@@ -304,6 +292,31 @@ public class UIController {
          * Represent the number of favor that the user can choose.
          */
         private int favorAmount;
+        /**
+         * This is a list of card, in each card there is a list of Assets' Arrays.
+         * The Assets contains in the first slot the cost(of production), in the second there is the result of the production.
+         */
+        private ArrayList<ArrayList<Object[]>> optionsProd;
+        /**
+         * This HashMap contains the information about a tower (color and floor's number)
+         */
+        private HashMap<String, Integer> tower;
+        /**
+         * It contains the specific assets of the discount.
+         */
+        private Assets optionalPickDiscount;
+        /**
+         * It store the minimum number of servants that the player must deploy for a specific production.
+         */
+        private int minServantsProd;
+        /**
+         * It store the minimum number of servants that the player must deploy for a specific harvest.
+         */
+        private int minServantsHarv;
+        /**
+         * The list of copyable leader by Lorenzo De Medici.
+         */
+        private ArrayList<String> copyableLeaders;
 
         /**
          * Getters.
@@ -319,13 +332,6 @@ public class UIController {
             this.favorAmount = favorAmount;
         }
 
-
-        /**
-         * This is a list of card, in each card there is a list of Assets' Arrays.
-         * The Assets contains in the first slot the cost(of production), in the second there is the result of the production.
-         */
-        private ArrayList<ArrayList<Object[]>> optionsProd;
-
         public ArrayList<ArrayList<Object[]>> getOptionsProd() {
             return optionsProd;
         }
@@ -333,12 +339,6 @@ public class UIController {
         public void setOptionsProd(ArrayList<ArrayList<Object[]>> optionsProd) {
             this.optionsProd = optionsProd;
         }
-
-
-        /**
-         * This HashMap contains the information about a tower (color and floor's number)
-         */
-        private HashMap<String, Integer> tower;
 
         public HashMap<String, Integer> getTower() {
             return tower;
@@ -348,11 +348,6 @@ public class UIController {
             this.tower = tower;
         }
 
-        /**
-         * It contains the specific assets of the discount.
-         */
-        private Assets optionalPickDiscount;
-
         public Assets getAssets() {
             return optionalPickDiscount;
         }
@@ -360,11 +355,6 @@ public class UIController {
         public void setAssets(Assets optionalPickDiscount) {
             this.optionalPickDiscount = optionalPickDiscount;
         }
-
-        /**
-         * It store the minimum number of servants that the player must deploy for a specific production.
-         */
-        private int minServantsProd;
 
         public int getMinServantsProd() {
             return minServantsProd;
@@ -374,25 +364,13 @@ public class UIController {
             this.minServantsProd = minServantsProd;
         }
 
-        /**
-         * It store the minimum number of servants that the player must deploy for a specific harvest.
-         */
-        private int minServantsHarv;
-
-
         public int getMinServantsHarv() {
             return minServantsHarv;
         }
 
-
         public void setMinServantsHarv(int minServantsHarv) {
             this.minServantsHarv = minServantsHarv;
         }
-
-        /**
-         * The list of copyable leader by Lorenzo De Medici.
-         */
-        private ArrayList<String> copyableLeaders;
 
         public ArrayList<String> getCopyableLeaders() {
             return copyableLeaders;
