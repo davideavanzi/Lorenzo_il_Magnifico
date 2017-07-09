@@ -30,6 +30,30 @@ import static it.polimi.ingsw.lim.model.leaders.Leaders.MORO_FM_BONUS;
 public class Game {
 
     /**
+     * The board, contains links to the structures (such as market, council etc.)
+     */
+    private Board board;
+    /**
+     * List of all the players in this game instance
+     */
+    private ArrayList<Player> players;
+    /**
+     * Link to the cards container, it holds all cards that are yet to be played
+     */
+    private CardsDeck cardsDeck;
+    /**
+     * This list holds colors that are not picked by players yet
+     */
+    private List<String> availablePlayerColors;
+    /**
+     * reference to the controller handling this game instance
+     */
+    @JsonIgnore
+    private GameController controllerCallback;
+    @JsonIgnore
+    private Random randomGenerator;
+
+    /**
      * Constructor. Sets starting age and turn. These go from 1 inclusive to their MAX value defined in the settings
      */
     public Game(GameController controllerCallback) {
@@ -45,7 +69,7 @@ public class Game {
     }
 
     /**
-     * Empty constructor used to retrieve game from file.
+     * Empty constructor, setters and getters are used to save and retrieve game from file.
      */
     public Game(){
         this.players = new ArrayList<>();
@@ -53,59 +77,24 @@ public class Game {
         this.randomGenerator = new Random();
     }
 
-
-    public void setBoard(Board board){
-        this.board = board;
-    }
-
-    public void setPlayers(ArrayList<Player> players){
-        this.players = players;
+    public CardsDeck getCardsDeck (){
+        return cardsDeck;
     }
 
     public void setCardsDeck(CardsDeck cardsDeck){
         this.cardsDeck = cardsDeck;
     }
 
-    public void setAvailablePlayerColors(List<String> availablePlayerColors){
-        this.availablePlayerColors = availablePlayerColors;
-    }
-
-    public CardsDeck getCardsDeck (){
-        return cardsDeck;
-    }
-
     public List<String> getAvailablePlayerColors(){
         return availablePlayerColors;
     }
 
+    public void setAvailablePlayerColors(List<String> availablePlayerColors){
+        this.availablePlayerColors = availablePlayerColors;
+    }
 
-    /**
-     * The board, contains links to the structures (such as market, council etc.)
-     */
-    private Board board;
-
-    /**
-     * List of all the players in this game instance
-     */
-    private ArrayList<Player> players;
-
-    /**
-     * Link to the cards container, it holds all cards that are yet to be played
-     */
-    private CardsDeck cardsDeck;
-
-    /**
-     * This list holds colors that are not picked by players yet
-     */
-    private List<String> availablePlayerColors;
-
-    /**
-     * reference to the controller handling this game instance
-     */
     @JsonIgnore
-    private GameController controllerCallback;
-    @JsonIgnore
-    private Random randomGenerator;
+    public int getAge() { return  this.board.getAge(); }
 
     /**
      * This method calculates the strength value of a given family member.
@@ -123,6 +112,46 @@ public class Game {
                 .getStrengths().getDiceBonus().get(fm.getDiceColor());
     }
 
+    private void clearHarvest(){
+        getLog().info("Clearing Harvest space");
+        this.board.setHarvest(new ArrayList<>());
+    }
+
+    private void clearProduction(){
+        getLog().info("Clearing Production space");
+        this.board.setProduction(new ArrayList<>());
+    }
+
+    @JsonIgnore
+    public int getTurn() { return  this.board.getTurn(); }
+
+    public ArrayList<Player> getPlayers(){ return this.players; }
+
+    public void setPlayers(ArrayList<Player> players){
+        this.players = players;
+    }
+
+    @JsonIgnore
+    public Player getPlayer(String nickname) {
+        getLog().log(Level.INFO, () -> "Getting player "+nickname+" from "+players.size()+" Players");
+        return players.stream().filter(pl -> pl.getNickname().equals(nickname)).findFirst().orElse(null);
+    }
+
+    @JsonIgnore
+    public Player getPlayerFromColor(String color) {
+        return players.stream().filter(pl -> pl.getColor().equals(color)).findFirst().orElse(null);
+    }
+
+    /**
+     * This method adds a player to the game.
+     */
+    public Player addPlayer(String nickname) {
+        String color = this.availablePlayerColors.remove(0);
+        Player pl = new Player(nickname, color);
+        this.players.add(pl);
+        return pl;
+    }
+
     /**
      * This method sets up the game after it is created by the constructor.
      */
@@ -131,12 +160,11 @@ public class Game {
         int playersNumber = this.players.size();
         if (playersNumber < 2 || playersNumber > 5)
             throw new GameSetupException("Wrong player number on game setup");
-
         getLog().info("Creating towers with bonuses and players card slots");
         HashMap<String, Tower> towers = new HashMap<>();
         DEFAULT_TOWERS_COLORS.forEach(color -> {
-                towers.put(color, new Tower(parsedGame.getTowerbonuses(color)));
-                this.players.forEach(player -> player.getCards().put(color, new ArrayList<Card>()));});
+            towers.put(color, new Tower(parsedGame.getTowerbonuses(color)));
+            this.players.forEach(player -> player.getCards().put(color, new ArrayList<Card>()));});
         if (playersNumber == 5){
             getLog().info("Creating fifth tower and black card slots.");
             towers.put(BLACK_COLOR, new Tower(parsedGame.getTowerbonuses(BLACK_COLOR)));
@@ -159,7 +187,6 @@ public class Game {
             this.board.addExcommunication(parsedGame.getExcommunications().get(i)
                     .get(randomGenerator.nextInt(parsedGame.getExcommunications().get(i).size())));
         }
-        //TODO: When we allot leadercards?
         /*
          * Distribute initial resources starting from the first player,
          * the following will have a coin more than the player before them.
@@ -170,89 +197,13 @@ public class Game {
             giveAssetsToPlayer(parsedGame.getStartingGameBonus().addCoins(moreCoin), pl);
             moreCoin++;
         }
-
         getLog().info("Moving loaded cards to Cards Deck");
         for (int j = 1; j <= AGES_NUMBER; j++) {
             cardsDeck.addDevelopementCardsOfAge(j,parsedGame.getCard(j));
         }
         ArrayList<Assets> cfBonuses = new ArrayList<>(Arrays.asList(parsedGame.getCouncilFavourBonuses()));
         this.board.getCouncil().setFavorBonuses(cfBonuses);
-
         getLog().info("[GAME SETUP END]");
-    }
-
-    /**
-     * This method cleans the board and sets up another turn (reading it from it's state)
-     * Deciding when to advance in ages and turn is a task of the main game controller.
-     */
-    public void setUpTurn(){
-        getLog().log(Level.INFO, () -> "[NEW_TURN_SETUP] - Setting up turn number: "+ this.board.getTurn());
-        clearHarvest();
-        clearProduction();
-        this.board.getCouncil().clear();
-        this.board.getMarket().clear();
-        players.forEach(pl -> pl.clearFamilyMembers());
-        this.board.getTowers().keySet().forEach(color ->
-            {
-                ArrayList<Card> cards = cardsDeck.pullCardsForTower(color, this.board.getAge());
-                if(!cards.isEmpty()){
-                    getLog().info("Clearing "+color+" tower");
-                    this.board.getTowers().get(color).clear();
-                    getLog().log(Level.INFO,"Adding cards to "+color+" tower");
-                    this.board.getTowers().get(color).addCards(cards);
-                }
-            });
-        getLog().info("Allotting family members to players");
-        this.players.forEach(player ->
-                FM_COLORS.forEach(color ->
-                        player.addFamilyMember((new FamilyMember(color, player.getColor())))));
-        this.board.rollDices();
-
-        getLog().info("Resetting activated leaders");
-        this.players.forEach(player -> player.getActivatedLeaders()
-                .forEach(leaderCard -> ((ActivableLeader)leaderCard).setActivated(false)));
-        this.players.forEach(player -> player.getDiceOverride().clear());
-
-        getLog().info("[NEW_TURN_SETUP_END]");
-    }
-
-    private void clearHarvest(){
-        getLog().info("Clearing Harvest space");
-        this.board.setHarvest(new ArrayList<>());
-    }
-
-    private void clearProduction(){
-        getLog().info("Clearing Production space");
-        this.board.setProduction(new ArrayList<>());
-    }
-
-    @JsonIgnore
-    public int getAge() { return  this.board.getAge(); }
-    @JsonIgnore
-    public int getTurn() { return  this.board.getTurn(); }
-
-    public ArrayList<Player> getPlayers(){ return this.players; }
-
-    @JsonIgnore
-    public Player getPlayer(String nickname) {
-        getLog().log(Level.INFO, () -> "Getting player "+nickname+" from "+players.size()+" Players");
-        return players.stream().filter(pl -> pl.getNickname().equals(nickname)).findFirst().orElse(null);
-    }
-
-    @JsonIgnore
-    public Player getPlayerFromColor(String color) {
-        return players.stream().filter(pl -> pl.getColor().equals(color)).findFirst().orElse(null);
-    }
-
-
-    /**
-     * This method adds a player to the game.
-     */
-    public Player addPlayer(String nickname) {
-        String color = this.availablePlayerColors.remove(0);
-        Player pl = new Player(nickname, color);
-        this.players.add(pl);
-        return pl;
     }
 
     /**
@@ -268,6 +219,41 @@ public class Game {
             this.board.setTurn(this.board.getTurn()+1);
             getLog().log(Level.INFO, () -> "Advancing into new turn, number: " + this.board.getTurn());
         }
+    }
+
+    /**
+     * This method cleans the board and sets up another turn (reading it from it's state)
+     * Deciding when to advance in ages and turn is a task of the main game controller.
+     */
+    public void setUpTurn(){
+        getLog().log(Level.INFO, () -> "[NEW_TURN_SETUP] - Setting up turn number: "+ this.board.getTurn());
+        clearHarvest();
+        clearProduction();
+        this.board.getCouncil().clear();
+        this.board.getMarket().clear();
+        players.forEach(pl -> pl.clearFamilyMembers());
+        this.board.getTowers().keySet().forEach(color ->
+        {
+            ArrayList<Card> cards = cardsDeck.pullCardsForTower(color, this.board.getAge());
+            if(!cards.isEmpty()){
+                getLog().info("Clearing "+color+" tower");
+                this.board.getTowers().get(color).clear();
+                getLog().log(Level.INFO,"Adding cards to "+color+" tower");
+                this.board.getTowers().get(color).addCards(cards);
+            }
+        });
+        getLog().info("Allotting family members to players");
+        this.players.forEach(player ->
+                FM_COLORS.forEach(color ->
+                        player.addFamilyMember((new FamilyMember(color, player.getColor())))));
+        this.board.rollDices();
+
+        getLog().info("Resetting activated leaders");
+        this.players.forEach(player -> player.getActivatedLeaders()
+                .forEach(leaderCard -> ((ActivableLeader)leaderCard).setActivated(false)));
+        this.players.forEach(player -> player.getDiceOverride().clear());
+
+        getLog().info("[NEW_TURN_SETUP_END]");
     }
 
     /**
@@ -343,6 +329,7 @@ public class Game {
             return true;
         return false;
     }
+
     @JsonIgnore
     public boolean isCardAffordable(Card card, Player actor, String towerColor, Assets optionalPickDiscount) {
         Assets cardCost = card.getCost().subtractToZero
@@ -350,6 +337,7 @@ public class Game {
         if (playerHasActiveLeader(20, actor)) cardCost.subtractToZero(MIRANDOLA_PICK_BONUS);
         return (actor.getResources().isGreaterOrEqual(cardCost));
     }
+
     @JsonIgnore
     public boolean isPurpleCardAffordable(PurpleCard card, Player pl){
         return (card.getOptionalBpRequirement() > 0 && pl.getResources().getVictoryPoints() > card.getOptionalBpRequirement());
@@ -677,6 +665,10 @@ public class Game {
         return board;
     }
 
+    public void setBoard(Board board){
+        this.board = board;
+    }
+
     public void removeAssetsFromPlayer(Assets assets, Player pl) {
         pl.setResources(pl.getResources().subtract(assets));
     }
@@ -893,12 +885,4 @@ public class Game {
         return false;
     }
 
-    @JsonIgnore
-    public ArrayList<FamilyMember> getHarvest() {
-        return this.board.getHarvest();
-    }
-    @JsonIgnore
-    public ArrayList<FamilyMember> getProduction() {
-        return this.board.getProduction();
-    }
 }
