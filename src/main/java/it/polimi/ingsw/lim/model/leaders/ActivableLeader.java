@@ -1,12 +1,17 @@
 package it.polimi.ingsw.lim.model.leaders;
-import it.polimi.ingsw.lim.model.immediateEffects.ImmediateEffect;
 
-import java.util.*;
+import it.polimi.ingsw.lim.model.immediateEffects.ImmediateEffect;
 
 /**
  * This class represents all Leaders that have an effect activated once per turn
  */
 public class ActivableLeader extends LeaderCard {
+
+    /**
+     * All Leaders of this kind have an effect that can be modelled with an immediate effect
+     */
+    private ImmediateEffect effect;
+    private boolean activated;
 
     /**
      * Default constructor
@@ -20,16 +25,9 @@ public class ActivableLeader extends LeaderCard {
         activated = false;
     }
 
-    /**
-     * All Leaders of this kind have an effect that can be modelled with an immediate effect
-     */
-    private ImmediateEffect effect;
-
     public ImmediateEffect getEffect() {
         return effect;
     }
-
-    private boolean activated;
 
     public boolean isActivated() {
         return this.activated;
@@ -39,18 +37,38 @@ public class ActivableLeader extends LeaderCard {
         this.activated = activated;
     }
 
-    public static class Builder extends LeaderCard.Builder<Builder> {
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (getEffect() != null ? getEffect().hashCode() : 0);
+        result = 31 * result + (isActivated() ? 1 : 0);
+        return result;
+    }
 
-        @Override
-        public Builder getThis() { return this; }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ActivableLeader)) return false;
+        if (!super.equals(o)) return false;
+
+        ActivableLeader that = (ActivableLeader) o;
+
+        if (isActivated() != that.isActivated()) return false;
+        return getEffect() != null ? getEffect().equals(that.getEffect()) : that.getEffect() == null;
+    }
+
+    public static class Builder extends LeaderCard.Builder<Builder> {
 
         private ImmediateEffect immediateEffect;
 
         public Builder() {}
 
-        public Builder immediateEffect(ImmediateEffect iEffect) { immediateEffect = iEffect; return this; }
+        @Override
+        public Builder getThis() { return this; }
 
         public ActivableLeader build() { return new ActivableLeader(this); }
+
+        public Builder immediateEffect(ImmediateEffect iEffect) { immediateEffect = iEffect; return this; }
     }
 
 }

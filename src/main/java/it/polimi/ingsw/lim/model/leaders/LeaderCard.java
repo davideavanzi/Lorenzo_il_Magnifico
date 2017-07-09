@@ -28,6 +28,7 @@ public abstract class LeaderCard implements Serializable {
     private HashMap<String, Integer> cardsRequirement;
     private boolean deployed = false;
     private boolean discarded = false;
+    private String description;
 
     /**
      * Default constructor
@@ -41,6 +42,7 @@ public abstract class LeaderCard implements Serializable {
         leaderCardId = builder.leaderId;
         assetsRequirement = builder.assetsRequirement;
         cardsRequirement = builder.cardsRequirement;
+        this.description = builder.description;
     }
 
     public boolean isDeployed() { return this.deployed; }
@@ -101,6 +103,7 @@ public abstract class LeaderCard implements Serializable {
         private int leaderId;
         private Assets assetsRequirement;
         private HashMap<String, Integer> cardsRequirement = new HashMap<>();
+        private String description;
 
         Builder() {}
 
@@ -108,12 +111,41 @@ public abstract class LeaderCard implements Serializable {
 
         public T name(String name) { cardName = name; return getThis(); }
         public T id(int id) { leaderId = id;  return getThis(); }
+        public T description(String descr) { description = descr;  return getThis(); }
         public T assetsRequirement(Assets requirement) { assetsRequirement = requirement;  return getThis(); }
         public T cardsRequirement(HashMap<String, Integer> cardsRequirement)
         { cardsRequirement.putAll(cardsRequirement);  return getThis(); }
 
         public LeaderCard build() { return new LeaderCard(this) {
         }; }
+
+        @Override
+        public int hashCode() {
+            int result = cardName.hashCode();
+            result = 31 * result + leaderId;
+            result = 31 * result + (assetsRequirement != null ? assetsRequirement.hashCode() : 0);
+            result = 31 * result + (cardsRequirement != null ? cardsRequirement.hashCode() : 0);
+            result = 31 * result + description.hashCode();
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof Builder)) return false;
+
+            Builder<?> builder = (Builder<?>) o;
+
+            if (leaderId != builder.leaderId) return false;
+            if (!cardName.equals(builder.cardName)) return false;
+            if (assetsRequirement != null ? !assetsRequirement.equals(builder.assetsRequirement) : builder.assetsRequirement != null)
+                return false;
+            if (cardsRequirement != null ? !cardsRequirement.equals(builder.cardsRequirement) : builder.cardsRequirement != null)
+                return false;
+            return description.equals(builder.description);
+        }
     }
+
+
 
 }

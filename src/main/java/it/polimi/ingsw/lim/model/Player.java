@@ -6,18 +6,63 @@ import it.polimi.ingsw.lim.model.leaders.LeaderCard;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
+import static it.polimi.ingsw.lim.Settings.BLACK_COLOR;
+import static it.polimi.ingsw.lim.Settings.DEFAULT_TOWERS_COLORS;
 import static it.polimi.ingsw.lim.utils.Log.getLog;
-import static it.polimi.ingsw.lim.Settings.*;
 
 /**
  * Player are indexed by nickname, which corresponds to he user that is playing, and that username is unique
  * TODO: map family members with an hashmap?
  */
 public class Player implements Serializable{
+
+    /**
+     *
+     */
+    private String nickname;
+    /**
+     *
+     */
+    private String color;
+    /**
+     *
+     */
+    private Assets resources;
+    /**
+     * These are the strengths of the player. Elements inside it could be both positive and negative.
+     */
+    private Strengths strengths;
+    private HashMap<String, Integer> diceOverride;
+    /**
+     *
+     */
+    private ArrayList<LeaderCard> leaderCards;
+    /**
+     *
+     */
+    private HashMap<String, Assets> pickDiscounts;
+    /**
+     * This is a container for all development cards.
+     * Arraylists of this hashmap are instantiated in setupGame() method.
+     */
+    private HashMap<String, ArrayList<Card>> cards;
+    /**
+     *
+     */
+    private ArrayList<FamilyMember> familyMembers;
+    /**
+     *
+     */
+    private Assets defaultProductionBonus;
+    /**
+     *
+     */
+    private Assets defaultHarvestBonus;
 
     public Player(){
     }
@@ -44,59 +89,6 @@ public class Player implements Serializable{
     }
 
     /**
-     * 
-     */
-    private String nickname;
-
-    /**
-     * 
-     */
-    private String color;
-
-    /**
-     * 
-     */
-    private Assets resources;
-
-    /**
-     * These are the strengths of the player. Elements inside it could be both positive and negative.
-     */
-    private Strengths strengths;
-
-    private HashMap<String, Integer> diceOverride;
-
-    /**
-     * 
-     */
-    private ArrayList<LeaderCard> leaderCards;
-
-    /**
-     * 
-     */
-    private HashMap<String, Assets> pickDiscounts;
-
-    /**
-     * This is a container for all development cards.
-     * Arraylists of this hashmap are instantiated in setupGame() method.
-     */
-    private HashMap<String, ArrayList<Card>> cards;
-
-    /**
-     *
-     */
-    private ArrayList<FamilyMember> familyMembers;
-
-    /**
-     * 
-     */
-    private Assets defaultProductionBonus;
-
-    /**
-     * 
-     */
-    private Assets defaultHarvestBonus;
-
-    /**
      *
      */
 
@@ -119,36 +111,20 @@ public class Player implements Serializable{
                 .collect(Collectors.toList()));
     }
 
-    public void setLeaderCards(ArrayList<LeaderCard> leaderCards){
-        this.leaderCards = leaderCards;
-    }
-
-    public void setPickDiscounts (HashMap<String, Assets> pickDiscounts){
-        this.pickDiscounts = pickDiscounts;
-    }
-
-    public void setCards (HashMap<String, ArrayList<Card>> cards){
-        this.cards = cards;
-    }
-
-    public void setFamilyMembers(ArrayList<FamilyMember> familyMembers){
-        this.familyMembers = familyMembers;
-    }
-
-    public void setDefaultProductionBonus(Assets defaultProductionBonus){
-        this.defaultHarvestBonus = defaultProductionBonus;
-    }
-
-    public void setDefaultHarvestBonus(Assets defaultHarvestBonus){
-        this.defaultHarvestBonus = defaultHarvestBonus;
-    }
-
     public ArrayList<LeaderCard> getLeaderCards() {
         return leaderCards;
     }
 
+    public void setLeaderCards(ArrayList<LeaderCard> leaderCards){
+        this.leaderCards = leaderCards;
+    }
+
     public HashMap<String, Assets> getPickDiscounts() {
         return pickDiscounts;
+    }
+
+    public void setPickDiscounts (HashMap<String, Assets> pickDiscounts){
+        this.pickDiscounts = pickDiscounts;
     }
 
     public void clearFamilyMembers() { this.familyMembers = new ArrayList<>(); }
@@ -159,6 +135,10 @@ public class Player implements Serializable{
 
     public ArrayList<FamilyMember> getFamilyMembers() { return this.familyMembers; }
 
+    public void setFamilyMembers(ArrayList<FamilyMember> familyMembers){
+        this.familyMembers = familyMembers;
+    }
+
     @JsonIgnore
     public FamilyMember getFamilyMember(String color) {
         return this.familyMembers.stream().filter(fm -> fm.getDiceColor().equals(color)).findFirst().orElse(null);
@@ -168,9 +148,17 @@ public class Player implements Serializable{
         return this.color;
     }
 
+    public void setColor(String color) { this.color = color; }
+
     public Assets getResources() { return this.resources; }
 
+    public void setResources(Assets resources){
+        this.resources = resources;
+    }
+
     public String getNickname() { return  this.nickname; }
+
+    public void setNickname(String nickname) { this.nickname = nickname; }
 
     @JsonIgnore
     public Assets getPickDiscount(String color) {
@@ -179,20 +167,16 @@ public class Player implements Serializable{
 
     public HashMap getCards() { return this.cards; }
 
+    public void setCards (HashMap<String, ArrayList<Card>> cards){
+        this.cards = cards;
+    }
+
     @JsonIgnore
     public ArrayList<Card> getCardsOfColor(String color) { return this.cards.get(color); }
 
     public void addCard(Card card, String color) {
         this.cards.get(color).add(card);
     }
-
-    public void setNickname(String nickname) { this.nickname = nickname; }
-
-    public void setResources(Assets resources){
-        this.resources = resources;
-    }
-
-    public void setColor(String color) { this.color = color; }
 
     public FamilyMember pullFamilyMember(String color) {
         return this.familyMembers.stream().filter(fm -> fm.getDiceColor().equals(color)).findFirst().orElse(null);
@@ -229,8 +213,16 @@ public class Player implements Serializable{
         return defaultHarvestBonus;
     }
 
+    public void setDefaultHarvestBonus(Assets defaultHarvestBonus){
+        this.defaultHarvestBonus = defaultHarvestBonus;
+    }
+
     public Assets getDefaultProductionBonus() {
         return defaultProductionBonus;
+    }
+
+    public void setDefaultProductionBonus(Assets defaultProductionBonus){
+        this.defaultHarvestBonus = defaultProductionBonus;
     }
 
     public HashMap<String, Integer> getDiceOverride() {
@@ -245,4 +237,42 @@ public class Player implements Serializable{
     @JsonIgnore
     public int getMilitaryPoints() { return this.resources.getBattlePoints(); }
 
+    @Override
+    public int hashCode() {
+        int result = getNickname().hashCode();
+        result = 31 * result + getColor().hashCode();
+        result = 31 * result + getResources().hashCode();
+        result = 31 * result + getStrengths().hashCode();
+        result = 31 * result + (getDiceOverride() != null ? getDiceOverride().hashCode() : 0);
+        result = 31 * result + (getLeaderCards() != null ? getLeaderCards().hashCode() : 0);
+        result = 31 * result + (getPickDiscounts() != null ? getPickDiscounts().hashCode() : 0);
+        result = 31 * result + getCards().hashCode();
+        result = 31 * result + getFamilyMembers().hashCode();
+        result = 31 * result + getDefaultProductionBonus().hashCode();
+        result = 31 * result + getDefaultHarvestBonus().hashCode();
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Player)) return false;
+
+        Player player = (Player) o;
+
+        if (!getNickname().equals(player.getNickname())) return false;
+        if (!getColor().equals(player.getColor())) return false;
+        if (!getResources().equals(player.getResources())) return false;
+        if (!getStrengths().equals(player.getStrengths())) return false;
+        if (getDiceOverride() != null ? !getDiceOverride().equals(player.getDiceOverride()) : player.getDiceOverride() != null)
+            return false;
+        if (getLeaderCards() != null ? !getLeaderCards().equals(player.getLeaderCards()) : player.getLeaderCards() != null)
+            return false;
+        if (getPickDiscounts() != null ? !getPickDiscounts().equals(player.getPickDiscounts()) : player.getPickDiscounts() != null)
+            return false;
+        if (!getCards().equals(player.getCards())) return false;
+        if (!getFamilyMembers().equals(player.getFamilyMembers())) return false;
+        if (!getDefaultProductionBonus().equals(player.getDefaultProductionBonus())) return false;
+        return getDefaultHarvestBonus().equals(player.getDefaultHarvestBonus());
+    }
 }

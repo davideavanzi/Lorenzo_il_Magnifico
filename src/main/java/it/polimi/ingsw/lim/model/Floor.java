@@ -12,6 +12,25 @@ import static it.polimi.ingsw.lim.Settings.FLOORS_ACTION_COSTS;
 public class Floor implements Serializable {
 
     /**
+     * The bonus given when a player puts his family member in this floor
+     */
+    private Assets instantBonus;
+    /**
+     * This slot holds the card
+     */
+    private Card cardSlot;
+    /**
+     * The slot where is put the family member
+     */
+    private FamilyMember familyMemberSlot;
+    /**
+     * The strength required to perform this action (enter this floor).
+     * This is not a "Strength" type because the tower corresponding to this specified action is implicit
+     * as the floor is part of that tower.
+     */
+    private int actionCost;
+
+    /**
      * Constructor. it takes the integer corresponding to it's position in the tower
      * and picks it's action cost from the settings
      */
@@ -24,28 +43,6 @@ public class Floor implements Serializable {
     }
 
     /**
-     * The bonus given when a player puts his family member in this floor
-     */
-    private Assets instantBonus;
-
-    /**
-     * This slot holds the card
-     */
-    private Card cardSlot;
-
-    /**
-     * The slot where is put the family member
-     */
-    private FamilyMember familyMemberSlot;
-
-    /**
-     * The strength required to perform this action (enter this floor).
-     * This is not a "Strength" type because the tower corresponding to this specified action is implicit
-     * as the floor is part of that tower.
-     */
-    private int actionCost;
-
-    /**
      * @return
      */
     @JsonIgnore
@@ -55,30 +52,20 @@ public class Floor implements Serializable {
         return false;
     }
 
-    /**
-     * @param familyMemberSlot
-     */
-    public void setFamilyMemberSlot(FamilyMember familyMemberSlot) {
-        this.familyMemberSlot = familyMemberSlot;
+    public Assets getInstantBonus() { return this.instantBonus; }
+
+    public void setInstantBonus(Assets instantBonus) { this.instantBonus = instantBonus; }
+
+    public Card getCardSlot(){
+        return this.cardSlot;
     }
 
     public void setCardSlot(Card cardSlot) {
         this.cardSlot = cardSlot;
     }
 
-    public void setInstantBonus(Assets instantBonus) { this.instantBonus = instantBonus; }
-
-    public void setActionCost(int actionCost){
-        this.actionCost = actionCost;
-    }
-
-    public Assets getInstantBonus() { return this.instantBonus; }
-
-    public Card getCardSlot(){
-        return this.cardSlot;
-    }
-
     public boolean hasCard() { return (this.cardSlot != null); }
+
     /**
      * Get the card and set the slot to null
      * @return
@@ -91,6 +78,39 @@ public class Floor implements Serializable {
 
     public int getActionCost() { return this.actionCost; }
 
-    public FamilyMember getFamilyMemberSlot(){return  this.familyMemberSlot;}
+    public void setActionCost(int actionCost){
+        this.actionCost = actionCost;
+    }
 
+    public FamilyMember getFamilyMemberSlot() { return  this.familyMemberSlot; }
+
+    /**
+     * @param familyMemberSlot
+     */
+    public void setFamilyMemberSlot(FamilyMember familyMemberSlot) {
+        this.familyMemberSlot = familyMemberSlot;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getInstantBonus() != null ? getInstantBonus().hashCode() : 0;
+        result = 31 * result + getCardSlot().hashCode();
+        result = 31 * result + (getFamilyMemberSlot() != null ? getFamilyMemberSlot().hashCode() : 0);
+        result = 31 * result + getActionCost();
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Floor)) return false;
+
+        Floor floor = (Floor) o;
+
+        if (getActionCost() != floor.getActionCost()) return false;
+        if (getInstantBonus() != null ? !getInstantBonus().equals(floor.getInstantBonus()) : floor.getInstantBonus() != null)
+            return false;
+        if (!getCardSlot().equals(floor.getCardSlot())) return false;
+        return getFamilyMemberSlot() != null ? getFamilyMemberSlot().equals(floor.getFamilyMemberSlot()) : floor.getFamilyMemberSlot() == null;
+    }
 }
