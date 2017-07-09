@@ -202,6 +202,13 @@ public class Room implements Serializable{
         usersList.forEach(user -> user.sendChatMessage(sender, message));
     }
 
+    private void sendGameUpdate() {
+        //Send game state to players
+        ArrayList<Player> players = new ArrayList<>();
+        usersList.forEach(user -> players.add(user.getPlayer()));
+        getConnectedUsers().forEach(user -> user.sendGameUpdate(this.gameController.getBoard(), players));
+    }
+
     void broadcastMessage(String message) {
         usersList.forEach(user -> user.broadcastMessage(message));
     }
@@ -235,6 +242,7 @@ public class Room implements Serializable{
             Log.getLog().info("[WRITER]: saving game info");
             Writer.gameWriter(this.gameController.getGame(), id);
             Writer.roomWriter(this, id);
+            return;
         }
         for (int i = 0; i < playOrder.size(); i++)
             if (this.getUser(playOrder.get(i)).isAlive()) {
@@ -250,10 +258,7 @@ public class Room implements Serializable{
                 playOrder.remove(i);
                 i--;
             }
-        //Send game state to players
-        ArrayList<Player> players = new ArrayList<>();
-        usersList.forEach(user -> players.add(user.getPlayer()));
-        getConnectedUsers().forEach(user -> user.sendGameUpdate(this.gameController.getBoard(), players));
+        sendGameUpdate();
     }
 
     /**
@@ -338,6 +343,7 @@ public class Room implements Serializable{
                 playOrder.remove(i);
                 i--;
             }
+        sendGameUpdate();
     }
 
     /**
