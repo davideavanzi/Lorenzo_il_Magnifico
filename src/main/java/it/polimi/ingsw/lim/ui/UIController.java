@@ -79,14 +79,13 @@ public class UIController {
      * the network protocol
      * @param ui this String represent the User Interface chosen.
      */
-    public UIController(String ui) {
-        if(ui.equals("gui")) {
+    public UIController(/*String ui*/) {
+        /*if(ui.equals("gui")) {
             //clientUI = new GUI();
-        } else if (ui.equals("morse")){
-            //clientUI = new MorseLI();
         } else {
             clientUI = new CLI(this);
-        }
+        }*/
+        clientUI = new CLI(this);
         tmpVar = new TemporaryVariables();
     }
 
@@ -262,6 +261,7 @@ public class UIController {
      *  Connect the client to the server with the previously chosen protocol.
      */
     public void startGame() {
+        getClientUI().printMessageln("Hi player!");
         String protocol = clientUI.setNetworkSettings();
         if ("socket".equals(protocol) ){
             new Thread(new SocketClient(this)).start();
@@ -282,11 +282,11 @@ public class UIController {
     }
 
     /**
-     * @return the chosen User Interface.
+     * GUI not implemented yet.
+     * @return the chosen User Interface
      */
     public static String setUI() {
-        System.out.println("Choose your user interface: GUI, MORSE or CLI (default)");
-        System.out.print("$ ");
+        System.out.println("Choose your user interface: GUI or CLI (default)");
         return userInput.nextLine().toLowerCase();
     }
 

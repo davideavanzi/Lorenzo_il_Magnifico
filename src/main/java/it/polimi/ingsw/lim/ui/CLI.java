@@ -2,7 +2,6 @@ package it.polimi.ingsw.lim.ui;
 
 import com.diogonunes.jcdp.color.ColoredPrinter;
 import com.diogonunes.jcdp.color.api.Ansi;
-import com.sun.org.apache.xpath.internal.SourceTree;
 import com.vdurmont.emoji.EmojiParser;
 import it.polimi.ingsw.lim.Lock;
 import it.polimi.ingsw.lim.exceptions.InvalidInputException;
@@ -73,16 +72,23 @@ public class CLI extends AbsUI {
     }
 
     /**
+     * Ask input to player until it is a integer.
+     */
+    private void waitForIntInput() {
+        while (!userInput.hasNextInt()) {
+            input = userInput.next();
+            printError(input.concat(" is not a valid number."));
+        }
+        inputNum = userInput.nextInt();
+    }
+
+    /**
      * The method that ask the player the number of servants.
      * @return
      */
     private int askForServant() {
         do {
-            while (!userInput.hasNextInt()) {
-                input = userInput.next();
-                printError(input.concat(" is not a valid number."));
-            }
-            inputNum = userInput.nextInt();
+            waitForIntInput();
         } while (inputNum < 0);
         return inputNum;
     }
@@ -111,11 +117,7 @@ public class CLI extends AbsUI {
         printGameMessageln("You can activate a bonus tower move!");
         printMessageln("How many Servants would you like to deploy to support your move?");
         do {
-            while (!userInput.hasNextInt()) {
-                input = userInput.next();
-                printError(input.concat(" is not a valid number."));
-            }
-            inputNum = userInput.nextInt();
+            waitForIntInput();
         } while (inputNum < 0);
 
         int servantsDeployed = inputNum;
@@ -135,21 +137,13 @@ public class CLI extends AbsUI {
         //Two/three/four players
         if(uiCallback.getLocalPlayers().size() < 5) {
             do {
-                while (!userInput.hasNextInt()) {
-                    input = userInput.next();
-                    printError(input.concat(" is not a valid number."));
-                }
-                inputNum = userInput.nextInt();
+                waitForIntInput();
             } while (inputNum < 0 || inputNum > 5);
         }
         //Five players
         if(uiCallback.getLocalPlayers().size() == 5) {
             do {
-                while (!userInput.hasNextInt()) {
-                    input = userInput.next();
-                    printError(input.concat(" is not a valid number."));
-                }
-                inputNum = userInput.nextInt();
+                waitForIntInput();
             } while (inputNum < 0 || inputNum > 6);
         }
         int chosenTower = inputNum;
@@ -158,11 +152,7 @@ public class CLI extends AbsUI {
 
         printMessageln("In which floor of ".concat(towerColor.toLowerCase()).concat(" you would you like to pick a card?"));
         do {
-            while (!userInput.hasNextInt()) {
-                input = userInput.next();
-                printError(input.concat(" is not a valid number."));
-            }
-            inputNum = userInput.nextInt();
+            waitForIntInput();
         } while (inputNum < 0 || inputNum > TOWER_HEIGHT);
         int floor = inputNum;
         uiCallback.sendFastTowerMove(servantsDeployed, tower.get(chosenTower-1), floor);
@@ -231,11 +221,7 @@ public class CLI extends AbsUI {
         printGameMessageln("You have picked a card that can be payed in two ways, using resources or battle points.\n".concat(
                 "How do you prefer to pay?\n1) Battle Points\n2) Resources"));
         do {
-            while (!userInput.hasNextInt()) {
-                input = userInput.next();
-                printError(input.concat(" is not a valid number."));
-            }
-            inputNum = userInput.nextInt();
+            waitForIntInput();
         } while (!(inputNum.equals(1) || inputNum.equals(2)));
         availableCmdList.remove(OPTIONAL_BP_PICK);
         uiCallback.sendOptionalBpPick(inputNum.equals(1));
@@ -252,11 +238,7 @@ public class CLI extends AbsUI {
         printMessageln("");
         printCouncilFavors();
         do {
-            while (!userInput.hasNextInt()) {
-                input = userInput.next();
-                printError(input.concat(" is not a valid number."));
-            }
-            inputNum = userInput.nextInt();
+            waitForIntInput();
             favorChoice.add(inputNum);
         } while (count < uiCallback.getTmpVar().getFavorAmount() && inputNum >= 0);
         availableCmdList.remove(CHOOSE_FAVOR);
@@ -271,11 +253,7 @@ public class CLI extends AbsUI {
         printGameMessageln("Do you want to suffer the excommunication?");
         printMessageln("1) yes\n2) no");
         do {
-            while (!userInput.hasNextInt()) {
-                input = userInput.next();
-                printError(input.concat(" is not a valid number."));
-            }
-            inputNum = userInput.nextInt();
+            waitForIntInput();
         } while (!(inputNum.equals(1) || inputNum.equals(2)));
         availableCmdList.remove(EXCOMMUNICATION);
         uiCallback.sendExcommunicationChoice(inputNum.equals(1));
@@ -293,11 +271,7 @@ public class CLI extends AbsUI {
     private String fmServant() {
         printGameMessage("How many servants would you like to put here? ");
         do {
-            while (!userInput.hasNextInt()) {
-                input = userInput.next();
-                printError(input.concat(" is not a valid number."));
-            }
-            inputNum = userInput.nextInt();
+            waitForIntInput();
         } while (inputNum <= 0);
         return inputNum.toString();
     }
@@ -317,11 +291,7 @@ public class CLI extends AbsUI {
             count++;
         }
         do {
-            while (!userInput.hasNextInt()) {
-                input = userInput.next();
-                printError(input.concat(" is not a valid number."));
-            }
-            inputNum = userInput.nextInt();
+            waitForIntInput();
         } while (inputNum-1 <= 0 && inputNum-1 > numBoard);
 
         if (board[inputNum-1].contains("Tower"))
@@ -333,21 +303,14 @@ public class CLI extends AbsUI {
             printGameMessage("Please select the floor: (1/2/3/4) ");
             //String twrColor = destination.get(0).replace(" Tower", "");
             do {
-                while (!userInput.hasNextInt()) {
-                    input = userInput.next();
-                    printError(input.concat(" is not a valid number."));
-                }
-                inputNum = userInput.nextInt();
+                waitForIntInput();
             } while (inputNum-1 <= 0 && inputNum-1 > 4);
             destination.add(inputNum.toString());
+
         } else if (inputNum == 8) { //If market, select the slot
             printGameMessage("Please select the market slot: (1/2) ");
             do {
-                while (!userInput.hasNextInt()) {
-                    input = userInput.next();
-                    printError(input.concat(" is not a valid number."));
-                }
-                inputNum = userInput.nextInt();
+                waitForIntInput();
             } while (inputNum-1 <= 0 && inputNum-1 > marketSlot);
             destination.add(inputNum.toString());
         }
@@ -395,11 +358,7 @@ public class CLI extends AbsUI {
             count++;
         }
         do {
-            while (!userInput.hasNextInt()) {
-                input = userInput.next();
-                printError(input.concat(" is not a valid number."));
-            }
-            inputNum = userInput.nextInt();
+            waitForIntInput();
         } while (inputNum < 0 && inputNum > count);
         return uiCallback.getPlayer(uiCallback.getUsername()).getFamilyMembers().get(inputNum - 1).getDiceColor();
     }
@@ -421,11 +380,8 @@ public class CLI extends AbsUI {
         printGameMessageln("Select the position of the card of which you want to see information: ");
         printMessageln("1) Player's Board (nameCard, namePlayer)\n2) Tower(color, floor)");
         do {
-            while (!userInput.hasNextInt()) {
-                input = userInput.next();
-                printError(input.concat(" is not a valid number."));
-            }
-            inputNum = userInput.nextInt();
+            waitForIntInput();
+            userInput.nextLine();
         } while (!(inputNum.equals(1) || inputNum.equals(2)));
         if (inputNum.equals(1)) {
             printGameMessage("Enter the name of the card: ");
@@ -440,29 +396,24 @@ public class CLI extends AbsUI {
             twrColor.add("Blue");
             twrColor.add("Purple");
             twrColor.add("Black");
-            printGameMessage("Select the tower's color: ");
+            printGameMessageln("Select the tower's color: ");
             int count = 1;
             for (String color : twrColor) {
-                printMessage(count + ") " + color);
+                printMessageln(count + ") " + color);
+                count++;
             }
+            printMessageln("");
             do {
-                while (!userInput.hasNextInt()) {
-                    input = userInput.next();
-                    printError(input.concat(" is not a valid number."));
-                }
-                inputNum = userInput.nextInt();
-            } while ((inputNum < 1 || inputNum > 4) || (inputNum.equals(5) && (uiCallback.getLocalPlayers().size() == 5)));
+                waitForIntInput();
+            } while ((inputNum-1 <= 0 || inputNum-1 > 3) || (inputNum.equals(5) && (uiCallback.getLocalPlayers().size() == 5)));
             int color = inputNum;
             printGameMessage("Please select the floor: (1/2/3/4) ");
             do {
-                while (!userInput.hasNextInt()) {
-                    input = userInput.next();
-                    printError(input.concat(" is not a valid number."));
-                }
-                inputNum = userInput.nextInt();
-            } while (inputNum-1 >= 0 && inputNum-1 < 4);
+                waitForIntInput();
+                userInput.nextLine();
+            } while (inputNum-1 <= 0 && inputNum-1 > 4);
             int floor = inputNum;
-            printCardInTower(twrColor.get(color), floor);
+            printCardInTower(twrColor.get(color).toUpperCase(), floor);
         }
     }
 
@@ -699,7 +650,7 @@ public class CLI extends AbsUI {
                 case "r":
                     return "rmi";
                 default:
-                    printError("Not a valid choice!");
+                    printError("[COMMAND_LINE]: Not a valid choice!");
             }
         }
     }
@@ -754,6 +705,12 @@ public class CLI extends AbsUI {
         System.out.print(EmojiParser.parseToUnicode(message));
     }
 
+
+    /**
+     * Print method; All game information
+     */
+
+
     /**
      * Print all the board info in CLI (Towers, Market, VictoryPointsTrack)
      */
@@ -770,6 +727,10 @@ public class CLI extends AbsUI {
         }
     }
 
+    /**
+     * Print a specific excommunication passed like argument.
+     * @param excommunication abstract object
+     */
     private void printSingleExcommunication(Excommunication excommunication){
         String format = "||%-20s||\n";
         String s = "________________________";
@@ -825,6 +786,10 @@ public class CLI extends AbsUI {
         printMessageln(s);
     }
 
+    /**
+     * Print a specific AssetsExcommunication passed like argument.
+     * @param excommunication object
+     */
     private void printSingleExcommunication(AssetsExcommunication excommunication){
         String format = "||%-20s||\n";
         String sRid = "_  _  _  _  _  _  _ ";
@@ -835,6 +800,10 @@ public class CLI extends AbsUI {
         printAsset(excommunication.getMalus());
     }
 
+    /**
+     * Print a specific EndGameAssetsExcommunication passed like argument.
+     * @param excommunication object
+     */
     private void printSingleExcommunication(EndGameAssetsExcommunication excommunication){
         String format = "||%-20s||\n";
         String sRid = "_  _  _  _  _  _  _ ";
@@ -860,6 +829,10 @@ public class CLI extends AbsUI {
         }
     }
 
+    /**
+     * Print a specific EndGameCardsExcommunication passed like argument.
+     * @param excommunication object
+     */
     private void printSingleExcommunication(EndGameCardsExcommunication excommunication){
         String format = "||%-20s||\n";
         String sRid = "_  _  _  _  _  _  _ ";
@@ -870,6 +843,10 @@ public class CLI extends AbsUI {
         System.out.format(format, StringUtils.center(excommunication.getBlockedCardColor(),20));
     }
 
+    /**
+     * Print a specific StrengthsExcommunication passed like argument.
+     * @param excommunication object
+     */
     private void printSingleExcommunication(StrengthsExcommunication excommunication){
         String format = "||%-20s||\n";
         String sRid = "_  _  _  _  _  _  _ ";
@@ -1020,12 +997,15 @@ public class CLI extends AbsUI {
                 return;
             }
         }
-        for(Card card: player.getCardsOfColor(BLACK_COLOR)){
-            if(card.getName().equalsIgnoreCase(name)){
-                printCard(card);
-                return;
+        if (uiCallback.getLocalPlayers().size() == 5) {
+            for (Card card : player.getCardsOfColor(BLACK_COLOR)) {
+                if (card.getName().equalsIgnoreCase(name)) {
+                    printCard(card);
+                    return;
+                }
             }
         }
+        printError("[COMMAND_LINE]: No card found, please re-enter the command");
     }
 
     /**

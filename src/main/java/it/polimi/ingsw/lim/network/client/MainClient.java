@@ -19,7 +19,7 @@ public class MainClient {
      */
     public static void main(String[] args) {
         splashScreen();
-        UIController client = new UIController(setUI());
+        UIController client = new UIController();
         client.startGame();
         client.getClientUI().waitForRequest();
     }
