@@ -235,7 +235,6 @@ public class Room implements Serializable{
             Log.getLog().info("[WRITER]: saving game info");
             Writer.gameWriter(this.gameController.getGame(), id);
             Writer.roomWriter(this, id);
-            return;
         }
         for (int i = 0; i < playOrder.size(); i++)
             if (this.getUser(playOrder.get(i)).isAlive()) {
@@ -246,7 +245,7 @@ public class Room implements Serializable{
                 Log.getLog().info("[WRITER]: saving game info");
                 Writer.gameWriter(this.gameController.getGame(), id);
                 Writer.roomWriter(this, id);
-                return;
+                break;
             } else {
                 playOrder.remove(i);
                 i--;
@@ -319,13 +318,13 @@ public class Room implements Serializable{
     private void startNewTurn(){
         if (this.gameController.getTime()[1] == 0) {
             draftLock.lock();
-            new Thread(new DraftRound(this, 15)).start();
+            new Thread(new DraftRound(this, 1)).start();
             draftLock.lock();
         }
         buildTurnOrder();
         if(this.gameController.getTime()[1] >= TURNS_PER_AGE) {
             excommLock.lock();
-            new Thread(new ExcommunicationRound(this,10)).start();
+            new Thread(new ExcommunicationRound(this,5)).start();
         }
         if (excommLock.isLocked())
             excommLock.lock();

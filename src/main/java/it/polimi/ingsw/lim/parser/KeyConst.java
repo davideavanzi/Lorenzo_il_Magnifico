@@ -1,5 +1,6 @@
 package it.polimi.ingsw.lim.parser;
 
+import static it.polimi.ingsw.lim.Settings.DUMPS_PATH;
 /**
  * This class contains all the key used in the Json file.
  * It is created due to increase scalability of the code (e.g. if the key of the Json file changes)
@@ -123,7 +124,7 @@ class KeyConst {
     protected static final int MINIUMUM_MOVE_TIMER = 2;
 
     //writer
-    protected static final String PATH_TO_WRITER_GAME_FILE = "src/main/gameData/configs/writer/game/gameWriter_";
-    protected static final String PATH_TO_WRITER_ROOM_FILE = "src/main/gameData/configs/writer/room/roomWriter_";
+    protected static final String PATH_TO_WRITER_GAME_FILE = DUMPS_PATH+"game/gameWriter_";
+    protected static final String PATH_TO_WRITER_ROOM_FILE = DUMPS_PATH+"room/roomWriter_";
     protected static final String EXTENTION = ".json";
 }

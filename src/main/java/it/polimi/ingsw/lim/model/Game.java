@@ -115,8 +115,11 @@ public class Game {
     public int getFmStrength(FamilyMember fm) {
         if (getPlayerFromColor(fm.getOwnerColor()).getDiceOverride().get(fm.getDiceColor()) != null)
             return getPlayerFromColor(fm.getOwnerColor()).getDiceOverride().get(fm.getDiceColor());
-        if (playerHasActiveLeader(10, getPlayerFromColor(fm.getOwnerColor()))) return MORO_FM_BONUS;
-        return this.board.getDice().get(fm.getDiceColor())+getPlayerFromColor(fm.getOwnerColor())
+        if (playerHasActiveLeader(10, getPlayerFromColor(fm.getOwnerColor())) &&
+                !fm.getDiceColor().equals(NEUTRAL_COLOR)) return MORO_FM_BONUS;
+        int baseFmValue = (fm.getDiceColor().equals(NEUTRAL_COLOR)) ? NEUTRAL_FM_STRENGTH :
+                this.board.getDice().get(fm.getDiceColor());
+        return baseFmValue+getPlayerFromColor(fm.getOwnerColor())
                 .getStrengths().getDiceBonus().get(fm.getDiceColor());
     }
 
