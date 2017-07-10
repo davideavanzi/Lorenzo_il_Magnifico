@@ -895,29 +895,35 @@ public class CLI extends AbsUI {
         String sRid = "_  _  _  _  _  _  _ ";
         System.out.format(format, sRid);
         System.out.format(format, "");
-        if(excommunication.getOnAssetsMalus() != null) {
+        try {
             if (excommunication.getOnAssetsMalus(0).isNotNull()) {
                 System.out.format(format, StringUtils.center("For Each:", 20));
                 System.out.format(format, "");
                 printAsset(excommunication.getOnAssetsMalus(0));
             }
+        }catch (NullPointerException e){
+            System.out.format(format, StringUtils.center("No Assets Malus:", 20));
+            System.out.format(format, "");
         }
-        if(excommunication.getProductionCardCostMalus() != null) {
-            if (excommunication.getProductionCardCostMalus().isNotNull()) {
-                System.out.format(format, StringUtils.center("For Each:", 20));
-                System.out.format(format, StringUtils.center("of Yellow Card:", 20));
-                System.out.format(format, "");
-                printAsset(excommunication.getProductionCardCostMalus());
-            }
+        if (excommunication.getProductionCardCostMalus().isNotNull()) {
+            System.out.format(format, StringUtils.center("For Each:", 20));
+            System.out.format(format, StringUtils.center("of Yellow Card:", 20));
+            System.out.format(format, "");
+            printAsset(excommunication.getProductionCardCostMalus());
         }
-        if(excommunication.getOnAssetsMalus() != null) {
-            if (excommunication.getOnAssetsMalus(1).isNotNull()) {
-                System.out.format(format, sRid);
-                System.out.format(format, "");
-                System.out.format(format, StringUtils.center("Malus:", 20));
-                System.out.format(format, "");
-                printAsset(excommunication.getOnAssetsMalus(1));
+        try {
+            if (excommunication.getOnAssetsMalus() != null) {
+                if (excommunication.getOnAssetsMalus(1).isNotNull()) {
+                    System.out.format(format, sRid);
+                    System.out.format(format, "");
+                    System.out.format(format, StringUtils.center("Malus:", 20));
+                    System.out.format(format, "");
+                    printAsset(excommunication.getOnAssetsMalus(1));
+                }
             }
+        }catch (NullPointerException e){
+            System.out.format(format, StringUtils.center("No Assets Malus:", 20));
+            System.out.format(format, "");
         }
     }
 
@@ -1587,8 +1593,8 @@ public class CLI extends AbsUI {
     }
 
     private void printDice(HashMap<String, Integer> dice){
-        String format = "||%1$-100s||%2$-10s||%3$-10s||";
-        String s = "__________________________________";
+        String format = "||%1$-10s||%2$-10s||%3$-10s||\n";
+        String s = "______________________________________";
         printMessageln(s);
         System.out.format(format, StringUtils.center("Orange", 10), StringUtils.center("Black", 10), StringUtils.center("Withe", 10));
         System.out.format(format, StringUtils.center(dice.get(ORANGE_COLOR).toString(), 10), StringUtils.center(dice.get(BLACK_COLOR).toString(), 10), StringUtils.center(dice.get(WHITE_COLOR).toString(), 10));
