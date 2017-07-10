@@ -695,8 +695,7 @@ public class Game {
      */
     public void councilMove(FamilyMember fm, int servantsDeployed) {
         Player actor = getPlayerFromColor(fm.getOwnerColor());
-        actor.pullFamilyMember(fm.getDiceColor());
-        board.getCouncil().addFamilyMember(fm);
+        board.getCouncil().addFamilyMember(actor.pullFamilyMember(fm.getDiceColor()));
         Assets actionCost = new Assets();
         actionCost.addServants(servantsDeployed);
         removeAssetsFromPlayer(actionCost, actor);

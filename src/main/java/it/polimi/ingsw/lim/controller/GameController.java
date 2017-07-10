@@ -450,10 +450,6 @@ public class GameController {
         }
     }
 
-    public ArrayList<Player> getActualPlayingOrder() {
-        return this.game.getPlayers();
-    }
-
     /**
      * This method performs a fast tower action, activated by an immediate effect, with the data provided by the user
      * @param servantsDeployed the amount of servants deployed in the action
