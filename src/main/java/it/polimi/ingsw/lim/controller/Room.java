@@ -56,6 +56,7 @@ public class Room implements Serializable{
         usersList = new ArrayList<>();
         gameController = new GameController(this);
         usersList.add(user);
+        this.playOrder = new ArrayList<>();
         user.setRoom(this);
         excommLock = new Lock();
         draftLock = new Lock();
@@ -234,8 +235,10 @@ public class Room implements Serializable{
      * This method is called when a round has ended and switches the round to the next player.
      */
     public void switchRound(){
-        Log.getLog().info("player ".concat(playOrder.get(0)).concat(" ending round"));
-        playOrder.remove(0);
+        if (!playOrder.isEmpty()) {
+            Log.getLog().info("player ".concat(playOrder.get(0)).concat(" ending round"));
+            playOrder.remove(0);
+        }
         if (playOrder.isEmpty()) {
             if(this.gameController.getTime()[0] == AGES_NUMBER &&
                     this.gameController.getTime()[1] == TURNS_PER_AGE){
@@ -397,7 +400,7 @@ public class Room implements Serializable{
                 Writer.gameWriter(roomCallback.getGameController().getGame(), id);
                 Writer.roomWriter(roomCallback, id);
                 roomCallback.notifyGameStart();
-                roomCallback.startNewTurn();
+                roomCallback.switchRound();
                 Writer.gameWriter(roomCallback.getGameController().getGame(), id);
                 Writer.roomWriter(roomCallback, id);
                 timer.cancel();

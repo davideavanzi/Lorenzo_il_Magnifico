@@ -664,10 +664,9 @@ public class Game {
      */
     public void marketMove(FamilyMember fm, int position, int servantsDeployed) {
         Player actor = getPlayerFromColor(fm.getOwnerColor());
-        board.getMarket().addFamilyMember(actor.pullFamilyMember(fm.getDiceColor()), position);
+        this.board.getMarket().addFamilyMember(actor.pullFamilyMember(fm.getDiceColor()), position);
         Assets actionCost = new Assets().addServants(servantsDeployed);
         removeAssetsFromPlayer(actionCost, actor);
-        this.board.getMarket().addFamilyMember(fm, position);
         Object bonus = this.board.getMarket().getBonuses(position);
         if (bonus instanceof Integer) {
             controllerCallback.giveCouncilFavors((int) bonus);
