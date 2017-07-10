@@ -47,6 +47,7 @@ public class Strengths implements Serializable {
         this.diceBonus.put(WHITE_COLOR, 0);
         this.diceBonus.put(BLACK_COLOR, 0);
         this.diceBonus.put(ORANGE_COLOR, 0);
+        this.diceBonus.put(NEUTRAL_COLOR, 0);
     }
 
 
@@ -73,7 +74,7 @@ public class Strengths implements Serializable {
         this.diceBonus.put(WHITE_COLOR, 0);
         this.diceBonus.put(BLACK_COLOR, 0);
         this.diceBonus.put(ORANGE_COLOR, 0);
-        this.diceBonus.put(ORANGE_COLOR, 0);
+        this.diceBonus.put(NEUTRAL_COLOR, 0);
     }
 
     public Strengths(int harvest, int production, int green, int yellow, int blue, int purple, int black, int whiteDice, int blackDice, int orangeDice){

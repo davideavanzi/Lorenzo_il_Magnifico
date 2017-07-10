@@ -49,8 +49,8 @@ public class Settings {
     /**
      * End game settings, editable.
      */
-    public static final int[] ENDGAME_GREEN_CARDS_VP_BONUS = {0, 0, 1, 4, 10, 20};
-    public static final int[] ENDGAME_BLUE_CARDS_VP_BONUS = {1, 3, 6, 10, 15, 21};
+    public static final int[] ENDGAME_GREEN_CARDS_VP_BONUS = {0, 0, 0, 1, 4, 10, 20};
+    public static final int[] ENDGAME_BLUE_CARDS_VP_BONUS = {0, 1, 3, 6, 10, 15, 21};
     public static final int ENDGAME_VP_ASSETS_DIVIDER = 5;
     public static final int ENDGAME_FIRSTVP_BONUS = 5;
     public static final int ENDGAME_SECONDVP_BONUS = 2;
