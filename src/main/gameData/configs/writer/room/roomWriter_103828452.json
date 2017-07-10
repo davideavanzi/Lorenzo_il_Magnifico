@@ -1,0 +1,370 @@
+{
+  "roomOpen" : false,
+  "usersList" : [ {
+    "@type" : "SocketUser",
+    "username" : "as",
+    "player" : {
+      "nickname" : "as",
+      "color" : "GREEN",
+      "resources" : {
+        "coins" : 6,
+        "wood" : 3,
+        "stone" : 3,
+        "servants" : 3,
+        "faithPoints" : 0,
+        "battlePoints" : 0,
+        "victoryPoints" : 0
+      },
+      "strengths" : {
+        "harvestBonus" : 0,
+        "productionBonus" : 0,
+        "towerStrengths" : {
+          "BLUE" : 0,
+          "BLACK" : 0,
+          "YELLOW" : 0,
+          "PURPLE" : 0,
+          "GREEN" : 0
+        },
+        "diceBonus" : {
+          "WHITE" : 0,
+          "BLACK" : 0,
+          "ORANGE" : 0
+        },
+        "towerStrength" : {
+          "BLUE" : 0,
+          "BLACK" : 0,
+          "YELLOW" : 0,
+          "PURPLE" : 0,
+          "GREEN" : 0
+        }
+      },
+      "diceOverride" : { },
+      "leaderCards" : [ {
+        "cardName" : "Bartolomeo Colleoni",
+        "leaderCardId" : 18,
+        "assetsRequirement" : null,
+        "cardsRequirement" : { },
+        "deployed" : false,
+        "discarded" : false,
+        "effect" : {
+          "@type" : "AssetsEffect",
+          "bonus" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 4
+          }
+        },
+        "activated" : false
+      }, {
+        "cardName" : "Sisto IV",
+        "leaderCardId" : 14,
+        "assetsRequirement" : {
+          "coins" : 6,
+          "wood" : 6,
+          "stone" : 6,
+          "servants" : 6,
+          "faithPoints" : 0,
+          "battlePoints" : 0,
+          "victoryPoints" : 0
+        },
+        "cardsRequirement" : { },
+        "deployed" : false,
+        "discarded" : false
+      }, {
+        "cardName" : "Ludovico il moro",
+        "leaderCardId" : 10,
+        "assetsRequirement" : null,
+        "cardsRequirement" : { },
+        "deployed" : false,
+        "discarded" : false
+      } ],
+      "pickDiscounts" : {
+        "BLUE" : {
+          "coins" : 0,
+          "wood" : 0,
+          "stone" : 0,
+          "servants" : 0,
+          "faithPoints" : 0,
+          "battlePoints" : 0,
+          "victoryPoints" : 0
+        },
+        "BLACK" : {
+          "coins" : 0,
+          "wood" : 0,
+          "stone" : 0,
+          "servants" : 0,
+          "faithPoints" : 0,
+          "battlePoints" : 0,
+          "victoryPoints" : 0
+        },
+        "YELLOW" : {
+          "coins" : 0,
+          "wood" : 0,
+          "stone" : 0,
+          "servants" : 0,
+          "faithPoints" : 0,
+          "battlePoints" : 0,
+          "victoryPoints" : 0
+        },
+        "PURPLE" : {
+          "coins" : 0,
+          "wood" : 0,
+          "stone" : 0,
+          "servants" : 0,
+          "faithPoints" : 0,
+          "battlePoints" : 0,
+          "victoryPoints" : 0
+        },
+        "GREEN" : {
+          "coins" : 0,
+          "wood" : 0,
+          "stone" : 0,
+          "servants" : 0,
+          "faithPoints" : 0,
+          "battlePoints" : 0,
+          "victoryPoints" : 0
+        }
+      },
+      "cards" : {
+        "BLUE" : [ ],
+        "YELLOW" : [ ],
+        "PURPLE" : [ ],
+        "GREEN" : [ ]
+      },
+      "familyMembers" : [ {
+        "ownerColor" : "GREEN",
+        "diceColor" : "BLACK"
+      }, {
+        "ownerColor" : "GREEN",
+        "diceColor" : "ORANGE"
+      }, {
+        "ownerColor" : "GREEN",
+        "diceColor" : "WHITE"
+      }, {
+        "ownerColor" : "GREEN",
+        "diceColor" : "NEUTRAL"
+      } ],
+      "defaultProductionBonus" : {
+        "coins" : 0,
+        "wood" : 0,
+        "stone" : 0,
+        "servants" : 0,
+        "faithPoints" : 0,
+        "battlePoints" : 0,
+        "victoryPoints" : 0
+      },
+      "defaultHarvestBonus" : {
+        "coins" : 1,
+        "wood" : 0,
+        "stone" : 0,
+        "servants" : 0,
+        "faithPoints" : 0,
+        "battlePoints" : 2,
+        "victoryPoints" : 0
+      },
+      "deployedLeaders" : [ ],
+      "activatedLeaders" : [ ]
+    },
+    "isAlive" : true
+  }, {
+    "@type" : "RMIUser",
+    "username" : "z",
+    "player" : {
+      "nickname" : "z",
+      "color" : "YELLOW",
+      "resources" : {
+        "coins" : 5,
+        "wood" : 3,
+        "stone" : 3,
+        "servants" : 3,
+        "faithPoints" : 0,
+        "battlePoints" : 0,
+        "victoryPoints" : 0
+      },
+      "strengths" : {
+        "harvestBonus" : 0,
+        "productionBonus" : 0,
+        "towerStrengths" : {
+          "BLUE" : 0,
+          "BLACK" : 0,
+          "YELLOW" : 0,
+          "PURPLE" : 0,
+          "GREEN" : 0
+        },
+        "diceBonus" : {
+          "WHITE" : 0,
+          "BLACK" : 0,
+          "ORANGE" : 0
+        },
+        "towerStrength" : {
+          "BLUE" : 0,
+          "BLACK" : 0,
+          "YELLOW" : 0,
+          "PURPLE" : 0,
+          "GREEN" : 0
+        }
+      },
+      "diceOverride" : { },
+      "leaderCards" : [ {
+        "cardName" : "Santa Rita",
+        "leaderCardId" : 16,
+        "assetsRequirement" : {
+          "coins" : 0,
+          "wood" : 0,
+          "stone" : 0,
+          "servants" : 0,
+          "faithPoints" : 8,
+          "battlePoints" : 0,
+          "victoryPoints" : 0
+        },
+        "cardsRequirement" : { },
+        "deployed" : false,
+        "discarded" : false
+      }, {
+        "cardName" : "Sandro Botticelli",
+        "leaderCardId" : 9,
+        "assetsRequirement" : {
+          "coins" : 0,
+          "wood" : 10,
+          "stone" : 0,
+          "servants" : 0,
+          "faithPoints" : 0,
+          "battlePoints" : 0,
+          "victoryPoints" : 0
+        },
+        "cardsRequirement" : { },
+        "deployed" : false,
+        "discarded" : false,
+        "effect" : {
+          "@type" : "AssetsEffect",
+          "bonus" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 2,
+            "victoryPoints" : 1
+          }
+        },
+        "activated" : false
+      }, {
+        "cardName" : "Ludovico III Gonzaga",
+        "leaderCardId" : 19,
+        "assetsRequirement" : {
+          "coins" : 0,
+          "wood" : 0,
+          "stone" : 0,
+          "servants" : 15,
+          "faithPoints" : 0,
+          "battlePoints" : 0,
+          "victoryPoints" : 0
+        },
+        "cardsRequirement" : { },
+        "deployed" : false,
+        "discarded" : false,
+        "effect" : {
+          "@type" : "CouncilFavorsEffect",
+          "amount" : 1
+        },
+        "activated" : false
+      } ],
+      "pickDiscounts" : {
+        "BLUE" : {
+          "coins" : 0,
+          "wood" : 0,
+          "stone" : 0,
+          "servants" : 0,
+          "faithPoints" : 0,
+          "battlePoints" : 0,
+          "victoryPoints" : 0
+        },
+        "BLACK" : {
+          "coins" : 0,
+          "wood" : 0,
+          "stone" : 0,
+          "servants" : 0,
+          "faithPoints" : 0,
+          "battlePoints" : 0,
+          "victoryPoints" : 0
+        },
+        "YELLOW" : {
+          "coins" : 0,
+          "wood" : 0,
+          "stone" : 0,
+          "servants" : 0,
+          "faithPoints" : 0,
+          "battlePoints" : 0,
+          "victoryPoints" : 0
+        },
+        "PURPLE" : {
+          "coins" : 0,
+          "wood" : 0,
+          "stone" : 0,
+          "servants" : 0,
+          "faithPoints" : 0,
+          "battlePoints" : 0,
+          "victoryPoints" : 0
+        },
+        "GREEN" : {
+          "coins" : 0,
+          "wood" : 0,
+          "stone" : 0,
+          "servants" : 0,
+          "faithPoints" : 0,
+          "battlePoints" : 0,
+          "victoryPoints" : 0
+        }
+      },
+      "cards" : {
+        "BLUE" : [ ],
+        "YELLOW" : [ ],
+        "PURPLE" : [ ],
+        "GREEN" : [ ]
+      },
+      "familyMembers" : [ {
+        "ownerColor" : "YELLOW",
+        "diceColor" : "BLACK"
+      }, {
+        "ownerColor" : "YELLOW",
+        "diceColor" : "ORANGE"
+      }, {
+        "ownerColor" : "YELLOW",
+        "diceColor" : "WHITE"
+      }, {
+        "ownerColor" : "YELLOW",
+        "diceColor" : "NEUTRAL"
+      } ],
+      "defaultProductionBonus" : {
+        "coins" : 0,
+        "wood" : 0,
+        "stone" : 0,
+        "servants" : 0,
+        "faithPoints" : 0,
+        "battlePoints" : 0,
+        "victoryPoints" : 0
+      },
+      "defaultHarvestBonus" : {
+        "coins" : 1,
+        "wood" : 0,
+        "stone" : 0,
+        "servants" : 2,
+        "faithPoints" : 0,
+        "battlePoints" : 0,
+        "victoryPoints" : 0
+      },
+      "deployedLeaders" : [ ],
+      "activatedLeaders" : [ ]
+    },
+    "isAlive" : true
+  } ],
+  "playOrder" : [ "as", "z", "as", "z", "as", "z", "as" ],
+  "id" : 103828452,
+  "timerPlayMove" : 100,
+  "timerStartingGame" : 10,
+  "full" : false
+}
