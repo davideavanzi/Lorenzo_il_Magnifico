@@ -172,7 +172,7 @@ public class Game {
     public void setUpGame(Parser parsedGame) throws GameSetupException {
         getLog().info("[GAME SETUP BEGIN]");
         this.board.setAge(1);
-        this.board.setTurn(1); //it is updated by one as soon as the game starts.
+        this.board.setTurn(0); //it is updated by one as soon as the game starts.
         int playersNumber = this.players.size();
         if (playersNumber < 2 || playersNumber > 5)
             throw new GameSetupException("Wrong player number on game setup");
@@ -298,8 +298,8 @@ public class Game {
      private boolean canPickCard(String towerColor, FamilyMember fm) {
         Player pl = getPlayerFromColor(fm.getOwnerColor());
         if (pl.getCardsOfColor(towerColor).size() >= 6) return false;
-        if (pl.getResources().getBattlePoints() >=
-                PLAYER_TERRITORIES_REQ[pl.getCardsOfColor(GREEN_COLOR).size()] && !playerHasActiveLeader(15, pl))
+        if ((pl.getResources().getBattlePoints() <
+                PLAYER_TERRITORIES_REQ[pl.getCardsOfColor(GREEN_COLOR).size()]) && !playerHasActiveLeader(15, pl))
             return false;
         return true;
      }
@@ -320,14 +320,14 @@ public class Game {
                         (pl.getPickDiscount(towerColor));
         Assets additionalCost = new Assets();
         Assets playerAssets = new Assets(pl.getResources());
-        if (this.isTowerOccupied(towerColor) && playerHasActiveLeader(3, getPlayerFromColor(fm.getOwnerColor())) &&
-                pl.getResources().getCoins() > COINS_TO_ENTER_OCCUPIED_TOWER)
+        if (this.isTowerOccupied(towerColor) && !playerHasActiveLeader(3, getPlayerFromColor(fm.getOwnerColor())))
             cardCost.addCoins(COINS_TO_ENTER_OCCUPIED_TOWER);
-        else return false;
+        if (pl.getResources().getCoins() < COINS_TO_ENTER_OCCUPIED_TOWER)
+        return false;
         if (this.isTowerOccupied(towerColor) && !playerAssets.isGreaterOrEqual(additionalCost))
-            return false;
+        return false;
         if (this.servantsForTowerAction(fm, towerColor, floorNumber) > playerAssets.getServants())
-            return false;
+        return false;
         if (this.isPlayerTowerBonusAllowed(this.getPlayerFromColor(fm.getOwnerColor())))
             playerAssets.add(this.apllyExcommMalus(destination.getInstantBonus(),pl));
         if (playerAssets.isGreaterOrEqual(cardCost))

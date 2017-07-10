@@ -67,7 +67,7 @@ public class PlayerRound implements Round {
      */
     public void endTurn (){
         Log.getLog().info("turn player ".concat(this.getUserName()).concat(" has ended "));
-        this.user.getRoom().switchRound(true);
+        this.user.getRoom().switchRound();
     }
 
     /**

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.lim.controller;
 
-import it.polimi.ingsw.lim.MainServer;
 import it.polimi.ingsw.lim.controller.rounds.DraftRound;
 import it.polimi.ingsw.lim.controller.rounds.ExcommunicationRound;
 import it.polimi.ingsw.lim.controller.rounds.PlayerRound;
@@ -16,7 +15,6 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -54,12 +52,10 @@ public class Room implements Serializable{
     private int timerPlayMove;
     private int timerStartingGame;
 
-    @SuppressWarnings("SQUID.1166")
     public Room(User user, int id) {
         usersList = new ArrayList<>();
         gameController = new GameController(this);
         usersList.add(user);
-        this.playOrder = new ArrayList<>();
         user.setRoom(this);
         excommLock = new Lock();
         draftLock = new Lock();
@@ -213,6 +209,10 @@ public class Room implements Serializable{
         getConnectedUsers().forEach(user -> user.sendGameUpdate(this.gameController.getBoard(), players));
     }
 
+    void broadcastMessage(String message) {
+        usersList.forEach(user -> user.gameMessage(message));
+    }
+
     public ArrayList<User> getUsersList() {
         return usersList;
     }
@@ -233,19 +233,15 @@ public class Room implements Serializable{
     /**
      * This method is called when a round has ended and switches the round to the next player.
      */
-    public void switchRound(boolean pullPlayer){
-        if (!playOrder.isEmpty() && pullPlayer) {
-            Log.getLog().info("player ".concat(playOrder.get(0)).concat(" ending round"));
-            playOrder.remove(0);
-        }
+    public void switchRound(){
+        Log.getLog().info("player ".concat(playOrder.get(0)).concat(" ending round"));
+        playOrder.remove(0);
         if (playOrder.isEmpty()) {
             if(this.gameController.getTime()[0] == AGES_NUMBER &&
                     this.gameController.getTime()[1] == TURNS_PER_AGE){
                 endGame();
                 return;
             }
-            System.out.println("PLAYER ORDER EMPTY");
-            buildTurnOrder();
             startNewTurn();
             Log.getLog().info("[WRITER]: saving game info");
             Writer.gameWriter(this.gameController.getGame(), id);
@@ -314,10 +310,6 @@ public class Room implements Serializable{
                 .forEach(user -> user.isPlayerRound(false));
     }
 
-    public void broadcastMessage(String message) {
-        getConnectedUsers().forEach(user -> user.gameMessage(message));
-    }
-
     @JsonIgnore
     public GameController getGameController() {
         return gameController;
@@ -335,12 +327,13 @@ public class Room implements Serializable{
     private void startNewTurn(){
         if (this.gameController.getTime()[1] == 0) {
             draftLock.lock();
-            new Thread(new DraftRound(this, 1)).start();
+            new Thread(new DraftRound(this, DEFAULT_DRAFT_ROUND_TIMER)).start();
             draftLock.lock();
         }
+        buildTurnOrder();
         if(this.gameController.getTime()[1] >= TURNS_PER_AGE) {
             excommLock.lock();
-            new Thread(new ExcommunicationRound(this,5)).start();
+            new Thread(new ExcommunicationRound(this,DEFAULT_EXCOMM_ROUND_TIMER)).start();
         }
         if (excommLock.isLocked())
             excommLock.lock();
@@ -360,19 +353,12 @@ public class Room implements Serializable{
     /**
      * This method handles the game end and builds the ranking based on victory points and final scoring
      */
-    @SuppressWarnings("SQUID.1166")
     void endGame(){
         Log.getLog().info("The game has ended. Ranking will be built now.");
         gameController.applyEndGameExcomm();
         ArrayList<Player> ranking = gameController.buildRanking();
         usersList.forEach(user -> user.notifyEndGame(ranking));
         ranking.forEach(Player -> System.out.println("end game " + Player.getNickname()));
-        try {
-            MainServer.getJDBC().addVictory(ranking.get(0).getNickname());
-        } catch (SQLException e) {
-            getLog().log(Level.SEVERE, "SQL error updating entry for the winner user");
-        }
-
         try {
             for (File file : new File(DUMPS_PATH+ "room/").listFiles()) {
                 if (file.getName().contains(((Integer)id).toString())) {
@@ -411,8 +397,7 @@ public class Room implements Serializable{
                 Writer.gameWriter(roomCallback.getGameController().getGame(), id);
                 Writer.roomWriter(roomCallback, id);
                 roomCallback.notifyGameStart();
-                buildTurnOrder();
-                roomCallback.switchRound(false);
+                roomCallback.startNewTurn();
                 Writer.gameWriter(roomCallback.getGameController().getGame(), id);
                 Writer.roomWriter(roomCallback, id);
                 timer.cancel();

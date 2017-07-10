@@ -405,7 +405,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
                 if (MainServer.getJDBC().isUserContained(username, password)) {
                     if (isUserAlreadyLoggedIn(username)) throw new LoginFailedException("You are already logged in!");
                     addUserToRoom(new RMIUser(username, rmiClient));
-                    Log.getLog().log(Level.INFO, "[LOGIN]: Success login. Welcome back ".concat(username));
+                    Log.getLog().log(Level.INFO, "[LOGIN]: Successful login. Welcome back ".concat(username));
                 } else {
                     Log.getLog().log(Level.SEVERE, "[LOGIN]: Bad password or username ".concat(username).concat("already selected?"));
                     throw new LoginFailedException("[LOGIN]: Bad password or username ".concat(username).concat(" already selected?"));
