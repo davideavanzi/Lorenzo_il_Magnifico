@@ -4,16 +4,30 @@ import it.polimi.ingsw.lim.controller.GameController;
 import it.polimi.ingsw.lim.exceptions.BadRequestException;
 import it.polimi.ingsw.lim.model.FamilyMember;
 
-import static it.polimi.ingsw.lim.utils.Log.getLog;
-import static it.polimi.ingsw.lim.network.CommunicationConstants.*;
-
 import java.util.ArrayList;
 import java.util.logging.Level;
 
+import static it.polimi.ingsw.lim.network.CommunicationConstants.*;
+import static it.polimi.ingsw.lim.utils.Log.getLog;
+
 /**
- *
+ * This class handles commands received from client and forwards them to the game controller.
  */
+@SuppressWarnings("SQUID.1166")
 class ClientCommandHandler {
+
+    /**
+     * The controller of the game.
+     */
+    GameController gameController;
+    /**
+     * Store the input command.
+     */
+    Object[] command;
+    /**
+     * A callback to the client handler.
+     */
+    private SocketClientHandler handlerCallback;
 
     /**
      * Link every SocketClientHandler thread to the correspondent ClientCommandHandler.
@@ -22,21 +36,6 @@ class ClientCommandHandler {
     ClientCommandHandler(SocketClientHandler handlerCallback) {
         this.handlerCallback = handlerCallback;
     }
-
-    /**
-     * A callback to the client handler.
-     */
-    private SocketClientHandler handlerCallback;
-
-    /**
-     * The controller of the game.
-     */
-    GameController gameController;
-
-    /**
-     * Store the input command.
-     */
-    Object[] command;
 
     public ClientCommandHandler() {
         gameController = handlerCallback.getUser().getRoom().getGameController();

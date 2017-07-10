@@ -14,8 +14,9 @@ import java.util.Map;
 import java.util.Scanner;
 
 /**
- *
+ *This class is a controller for the user interface
  */
+@SuppressWarnings("SQUID.1166")
 public class UIController {
     /**
      * Map that link a identification string to a method.
