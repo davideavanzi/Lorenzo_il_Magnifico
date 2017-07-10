@@ -180,8 +180,13 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
         int destArgs = Integer.parseInt(destination.get(1)); //floor's number or market slot
         int servantsNum = Integer.parseInt(servants);
         try {
-            if (destination.get(0).contains(TOWER)) {
-                String twrColor = destination.get(0).replace(" Tower", "");
+            System.out.println(destination.get(0));
+
+            if (destination.get(0).equalsIgnoreCase(GREEN) ||
+                    destination.get(0).equalsIgnoreCase(BLUE) ||
+                    destination.get(0).equalsIgnoreCase(YELLOW) ||
+                    destination.get(0).equalsIgnoreCase(PURPLE)) {
+                String twrColor = destination.get(0);
                 rmiServer.moveInTower(fmColor, twrColor, destArgs, servantsNum, uiCallback.getUsername(), this);
             } else if (destination.get(0).equalsIgnoreCase(MARKET)) {
                 rmiServer.moveInMarket(fmColor, destArgs, servantsNum, uiCallback.getUsername(), this);
