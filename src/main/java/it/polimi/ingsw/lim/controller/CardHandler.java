@@ -23,7 +23,7 @@ public class CardHandler {
 
     /**
      * This method activates a yellow card, checking the type of bonus.
-     * productionResults must not be null in any case (TODO: check it in yellow card constructor!)
+     * productionResults must not be null in any case
      * @param card the card to activate
      * @param actor the user performing the action
      */

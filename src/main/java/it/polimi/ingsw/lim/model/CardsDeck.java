@@ -45,7 +45,6 @@ public class CardsDeck {
      * @param color the color of the cards to pick
      * @param age the age of the cards to pick
      * @return an arraylist of cards that will go into the tower
-     * TODO: check integrity
      */
     public ArrayList <Card> pullCardsForTower(String color, int age) {
         ArrayList<Card> cards = new ArrayList<>();

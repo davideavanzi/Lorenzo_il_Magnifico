@@ -212,6 +212,4 @@ public class Strengths implements Serializable {
                 this.diceBonus.equals(strengths.getDiceBonus())
         );
     }
-    //TODO: check if equals method work between to hashmap
-
 }

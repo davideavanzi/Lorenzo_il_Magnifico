@@ -29,7 +29,6 @@ public class Market implements Serializable {
      * Constructor, it creates a market of the proper size based on the number of players in the game
      */
     public Market(int playersNumber, Object[] marketBonuses) {
-        //TODO: exception for wrong player number or wrong bonuses number?
         getLog().info("Creating market instance");
         int slotsNumber = 2;
         if(playersNumber <= MAX_USERS_PER_ROOM && playersNumber > 3) //do we have to check if there are more than 6 players?

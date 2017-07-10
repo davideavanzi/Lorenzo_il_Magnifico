@@ -65,7 +65,6 @@ public class GameController {
      * - Market bonuses consistent.
      * - Council bonuses consistent.
      * - Faith track bonuses corresponding to faith track length
-     * TODO: do we have to check if every card is valid?
      */
     private boolean validateParsedData (Parser parsedGame){
         for (int age = 1; age <= AGES_NUMBER; age++)
