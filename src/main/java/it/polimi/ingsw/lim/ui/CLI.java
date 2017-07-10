@@ -530,7 +530,8 @@ public class CLI extends AbsUI {
         printGameMessage("How many servants would you like to put here? ");
         do {
             waitForIntInput();
-        } while (inputNum <= 0);
+        } while (inputNum < 0);
+        System.out.println(inputNum);
         return inputNum.toString();
     }
 
@@ -588,7 +589,7 @@ public class CLI extends AbsUI {
         printGameMessageln("Where would you like to put it?");
 
         //Two/Three players
-        if (uiCallback.getLocalPlayers().size() < 3) {
+        if (uiCallback.getLocalPlayers().size() <= 3) {
             return chooseDestination(board4Player, 8, 2);
         }
 
