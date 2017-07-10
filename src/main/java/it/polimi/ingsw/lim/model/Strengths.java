@@ -1,9 +1,9 @@
 package it.polimi.ingsw.lim.model;
+
 import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.HashMap;
 
 import static it.polimi.ingsw.lim.Settings.*;
 
@@ -12,6 +12,20 @@ import static it.polimi.ingsw.lim.Settings.*;
  */
 
 public class Strengths implements Serializable {
+
+    /**
+     *
+     */
+    private int harvestBonus;
+    /**
+     *
+     */
+    private int productionBonus;
+    private HashMap<String, Integer> towerStrengths;
+    /**
+     *
+     */
+    private HashMap<String, Integer> diceBonus;
 
     /**
      * Default constructor, all values are put to 0.
@@ -30,6 +44,7 @@ public class Strengths implements Serializable {
         this.diceBonus.put(BLACK_COLOR, 0);
         this.diceBonus.put(ORANGE_COLOR, 0);
     }
+
 
     /**
      * This constructor sets all parameters but dice values, which are usually to 0 except leader cards.
@@ -54,6 +69,7 @@ public class Strengths implements Serializable {
         this.diceBonus.put(WHITE_COLOR, 0);
         this.diceBonus.put(BLACK_COLOR, 0);
         this.diceBonus.put(ORANGE_COLOR, 0);
+        this.diceBonus.put(ORANGE_COLOR, 0);
     }
 
     public Strengths(int harvest, int production, int green, int yellow, int blue, int purple, int black, int whiteDice, int blackDice, int orangeDice){
@@ -69,25 +85,8 @@ public class Strengths implements Serializable {
         this.diceBonus.put(WHITE_COLOR, whiteDice);
         this.diceBonus.put(BLACK_COLOR, blackDice);
         this.diceBonus.put(ORANGE_COLOR, orangeDice);
+        this.diceBonus.put(NEUTRAL_COLOR, 0);
     }
-
-    /**
-     *
-     */
-    private int harvestBonus;
-
-    /**
-     *
-     */
-    private int productionBonus;
-
-
-    private HashMap<String, Integer> towerStrengths;
-
-    /**
-     *
-     */
-    private HashMap<String, Integer> diceBonus;
 
     /**
      * This method adds two strengths. it adds only tower bonus if they are specified in the hashmap.
@@ -112,6 +111,10 @@ public class Strengths implements Serializable {
         return diceBonus;
     }
 
+    public void setDiceBonus(HashMap<String, Integer> diceBonus) {
+        this.diceBonus = diceBonus;
+    }
+
     public HashMap<String, Integer> getTowerStrength() {
         return towerStrengths;
     }
@@ -120,24 +123,20 @@ public class Strengths implements Serializable {
         return harvestBonus;
     }
 
-    public int getProductionBonus() {
-        return productionBonus;
-    }
-
-    public HashMap<String, Integer> getTowerStrengths() {
-        return towerStrengths;
-    }
-
-    public void setDiceBonus(HashMap<String, Integer> diceBonus) {
-        this.diceBonus = diceBonus;
-    }
-
     public void setHarvestBonus(int harvestBonus) {
         this.harvestBonus = harvestBonus;
     }
 
+    public int getProductionBonus() {
+        return productionBonus;
+    }
+
     public void setProductionBonus(int productionBonus) {
         this.productionBonus = productionBonus;
+    }
+
+    public HashMap<String, Integer> getTowerStrengths() {
+        return towerStrengths;
     }
 
     public void setTowerStrengths(HashMap<String, Integer> towerStrengths) {

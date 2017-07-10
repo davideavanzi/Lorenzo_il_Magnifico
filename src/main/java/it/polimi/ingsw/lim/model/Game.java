@@ -212,7 +212,6 @@ public class Game {
     /**
      * This method advances the game state of one turn
      */
-
     public void newTurn(){
         if(this.board.getTurn() >= TURNS_PER_AGE){
             this.board.setTurn(1);
@@ -296,7 +295,7 @@ public class Game {
         Player pl = getPlayerFromColor(fm.getOwnerColor());
         if (pl.getCardsOfColor(towerColor).size() >= 6) return false;
         if (pl.getResources().getBattlePoints() >=
-                PLAYER_TERRITORIES_REQ[pl.getCardsOfColor(GREEN_COLOR).size()-1] && !playerHasActiveLeader(15, pl))
+                PLAYER_TERRITORIES_REQ[pl.getCardsOfColor(GREEN_COLOR).size()] && !playerHasActiveLeader(15, pl))
             return false;
         return true;
      }
@@ -678,13 +677,19 @@ public class Game {
 
     /**
      * this method gives an amount of assets to the player, it also applies eventual excommunication maluses
-     * @param assets
+     * @param assets the assets that will be given to the player
      * @param pl
      */
     public void giveAssetsToPlayer(Assets assets, Player pl) {
         pl.setResources(pl.getResources().add(apllyExcommMalus(assets, pl)));
     }
 
+    /**
+     * This method applies a malus to the provided asset, if the player has been excommunicated
+     * @param assets the assets to apply the excommunication to
+     * @param pl the player to check
+     * @return
+     */
     public Assets apllyExcommMalus(Assets assets, Player pl) {
         Excommunication firstAgeExcomm = board.getExcommunications().get(0);
         if (firstAgeExcomm instanceof AssetsExcommunication && firstAgeExcomm.getExcommunicated().contains(pl.getColor()))
