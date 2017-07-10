@@ -3,15 +3,17 @@ package it.polimi.ingsw.lim.ui;
 import com.diogonunes.jcdp.color.ColoredPrinter;
 import com.diogonunes.jcdp.color.api.Ansi;
 import com.vdurmont.emoji.EmojiParser;
-import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
-import it.polimi.ingsw.lim.model.leaders.LeaderCard;
-import it.polimi.ingsw.lim.model.leaders.Leaders;
-import it.polimi.ingsw.lim.utils.Lock;
 import it.polimi.ingsw.lim.exceptions.InvalidInputException;
-import it.polimi.ingsw.lim.model.*;
+import it.polimi.ingsw.lim.model.Assets;
+import it.polimi.ingsw.lim.model.FamilyMember;
+import it.polimi.ingsw.lim.model.Player;
+import it.polimi.ingsw.lim.model.Strengths;
 import it.polimi.ingsw.lim.model.cards.*;
 import it.polimi.ingsw.lim.model.excommunications.*;
 import it.polimi.ingsw.lim.model.immediateEffects.*;
+import it.polimi.ingsw.lim.model.leaders.LeaderCard;
+import it.polimi.ingsw.lim.model.leaders.Leaders;
+import it.polimi.ingsw.lim.utils.Lock;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Console;
@@ -20,8 +22,8 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 import static it.polimi.ingsw.lim.Settings.*;
-import static it.polimi.ingsw.lim.ui.UIController.*;
 import static it.polimi.ingsw.lim.ui.UIController.UIConstant.*;
+import static it.polimi.ingsw.lim.ui.UIController.*;
 
 /**
  * This is the client command line interface.
@@ -86,6 +88,175 @@ public class CLI extends AbsUI {
             printMessageln(count + ") " + player.getNickname());
             count++;
         }
+    }
+
+    /**
+     * Add the command to the available command list.
+     * @param command the input command.
+     */
+    @Override
+    public void commandAdder(String command) {
+        if (availableCmdList.get(command) == null) {
+            availableCmdList.put(command, cmdList.get(command));
+            printCmd();
+        }
+    }
+
+    /**
+     * If a command failed it is re-inserted in the available command list.
+     * @param command
+     * @param message
+     * @param outcome
+     */
+    @Override
+    public void commandManager(String command, String message, boolean outcome) {
+        printMessageln(("[").concat(command).concat("]: ").concat(message));
+        if (!outcome)
+            availableCmdList.put(command, cmdList.get(command));
+    }
+
+    /**
+     * Listen for user command.
+     */
+    @Override
+    public void waitForRequest() {
+        lock.lock();
+        printCmd();
+        while (true) {
+            printGameMessageln("Enter a command: ");
+            input = userInput.next().trim();
+            try {
+                cmdExecutor(input);
+            } catch (InvalidInputException e) {
+                printError(e.getMessage());
+            }
+        }
+    }
+
+    /**
+     * In the beginning of each round this method is called.
+     * @param isMyTurn if true is the player's turn
+     */
+    @Override
+    public void notifyStartRound(boolean isMyTurn) {
+        if (isMyTurn) {
+            printTurnSplitter();
+            availableCmdList.put(FAMILY_MEMBER, cmdList.get(FAMILY_MEMBER));
+            availableCmdList.put(LEADER_CARD, cmdList.get(LEADER_CARD));
+            printCmd();
+        } else {
+            commandRemover(FAMILY_MEMBER);
+            commandRemover(LEADER_CARD);
+            commandRemover(CHOOSE_LEADER_DRAFT);
+        }
+    }
+
+    /**
+     * Print the whole game board.
+     */
+    @Override
+    public void printGameBoard() {
+        printBoard();
+    }
+
+    /**
+     * This method is called when the game is created.
+     */
+    @Override
+    public void notifyStartGame () {
+        availableCmdList.put(TURN, cmdList.get(TURN));
+        availableCmdList.put(INFO, cmdList.get(INFO));
+        availableCmdList.put(CARD, cmdList.get(CARD));
+        availableCmdList.put(BOARD, cmdList.get(BOARD));
+        availableCmdList.put(ALL_PLAYER_INFO, cmdList.get(ALL_PLAYER_INFO));
+    }
+
+    /**
+     * Enter the login information.
+     * @return the login information.
+     */
+    @Override
+    public String[] loginForm() {
+        String[] loginInfo = new String[2];
+        printMessage("Enter a username: ");
+        loginInfo[0] = userInput.nextLine().trim();
+        printMessage("Enter a password: ");
+        Console console;
+        char[] passwd;
+        if((console = System.console()) != null) {
+            if ((passwd = console.readPassword()) != null) {
+                loginInfo[1] = String.valueOf(passwd);
+            }
+        } else {
+            loginInfo[1] = userInput.nextLine().trim();
+        }
+        return loginInfo;
+    }
+
+    /**
+     * Choose the connection protocol and connect to the server.
+     */
+    @Override
+    public String setNetworkSettings() {
+        while (true) {
+            printMessage("Please select the network protocol: (socket/rmi): ");
+            input = userInput.nextLine().toLowerCase();
+            switch (input) {
+                case "socket":
+                case "s":
+                    return "socket";
+                case "rmi":
+                case "r":
+                    return "rmi";
+                default:
+                    printError("[COMMAND_LINE]: Not a valid choice!");
+            }
+        }
+    }
+
+    /**
+     * Print to stdout a chat message.
+     * @param sender the sender's username.
+     * @param message the chat message.
+     */
+    @Override
+    public void printChatMessage(String sender, String message) {
+        cp.println(EmojiParser.parseToUnicode(":email:  ")+"[CHAT] message from "+sender+" : " +message,
+                Ansi.Attribute.BOLD, Ansi.FColor.BLUE, Ansi.BColor.WHITE);
+        cp.clear();
+    }
+
+    @Override
+    public void printGameMessageln(String message) {
+        System.out.println("[GAME]: "+message);
+    }
+
+    @Override
+    public void printGameMessage(String message) {
+        System.out.print("[GAME]: "+message);
+    }
+
+    @Override
+    public void printError(String errorMessage) {
+        System.out.println(errorMessage);
+    }
+
+    /**
+     * Print on stdout a message
+     * @param message
+     */
+    @Override
+    public void printMessageln(String message) {
+        System.out.println(EmojiParser.parseToUnicode(message));
+    }
+
+    /**
+     * Print on stdout a message
+     * @param message
+     */
+    @Override
+    public void printMessage(String message) {
+        System.out.print(EmojiParser.parseToUnicode(message));
     }
 
     /**
@@ -550,31 +721,6 @@ public class CLI extends AbsUI {
     }
 
     /**
-     * Add the command to the available command list.
-     * @param command the input command.
-     */
-    @Override
-    public void commandAdder(String command) {
-        if (availableCmdList.get(command) == null) {
-            availableCmdList.put(command, cmdList.get(command));
-            printCmd();
-        }
-    }
-
-    /**
-     * If a command failed it is re-inserted in the available command list.
-     * @param command
-     * @param message
-     * @param outcome
-     */
-    @Override
-    public void commandManager(String command, String message, boolean outcome) {
-        printMessageln(("[").concat(command).concat("]: ").concat(message));
-        if (!outcome)
-            availableCmdList.put(command, cmdList.get(command));
-    }
-
-    /**
      * cmdExecutor execute the command inserted.
      * @param command command's name
      * @throws InvalidInputException if the command does not correct
@@ -591,64 +737,9 @@ public class CLI extends AbsUI {
      * Print the available command.
      */
     private void printCmd() {
-        availableCmdList.keySet().forEach(command -> System.out.printf("%-30s%s%n", ("-> ~ ").concat(command), ("- ").concat(cmdDescr.get(command))));
+        availableCmdList.keySet().forEach(command -> System.out.printf("%-30s%s%n", ("-> ~ ").concat(command),
+                ("- ").concat(cmdDescr.get(command))));
         printMessage("");
-    }
-
-    /**
-     * In the beginning of each round this method is called.
-     * @param isMyTurn if true is the player's turn
-     */
-    @Override
-    public void notifyStartRound(boolean isMyTurn) {
-        if (isMyTurn) {
-            printTurnSplitter();
-            availableCmdList.put(FAMILY_MEMBER, cmdList.get(FAMILY_MEMBER));
-            availableCmdList.put(LEADER_CARD, cmdList.get(LEADER_CARD));
-            printCmd();
-        } else {
-            commandRemover(FAMILY_MEMBER);
-            commandRemover(LEADER_CARD);
-            commandRemover(CHOOSE_LEADER_DRAFT);
-        }
-    }
-
-    /**
-     * Print the whole game board.
-     */
-    @Override
-    public void printGameBoard() {
-        printBoard();
-    }
-
-    /**
-     * This method is called when the game is created.
-     */
-    @Override
-    public void notifyStartGame () {
-        availableCmdList.put(TURN, cmdList.get(TURN));
-        availableCmdList.put(INFO, cmdList.get(INFO));
-        availableCmdList.put(CARD, cmdList.get(CARD));
-        availableCmdList.put(BOARD, cmdList.get(BOARD));
-        availableCmdList.put(ALL_PLAYER_INFO, cmdList.get(ALL_PLAYER_INFO));
-    }
-
-    /**
-     * Listen for user command.
-     */
-    @Override
-    public void waitForRequest() {
-        lock.lock();
-        printCmd();
-        while (true) {
-            printGameMessageln("Enter a command: ");
-            input = userInput.next().trim();
-            try {
-                cmdExecutor(input);
-            } catch (InvalidInputException e) {
-                printError(e.getMessage());
-            }
-        }
     }
 
     /**
@@ -710,101 +801,12 @@ public class CLI extends AbsUI {
         availableCmdList.put(CHAT, cmdList.get(CHAT));
     }
 
-    /**
-     * Enter the login information.
-     * @return the login information.
-     */
-    @Override
-    public String[] loginForm() {
-        String[] loginInfo = new String[2];
-        printMessage("Enter a username: ");
-        loginInfo[0] = userInput.nextLine().trim();
-        printMessage("Enter a password: ");
-        Console console;
-        char[] passwd;
-        if((console = System.console()) != null) {
-            if ((passwd = console.readPassword()) != null) {
-                loginInfo[1] = String.valueOf(passwd);
-            }
-        } else {
-            loginInfo[1] = userInput.nextLine().trim();
-        }
-        return loginInfo;
-    }
-
-    /**
-     * Choose the connection protocol and connect to the server.
-     */
-    @Override
-    public String setNetworkSettings() {
-        while (true) {
-            printMessage("Please select the network protocol: (socket/rmi): ");
-            input = userInput.nextLine().toLowerCase();
-            switch (input) {
-                case "socket":
-                case "s":
-                    return "socket";
-                case "rmi":
-                case "r":
-                    return "rmi";
-                default:
-                    printError("[COMMAND_LINE]: Not a valid choice!");
-            }
-        }
-    }
-
-    /**
-     * Print to stdout a chat message.
-     * @param sender the sender's username.
-     * @param message the chat message.
-     */
-    @Override
-    public void printChatMessage(String sender, String message) {
-        cp.println(EmojiParser.parseToUnicode(":email:  ")+"[CHAT] message from "+sender+" : " +message,
-                Ansi.Attribute.BOLD, Ansi.FColor.BLUE, Ansi.BColor.WHITE);
-        cp.clear();
-    }
-
     private void printTurnSplitter() {
         System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" +
                 "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~***" +
                 " IT'S YOUR TURN ***~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
     }
-
-    @Override
-    public void printGameMessageln(String message) {
-        System.out.println("[GAME]: "+message);
-    }
-
-    @Override
-    public void printGameMessage(String message) {
-        System.out.print("[GAME]: "+message);
-    }
-
-    @Override
-    public void printError(String errorMessage) {
-        System.out.println(errorMessage);
-    }
-
-    /**
-     * Print on stdout a message
-     * @param message
-     */
-    @Override
-    public void printMessageln(String message) {
-        System.out.println(EmojiParser.parseToUnicode(message));
-    }
-
-    /**
-     * Print on stdout a message
-     * @param message
-     */
-    @Override
-    public void printMessage(String message) {
-        System.out.print(EmojiParser.parseToUnicode(message));
-    }
-
 
     /**
      * Print all the board info in CLI (Towers, Market, VictoryPointsTrack)
