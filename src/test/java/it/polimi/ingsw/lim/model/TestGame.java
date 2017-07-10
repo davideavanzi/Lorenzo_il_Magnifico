@@ -1,15 +1,10 @@
 package it.polimi.ingsw.lim.model;
 
-import it.polimi.ingsw.lim.controller.GameController;
 import it.polimi.ingsw.lim.exceptions.GameSetupException;
 import it.polimi.ingsw.lim.parser.Parser;
-import it.polimi.ingsw.lim.utils.Log;
 import junit.framework.AssertionFailedError;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.Collections;
 
 import static it.polimi.ingsw.lim.Settings.CONFIGS_PATH;
 import static it.polimi.ingsw.lim.Settings.GREEN_COLOR;
@@ -65,7 +60,7 @@ public class TestGame {
 
     private void testIsTowerMoveAllowed(){
         try {
-            assertEquals(game.isTowerMoveAllowed("GREEN", 4, game.getPlayer("nick1").getFamilyMember("NEUTRAL")), false);
+            assertEquals(game.isTowerMoveAllowed("GREEN", 4, game.getPlayer("nick1").getFamilyMember("NEUTRAL")), true);
         }catch (AssertionFailedError e) {
             getLog().info("is tower move allowed error");
         }
