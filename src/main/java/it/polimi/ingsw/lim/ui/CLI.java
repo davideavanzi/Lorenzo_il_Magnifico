@@ -1035,9 +1035,10 @@ public class CLI extends AbsUI {
                 System.out.format(format, StringUtils.center(card.getName(), 40));
                 i++;
                 if(i % 3 == 0) {
-                    printMessageln("|\n");
+                    printMessageln("\n");
                 }
             }
+            printMessageln("\n");
         }
         else{
             System.out.format(format, StringUtils.center("No cards to show", 142));
@@ -1427,10 +1428,11 @@ public class CLI extends AbsUI {
             fourthString = "Name: ".concat(this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(4).getCardSlot().getName());
         }
         else{
-            fourthString = "Card Already Selected";
+            fourthString = "Already Picked";
             if (this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(4).isOccupied()){
                 tab4 = this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(4).getFamilyMemberSlot().getOwnerColor().substring(0 , 1);/*Taking the first char*/
                 format = "||%1$-30s|".concat(StringUtils.center(tab4, 4)).concat("|%2$-30s|").concat(tab3).concat("|%3$-30s|").concat(tab2).concat("|%4$-30s|").concat(tab1).concat("||\n");
+                tab4 = "\t";
             }
         }
         if(this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(3).hasCard()){
@@ -1441,6 +1443,7 @@ public class CLI extends AbsUI {
             if (this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(3).isOccupied()){
                 tab3 = this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(3).getFamilyMemberSlot().getOwnerColor().substring(0 , 1);/*Taking the first char*/
                 format = "||%1$-30s|".concat(tab4).concat("|%2$-30s|").concat(StringUtils.center(tab3, 4)).concat("|%3$-30s|").concat(tab2).concat("|%4$-30s|").concat(tab1).concat("||\n");
+                tab3 = "\t";
             }
         }
         if(this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(2).hasCard()){
@@ -1451,6 +1454,7 @@ public class CLI extends AbsUI {
             if (this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(24).isOccupied()){
                 tab2 = this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(2).getFamilyMemberSlot().getOwnerColor().substring(0 , 1);/*Taking the first char*/
                 format = "||%1$-30s|".concat(tab4).concat("|%2$-30s|").concat(tab3).concat("|%3$-30s|").concat(StringUtils.center(tab2, 4)).concat("|%4$-30s|").concat(tab1).concat("||\n");
+                tab2 = "\t";
             }
         }
         if(this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(1).hasCard()){
@@ -1461,6 +1465,7 @@ public class CLI extends AbsUI {
             if (this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(1).isOccupied()){
                 tab1 = this.uiCallback.getLocalBoard().getTowers().get(color).getFloor(1).getFamilyMemberSlot().getOwnerColor().substring(0 , 1);/*Taking the first char*/
                 format = "||%1$-30s|".concat(tab4).concat("|%2$-30s|").concat(tab3).concat("|%3$-30s|").concat(tab2).concat("|%4$-30s|").concat(StringUtils.center(tab1, 4)).concat("||\n");
+                tab1 = "\t";
             }
         }
         System.out.format(

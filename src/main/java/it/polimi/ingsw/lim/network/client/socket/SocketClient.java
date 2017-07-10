@@ -158,7 +158,7 @@ public class SocketClient implements Runnable, ServerInterface {
     @Override
     public void sendFamilyMemberColorForLorenzoMontefeltro(String familiarColor) throws ClientNetworkException {
         try {
-            sendObjToServer(new Object[] {LUDOVICO_MONTEFELTRO, familiarColor});
+            sendObjToServer(new Object[] {"LUDOVICO MONTEFELTRO", familiarColor});
         } catch (IOException e) {
             throw new ClientNetworkException("[SOCKET]: Could not send the color of the familiar to boost to server", e);
         }
