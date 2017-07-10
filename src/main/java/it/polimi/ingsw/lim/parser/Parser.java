@@ -306,10 +306,7 @@ public class Parser {
 
             ActionEffect actionEffect = new ActionEffect(tmpActionStrengths, tmpActionEffectDiscount);
             immediateEffects.add(actionEffect);
-        } else {
-            //TODO: use the constructor to set NULL immediateEffectType effect
         }
-
         if (immediateEffectType.path(ASSETS_EFFECT).isContainerNode()) {
             immediateEffectExist = true;
 
@@ -318,10 +315,7 @@ public class Parser {
 
             AssetsEffect assetsEffect = new AssetsEffect(tmpAssetsEffectBonus);
             immediateEffects.add(assetsEffect);
-        } else {
-            //TODO: use the constructor to set NULL immediateEffectType effect
         }
-
         if (immediateEffectType.path(COUNCIL_FAVOURS_EFFECT_AMOUNT).isInt()) {
             immediateEffectExist = true;
 
@@ -329,10 +323,7 @@ public class Parser {
 
             CouncilFavorsEffect councilFavorsEffect = new CouncilFavorsEffect(tmpCouncilFavorsEffectAmount);
             immediateEffects.add(councilFavorsEffect);
-        } else {
-            //TODO: use the constructor to set NULL immediateEffectType effect
         }
-
         if (immediateEffectType.path(CARD_MULTIPLIED_EFFECT).isContainerNode()) {
             immediateEffectExist = true;
 
@@ -344,10 +335,7 @@ public class Parser {
 
             CardMultipliedEffect cardMultipliedEffect = new CardMultipliedEffect(tmpCardMultipliedEffectBonus, tmpCardMultipliedEffectMultiplierColor);
             immediateEffects.add(cardMultipliedEffect);
-        } else {
-            //TODO: use the constructor to set NULL immediateEffectType effect
         }
-
         if (immediateEffectType.path(ASSETS_MULTIPLIED_EFFECT).isContainerNode()) {
             immediateEffectExist = true;
 
@@ -359,12 +347,6 @@ public class Parser {
 
             AssetsMultipliedEffect assetsMultipliedEffect = new AssetsMultipliedEffect(tmpAssetsMultipliedEffectBonus, tmpAssetsMultipliedEffectMultiplier);
             immediateEffects.add(assetsMultipliedEffect);
-        }
-        else {
-            //TODO: use the constructor to set NULL immediateEffectType effect
-        }
-        if (!(immediateEffectExist)) {
-            //TODO: set immediate effect to NULL
         }
         return immediateEffects;
     }
@@ -518,7 +500,7 @@ public class Parser {
             tmpYellowActionStrengths = parseStrengths(yellowActionStrengths);
         }
 
-        String tmpYellowBonusMultiplier = ""; //todo empty string costante?
+        String tmpYellowBonusMultiplier = "";
         if (cardNode.path(YELLOW_BONUS_MULTIPLIER).isTextual()) {
             tmpYellowBonusMultiplier = cardNode.path(YELLOW_BONUS_MULTIPLIER).asText();
         }

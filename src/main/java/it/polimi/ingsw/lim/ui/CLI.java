@@ -1434,7 +1434,7 @@ public class CLI extends AbsUI {
      * @param strengths
      */
     private void printStrengths(Strengths strengths, String type){
-        String format = "|| %-17s%-2s||\n";  //todo 20 o 19
+        String format = "|| %-17s%-2s||\n";
         if(strengths.getTowerStrength(GREEN_COLOR) != 0 ){
             System.out.format(format, GREEN_COLOR.concat(" Tower:"), Integer.toString(strengths.getTowerStrength(GREEN_COLOR)));
         }

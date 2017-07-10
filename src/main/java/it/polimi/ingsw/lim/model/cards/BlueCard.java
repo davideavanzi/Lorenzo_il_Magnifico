@@ -117,7 +117,6 @@ public class BlueCard extends Card {
         Log.getLog().info("***BLUE CARD Testing Equals***");
         Card card = (Card) other;
         boolean equals = true;
-        //todo check
         if (!(super.equals(card))){
             equals = false;
         }

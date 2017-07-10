@@ -10,7 +10,6 @@ import static it.polimi.ingsw.lim.Settings.*;
 
 /**
  * Class representing a tower.
- * TODO: The tower itself doesn't know it's color, only the game knows. Is this right?
  */
 public class Tower implements Serializable {
 
@@ -25,7 +24,6 @@ public class Tower implements Serializable {
 
     /**
      * Default constructor
-     * TODO: can I do better?
      */
     Tower(Assets[] slotsBonuses) {
         //Creating floors
@@ -46,7 +44,6 @@ public class Tower implements Serializable {
 
     /**
      * This method clears all cards and family members of the tower
-     * TODO: use lambda function
      */
     public void clear(){
         Arrays.stream(floors).forEach(floor -> {floor.setFamilyMemberSlot(null); floor.setCardSlot(null);});

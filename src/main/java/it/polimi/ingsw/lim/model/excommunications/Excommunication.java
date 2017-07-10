@@ -40,7 +40,7 @@ public abstract class Excommunication implements Serializable {
     }
 
     /**
-     * The age of the excommunication. TODO: DELET DIS  .. ?
+     * The age of the excommunication.
      */
     private int age;
 

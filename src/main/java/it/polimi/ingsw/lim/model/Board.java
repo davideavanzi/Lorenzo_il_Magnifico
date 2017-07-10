@@ -20,7 +20,8 @@ public class Board implements Serializable {
     public Board() {
         this.towers = new HashMap<>();
         DEFAULT_TOWERS_COLORS.forEach(color ->
-            this.towers.put(color, new Tower())); //todo con 5 player fallisce nel restorare il gioco perhce la torre nera non e creta
+            this.towers.put(color, new Tower()));
+        //todo con 5 player fallisce nel restorare il gioco perhce la torre nera non e creta
         this.production = new ArrayList<>();
         this.harvest = new ArrayList<>();
         this.faithTrack = new Assets[FAITH_TRACK_LENGTH];
