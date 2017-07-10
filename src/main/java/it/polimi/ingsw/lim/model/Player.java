@@ -179,12 +179,10 @@ public class Player implements Serializable{
     }
 
     public FamilyMember pullFamilyMember(String color) {
-        return this.familyMembers.stream().filter(fm -> fm.getDiceColor().equals(color)).findFirst().orElse(null);
-        /* TODO: does this really works? (Pulls fm)
         for (FamilyMember fm : familyMembers)
             if (fm.getDiceColor().equals(color))
                 return familyMembers.remove(familyMembers.indexOf(fm));
-        return null; */
+        return null;
     }
 
     public void resetFaithPoints() {

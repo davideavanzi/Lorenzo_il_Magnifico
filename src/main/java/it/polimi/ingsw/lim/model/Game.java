@@ -339,18 +339,17 @@ public class Game {
 
     /**
      * This method makes the actual tower move
-     * @param towerColor
-     * @param floorNumber
-     * @param fm
-     * @param servantsDeployed
-     * @param useBp
+     * @param towerColor the destination tower's color
+     * @param floorNumber the destination floor's number
+     * @param fm the fm performing the move
+     * @param servantsDeployed the amount of servants spent to perform the action
+     * @param useBp is true if the player wants to pay the purple card with battle points
      * @return the picked card
      */
     public Card towerMove(String towerColor, int floorNumber, FamilyMember fm, int servantsDeployed, boolean useBp) {
         Player actor = this.getPlayerFromColor(fm.getOwnerColor());
         Floor destination = this.board.getTowers().get(towerColor).getFloor(floorNumber);
         Card card = destination.pullCard();
-        //Action cost is different whether the player wants to pay the card's cost or the purple's card bp cost.
         Assets actionCost = (useBp) ? new Assets().addServants(((PurpleCard)card).getOptionalBpCost()) :
                 new Assets(card.getCost()).addServants(servantsDeployed);
         if (playerHasActiveLeader(20, actor)) actionCost.subtractToZero(MIRANDOLA_PICK_BONUS);
@@ -364,12 +363,18 @@ public class Game {
         return card;
     }
 
+    /**
+     * This method makes the actual fast tower move.
+     * @param towerColor the destination tower's color
+     * @param floorNumber the destination floor's number
+     * @param servantsDeployed the amount of servants spent to perform the action
+     * @param useBp is true if the player wants to pay the purple card with battle points
+     * @return the picked card
+     */
     public void fastTowerMove(String towerColor, int floorNumber, int servantsDeployed, boolean useBp, Player actor,
                               Assets optionalPickDiscount) {
         Floor destination = this.board.getTowers().get(towerColor).getFloor(floorNumber);
         Card card = destination.pullCard();
-        //Action cost is different whether the player wants to pay the card's cost or the purple's card bp cost.
-        //TODO: ???? .adds(pp
         Assets actionCost = (useBp) ? new Assets().addServants(((PurpleCard)card).getOptionalBpCost()) :
                 new Assets(card.getCost()).addServants(servantsDeployed);
         if (playerHasActiveLeader(20, actor)) actionCost.subtractToZero(MIRANDOLA_PICK_BONUS);
@@ -733,7 +738,7 @@ public class Game {
         ArrayList<Integer> bpScores = new ArrayList<>(milTrack.values());
         Collections.sort(bpScores, Collections.reverseOrder());
         //get players with highest score
-        ArrayList<Player> firstPlayers = new ArrayList<Player>(milTrack.entrySet().stream()
+        ArrayList<Player> firstPlayers = new ArrayList<>(milTrack.entrySet().stream()
                 .filter(pl -> pl.getValue().equals(bpScores.get(0)))
                 .map(Map.Entry::getKey).collect(Collectors.toList()));
         firstPlayers.forEach(pl -> pl.setResources(pl.getResources().addVictoryPoints(ENDGAME_FIRSTVP_BONUS)));
