@@ -7,9 +7,11 @@ import junit.framework.AssertionFailedError;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Collections;
 
 import static it.polimi.ingsw.lim.Settings.CONFIGS_PATH;
+import static it.polimi.ingsw.lim.Settings.GREEN_COLOR;
 import static it.polimi.ingsw.lim.utils.Log.getLog;
 import static org.junit.Assert.assertEquals;
 
@@ -155,6 +157,39 @@ public class TestGame {
         }
     }
 
+    private void testLeaderinGame(){
+        try{
+            assertEquals(game.playerHasActiveLeader(1, game.getPlayer("nick1")), false);
+            assertEquals(game.isLeaderDiscardable(1, game.getPlayer("nick1")), false);
+            assertEquals(game.isLeaderActivable(1, game.getPlayer("nick1")), false);
+            assertEquals(game.isLeaderDeployable(1, game.getPlayer("nick1")), false);
+            game.giveLeaderToPlayer(1, game.getPlayer("nick1"));
+            assertEquals(game.getPlayer("nick1").getLeaderById(1).getCardName(), "Francesco Sforza");
+
+        }catch (AssertionFailedError e) {
+            getLog().info("has active leader error");
+        }
+    }
+
+    private void testExcommunicationInGame(){
+        assertEquals(game.isPlayerRoundExcommunicated(game.getPlayer("nick1")), false);
+        assertEquals(game.isPlayerServantsExcommunicated(game.getPlayer("nick1")), false);
+        assertEquals(game.isPlayerEndCardExcommunicated(game.getPlayer("nick1"), "YELLOW"), false);
+
+    }
+
+    private void testTowerMoveInGame(){
+        game.towerMove("GREEN", 1, game.getPlayer("nick1").getFamilyMember("ORANGE"), 2, false);
+        assertEquals(game.isTowerOccupied(GREEN_COLOR), true);
+        assertEquals(game.getPlayer("nick1").getFamilyMembers().size(), 3);
+        assertEquals(game.isTowerMoveAllowed("GREEN", 1, game.getPlayer("nick2").getFamilyMember("BLACK")), false);
+    }
+
+    private void testFmInGame(){
+        FamilyMember fm = game.getPlayer("nick1").getFamilyMember("BLACK");
+        assertEquals((Integer)game.getFmStrength(fm), game.getBoard().getDice().get("BLACK"));
+    }
+
     @Test
     public void testGame(){
         createGame();
@@ -169,6 +204,10 @@ public class TestGame {
         testPlayerOrder();
         testCalcEndGameBonus();
         testApplyVp();
+        testLeaderinGame();
+        testExcommunicationInGame();
+        testTowerMoveInGame();
+        testFmInGame();
     }
 
 }
