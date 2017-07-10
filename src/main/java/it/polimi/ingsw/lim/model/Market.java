@@ -44,9 +44,7 @@ public class Market implements Serializable {
     }
 
     public void addFamilyMember(FamilyMember fm, int position){
-        //Positions are 1 to 5, in the array are 0 to 4
-        int marketPos = position - 1;
-        this.slots[marketPos] = fm;
+        this.slots[position - 1] = fm;
     }
 
     @JsonIgnore
