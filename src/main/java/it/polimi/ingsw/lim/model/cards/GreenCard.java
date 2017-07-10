@@ -76,7 +76,7 @@ public class GreenCard extends Card {
             Log.getLog().info("other not GreenCard");
             return false;
         }
-        Log.getLog().info("***GREEN CARD Testing Equals***");
+        Log.getLog().info("***GREEN CARD_CMD Testing Equals***");
         Card card = (Card) other;
         boolean equals = true;
         if (!(super.equals(card))){

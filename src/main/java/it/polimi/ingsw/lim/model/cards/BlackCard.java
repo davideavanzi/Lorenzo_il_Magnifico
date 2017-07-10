@@ -36,7 +36,7 @@ public class BlackCard extends Card {
             Log.getLog().info("other not BlackCard");
             return false;
         }
-        Log.getLog().info("***BLACK CARD Testing Equals***");
+        Log.getLog().info("***BLACK CARD_CMD Testing Equals***");
         Card card = (Card) other;
         if (!(super.equals(card))) {
             return false;

@@ -78,7 +78,7 @@ public class PurpleCard extends Card {
             Log.getLog().info("other not PurpleCard");
             return false;
         }
-        Log.getLog().info("***PURPLE CARD Testing Equals***");
+        Log.getLog().info("***PURPLE CARD_CMD Testing Equals***");
         Card card = (Card) other;
         boolean equals = true;
         if (!(super.equals(card))) {

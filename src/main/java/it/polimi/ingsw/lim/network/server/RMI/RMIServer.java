@@ -235,9 +235,9 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
         try {
             GameController gc = actor.getRoom().getGameController();
             gc.applyLeaderFmBonus(fmColor, actor);
-            rmiClient.commandValidator(LORENZO_MONTEFELTRO, LORENZO_MONTEFELTRO_OK , true);
+            rmiClient.commandValidator(LUDOVICO_MONTEFELTRO, LUDOVICO_MONTEFELTRO_OK, true);
         } catch (BadRequestException e) {
-            rmiClient.commandValidator(LORENZO_MONTEFELTRO, e.getMessage() , false);
+            rmiClient.commandValidator(LUDOVICO_MONTEFELTRO, e.getMessage() , false);
         }
     }
 
@@ -247,9 +247,9 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
         try {
             GameController gc = actor.getRoom().getGameController();
             gc.getRoomCallback().getDraftRound().applyChoice(username, leaderIndex);
-            rmiClient.commandValidator(LORENZO_MONTEFELTRO, LORENZO_MONTEFELTRO_OK , true);
+            rmiClient.commandValidator(LUDOVICO_MONTEFELTRO, LUDOVICO_MONTEFELTRO_OK, true);
         } catch (BadRequestException e) {
-            rmiClient.commandValidator(LORENZO_MONTEFELTRO, e.getMessage() , false);
+            rmiClient.commandValidator(LUDOVICO_MONTEFELTRO, e.getMessage() , false);
         }
     }
 

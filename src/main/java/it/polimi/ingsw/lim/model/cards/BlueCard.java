@@ -114,7 +114,7 @@ public class BlueCard extends Card {
             Log.getLog().info("other not BlueCard");
             return false;
         }
-        Log.getLog().info("***BLUE CARD Testing Equals***");
+        Log.getLog().info("***BLUE CARD_CMD Testing Equals***");
         Card card = (Card) other;
         boolean equals = true;
         if (!(super.equals(card))){
