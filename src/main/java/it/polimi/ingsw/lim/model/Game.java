@@ -733,7 +733,7 @@ public class Game {
         ArrayList<Integer> bpScores = new ArrayList<>(milTrack.values());
         Collections.sort(bpScores, Collections.reverseOrder());
         //get players with highest score
-        ArrayList<Player> firstPlayers = new ArrayList<>(milTrack.entrySet().stream()
+        ArrayList<Player> firstPlayers = new ArrayList<Player>(milTrack.entrySet().stream()
                 .filter(pl -> pl.getValue().equals(bpScores.get(0)))
                 .map(Map.Entry::getKey).collect(Collectors.toList()));
         firstPlayers.forEach(pl -> pl.setResources(pl.getResources().addVictoryPoints(ENDGAME_FIRSTVP_BONUS)));
