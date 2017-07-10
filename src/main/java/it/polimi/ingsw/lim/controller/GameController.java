@@ -136,6 +136,7 @@ public class GameController {
             this.game = Writer.gameReader(roomCallback.getId());
             return true;
         }catch (IOException e){
+            getLog().log(Level.SEVERE, "Couldn't restart game!");
             return false;
         }
     }
@@ -234,14 +235,14 @@ public class GameController {
     public void moveInHarvest (FamilyMember fm, int servantsDeployed) throws BadRequestException {
         if(this.game.isHarvestMoveAllowed(fm)){ //If
             Player actor = this.game.getPlayerFromColor(fm.getOwnerColor());
-            int servantsForHarvestAction = this.game.servantsForHarvestAction(fm, 0);
+            int servantsForHarvestAction = this.game.servantsForHarvestAction(actor, fm, 0);
             this.game.giveAssetsToPlayer(actor.getDefaultHarvestBonus(), actor);
             if (servantsDeployed < servantsForHarvestAction ||
                     servantsDeployed > this.game.getPlayerFromColor(fm.getOwnerColor()).getResources().getServants()) {
                 throw new BadRequestException("Wrong amount of servants deployed for harvest move");
             }
             this.game.harvestMove(fm, servantsDeployed);
-            int actionStrength = game.calcHarvestActionStr(fm, servantsDeployed, 0);
+            int actionStrength = game.calcHarvestActionStr(actor, fm, servantsDeployed, 0);
             for (Card card: game.getPlayerFromColor(fm.getOwnerColor()).getCardsOfColor(GREEN_COLOR)) {
                 GreenCard activeCard = (GreenCard) card;
                 if (activeCard.getActionStrength().getHarvestBonus() <= actionStrength)
@@ -263,7 +264,7 @@ public class GameController {
         User actor = roomCallback.getPlayingUser(); //only the playing user can perform the action
         if(!this.game.isProductionMoveAllowed(fm))
             throw new BadRequestException("Production move not allowed");
-        int servantsForProductionAction = this.game.servantsForProductionAction(fm, 0);
+        int servantsForProductionAction = this.game.servantsForProductionAction(actor.getPlayer(), fm, 0);
         if (servantsDeployed < servantsForProductionAction ||
                 servantsDeployed > this.game.getPlayerFromColor(fm.getOwnerColor()).getResources().getServants())
             throw new BadRequestException("Not enough servants to perform production action");
@@ -275,7 +276,7 @@ public class GameController {
             if (activeCard.getActionStrength().getProductionBonus() <= actionStrength)
                 CardHandler.activateYellowCard(activeCard, actor, this);
         }
-        if (this.currentProductionOptions.size() == 0) {
+        if (this.currentProductionOptions.isEmpty()) {
             //don't ask user, complete directly production skipping excomm malus (already given)
             game.productionMove(fm, servantsDeployed);
             actor.getPlayer().setResources(actor.getPlayer().
@@ -405,13 +406,13 @@ public class GameController {
     public void performFastHarvest(int servantsDeployed, User actor) throws BadRequestException {
         if (!actor.getUsername().equals(fastActor.getUsername()))
             throw new BadRequestException("Wrong user");
-        int servantsForHarvestAction = this.game.servantsForHarvestAction(null, fastActionStr.getHarvestBonus());
+        int servantsForHarvestAction = this.game.servantsForHarvestAction(actor.getPlayer(), null, fastActionStr.getHarvestBonus());
         if (servantsForHarvestAction > fastActor.getPlayer().getResources().getServants() ||
                 servantsDeployed > fastActor.getPlayer().getResources().getServants() ||
                 servantsDeployed < servantsForHarvestAction)
             throw new BadRequestException("Wrong amount of servants deployed to perform fast harvest action");
         this.game.giveAssetsToPlayer(fastActor.getPlayer().getDefaultHarvestBonus(), fastActor.getPlayer());
-        int actionStrength = game.calcHarvestActionStr(null, servantsDeployed, fastActionStr.getHarvestBonus());
+        int actionStrength = game.calcHarvestActionStr(actor.getPlayer(),null, servantsDeployed, fastActionStr.getHarvestBonus());
         for (Card card: fastActor.getPlayer().getCardsOfColor(GREEN_COLOR)) {
             GreenCard activeCard = (GreenCard) card;
             if (activeCard.getActionStrength().getHarvestBonus() <= actionStrength)
@@ -423,7 +424,7 @@ public class GameController {
     public void performFastProduction(int servantsDeployed, User actor) throws BadRequestException {
         if (!actor.getUsername().equals(fastActor.getUsername()))
             throw new BadRequestException("Wrong user");
-        int servantsForProductionAction = this.game.servantsForProductionAction(null, fastActionStr.getHarvestBonus());
+        int servantsForProductionAction = this.game.servantsForProductionAction(actor.getPlayer(), null, fastActionStr.getHarvestBonus());
         if (servantsForProductionAction > fastActor.getPlayer().getResources().getServants() ||
                 servantsDeployed > fastActor.getPlayer().getResources().getServants() ||
                 servantsDeployed < servantsForProductionAction)
@@ -437,7 +438,7 @@ public class GameController {
             if (activeCard.getActionStrength().getProductionBonus() <= actionStrength)
                 CardHandler.activateYellowCard(activeCard, actor, this);
         }
-        if (this.currentProductionOptions.size() == 0) {
+        if (this.currentProductionOptions.isEmpty()) {
             //don't ask user, complete directly production skipping excomm malus (already given)
             actor.getPlayer().setResources(actor.getPlayer().getResources()
                     .add(pendingProduction.getAssetsAccumulator()));

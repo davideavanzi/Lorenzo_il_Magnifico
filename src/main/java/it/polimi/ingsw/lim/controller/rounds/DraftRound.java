@@ -29,6 +29,7 @@ public class DraftRound implements Round, Runnable {
         timerCounter = 1;
         timerDuration = singleDraftDuration;
         this.roomCallback = roomCallback;
+        roomCallback.setDraftRound(this);
         new RoundTimer(timerDuration, this);
         this.randomGenerator = new Random();
         this.chosenLeaders = new HashMap<>();

@@ -113,11 +113,17 @@ public class Game {
                 .getStrengths().getDiceBonus().get(fm.getDiceColor());
     }
 
+    /**
+     * clears the harvest site
+     */
     private void clearHarvest(){
         getLog().info("Clearing Harvest space");
         this.board.setHarvest(new ArrayList<>());
     }
 
+    /**
+     * clears the production site
+     */
     private void clearProduction(){
         getLog().info("Clearing Production space");
         this.board.setProduction(new ArrayList<>());
@@ -130,6 +136,11 @@ public class Game {
 
     public void setPlayers(ArrayList<Player> players){
         this.players = players;
+    }
+
+    @JsonIgnore
+    public Council getCouncil() {
+        return this.board.getCouncil();
     }
 
     @JsonIgnore
@@ -369,7 +380,6 @@ public class Game {
      * @param floorNumber the destination floor's number
      * @param servantsDeployed the amount of servants spent to perform the action
      * @param useBp is true if the player wants to pay the purple card with battle points
-     * @return the picked card
      */
     public void fastTowerMove(String towerColor, int floorNumber, int servantsDeployed, boolean useBp, Player actor,
                               Assets optionalPickDiscount) {
@@ -390,9 +400,9 @@ public class Game {
 
     /**
      * This method checks if a player can perform a fast tower move, also if it can afford to pick the card.
-     * @param towerColor
-     * @param floor
-     * @return
+     * @param towerColor the destination tower's color
+     * @param floor the destination floor's color
+     * @return if the fast tower move is allowed
      */
     @JsonIgnore
     public boolean isFastTowerMoveAllowed(String towerColor, int floor, Player pl, Assets optionalPickDiscount) {
@@ -425,8 +435,8 @@ public class Game {
 
     /**
      * This method tells if the player can enter the harvest site with the provided family member
-     * @param fm
-     * @return boolean
+     * @param fm the family member involved in the action
+     * @return if the move is allowed by the game rules
      */
     @JsonIgnore
     public boolean isHarvestMoveAllowed(FamilyMember fm) {
@@ -437,7 +447,7 @@ public class Game {
             if (f.getOwnerColor().equals(fm.getOwnerColor()) && ((f.getDiceColor().equals(NEUTRAL_COLOR)) ==
                     (fm.getDiceColor().equals(NEUTRAL_COLOR))))
                 return false;
-        if (servantsForHarvestAction(fm, 0) > getPlayerFromColor(fm.getOwnerColor()).getResources().getServants())
+        if (servantsForHarvestAction(getPlayerFromColor(fm.getOwnerColor()),fm, 0) > getPlayerFromColor(fm.getOwnerColor()).getResources().getServants())
             return false;
         return true;
     }
@@ -445,9 +455,10 @@ public class Game {
     /**
      * Performs a move to the harvest site.
      * @param fm the family member used in this action
+     * @param servantsDeployed  the amount of servants spent to perform the action
      */
     public void harvestMove(FamilyMember fm, int servantsDeployed) {
-        this.board.getHarvest().add(fm);
+        addToHarvest(fm);
         getPlayerFromColor(fm.getOwnerColor()).pullFamilyMember(fm.getDiceColor());
         Assets actionCost = new Assets().addServants(servantsDeployed);
         removeAssetsFromPlayer(actionCost, getPlayerFromColor(fm.getOwnerColor()));
@@ -456,9 +467,10 @@ public class Game {
     /**
      * Performs a move to the harvest site.
      * @param fm the family member used in this action
+     * @param servantsDeployed  the amount of servants spent to perform the action
      */
     public void productionMove(FamilyMember fm, int servantsDeployed) {
-        this.board.getProduction().add(fm);
+        addToProduction(fm);
         getPlayerFromColor(fm.getOwnerColor()).pullFamilyMember(fm.getDiceColor());
         Assets actionCost = new Assets().addServants(servantsDeployed);
         removeAssetsFromPlayer(actionCost, getPlayerFromColor(fm.getOwnerColor()));
@@ -466,67 +478,62 @@ public class Game {
 
     /**
      * returns the amount of servants required to perform an harvest action:
-     * Action cost - Dice strength + Player bonus(or malus if negative)
-     * @param fm
-     * @return
-     * TODO: add excomm malus ? is it already in the player?
+     * @param fm the family member involved in the action
+     * @param baseStr the strength provided by the fast action bonus instead of the family member's one
+     * @return the amount of servants needed by the player to perform the production action
      */
-    public int servantsForProductionAction(FamilyMember fm, int baseStr) {
+    public int servantsForProductionAction(Player pl, FamilyMember fm, int baseStr) {
         int baseStrength = (fm == null) ? baseStr : this.getFmStrength(fm);
         int actionCost = (this.board.getHarvest().size() <= PRODUCTION_DEFAULTSPACE_SIZE &&
-                !playerHasActiveLeader(2, getPlayerFromColor(fm.getOwnerColor())))
+                !playerHasActiveLeader(2, pl))
                 ? PRODUCTION_DEFAULT_STR : PRODUCTION_STR_MALUS;
-        int actionStr = baseStrength +
-                getPlayerFromColor(fm.getOwnerColor()).getStrengths().getHarvestBonus();
+        int actionStr = baseStrength + pl.getStrengths().getHarvestBonus();
         int servants = actionCost - actionStr;
-        if (isPlayerServantsExcommunicated(getPlayerFromColor(fm.getOwnerColor())))
-            servants *= 2;
+        if (isPlayerServantsExcommunicated(pl)) servants *= 2;
         return (servants > 0) ? -servants : 0;
     }
 
     /**
      * returns the amount of servants required to perform an harvest action:
-     * Action cost - Dice strength + Player bonus(or malus if negative)
-     * @param fm
-     * @return
+     * @param fm the family member involved in the action
+     * @param baseStr the strength provided by the fast action bonus instead of the family member's one
+     * @return the amount of servants needed by the player to perform the harvest action
      */
-    public int servantsForHarvestAction(FamilyMember fm, int baseStr) {
+    public int servantsForHarvestAction(Player pl, FamilyMember fm, int baseStr) {
         int baseStrength = (fm == null) ? baseStr : this.getFmStrength(fm);
         int actionCost = (this.board.getHarvest().size() <= HARVEST_DEFAULTSPACE_SIZE &&
-                !playerHasActiveLeader(2, getPlayerFromColor(fm.getOwnerColor())))
+                !playerHasActiveLeader(2, pl))
                 ? HARVEST_DEFAULT_STR : HARVEST_STR_MALUS;
-        int actionStr = baseStrength +
-                getPlayerFromColor(fm.getOwnerColor()).getStrengths().getHarvestBonus();
+        int actionStr = baseStrength + pl.getStrengths().getHarvestBonus();
         int servants = actionCost - actionStr;
-        if (isPlayerServantsExcommunicated(getPlayerFromColor(fm.getOwnerColor())))
-            servants *= 2;
+        if (isPlayerServantsExcommunicated(pl)) servants *= 2;
         return (servants > 0) ? -servants : 0;
     }
 
     /**
      * Calculates the strength to perform an harvest action. If family member is null, it means that this
      * is a fast action provided by an immediate effect of a card.
-     * @param fm
-     * @param servantsDeployed
-     * @param tmpActionStr
-     * @return
+     * @param fm the family member involved in the action
+     * @param servantsDeployed the servants spent to perform the action
+     * @param tmpActionStr the action strength provided by a bonus
+     * @return the calculated action strength
      */
-    public int calcHarvestActionStr(FamilyMember fm, int servantsDeployed, int tmpActionStr) {
+    public int calcHarvestActionStr(Player pl, FamilyMember fm, int servantsDeployed, int tmpActionStr) {
         int baseStr = (fm == null) ? tmpActionStr : this.getFmStrength(fm);
-        if (isPlayerServantsExcommunicated(getPlayerFromColor(fm.getOwnerColor())))
+        if (isPlayerServantsExcommunicated(pl))
             servantsDeployed /= 2; //it should be always a even number, because the client doubled the amount of servants while deploying
         if (this.board.getHarvest().size() >= HARVEST_DEFAULTSPACE_SIZE  &&
-                !playerHasActiveLeader(2, getPlayerFromColor(fm.getOwnerColor()))) baseStr -= HARVEST_STR_MALUS;
-        return baseStr+servantsDeployed+getPlayerFromColor(fm.getOwnerColor()).getStrengths().getHarvestBonus();
+                !playerHasActiveLeader(2, pl)) baseStr -= HARVEST_STR_MALUS;
+        return baseStr+servantsDeployed+pl.getStrengths().getHarvestBonus();
     }
 
     /**
      * Calculates the strength to perform a production action. If family member is null, it means that this
      * is a fast action provided by an immediate effect of a card.
-     * @param fm
-     * @param servantsDeployed
-     * @param tmpActionStr
-     * @return
+     * @param fm the family member involved in the action
+     * @param servantsDeployed the servants spent to perform the action
+     * @param tmpActionStr the action strength provided by a bonus
+     * @return the calculated action strength
      */
     public int calcProductionActionStr(Player actor, FamilyMember fm, int servantsDeployed, int tmpActionStr) {
         int baseStr = (fm == null) ? tmpActionStr : this.getFmStrength(fm);
@@ -537,6 +544,11 @@ public class Game {
         return baseStr+servantsDeployed+actor.getStrengths().getProductionBonus();
     }
 
+    /**
+     * This method tells if a production move is allowed by game rules.
+     * @param fm the family member involved in the action
+     * @return true if the action is allowed, false otherwise
+     */
     @JsonIgnore
     public boolean isProductionMoveAllowed(FamilyMember fm) {
         if(this.players.size() == 2 && (!this.board.getProduction().isEmpty() ||
@@ -546,7 +558,7 @@ public class Game {
             if (f.getOwnerColor().equals(fm.getOwnerColor()) && ((f.getDiceColor().equals(NEUTRAL_COLOR)) ==
                     (fm.getDiceColor().equals(NEUTRAL_COLOR))))
                 return false;
-        if (servantsForProductionAction(fm, 0) > getPlayerFromColor(fm.getOwnerColor()).getResources().getServants())
+        if (servantsForProductionAction(getPlayerFromColor(fm.getOwnerColor()), fm, 0) > getPlayerFromColor(fm.getOwnerColor()).getResources().getServants())
             return false;
         return true;
     }
@@ -564,6 +576,10 @@ public class Game {
         return this.board.getTowers().get(color);
     }
 
+    /**
+     * This method generates a playing order, following the game rules
+     * @return an ordered list of player usern
+     */
     @JsonIgnore
     public ArrayList<String> getNewPlayerOrder() {
         ArrayList<FamilyMember> fms = this.board.getCouncil().getFamilyMembers();
@@ -580,17 +596,12 @@ public class Game {
         return councilPlayers;
     }
 
-    @JsonIgnore
-    public Council getCouncil() {
-        return this.board.getCouncil();
-    }
-
     /**
      * This method calculates the amount of servants that a player needs to perform a tower action
-     * @param fm
-     * @param towerColor
-     * @param floor
-     * @return
+     * @param fm the family member involved in the action
+     * @param towerColor the destination tower's color
+     * @param floor the destination floor's number
+     * @return the amount of servants that the player has to spend to perform the action
      */
     public int servantsForTowerAction(FamilyMember fm,String towerColor, int floor) {
         int actionStr = this.getFmStrength(fm)
@@ -602,7 +613,15 @@ public class Game {
         return (servants > 0) ? -servants : 0;
     }
 
-    public int servantsForFastTowerAction(int actionBonus,String towerColor, int floor, Player pl) {
+    /**
+     * This method calculates the amount of servants that a player needs to perform a fast tower action
+     * @param actionBonus the bonus provided by the action effect
+     * @param towerColor the destination tower's color
+     * @param floor the destination floor's number
+     * @param pl the player performing the fast action
+     * @return the amount of servants that the player has to spend to perform the action
+     */
+    public int servantsForFastTowerAction(int actionBonus, String towerColor, int floor, Player pl) {
         int actionStr = actionBonus
                 + pl.getStrengths().getTowerStrength(towerColor);
         int actionCost = this.board.getTowers().get(towerColor).getFloor(floor).getActionCost();
@@ -612,6 +631,11 @@ public class Game {
         return (servants > 0) ? -servants : 0;
     }
 
+    /**
+     * This method calculates the amount of servants that a player needs to enter the market
+     * @param fm the family member involved in the action
+     * @return the amount of servants that the player has to spend to perform the action
+     */
     public int servantsForMarketAction(FamilyMember fm) {
         int actionStr = this.getFmStrength(fm);
         int servants = MARKET_ACTION_COST - actionStr;
@@ -620,12 +644,24 @@ public class Game {
         return (servants > 0) ? -servants : 0;
     }
 
+    /**
+     * this method tell if the user can enter the market
+     * @param fm the family member involved in the action
+     * @param position the market slot position
+     * @return if the player can perform the action
+     */
     public boolean isMarketMoveAllowed(FamilyMember fm, int position) {
         Market market = this.getBoard().getMarket();
         return market.isPositionAvailable(position) || (market.isPositionOccupied(position) &&
                 playerHasActiveLeader(2, getPlayerFromColor(fm.getOwnerColor())));
     }
 
+    /**
+     * This method performs the actual market move
+     * @param fm the family member involved in the action
+     * @param position the market slot position
+     * @param servantsDeployed the servants spent to perform the action
+     */
     public void marketMove(FamilyMember fm, int position, int servantsDeployed) {
         Player actor = getPlayerFromColor(fm.getOwnerColor());
         actor.pullFamilyMember(fm.getDiceColor());
@@ -641,6 +677,11 @@ public class Game {
         }
     }
 
+    /**
+     * This method calculates the amount of servants the player has to spend to enter the council
+     * @param fm the fm involved in the action
+     * @return the amount of servants to enter the council
+     */
     public int servantsForCouncilAction(FamilyMember fm) {
         int actionStr = this.getFmStrength(fm);
         int servants = COUNCIL_ACTION_COST - actionStr;
@@ -649,6 +690,11 @@ public class Game {
         return (servants > 0) ? -servants : 0;
     }
 
+    /**
+     * this method performs the actual council move
+     * @param fm the fm to put in the council
+     * @param servantsDeployed the servants spent to perform the action
+     */
     public void councilMove(FamilyMember fm, int servantsDeployed) {
         Player actor = getPlayerFromColor(fm.getOwnerColor());
         actor.pullFamilyMember(fm.getDiceColor());
@@ -675,7 +721,7 @@ public class Game {
     /**
      * this method gives an amount of assets to the player, it also applies eventual excommunication maluses
      * @param assets the assets that will be given to the player
-     * @param pl
+     * @param pl the recipient player
      */
     public void giveAssetsToPlayer(Assets assets, Player pl) {
         pl.setResources(pl.getResources().add(apllyExcommMalus(assets, pl)));
@@ -685,7 +731,7 @@ public class Game {
      * This method applies a malus to the provided asset, if the player has been excommunicated
      * @param assets the assets to apply the excommunication to
      * @param pl the player to check
-     * @return
+     * @return the asset with the excommunication applied
      */
     public Assets apllyExcommMalus(Assets assets, Player pl) {
         Excommunication firstAgeExcomm = board.getExcommunications().get(0);
@@ -696,8 +742,8 @@ public class Game {
 
     /**
      * this method gets the assets chosen by the user as council favors and gives them to the player.
-     * @param pl
-     * @param choices
+     * @param pl the recipient player
+     * @param choices the chosen favors
      */
     public void giveFavors(Player pl, ArrayList<Integer> choices) throws ControllerException {
         if (choices.size() > this.board.getCouncil().getFavorBonuses().size())
@@ -737,7 +783,6 @@ public class Game {
                 Collectors.toMap (player -> player, player -> player.getResources().getBattlePoints())));
         ArrayList<Integer> bpScores = new ArrayList<>(milTrack.values());
         Collections.sort(bpScores, Collections.reverseOrder());
-        //get players with highest score
         ArrayList<Player> firstPlayers = new ArrayList<>(milTrack.entrySet().stream()
                 .filter(pl -> pl.getValue().equals(bpScores.get(0)))
                 .map(Map.Entry::getKey).collect(Collectors.toList()));

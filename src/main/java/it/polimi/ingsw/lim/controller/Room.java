@@ -65,8 +65,9 @@ public class Room implements Serializable{
             timerPlayMove = Parser.parseTimerPlayMove(CONFIGS_PATH+"default/");
             timerStartingGame = Parser.parseTimerStartGame(CONFIGS_PATH+"default/");
         } catch (InvalidTimerException | IOException e) {
-            timerPlayMove = 60;
-            timerStartingGame = 60;
+            getLog().log(Level.SEVERE, "Error loading timers from file. Setting timers to default values");
+            timerPlayMove = DEFAULT_PLAYER_ROUND_TIMER;
+            timerStartingGame = DEFAULT_ROOM_LOCK_TIMER;
         }
 
     }
@@ -143,6 +144,9 @@ public class Room implements Serializable{
     }
 
     @JsonIgnore
+    public void setDraftRound(DraftRound round) { this.draftRound = round; }
+
+    @JsonIgnore
     public Lock getDraftLock(){
         return draftLock;
     }
@@ -200,7 +204,6 @@ public class Room implements Serializable{
     }
 
     private void sendGameUpdate() {
-        //Send game state to players
         ArrayList<Player> players = new ArrayList<>();
         usersList.forEach(user -> players.add(user.getPlayer()));
         getConnectedUsers().forEach(user -> user.sendGameUpdate(this.gameController.getBoard(), players));
@@ -368,7 +371,7 @@ public class Room implements Serializable{
                 }
             }
         } catch (NullPointerException e) {
-            Log.getLog().info("[ROOM]: No room/game file in src/main/gameData/configs/writer/room/ with id: ".concat(((Integer)id).toString()));
+            Log.getLog().severe("[ROOM]: No room/game file in dumps path with id: ".concat(((Integer)id).toString()));
         }
     }
 

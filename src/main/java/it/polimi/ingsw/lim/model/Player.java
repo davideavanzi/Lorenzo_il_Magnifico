@@ -17,50 +17,55 @@ import static it.polimi.ingsw.lim.utils.Log.getLog;
 
 /**
  * Player are indexed by nickname, which corresponds to he user that is playing, and that username is unique
- * TODO: map family members with an hashmap?
  */
 public class Player implements Serializable{
 
     /**
-     *
+     * The nickname of the player, unique in the current server session
      */
     private String nickname;
     /**
-     *
+     * The color of the player, unique in the room/game
      */
     private String color;
     /**
-     *
+     * The player's assets (his wallet)
      */
     private Assets resources;
     /**
      * These are the strengths of the player. Elements inside it could be both positive and negative.
      */
     private Strengths strengths;
+    /**
+     * This HashMap holds temporary bonuses to dices value that will be erased at the end of the turn
+     */
     private HashMap<String, Integer> diceOverride;
     /**
-     *
+     * The player's leader cards
      */
     private ArrayList<LeaderCard> leaderCards;
     /**
-     *
+     * The player's pick discounts. These are optional discounts in terms of assets that a player can have
+     * to pick cards from towers
      */
     private HashMap<String, Assets> pickDiscounts;
     /**
-     * This is a container for all development cards.
-     * Arraylists of this hashmap are instantiated in setupGame() method.
+     * This is a container for all player's development cards.
+     * ArrayLists of this HashMap are instantiated in setupGame() method.
      */
     private HashMap<String, ArrayList<Card>> cards;
     /**
-     *
+     * The family members that a player can deploy on the board
      */
     private ArrayList<FamilyMember> familyMembers;
     /**
-     *
+     * Default production bonus that is given to the user performing a production action,
+     * with strength greater or equal of the default action cost.
      */
     private Assets defaultProductionBonus;
     /**
-     *
+     * Default production bonus that is given to the user performing a production action,
+     * with strength greater or equal of the default action cost.
      */
     private Assets defaultHarvestBonus;
 
@@ -87,10 +92,6 @@ public class Player implements Serializable{
         pickDiscounts.put(BLACK_COLOR, new Assets());
         getLog().log(Level.INFO, "New empty player %s created.", nickname);
     }
-
-    /**
-     *
-     */
 
     void addLeader(LeaderCard leader) {
         this.leaderCards.add(leader);
@@ -141,7 +142,9 @@ public class Player implements Serializable{
 
     @JsonIgnore
     public FamilyMember getFamilyMember(String color) {
-        return this.familyMembers.stream().filter(fm -> fm.getDiceColor().equals(color)).findFirst().orElse(null);
+        FamilyMember fm2 = this.familyMembers.stream().filter(fm -> fm.getDiceColor().equals(color)).findFirst().orElse(null);
+        System.out.println("GETTING FAMILY MEMBER OF COLOR: "+color+" -> found fm of color "+fm2.getDiceColor());
+        return fm2;
     }
 
     public String getColor(){

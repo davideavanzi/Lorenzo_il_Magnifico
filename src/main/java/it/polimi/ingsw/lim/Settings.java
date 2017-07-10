@@ -86,4 +86,12 @@ public class Settings {
     public static final String DUMPS_PATH = "src/main/gameData/dumps/";
     public static final String LOG_PATH = "src/main/gameData/logs/";
     public static final String CONFIGS_PATH = "src/main/gameData/configs/";
+
+    /**
+     * Default timers, if the game can't load timers from file, these will be used. they are customizable.
+     */
+    public static final int DEFAULT_PLAYER_ROUND_TIMER = 60;
+    public static final int DEFAULT_ROOM_LOCK_TIMER = 60;
+    public static final int DEFAULT_DRAFT_ROUND_TIMER = 60;
+    public static final int DEFAULT_EXCOMM_ROUND_TIMER = 60;
 }
