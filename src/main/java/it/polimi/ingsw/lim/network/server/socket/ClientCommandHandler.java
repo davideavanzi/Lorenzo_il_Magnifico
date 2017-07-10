@@ -44,7 +44,7 @@ class ClientCommandHandler {
 
     /**
      * Parse the input object for calling the correspondent method.
-     * @param obj
+     * @param obj the packet sent by client
      */
     void requestHandler(Object obj) {
         if(obj instanceof Object[]) {
@@ -67,6 +67,49 @@ class ClientCommandHandler {
                     handlerCallback.commandValidator(EXCOMMUNICATION, EXCOMMUNICATION_OK, true);
                 } catch (BadRequestException e) {
                     handlerCallback.commandValidator(EXCOMMUNICATION, e.getMessage(), false);
+                }
+            } else if (commandID.equals(CHOOSE_LEADER_DRAFT)) {
+                try {
+                    gameController.getRoomCallback().getDraftRound().applyChoice(handlerCallback.getUser().getUsername(),
+                            (Integer)command[1]);
+                    handlerCallback.commandValidator(CHOOSE_LEADER_DRAFT, CHOOSE_LEADER_DRAFT_OK, true);
+                } catch (BadRequestException e) {
+                    handlerCallback.commandValidator(CHOOSE_LEADER_DRAFT, e.getMessage(), false);
+                }
+            } else if (commandID.equals(LORENZO_MEDICI)) {
+                try {
+                    gameController.applyLeaderCopyChoice((Integer)command[1], handlerCallback.getUser());
+                    handlerCallback.commandValidator(LORENZO_MEDICI, LORENZO_MEDICI_OK, true);
+                } catch (BadRequestException e) {
+                    handlerCallback.commandValidator(LORENZO_MEDICI, e.getMessage(), false);
+                }
+            } else if (commandID.equals(LORENZO_MONTEFELTRO)) {
+                try {
+                    gameController.applyLeaderFmBonus((String)command[1], handlerCallback.getUser());
+                    handlerCallback.commandValidator(LORENZO_MONTEFELTRO, LORENZO_MONTEFELTRO_OK, true);
+                } catch (BadRequestException e) {
+                    handlerCallback.commandValidator(LORENZO_MONTEFELTRO, e.getMessage(), false);
+                }
+            } else if (commandID.equals(ACTIVATE_LEADER)) {
+                try {
+                    gameController.activateLeader((Integer)command[1], handlerCallback.getUser());
+                    handlerCallback.commandValidator(ACTIVATE_LEADER, ACTIVATE_LEADER_OK, true);
+                } catch (BadRequestException e) {
+                    handlerCallback.commandValidator(ACTIVATE_LEADER, e.getMessage(), false);
+                }
+            } else if (commandID.equals(DEPLOY_LEADER)) {
+                try {
+                    gameController.deployLeader((Integer) command[1], handlerCallback.getUser());
+                    handlerCallback.commandValidator(DEPLOY_LEADER, DEPLOY_LEADER_OK, true);
+                } catch (BadRequestException e) {
+                    handlerCallback.commandValidator(DEPLOY_LEADER, e.getMessage(), false);
+                }
+            } else if (commandID.equals(DISCARD_LEADER)) {
+                try {
+                    gameController.discardLeader((Integer) command[1], handlerCallback.getUser());
+                handlerCallback.commandValidator(DISCARD_LEADER, DISCARD_LEADER_OK, true);
+                } catch (BadRequestException e) {
+                    handlerCallback.commandValidator(DISCARD_LEADER, e.getMessage(), false);
                 }
             } else if (commandID.equals(CHOOSE_FAVOR)) {
                 try {

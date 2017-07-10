@@ -4,12 +4,6 @@ import com.diogonunes.jcdp.color.ColoredPrinter;
 import com.diogonunes.jcdp.color.api.Ansi;
 import it.polimi.ingsw.lim.ui.UIController;
 
-import java.io.IOException;
-import java.util.InputMismatchException;
-import java.util.Scanner;
-
-import static it.polimi.ingsw.lim.ui.UIController.setUI;
-
 
 public class MainClient {
 
@@ -20,7 +14,7 @@ public class MainClient {
     public static void main(String[] args) {
         splashScreen();
         UIController client = new UIController();
-        client.startGame();
+        client.connect();
         client.getClientUI().waitForRequest();
     }
 

@@ -121,6 +121,7 @@ public class UIController {
     public void updateBoard(Board board) {
         System.out.println("BOARD RECEIVED!");
         localBoard = board;
+        getClientUI().printGameBoard();
     }
 
     /**
@@ -129,7 +130,6 @@ public class UIController {
      */
     public void updatePlayers(ArrayList<Player> players) {
         localPlayers = players;
-        getClientUI().printGameBoard();
     }
 
     Player getPlayer(String username) {
@@ -237,6 +237,60 @@ public class UIController {
     }
 
     /**
+     * Send the family member's color to server to activate Lorenzo Da Montefeltro ability.
+     * @param fmColor the family member's color
+     */
+    void sendFamilyMemberColor(String fmColor) {
+        try {
+            clientProtocol.sendFamilyMemberColorForLorenzoMontefeltro(fmColor);
+        } catch (ClientNetworkException e) {
+            clientUI.printError(e.getMessage());
+        }
+    }
+
+    /**
+     * Send the leader index for coping the ability of a specific leader.
+     * @param leaderIndex
+     */
+    void sendCopyLeader(int leaderIndex) {
+        try {
+            clientProtocol.sendCopyLeaderForLorenzoMedici(leaderIndex);
+        } catch (ClientNetworkException e) {
+            clientUI.printError(e.getMessage());
+        }
+    }
+
+    void sendDraftToServer (int leaderIndex) {
+        try {
+            clientProtocol.leaderCardDraft(leaderIndex);
+        } catch (ClientNetworkException e) {
+            clientUI.printError(e.getMessage());
+        }
+    }
+
+    void sendLeaderAction(int action, int id) {
+        if (action == 0) {
+            try {
+                clientProtocol.leaderCardActivate(id);
+            } catch (ClientNetworkException e) {
+                clientUI.printError(e.getMessage());
+            }
+        } else if (action == 1) {
+            try {
+                clientProtocol.leaderCardDeploy(id);
+            } catch (ClientNetworkException e) {
+                clientUI.printError(e.getMessage());
+            }
+        } else {
+            try {
+                clientProtocol.leaderCardDiscard(id);
+            } catch (ClientNetworkException e) {
+                clientUI.printError(e.getMessage());
+            }
+        }
+    }
+
+    /**
      * Send chat message to server with the selected protocol.
      * @param message
      */
@@ -260,7 +314,7 @@ public class UIController {
     /**
      *  Connect the client to the server with the previously chosen protocol.
      */
-    public void startGame() {
+    public void connect() {
         getClientUI().printMessageln("Hi player!");
         String protocol = clientUI.setNetworkSettings();
         if ("socket".equals(protocol) ){
@@ -268,22 +322,16 @@ public class UIController {
         } else if ("rmi".equals(protocol)) {
             clientProtocol = new RMIClient(this);
         }
-
-        int failedRetry = 0;
-        while(failedRetry < 3) {
-            try {
-                clientProtocol.connect();
-                break;
-            } catch (ClientNetworkException e) {
-                failedRetry++;
-                clientUI.printError(e.getMessage());
-            }
+        try {
+            clientProtocol.connect();
+        } catch (ClientNetworkException e) {
+            clientUI.printError(e.getMessage());
         }
     }
 
     /**
      * This class is used to save the variables sent by the server in the first part of communication,
-     * in this way we avoid a continuous data change from server to client and viceversa creating
+     * in this way we avoid a continuous data change from server to client and vice versa creating
      * a single packet per command that is sent once.
      */
     public class TemporaryVariables {
@@ -317,17 +365,14 @@ public class UIController {
          * The list of copyable leader by Lorenzo De Medici.
          */
         private ArrayList<String> copyableLeaders;
-
         /**
-         * Getters.
-         * @return favorAmount.
+         * A list of leader's index.
          */
+        private ArrayList<Integer> leaderOptions;
+
+
         int getFavorAmount() { return favorAmount; }
 
-        /**
-         * Setters.
-         * @param favorAmount favor's number.
-         */
         public void setFavorAmount(int favorAmount) {
             this.favorAmount = favorAmount;
         }
@@ -379,6 +424,14 @@ public class UIController {
         public void setCopyableLeaders(ArrayList<String> copyableLeaders) {
             this.copyableLeaders = copyableLeaders;
         }
+
+        public ArrayList<Integer> getLeaderOptions() {
+            return leaderOptions;
+        }
+
+        public void setLeaderOptions(ArrayList<Integer> leaderOptions) {
+            this.leaderOptions = leaderOptions;
+        }
     }
 
     /**
@@ -397,6 +450,10 @@ public class UIController {
         static final String ALL_PLAYER_INFO = "showAllPlayerInfo";
         static final String FAMILY_MEMBER = "putFamilyMember";
         static final String LEADER_CARD = "leaderCard";
+        static final String PRINT_LEADER_CARD = "printLeader";
+        static final String CHOOSE_LEADER_DRAFT = "leaderDraft";
+        static final String LORENZO_MEDICI = "LorenzoDeMedici";
+        static final String LORENZO_MONTEFELTRO = "LorenzoDaMontefeltro";
         static final String EXCOMMUNICATION = "excommunication";
         static final String CHOOSE_FAVOR = "askForCouncilFavor";
         static final String OPTIONAL_BP_PICK = "purpleCardPayment";
@@ -416,6 +473,10 @@ public class UIController {
         static final String ALL_PLAYER_INFO_DESCR = "Show the personal board of all board";
         static final String FAMILY_MEMBER_DESCR = "Place a family member on the board";
         static final String LEADER_CARD_DESCR = "Choose if discard or use a leader card";
+        static final String PRINT_LEADER_CARD_DESCR = "Show leader card about a specific user";
+        static final String CHOOSE_LEADER_DRAFT_DESCR = "Choose one of the four leader card and discard the other three";
+        static final String LORENZO_MEDICI_DESCR = "Choose one leader to copy from the deployed leaders";
+        static final String LORENZO_MONTEFELTRO_DESCR = "Choose one family member to set the value to 6";
         static final String EXCOMMUNICATION_DESCR = "Choose if you want take a excommunication";
         static final String CHOOSE_FAVOR_DESCR = "Choose a favor from council";
         static final String OPTIONAL_BP_PICK_DESCR = "You have taken a purple card! How do you want to pay it?";

@@ -60,6 +60,9 @@ class ServerCommandHandler {
                 uiCallback.getClientUI().printError((String)command[1]);
             } else if (commandID.equals(START_GAME)) {
                 uiCallback.getClientUI().notifyStartGame();
+            } else if (commandID.equals(CHOOSE_LEADER_DRAFT)) {
+                uiCallback.getClientUI().commandAdder(commandID);
+                uiCallback.getTmpVar().setLeaderOptions((ArrayList<Integer>)command[1]);
             } else if (commandID.equals(TURN)) {
                 uiCallback.getClientUI().notifyStartRound((Boolean)command[1]);
             } else if (commandID.equals(CHAT)) {
@@ -95,6 +98,10 @@ class ServerCommandHandler {
             } else if (commandID.equals(LORENZO_MEDICI)) {
                 uiCallback.getClientUI().commandAdder(commandID);
                 uiCallback.getTmpVar().setCopyableLeaders((ArrayList<String>)command[1]);
+            } else if (commandID.equals(LORENZO_MONTEFELTRO)) {
+                uiCallback.getClientUI().commandAdder(commandID);
+            } else if (commandID.equals(END_GAME)) {
+                uiCallback.getClientUI().endGameMessage((ArrayList<Player>)command[1]);
             } else {
                 uiCallback.getClientUI().printError("Command not found: ".concat(commandID));
             }

@@ -26,6 +26,9 @@ public class CommunicationConstants {
     public static final String LEADER_CARD = "LEADER_CARD";
     public static final String LEADER_CARD_OK = "You have completed a leader card action correctly";
 
+    public static final String CHOOSE_LEADER_DRAFT = "CHOOSE_LEADER_DRAFT";
+    public static final String CHOOSE_LEADER_DRAFT_OK = "You have take a leader card";
+
     public static final String EXCOMMUNICATION = "EXCOMMUNICATION";
     public static final String EXCOMMUNICATION_OK = "You have been correctly excommunicated";
 
@@ -47,13 +50,26 @@ public class CommunicationConstants {
     public static final String PICK_FROM_TOWER = "PICK_FROM_TOWER";
     public static final String PICK_FROM_TOWER_OK = "The server has received your pick card from tower action correctly";
 
+    public static final String END_GAME = "END_GAME";
+
     /**
      * Leader card command.
      */
     public static final String ACTIVATE_LEADER = "ACTIVATE_LEADER";
+    public static final String ACTIVATE_LEADER_OK = "You have activate a leader card correctly";
+
     public static final String DEPLOY_LEADER = "DEPLOY_LEADER";
+    public static final String DEPLOY_LEADER_OK = "You have deploy a leader card correctly";
+
     public static final String DISCARD_LEADER = "DISCARD_LEADER";
+    public static final String DISCARD_LEADER_OK = "You have discard a leader card correctly";
+
     public static final String LORENZO_MEDICI = "LORENZO_MEDICI";
+    public static final String LORENZO_MEDICI_OK = "You have copied correctly the ability of a leader";
+
+    public static final String LORENZO_MONTEFELTRO = "LORENZO_MONTEFELTRO";
+    public static final String LORENZO_MONTEFELTRO_OK = "Your familiar value is now set to 6";
+
 
     /**
      * Constant for socket place family member method.

@@ -4,15 +4,27 @@ import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
 import it.polimi.ingsw.lim.exceptions.LoginFailedException;
 import it.polimi.ingsw.lim.model.Assets;
 import it.polimi.ingsw.lim.model.Player;
+import sun.misc.Cleaner;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 /**
- * Created by nico.
  * This interface is use to communication to the server.
  */
 public interface ServerInterface {
+
+    void sendFamilyMemberColorForLorenzoMontefeltro(String leaderIndex) throws ClientNetworkException;
+
+    void sendCopyLeaderForLorenzoMedici(int leaderIndex) throws ClientNetworkException;
+
+    void leaderCardDraft(int leaderIndex) throws ClientNetworkException;
+
+    void leaderCardActivate(int id) throws ClientNetworkException;
+
+    void leaderCardDeploy(int id) throws ClientNetworkException;
+
+    void leaderCardDiscard(int id) throws ClientNetworkException;
 
     void fastHarvest(int servantsDeployed) throws ClientNetworkException;
 

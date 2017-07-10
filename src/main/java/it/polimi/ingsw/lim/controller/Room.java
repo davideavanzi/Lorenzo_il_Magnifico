@@ -210,10 +210,6 @@ public class Room implements Serializable{
         getConnectedUsers().forEach(user -> user.sendGameUpdate(this.gameController.getBoard(), players));
     }
 
-    void broadcastMessage(String message) {
-        usersList.forEach(user -> user.broadcastMessage(message));
-    }
-
     public ArrayList<User> getUsersList() {
         return usersList;
     }

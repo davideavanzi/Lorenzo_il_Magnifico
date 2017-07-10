@@ -1,6 +1,9 @@
 package it.polimi.ingsw.lim.ui;
 
+import it.polimi.ingsw.lim.model.Player;
 import it.polimi.ingsw.lim.utils.Lock;
+
+import java.util.ArrayList;
 
 /**
  * Created by nico.
@@ -8,6 +11,8 @@ import it.polimi.ingsw.lim.utils.Lock;
 public abstract class AbsUI {
 
     public abstract Lock getLock();
+
+    public abstract void endGameMessage(ArrayList<Player> scoreboard);
 
     public abstract void commandAdder(String commandr);
 

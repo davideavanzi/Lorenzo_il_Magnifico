@@ -6,7 +6,6 @@ import it.polimi.ingsw.lim.exceptions.LoginFailedException;
 import it.polimi.ingsw.lim.model.Assets;
 import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.Player;
-import it.polimi.ingsw.lim.utils.Log;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -69,6 +68,12 @@ public class SocketClientHandler implements Runnable {
      */
     public User getUser() { return user; }
 
+
+    void endGameNotification(ArrayList<Player> scoreboard) {
+        sendObjectToClient(new Object[] {END_GAME});
+
+    }
+
     /**
      * Validate a command.
      * @param command the input command
@@ -77,6 +82,15 @@ public class SocketClientHandler implements Runnable {
      */
     void commandValidator(String command, String message, boolean outcome) {
         sendObjectToClient(new Object[] {CMD_VALIDATOR, command, message, outcome});
+    }
+
+    void sendToClientLeaderCardDraft(ArrayList<Integer> leaderOptions) {
+        sendObjectToClient(new Object[] {CHOOSE_LEADER_DRAFT, leaderOptions});
+    }
+
+    void sendClientFmToBoost() {
+        sendObjectToClient(new Object[] {LORENZO_MONTEFELTRO});
+
     }
 
     void askClientToChooseLeaderToCopy(ArrayList<String> copyableLeaders) {
@@ -160,8 +174,8 @@ public class SocketClientHandler implements Runnable {
      * @param players
      */
     void sendGameToClient(Board board, ArrayList<Player> players) {
-        sendObjectToClient(new Object[] {BOARD, board});
         sendObjectToClient(new Object[] {PLAYERS, players});
+        sendObjectToClient(new Object[] {BOARD, board});
     }
 
     /**
@@ -210,9 +224,9 @@ public class SocketClientHandler implements Runnable {
                     if (isUserAlreadyLoggedIn(username)) throw new LoginFailedException("You are already logged in!");
                     this.user = new SocketUser(username, handlerCallback);
                     addUserToRoom(this.user);
-                    Log.getLog().log(Level.INFO, "[LOGIN]: Login successful. Welcome back ".concat(username));
+                    getLog().log(Level.INFO, "[LOGIN]: Login successful. Welcome back ".concat(username));
                 } else {
-                    Log.getLog().log(Level.SEVERE, "[LOGIN]: Bad password or username ".concat(username)
+                    getLog().log(Level.SEVERE, "[LOGIN]: Bad password or username ".concat(username)
                             .concat(" already selected?"));
                     throw new LoginFailedException("[LOGIN]: Bad password or username ".concat(username)
                             .concat(" already selected?"));
@@ -221,11 +235,24 @@ public class SocketClientHandler implements Runnable {
                 MainServer.getJDBC().insertRecord(username, password);
                 this.user = new SocketUser(username, handlerCallback);
                 addUserToRoom(this.user);
-                Log.getLog().log(Level.INFO, "[LOGIN]: Login successful");
+                getLog().log(Level.INFO, "[LOGIN]: Login successful");
             }
         } catch (SQLException e) {
-            Log.getLog().log(Level.SEVERE, "[SQL]: Login failed");
+            getLog().log(Level.SEVERE, "[SQL]: Login failed");
             throw new LoginFailedException("[SQL]: Login failed");
+        }
+    }
+
+    /**
+     * Close the input and output stream.
+     */
+    private void closeIOStream()  {
+        try {
+            objFromServer.flush();
+            objFromServer.close();
+            objToServer.close();
+        } catch (IOException e) {
+            getLog().log(Level.SEVERE, "[SOCKET]: Closing stream error");
         }
     }
 
@@ -236,19 +263,15 @@ public class SocketClientHandler implements Runnable {
      * The server is always listen for command sent to client even when it wait a answer for a request previously sent.
      */
     private void waitRequest() {
-        int tries = 0;
         while(true) {
             try {
                 Object command = objToServer.readObject();
                 clientCommandHandler.requestHandler(command);
             } catch (IOException | ClassNotFoundException e) {
-                getLog().log(Level.SEVERE, "[SOCKET]: Could not receive object from client, " +
-                        "maybe client is offline?\nRetrying " + (2 - tries) + " times.");
-                tries++;
-                if (tries == 3) {
-                    this.user.hasDied();
-                    return;
-                }
+                getLog().log(Level.SEVERE, "[SOCKET]: ".concat(getUser().getUsername()).concat(" has disconnected"));
+                this.user.hasDied();
+                closeIOStream();
+                return;
             }
         }
     }

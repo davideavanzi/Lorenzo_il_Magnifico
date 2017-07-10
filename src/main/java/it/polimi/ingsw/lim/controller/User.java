@@ -118,11 +118,6 @@ public abstract class User implements Serializable{
     }
 
     /**
-     * This method is called when a player activates the leader Lorenzo de Medici.
-     */
-    public abstract void chooseLeaderToCopy(ArrayList<String> copyableLeaders);
-
-    /**
      * This method notifies the user that has gained a fast harvest action. It also tells the base strength
      * of the bonus action
      * @param baseStr the action strength
@@ -165,10 +160,22 @@ public abstract class User implements Serializable{
     public abstract void askForCouncilFavor(int favorAmount);
 
     /**
+     * This method notifies the user that can perform a leader draft, giving him an array of integers where
+     * are saved the leader's ids. Player will answer with the id of the leader he chose.
+     * @param leaderOptions the list of leaders to choose from
+     */
+    public abstract void askLeaderDraft(ArrayList<Integer> leaderOptions);
+
+    /**
      * This method is called when the user activates the leader card "Federico da Montefeltro".
      * The game asks the user what family member he wants to activate.
      */
     public abstract void askFmToBoost();
+
+    /**
+     * This method is called when a player activates the leader Lorenzo de Medici.
+     */
+    public abstract void chooseLeaderToCopy(ArrayList<String> copyableLeaders);
 
     /**
      * Send chat message to client.
@@ -184,12 +191,9 @@ public abstract class User implements Serializable{
     public abstract void gameMessage(String message);
 
     /**
-     * This method sends a generic information message coming from the server
-     * @param message
+     * It's called when the game is finish.
+     * @param players scoreboard of the match
      */
-    public abstract void broadcastMessage(String message);
-
-
     public abstract void notifyEndGame(ArrayList<Player> players);
 
     /**
@@ -199,6 +203,7 @@ public abstract class User implements Serializable{
      */
     public abstract void sendGameUpdate(Board board, ArrayList<Player> players);
 
+
     /**
      * This method is called by game controller in the beginning of every round;
      * It notify all client
@@ -207,14 +212,6 @@ public abstract class User implements Serializable{
     @JsonIgnore
     public abstract void isPlayerRound(boolean isPlaying);
 
-
     public abstract void notifyGameStart();
-
-    /**
-     * This method notifies the user that can perform a leader draft, giving him an array of integers where
-     * are saved the leader's ids. Player will answer with the id of the leader he chose.
-     * @param leaderOptions the list of leaders to choose from
-     */
-    public abstract void askLeaderDraft(ArrayList<Integer> leaderOptions);
 
 }

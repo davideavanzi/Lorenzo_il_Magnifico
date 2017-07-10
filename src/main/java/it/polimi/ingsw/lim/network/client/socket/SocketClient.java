@@ -9,8 +9,10 @@ import it.polimi.ingsw.lim.ui.UIController;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.logging.Level;
 
 import static it.polimi.ingsw.lim.network.CommunicationConstants.*;
+import static it.polimi.ingsw.lim.utils.Log.getLog;
 
 /**
  * Created by nico.
@@ -153,6 +155,60 @@ public class SocketClient implements Runnable, ServerInterface {
         }
     }
 
+    @Override
+    public void sendFamilyMemberColorForLorenzoMontefeltro(String familiarColor) throws ClientNetworkException {
+        try {
+            sendObjToServer(new Object[] {LORENZO_MONTEFELTRO, familiarColor});
+        } catch (IOException e) {
+            throw new ClientNetworkException("[SOCKET]: Could not send the color of the familiar to boost to server", e);
+        }
+    }
+
+    @Override
+    public void sendCopyLeaderForLorenzoMedici(int leaderIndex) throws ClientNetworkException {
+        try {
+            sendObjToServer(new Object[] {LORENZO_MEDICI, leaderIndex});
+        } catch (IOException e) {
+            throw new ClientNetworkException("[SOCKET]: Could not send leader's index for coping it's ability", e);
+        }
+    }
+
+    @Override
+    public void leaderCardDraft(int leaderIndex) throws ClientNetworkException {
+        try {
+            sendObjToServer(new Object[] {CHOOSE_LEADER_DRAFT, leaderIndex});
+        } catch (IOException e) {
+            throw new ClientNetworkException("[SOCKET]: Could not send leader card draft choice to server", e);
+        }
+    }
+
+    @Override
+    public void leaderCardActivate(int id) throws ClientNetworkException {
+        try {
+            sendObjToServer(new Object[] {ACTIVATE_LEADER, id});
+        } catch (IOException e) {
+            throw new ClientNetworkException("[SOCKET]: Could not send activate leader card request to server", e);
+        }
+    }
+
+    @Override
+    public void leaderCardDeploy(int id) throws ClientNetworkException {
+        try {
+            sendObjToServer(new Object[] {CHOOSE_LEADER_DRAFT, id});
+        } catch (IOException e) {
+            throw new ClientNetworkException("[SOCKET]: Could not send deploy leader card request to server", e);
+        }
+    }
+
+    @Override
+    public void leaderCardDiscard(int id) throws ClientNetworkException {
+        try {
+            sendObjToServer(new Object[] {CHOOSE_LEADER_DRAFT, id});
+        } catch (IOException e) {
+            throw new ClientNetworkException("[SOCKET]: Could not send discard leader card request to server", e);
+        }
+    }
+
     /**
      * Send chat message through the client's output stream.
      * @param sender the username of the sender
@@ -191,6 +247,16 @@ public class SocketClient implements Runnable, ServerInterface {
         objFromClient.reset();
     }
 
+    private void closeIOStream()  {
+        try {
+            objFromClient.flush();
+            objFromClient.close();
+            objToClient.close();
+        } catch (IOException e) {
+            getLog().log(Level.SEVERE, "[SOCKET]: Closing stream error");
+        }
+    }
+
     /**
      * Wait forever for object from server.
      * @throws ClientNetworkException
@@ -202,6 +268,7 @@ public class SocketClient implements Runnable, ServerInterface {
                 Object command = objToClient.readObject();
                 commandHandler.requestHandler(command);
             } catch (IOException | ClassNotFoundException | LoginFailedException e) {
+                closeIOStream();
                 throw new ClientNetworkException("[SOCKET]: Could not get command from server", e);
             }
         }

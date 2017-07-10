@@ -14,9 +14,9 @@ import java.util.HashMap;
  */
 public interface RMIClientInterf extends Remote {
 
-    void commandValidator(String command, String message, boolean outcome) throws RemoteException;
+    void endGameNotification(ArrayList<Player> scoreboard) throws RemoteException;
 
-    void askPlayerToChooseLeaderToCopy(ArrayList<String> copyableLeaders) throws RemoteException;
+    void commandValidator(String command, String message, boolean outcome) throws RemoteException;
 
     void askPlayerForFastHarvest(int basestr) throws RemoteException;
 
@@ -31,6 +31,12 @@ public interface RMIClientInterf extends Remote {
     void askPlayerForFavor(int amount) throws RemoteException;
 
     void askPlayerForExcommunication() throws RemoteException;
+
+    void startLeaderCardDraft(ArrayList<Integer> leaderOptions) throws RemoteException;
+
+    void askPlayerFmToBoost() throws RemoteException;
+
+    void askPlayerToChooseLeaderToCopy(ArrayList<String> copyableLeaders) throws RemoteException;
 
     void isUserPlaying(Boolean state) throws RemoteException;
 

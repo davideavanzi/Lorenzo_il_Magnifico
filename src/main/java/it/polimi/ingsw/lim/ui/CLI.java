@@ -3,6 +3,9 @@ package it.polimi.ingsw.lim.ui;
 import com.diogonunes.jcdp.color.ColoredPrinter;
 import com.diogonunes.jcdp.color.api.Ansi;
 import com.vdurmont.emoji.EmojiParser;
+import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
+import it.polimi.ingsw.lim.model.leaders.LeaderCard;
+import it.polimi.ingsw.lim.model.leaders.Leaders;
 import it.polimi.ingsw.lim.utils.Lock;
 import it.polimi.ingsw.lim.exceptions.InvalidInputException;
 import it.polimi.ingsw.lim.model.*;
@@ -72,6 +75,20 @@ public class CLI extends AbsUI {
     }
 
     /**
+     * Notify the player that the game is finish.
+     */
+    public void endGameMessage(ArrayList<Player> scoreboard) {
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~***" +
+                " THE GAME HAS ENDED ***~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        int count = 1;
+        printGameMessageln("Scoreboard: ");
+        for (Player player : scoreboard) {
+            printMessageln(count + ") " + player.getNickname());
+            count++;
+        }
+    }
+
+    /**
      * Ask input to player until it is a integer.
      */
     private void waitForIntInput() {
@@ -97,7 +114,8 @@ public class CLI extends AbsUI {
      * Ask the player how many servants he want to deploy to support a bonus harvest move.
      */
     private void askForFastHarvest() {
-        printGameMessageln("How many servants do you like to deploy for this harvest? ");
+        printGameMessageln("How many servants do you like to deploy for this harvest? Minimum "
+                .concat((String.valueOf(uiCallback.getTmpVar().getMinServantsHarv()))));
         uiCallback.sendFastHarvest(askForServant());
     }
 
@@ -105,7 +123,8 @@ public class CLI extends AbsUI {
      * Ask the player how many servants he want to deploy to support a bonus production move.
      */
     private void askForFastProduction() {
-        printGameMessageln("How many servants do you like to deploy for this production? ");
+        printGameMessageln("How many servants do you like to deploy for this production? Minimum "
+                .concat((String.valueOf(uiCallback.getTmpVar().getMinServantsProd()))));
         uiCallback.sendFastProduction(askForServant());
     }
 
@@ -260,8 +279,76 @@ public class CLI extends AbsUI {
         lock.unlock();
     }
 
-    private void leaderCardManager() {
+    /**
+     * Ask the player what family members' value will be set to 6, independently to the dice.
+     */
+    private void askPlayerFmTohBoost() {
+        printMessageln("You have activate Lorenzo Da Monteferltro, please choose a family member to boost to value 6:");
+        int count = 1;
+        for(FamilyMember fm : uiCallback.getPlayer(uiCallback.getUsername()).getFamilyMembers()) {
+            printMessageln(count + ") " + fm);
+            count++;
+        }
+        do {
+            waitForIntInput();
+        } while (inputNum-1 <= 0 || inputNum-1 > uiCallback.getPlayer(uiCallback.getUsername()).getFamilyMembers().size()-1);
+        availableCmdList.remove(LORENZO_MONTEFELTRO);
+        uiCallback.sendFamilyMemberColor(uiCallback.getPlayer(uiCallback.getUsername()).getFamilyMembers().get(inputNum-1).getDiceColor());
+    }
 
+    /**
+     * Ask the player the leader's name to copy.
+     */
+    private void askPlayerLeaderToCopy() {
+        int count = 1;
+        printMessageln("You have activate Lorenzo Il Magnifico, you can copy one of the following leader ability: ");
+        for (String leaderName : uiCallback.getTmpVar().getCopyableLeaders()) {
+            printMessageln(count + ") " + leaderName);
+            count++;
+        }
+        do {
+            waitForIntInput();
+        } while (inputNum-1 <= 0 || inputNum-1 > uiCallback.getTmpVar().getCopyableLeaders().size()-1);
+        availableCmdList.remove(LORENZO_MEDICI);
+        uiCallback.sendCopyLeader(inputNum-1);
+    }
+
+    private void leaderCardDraft() {
+        int count = 1;
+        printMessageln("Choose one of this four card, the other three will be discarded: ");
+        for (int id : uiCallback.getTmpVar().getLeaderOptions()) {
+            printMessageln(count + ") " + Leaders.getLeaderById(id));
+            count++;
+        }
+        do {
+            waitForIntInput();
+        } while (inputNum-1 <= 0 || inputNum-1 > 3);
+        availableCmdList.remove(CHOOSE_LEADER_DRAFT);
+        uiCallback.sendDraftToServer(inputNum-1);
+    }
+
+    private void leaderCardManager() {
+        String[] list = new String[] {"Activate Leader Card, Discarded Leader Card, Deploy Leader Card"};
+        int count = 1;
+        printMessageln("What action would you like to do?");
+        for (String move : list) {
+            printMessageln(count + ") " + move);
+            count++;
+        }
+        do {
+            waitForIntInput();
+        } while (inputNum-1 <= 0 || inputNum-1 > 2);
+        int actionChoice = inputNum;
+        count = 1;
+
+        for (LeaderCard card : uiCallback.getPlayer(uiCallback.getUsername()).getLeaderCards()) {
+            printMessageln("ID: " + card.getLeaderCardId() + "Leader's Name: " + card.getCardName());
+            count++;
+        }
+        do {
+            waitForIntInput();
+        } while (inputNum-1 <= 0 || inputNum-1 > count);
+        uiCallback.sendLeaderAction(actionChoice, inputNum-1);
     }
 
     /**
@@ -406,13 +493,13 @@ public class CLI extends AbsUI {
             do {
                 waitForIntInput();
             } while ((inputNum-1 <= 0 || inputNum-1 > 3) || (inputNum.equals(5) && (uiCallback.getLocalPlayers().size() == 5)));
-            int color = inputNum;
+            int color = inputNum-1;
             printGameMessage("Please select the floor: (1/2/3/4) ");
             do {
                 waitForIntInput();
                 userInput.nextLine();
             } while (inputNum-1 <= 0 && inputNum-1 > 4);
-            int floor = inputNum;
+            int floor = inputNum-1;
             printCardInTower(twrColor.get(color).toUpperCase(), floor);
         }
     }
@@ -504,27 +591,31 @@ public class CLI extends AbsUI {
      * Print the available command.
      */
     private void printCmd() {
-        availableCmdList.keySet().forEach(command -> System.out.printf("%-30s%s%n", command, cmdDescr.get(command)));
+        availableCmdList.keySet().forEach(command -> System.out.printf("%-30s%s%n", ("-> ~ ").concat(command), ("- ").concat(cmdDescr.get(command))));
         printMessage("");
     }
 
     /**
      * In the beginning of each round this method is called.
-     * @param isMyTurn
+     * @param isMyTurn if true is the player's turn
      */
     @Override
     public void notifyStartRound(boolean isMyTurn) {
         if (isMyTurn) {
-            printSplitter();
+            printTurnSplitter();
             availableCmdList.put(FAMILY_MEMBER, cmdList.get(FAMILY_MEMBER));
             availableCmdList.put(LEADER_CARD, cmdList.get(LEADER_CARD));
             printCmd();
         } else {
             commandRemover(FAMILY_MEMBER);
             commandRemover(LEADER_CARD);
+            commandRemover(CHOOSE_LEADER_DRAFT);
         }
     }
 
+    /**
+     * Print the whole game board.
+     */
     @Override
     public void printGameBoard() {
         printBoard();
@@ -571,7 +662,10 @@ public class CLI extends AbsUI {
         cmdList.put(BOARD, () -> printBoard());
         cmdList.put(ALL_PLAYER_INFO, () -> printPlayerBoard());
         cmdList.put(FAMILY_MEMBER, () -> placeFamilyMember());
-        //cmdList.put(LEADER_CARD, () -> );
+        cmdList.put(LEADER_CARD, () -> leaderCardManager());
+        cmdList.put(CHOOSE_LEADER_DRAFT, () -> leaderCardDraft());
+        cmdList.put(LORENZO_MEDICI, () -> askPlayerLeaderToCopy());
+        cmdList.put(LORENZO_MONTEFELTRO, () -> askPlayerFmTohBoost());
         cmdList.put(EXCOMMUNICATION, () -> askForExcommunication());
         cmdList.put(CHOOSE_FAVOR, () -> askForFavor());
         cmdList.put(OPTIONAL_BP_PICK, () -> askForOptionalBpPick());
@@ -593,6 +687,10 @@ public class CLI extends AbsUI {
         cmdDescr.put(ALL_PLAYER_INFO, ALL_PLAYER_INFO_DESCR);
         cmdDescr.put(FAMILY_MEMBER, FAMILY_MEMBER_DESCR);
         cmdDescr.put(LEADER_CARD, LEADER_CARD_DESCR);
+        cmdDescr.put(CHOOSE_LEADER_DRAFT, CHOOSE_LEADER_DRAFT_DESCR);
+        cmdDescr.put(PRINT_LEADER_CARD, PRINT_LEADER_CARD_DESCR);
+        cmdDescr.put(LORENZO_MEDICI, LORENZO_MEDICI_DESCR);
+        cmdDescr.put(LORENZO_MONTEFELTRO, LORENZO_MONTEFELTRO_DESCR);
         cmdDescr.put(EXCOMMUNICATION, EXCOMMUNICATION_DESCR);
         cmdDescr.put(CHOOSE_FAVOR, CHOOSE_FAVOR_DESCR);
         cmdDescr.put(OPTIONAL_BP_PICK, OPTIONAL_BP_PICK_DESCR);
@@ -639,8 +737,8 @@ public class CLI extends AbsUI {
      */
     @Override
     public String setNetworkSettings() {
-        printMessage("Please select the network protocol: (socket/rmi): ");
         while (true) {
+            printMessage("Please select the network protocol: (socket/rmi): ");
             input = userInput.nextLine().toLowerCase();
             switch (input) {
                 case "socket":
@@ -667,7 +765,9 @@ public class CLI extends AbsUI {
         cp.clear();
     }
 
-    private void printSplitter() {
+    private void printTurnSplitter() {
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" +
+                "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~***" +
                 " IT'S YOUR TURN ***~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
     }
@@ -704,11 +804,6 @@ public class CLI extends AbsUI {
     public void printMessage(String message) {
         System.out.print(EmojiParser.parseToUnicode(message));
     }
-
-
-    /**
-     * Print method; All game information
-     */
 
 
     /**
@@ -937,7 +1032,7 @@ public class CLI extends AbsUI {
                 System.out.format(format, StringUtils.center(card.getName(), 40));
                 i++;
                 if(i % 3 == 0) {
-                    System.out.println("|\n");
+                    printMessageln("|\n");
                 }
             }
         }

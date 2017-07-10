@@ -4,12 +4,10 @@ import it.polimi.ingsw.lim.controller.User;
 import it.polimi.ingsw.lim.model.Assets;
 import it.polimi.ingsw.lim.model.Board;
 import it.polimi.ingsw.lim.model.Player;
-import it.polimi.ingsw.lim.model.cards.PurpleCard;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by nico.
@@ -34,6 +32,21 @@ public class SocketUser extends User {
 
     SocketUser(){
         super();
+    }
+
+    @Override
+    public void notifyEndGame(ArrayList<Player> players){
+        if (this.getIsAlive()) this.sch.endGameNotification(players);
+    }
+
+    @Override
+    public void askFmToBoost() {
+        if (this.getIsAlive()) this.sch.sendClientFmToBoost();
+    }
+
+    @Override
+    public void askLeaderDraft(ArrayList<Integer> leaderOptions) {
+        if (this.getIsAlive()) this.sch.sendToClientLeaderCardDraft(leaderOptions);
     }
 
     @Override
@@ -91,11 +104,6 @@ public class SocketUser extends User {
         if (this.getIsAlive()) this.sch.gameMessageToClient(message);
     }
 
-    @Override
-    public void broadcastMessage(String message) {
-
-    }
-
     /**
      * Send the Game board and the player List to client.
      * @param board the game board.
@@ -114,21 +122,6 @@ public class SocketUser extends User {
     @Override
     public void notifyGameStart() {
         this.sch.sendNoficationStartGame();
-    }
-
-    @Override
-    public void notifyEndGame(ArrayList<Player> players){
-        //todo implementare
-    }
-
-    @Override
-    public void askFmToBoost(){
-        //todo implementare
-    }
-
-    @Override
-    public void askLeaderDraft(ArrayList<Integer> leaderOptions) {
-        //todo implementare
     }
 }
 

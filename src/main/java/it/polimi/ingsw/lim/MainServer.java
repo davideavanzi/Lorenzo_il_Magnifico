@@ -27,6 +27,32 @@ import static it.polimi.ingsw.lim.utils.Log.getLog;
 public class MainServer {
 
     /**
+     * Socket Server Port Number.
+     */
+    private int socketPort = 8989;
+
+    /**
+     * RMI Server Port Number.
+     */
+    private int RMIPort = 1099;
+
+    /**
+     * ArrayList of room.
+     */
+    private static ArrayList<Room> roomList;
+
+    /**
+     * Declaration of SocketServer and RMIServer class.
+     */
+    private SocketServer socketServer;
+
+    private RMIServer rmiServer;
+    /**
+     * User database.
+     */
+    private static JDBC jdbc;
+
+    /**
      * ArrayList of room.
      */
     private static ArrayList<Room> roomList;
@@ -60,6 +86,46 @@ public class MainServer {
             getLog().log(Level.SEVERE, "[RMI]: Could not create RMIServer's instance", e);
         }
         roomList = new ArrayList<>();
+        reloadSavedGame();
+        createDB();
+    }
+
+    /**
+     * Getters.
+     * @return the user DB.
+     */
+    public static JDBC getJDBC(){
+        return jdbc;
+    }
+
+    /**
+     * Create the userdata database.
+     */
+    private void createDB() {
+        try {
+            jdbc = new JDBC();
+        } catch (SQLException e){
+            getLog().severe("[SQL]: Some errors in SQL query ");
+        } catch (ClassNotFoundException e){
+            getLog().severe("[SQL]: Can't locate driver for SQLite ");
+        }
+    }
+
+    /**
+     * Reload saved game.
+     * In case the server crash you can reload all data and continue the match!
+     */
+    private void reloadSavedGame() {
+        System.out.println("[SERVER]: Please, enter 1 to reload saved server status, any other key will erase all the saved file.");
+        int decision;
+        try {
+            Scanner resume = new Scanner(System.in);
+            decision = resume.nextInt();
+        }
+        catch (InputMismatchException e){
+            decision = 0;
+        }
+        if (decision == 1) {
         System.out.println("[SERVER]: Hello, do you want to restore previous saved game status? (yes/ otherwise no)");
         Scanner scanner = new Scanner(System.in);
         String decision = scanner.nextLine();
@@ -90,14 +156,6 @@ public class MainServer {
             } catch (NullPointerException e) {
                 Log.getLog().info("[SERVER]: No room file in dumps path");
             }
-        }
-
-        try {
-            jdbc = new JDBC();
-        } catch (SQLException e){
-            getLog().severe("[SQL]: Some errors in SQL query ");
-        } catch (ClassNotFoundException e){
-            getLog().severe("[SQL]: Can't locate driver for SQLite ");
         }
     }
 

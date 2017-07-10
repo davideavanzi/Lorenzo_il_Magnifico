@@ -51,13 +51,18 @@ public class RMIUser extends User {
         return rci;
     }
 
+    /**
+     * Send end game notification to client.
+     * @param players scoreboard of the match
+     */
     @Override
-    public void chooseLeaderToCopy(ArrayList<String> copyableLeaders) {
-        if (!this.getIsAlive()) return;
+    public void notifyEndGame(ArrayList<Player> players) {
+        if (!this.getIsAlive())
+            return;
         try {
-            RMIServer.askClientToChooseLeaderToCopy(copyableLeaders, this.rci);
+            RMIServer.endGameNotification(players, this.rci);
         } catch (RemoteException e) {
-            getLog().log(Level.SEVERE, "[RMI]: Remote error sending bonus harvest action request to client.");
+            getLog().log(Level.SEVERE, "[RMI]: Remote error sending end game notification to client.");
         }
     }
 
@@ -140,8 +145,33 @@ public class RMIUser extends User {
     }
 
     @Override
+    public void askLeaderDraft(ArrayList<Integer> leaderOptions) {
+        if (!this.getIsAlive())
+            return;
+        try {
+            RMIServer.sendToClientLeaderCardDraft(leaderOptions, this.rci);
+        } catch (RemoteException e) {
+            getLog().log(Level.SEVERE, "[RMI]: Remote error sending draft leader request to client.");
+        }
+    }
+
+    @Override
     public void askFmToBoost(){
-        //todo implementare
+        if (!this.getIsAlive()) return;
+        try {
+            RMIServer.sendClientFmToBoost(this.rci);
+        } catch (RemoteException e) {
+            getLog().log(Level.SEVERE, "[RMI]: Remote error sending \"Federico Da Montefeltro\" action request to client.");
+        }    }
+
+    @Override
+    public void chooseLeaderToCopy(ArrayList<String> copyableLeaders) {
+        if (!this.getIsAlive()) return;
+        try {
+            RMIServer.askClientToChooseLeaderToCopy(copyableLeaders, this.rci);
+        } catch (RemoteException e) {
+            getLog().log(Level.SEVERE, "[RMI]: Remote error sending bonus harvest action request to client.");
+        }
     }
 
     @Override
@@ -166,11 +196,6 @@ public class RMIUser extends User {
         }
     }
 
-    @Override
-    public void broadcastMessage(String message) {
-
-    }
-
     /**
      *
      * @param board the game board
@@ -187,11 +212,10 @@ public class RMIUser extends User {
         }
     }
 
-    @Override
-    public void notifyEndGame(ArrayList<Player> players){
-        //todo implementare
-    }
-
+    /**
+     * Notify the client that the round is change.
+     * @param isPlaying if player's turn
+     */
     @JsonIgnore
     @Override
     public void isPlayerRound(boolean isPlaying) {
@@ -204,6 +228,9 @@ public class RMIUser extends User {
         }
     }
 
+    /**
+     * Notify the client that the game is started.
+     */
     @Override
     public void notifyGameStart() {
         try {
@@ -213,17 +240,24 @@ public class RMIUser extends User {
         }
     }
 
+    /**
+     * Check if the client is alive.
+     * @throws RemoteException
+     */
     private void ping() throws RemoteException {
       this.rci.isAlive();
     }
 
+    /**
+     * KeepAlive thread.
+     */
     private class RMIAliveness implements Runnable{
 
         private RMIUser user;
-
         RMIAliveness(RMIUser user) {
             this.user = user;
         }
+
         @Override
         public void run() {
             try {
@@ -232,17 +266,12 @@ public class RMIUser extends User {
                     user.ping();
                 }
             } catch (InterruptedException e) {
-                getLog().log(Level.SEVERE, () -> "RMI Aliveness thread interrupted for user "+user.getUsername());
+                getLog().log(Level.SEVERE, () -> "[RMI]: Aliveness thread interrupted for user "+user.getUsername());
             } catch (RemoteException | NullPointerException e) {
                 user.hasDied();
             }
             Thread.currentThread().interrupt();
         }
 
-    }
-
-    @Override
-    public void askLeaderDraft(ArrayList<Integer> leaderOptions) {
-        //todo implementare
     }
 }

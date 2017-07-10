@@ -37,8 +37,98 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
      */
     public RMIServer() throws RemoteException {}
 
+    /**
+     * Notify the client that the game is finish.
+     * @param scoreboard
+     * @param rmiClient
+     * @throws RemoteException
+     */
+    static void endGameNotification(ArrayList<Player> scoreboard, RMIClientInterf rmiClient) throws RemoteException {
+        rmiClient.endGameNotification(scoreboard);
+    }
+
+    static void sendToClientLeaderCardDraft(ArrayList<Integer> leaderOptions, RMIClientInterf rmiClient) throws RemoteException {
+        rmiClient.startLeaderCardDraft(leaderOptions);
+    }
+
+    @Override
+    public void draftLeaderCard(int leaderIndex, String username, RMIClientInterf rmiClient) throws RemoteException {
+        User actor = MainServer.getUserFromUsername(username);
+        try {
+            GameController gc = actor.getRoom().getGameController();
+           gc.getRoomCallback().getDraftRound().applyChoice(username, leaderIndex);
+            rmiClient.commandValidator(LORENZO_MONTEFELTRO, LORENZO_MONTEFELTRO_OK , true);
+        } catch (BadRequestException e) {
+            rmiClient.commandValidator(LORENZO_MONTEFELTRO, e.getMessage() , false);
+        }
+    }
+
+    static void sendClientFmToBoost(RMIClientInterf rmiClient) throws RemoteException {
+        rmiClient.askPlayerFmToBoost();
+    }
+
+    @Override
+    public void familyMemberColorAbility(String fmColor, String username, RMIClientInterf rmiClient) throws RemoteException {
+        User actor = MainServer.getUserFromUsername(username);
+        try {
+            GameController gc = actor.getRoom().getGameController();
+            gc.applyLeaderFmBonus(fmColor, actor);
+            rmiClient.commandValidator(LORENZO_MONTEFELTRO, LORENZO_MONTEFELTRO_OK , true);
+        } catch (BadRequestException e) {
+            rmiClient.commandValidator(LORENZO_MONTEFELTRO, e.getMessage() , false);
+        }
+    }
+
     static void askClientToChooseLeaderToCopy(ArrayList<String> copyableLeaders, RMIClientInterf rmiClient) throws RemoteException {
         rmiClient.askPlayerToChooseLeaderToCopy(copyableLeaders);
+    }
+
+    @Override
+    public void copyLeaderAbility(int leaderIndex, String username, RMIClientInterf rmiClient) throws RemoteException {
+        User actor = MainServer.getUserFromUsername(username);
+        try {
+            GameController gc = actor.getRoom().getGameController();
+            gc.applyLeaderCopyChoice(leaderIndex, actor);
+            rmiClient.commandValidator(LORENZO_MEDICI, LORENZO_MEDICI_OK , true);
+        } catch (BadRequestException e) {
+            rmiClient.commandValidator(LORENZO_MEDICI, e.getMessage() , false);
+        }
+    }
+
+    @Override
+    public void activateLeaderCard(int id, String username, RMIClientInterf rmiClient) throws RemoteException {
+        User actor = MainServer.getUserFromUsername(username);
+        try {
+            GameController gc = actor.getRoom().getGameController();
+            gc.activateLeader(id, actor);
+            rmiClient.commandValidator(ACTIVATE_LEADER, ACTIVATE_LEADER_OK , true);
+        } catch (BadRequestException e) {
+            rmiClient.commandValidator(ACTIVATE_LEADER, e.getMessage() , false);
+        }
+    }
+
+    @Override
+    public void deployLeaderCard(int id, String username, RMIClientInterf rmiClient) throws RemoteException {
+        User actor = MainServer.getUserFromUsername(username);
+        try {
+            GameController gc = actor.getRoom().getGameController();
+            gc.deployLeader(id, actor);
+            rmiClient.commandValidator(DEPLOY_LEADER, DEPLOY_LEADER_OK , true);
+        } catch (BadRequestException e) {
+            rmiClient.commandValidator(DEPLOY_LEADER, e.getMessage() , false);
+        }
+    }
+
+    @Override
+    public void discardLeaderCard(int id, String username, RMIClientInterf rmiClient) throws RemoteException {
+        User actor = MainServer.getUserFromUsername(username);
+        try {
+            GameController gc = actor.getRoom().getGameController();
+            gc.discardLeader(id, actor);
+            rmiClient.commandValidator(DISCARD_LEADER, DISCARD_LEADER_OK , true);
+        } catch (BadRequestException e) {
+            rmiClient.commandValidator(DISCARD_LEADER, e.getMessage() , false);
+        }
     }
 
     @Override

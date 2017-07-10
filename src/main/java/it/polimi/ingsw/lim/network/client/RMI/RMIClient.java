@@ -62,8 +62,8 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
 
     @Override
     public void updateClientGame(Board board, ArrayList<Player> players) {
-        uiCallback.updateBoard(board);
         uiCallback.updatePlayers(players);
+        uiCallback.updateBoard(board);
     }
 
     @Override
@@ -72,8 +72,8 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
     }
 
     @Override
-    public void askPlayerToChooseLeaderToCopy(ArrayList<String> copyableLeaders) throws RemoteException {
-
+    public void endGameNotification(ArrayList<Player> scoreboard) throws RemoteException {
+        uiCallback.getClientUI().endGameMessage(scoreboard);
     }
 
     @Override
@@ -194,6 +194,77 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
             }
         } catch (RemoteException e) {
             throw new ClientNetworkException("[RMI]: Could not contact the server to place family member", e);
+        }
+    }
+
+    @Override
+    public void sendFamilyMemberColorForLorenzoMontefeltro(String fmColor) throws ClientNetworkException {
+        try {
+            rmiServer.familyMemberColorAbility(fmColor, uiCallback.getUsername(), this);
+        } catch (RemoteException e) {
+            throw new ClientNetworkException("[RMI]: Could not send set family member to 6 ability to server", e);
+        }
+    }
+
+    @Override
+    public void askPlayerFmToBoost() throws RemoteException {
+        uiCallback.getClientUI().commandAdder(LORENZO_MONTEFELTRO);
+    }
+
+    @Override
+    public void sendCopyLeaderForLorenzoMedici(int leaderIndex) throws ClientNetworkException {
+        try {
+            rmiServer.copyLeaderAbility(leaderIndex, uiCallback.getUsername(), this);
+        } catch (RemoteException e) {
+            throw new ClientNetworkException("[RMI]: Could not send copy leader ability to server", e);
+        }
+    }
+
+    @Override
+    public void askPlayerToChooseLeaderToCopy(ArrayList<String> copyableLeaders) throws RemoteException {
+        uiCallback.getClientUI().commandAdder(LORENZO_MEDICI);
+        uiCallback.getTmpVar().setCopyableLeaders(copyableLeaders);
+    }
+
+    @Override
+    public void leaderCardDraft(int leaderIndex) throws ClientNetworkException {
+        try {
+            rmiServer.draftLeaderCard(leaderIndex, uiCallback.getUsername(), this);
+        } catch (RemoteException e) {
+            throw new ClientNetworkException("[RMI]: Could not send leader card draft choice to server", e);
+        }
+    }
+
+    @Override
+    public void startLeaderCardDraft(ArrayList<Integer> leaderOptions) throws RemoteException {
+        uiCallback.getClientUI().commandAdder(CHOOSE_LEADER_DRAFT);
+        uiCallback.getTmpVar().setLeaderOptions(leaderOptions);
+    }
+
+    @Override
+    public void leaderCardDiscard(int id) throws ClientNetworkException {
+        try {
+            rmiServer.discardLeaderCard(id, uiCallback.getUsername(), this);
+        } catch (RemoteException e) {
+            throw new ClientNetworkException("[RMI]: Could not send discard request to server", e);
+        }
+    }
+
+    @Override
+    public void leaderCardDeploy(int id) throws ClientNetworkException {
+        try {
+            rmiServer.deployLeaderCard(id, uiCallback.getUsername(), this);
+        } catch (RemoteException e) {
+            throw new ClientNetworkException("[RMI]: Could not send deploy leader card to server", e);
+        }
+    }
+
+    @Override
+    public void leaderCardActivate(int id) throws ClientNetworkException {
+        try {
+            rmiServer.activateLeaderCard(id, uiCallback.getUsername(), this);
+        } catch (RemoteException e) {
+            throw new ClientNetworkException("[RMI]: Could not send active leader card draft to server", e);
         }
     }
 
