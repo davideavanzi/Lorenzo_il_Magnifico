@@ -51,6 +51,7 @@ public class JDBC {
                 Log.getLog().info("[SQLite]: User: ".concat(userName).concat(" exist"));
                 if (resultSet.getString("password").equals(password)){
                     Log.getLog().info("[SQLite]: Password correct");
+                    resultSet.close();
                     return true;
                 }
                 Log.getLog().warning("[SQLite]: Password wrong");
@@ -67,6 +68,7 @@ public class JDBC {
         while (resultSet.next()){
             if (resultSet.getString("userName").equals(userName)){
                 Log.getLog().info("[SQLite]: User: ".concat(userName).concat(" already exists"));
+                resultSet.close();
                 return true;
             }
         }
@@ -80,4 +82,8 @@ public class JDBC {
         Log.getLog().info("user: ".concat(userName).concat(" deleted"));
     }
 
+    public void addVictory(String userName) throws SQLException{
+        String sql = "UPDATE REGISTRATION SET victory = victory + 1 WHERE userName = '".concat(userName).concat("'");
+        statement.executeUpdate(sql);
+    }
 }
