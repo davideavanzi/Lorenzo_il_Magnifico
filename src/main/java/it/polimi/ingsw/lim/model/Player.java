@@ -142,9 +142,7 @@ public class Player implements Serializable{
 
     @JsonIgnore
     public FamilyMember getFamilyMember(String color) {
-        FamilyMember fm2 = this.familyMembers.stream().filter(fm -> fm.getDiceColor().equals(color)).findFirst().orElse(null);
-        System.out.println("GETTING FAMILY MEMBER OF COLOR: "+color+" -> found fm of color "+fm2.getDiceColor());
-        return fm2;
+        return this.familyMembers.stream().filter(fm -> fm.getDiceColor().equals(color)).findFirst().orElse(null);
     }
 
     public String getColor(){

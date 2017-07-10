@@ -845,14 +845,14 @@ public class Game {
     }
 
     @JsonIgnore
-    private boolean isPlayerTowerBonusAllowed(Player pl) {
+    public boolean isPlayerTowerBonusAllowed(Player pl) {
         Excommunication secondAgeExcomm = board.getExcommunications().get(0);
         return !(secondAgeExcomm instanceof AssetsExcommunication &&
                 secondAgeExcomm.getExcommunicated().contains(pl.getColor()));
     }
 
     @JsonIgnore
-    private boolean isPlayerServantsExcommunicated(Player pl) {
+    public boolean isPlayerServantsExcommunicated(Player pl) {
         Excommunication secondAgeExcomm = board.getExcommunications().get(1);
         return (secondAgeExcomm instanceof ServantsExcommunication &&
                 secondAgeExcomm.getExcommunicated().contains(pl.getColor()));
@@ -868,7 +868,7 @@ public class Game {
     //-------------------------------------------------------------------------------- LEADERS
 
     @JsonIgnore
-    private boolean isPlayerEndCardExcommunicated(Player pl, String color){
+    public boolean isPlayerEndCardExcommunicated(Player pl, String color){
         Excommunication endGameExcomm = board.getExcommunications().get(2);
         return (endGameExcomm instanceof EndGameCardsExcommunication &&
                 endGameExcomm.getExcommunicated().contains(pl.getColor()) &&
@@ -881,6 +881,9 @@ public class Game {
 
     public boolean isLeaderDeployable(int leaderId, Player pl) {
         LeaderCard leader = pl.getLeaderById(leaderId);
+        if(leader == null){
+            return false;
+        }
         if (leader.isDeployed()) return false;
         if (leader.getAssetsRequirement() != null && leader.getAssetsRequirement().isGreaterOrEqual(pl.getResources())) return false;
         if (leader.getCardsRequirement() != null)
