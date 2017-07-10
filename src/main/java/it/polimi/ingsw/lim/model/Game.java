@@ -603,7 +603,7 @@ public class Game {
      * @param floor the destination floor's number
      * @return the amount of servants that the player has to spend to perform the action
      */
-    public int servantsForTowerAction(FamilyMember fm,String towerColor, int floor) {
+    public int servantsForTowerAction(FamilyMember fm, String towerColor, int floor) {
         int actionStr = this.getFmStrength(fm)
                 + this.getPlayerFromColor(fm.getOwnerColor()).getStrengths().getTowerStrength(towerColor);
         int actionCost = this.board.getTowers().get(towerColor).getFloor(floor).getActionCost();
