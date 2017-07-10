@@ -160,8 +160,16 @@ class ClientCommandHandler {
 
     private void placeFMcmd() throws BadRequestException {
         FamilyMember fm = handlerCallback.getUser().getPlayer().getFamilyMember((String)command[1]);
-        int servants = Integer.parseInt((String)command[4]);
-        if (((String)command[2]).contains(TOWER)) {
+        int servants = 0;
+        if(command.length == 5) {
+             servants = Integer.parseInt((String) command[4]);
+        }else if(command.length == 4){
+             servants = Integer.parseInt((String) command[3]);
+        }
+        if (((String)command[2]).equalsIgnoreCase(BLUE) ||
+                ((String)command[2]).equalsIgnoreCase(GREEN)||
+                ((String)command[2]).equalsIgnoreCase(YELLOW)||
+                ((String)command[2]).equalsIgnoreCase(PURPLE)) {
             String twrColor = ((String)command[2]).replace(" Tower", "");
             int floor = (Integer)command[3];
             gameController.moveInTower(fm, twrColor, floor, servants);

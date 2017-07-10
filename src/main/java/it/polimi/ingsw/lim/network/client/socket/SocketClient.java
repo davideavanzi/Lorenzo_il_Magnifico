@@ -146,7 +146,7 @@ public class SocketClient implements Runnable, ServerInterface {
     @Override
     public void placeFM(String color, ArrayList<String> destination, String servants) throws ClientNetworkException {
         try {
-            if (destination.get(1) == null)
+            if (destination.size() == 1)
                 sendObjToServer(new Object[] {FAMILY_MEMBER, color, destination.get(0), servants});
             else
                 sendObjToServer(new Object[] {FAMILY_MEMBER, color, destination.get(0), destination.get(1), servants});
@@ -158,7 +158,7 @@ public class SocketClient implements Runnable, ServerInterface {
     @Override
     public void sendFamilyMemberColorForLorenzoMontefeltro(String familiarColor) throws ClientNetworkException {
         try {
-            sendObjToServer(new Object[] {LUDOVICO_MONTEFELTRO, familiarColor});
+            sendObjToServer(new Object[] {"LUDOVICO MONTEFELTRO", familiarColor});
         } catch (IOException e) {
             throw new ClientNetworkException("[SOCKET]: Could not send the color of the familiar to boost to server", e);
         }

@@ -1,0 +1,265 @@
+{
+  "roomOpen" : false,
+  "usersList" : [ {
+    "@type" : "SocketUser",
+    "username" : "qwq",
+    "player" : {
+      "nickname" : "qwq",
+      "color" : "GREEN",
+      "resources" : {
+        "coins" : 6,
+        "wood" : 3,
+        "stone" : 3,
+        "servants" : 3,
+        "faithPoints" : 0,
+        "battlePoints" : 0,
+        "victoryPoints" : 0
+      },
+      "strengths" : {
+        "harvestBonus" : 0,
+        "productionBonus" : 0,
+        "towerStrengths" : {
+          "BLUE" : 0,
+          "BLACK" : 0,
+          "YELLOW" : 0,
+          "PURPLE" : 0,
+          "GREEN" : 0
+        },
+        "diceBonus" : {
+          "WHITE" : 0,
+          "BLACK" : 0,
+          "ORANGE" : 0
+        },
+        "towerStrength" : {
+          "BLUE" : 0,
+          "BLACK" : 0,
+          "YELLOW" : 0,
+          "PURPLE" : 0,
+          "GREEN" : 0
+        }
+      },
+      "diceOverride" : { },
+      "leaderCards" : [ ],
+      "pickDiscounts" : {
+        "BLUE" : {
+          "coins" : 0,
+          "wood" : 0,
+          "stone" : 0,
+          "servants" : 0,
+          "faithPoints" : 0,
+          "battlePoints" : 0,
+          "victoryPoints" : 0
+        },
+        "BLACK" : {
+          "coins" : 0,
+          "wood" : 0,
+          "stone" : 0,
+          "servants" : 0,
+          "faithPoints" : 0,
+          "battlePoints" : 0,
+          "victoryPoints" : 0
+        },
+        "YELLOW" : {
+          "coins" : 0,
+          "wood" : 0,
+          "stone" : 0,
+          "servants" : 0,
+          "faithPoints" : 0,
+          "battlePoints" : 0,
+          "victoryPoints" : 0
+        },
+        "PURPLE" : {
+          "coins" : 0,
+          "wood" : 0,
+          "stone" : 0,
+          "servants" : 0,
+          "faithPoints" : 0,
+          "battlePoints" : 0,
+          "victoryPoints" : 0
+        },
+        "GREEN" : {
+          "coins" : 0,
+          "wood" : 0,
+          "stone" : 0,
+          "servants" : 0,
+          "faithPoints" : 0,
+          "battlePoints" : 0,
+          "victoryPoints" : 0
+        }
+      },
+      "cards" : {
+        "BLUE" : [ ],
+        "YELLOW" : [ ],
+        "PURPLE" : [ ],
+        "GREEN" : [ ]
+      },
+      "familyMembers" : [ {
+        "ownerColor" : "GREEN",
+        "diceColor" : "BLACK"
+      }, {
+        "ownerColor" : "GREEN",
+        "diceColor" : "ORANGE"
+      }, {
+        "ownerColor" : "GREEN",
+        "diceColor" : "WHITE"
+      }, {
+        "ownerColor" : "GREEN",
+        "diceColor" : "NEUTRAL"
+      } ],
+      "defaultProductionBonus" : {
+        "coins" : 0,
+        "wood" : 0,
+        "stone" : 0,
+        "servants" : 0,
+        "faithPoints" : 0,
+        "battlePoints" : 0,
+        "victoryPoints" : 0
+      },
+      "defaultHarvestBonus" : {
+        "coins" : 2,
+        "wood" : 0,
+        "stone" : 0,
+        "servants" : 1,
+        "faithPoints" : 0,
+        "battlePoints" : 0,
+        "victoryPoints" : 0
+      },
+      "deployedLeaders" : [ ],
+      "activatedLeaders" : [ ]
+    },
+    "isAlive" : true
+  }, {
+    "@type" : "SocketUser",
+    "username" : "sd",
+    "player" : {
+      "nickname" : "sd",
+      "color" : "YELLOW",
+      "resources" : {
+        "coins" : 5,
+        "wood" : 3,
+        "stone" : 3,
+        "servants" : 3,
+        "faithPoints" : 0,
+        "battlePoints" : 0,
+        "victoryPoints" : 0
+      },
+      "strengths" : {
+        "harvestBonus" : 0,
+        "productionBonus" : 0,
+        "towerStrengths" : {
+          "BLUE" : 0,
+          "BLACK" : 0,
+          "YELLOW" : 0,
+          "PURPLE" : 0,
+          "GREEN" : 0
+        },
+        "diceBonus" : {
+          "WHITE" : 0,
+          "BLACK" : 0,
+          "ORANGE" : 0
+        },
+        "towerStrength" : {
+          "BLUE" : 0,
+          "BLACK" : 0,
+          "YELLOW" : 0,
+          "PURPLE" : 0,
+          "GREEN" : 0
+        }
+      },
+      "diceOverride" : { },
+      "leaderCards" : [ ],
+      "pickDiscounts" : {
+        "BLUE" : {
+          "coins" : 0,
+          "wood" : 0,
+          "stone" : 0,
+          "servants" : 0,
+          "faithPoints" : 0,
+          "battlePoints" : 0,
+          "victoryPoints" : 0
+        },
+        "BLACK" : {
+          "coins" : 0,
+          "wood" : 0,
+          "stone" : 0,
+          "servants" : 0,
+          "faithPoints" : 0,
+          "battlePoints" : 0,
+          "victoryPoints" : 0
+        },
+        "YELLOW" : {
+          "coins" : 0,
+          "wood" : 0,
+          "stone" : 0,
+          "servants" : 0,
+          "faithPoints" : 0,
+          "battlePoints" : 0,
+          "victoryPoints" : 0
+        },
+        "PURPLE" : {
+          "coins" : 0,
+          "wood" : 0,
+          "stone" : 0,
+          "servants" : 0,
+          "faithPoints" : 0,
+          "battlePoints" : 0,
+          "victoryPoints" : 0
+        },
+        "GREEN" : {
+          "coins" : 0,
+          "wood" : 0,
+          "stone" : 0,
+          "servants" : 0,
+          "faithPoints" : 0,
+          "battlePoints" : 0,
+          "victoryPoints" : 0
+        }
+      },
+      "cards" : {
+        "BLUE" : [ ],
+        "YELLOW" : [ ],
+        "PURPLE" : [ ],
+        "GREEN" : [ ]
+      },
+      "familyMembers" : [ {
+        "ownerColor" : "YELLOW",
+        "diceColor" : "BLACK"
+      }, {
+        "ownerColor" : "YELLOW",
+        "diceColor" : "ORANGE"
+      }, {
+        "ownerColor" : "YELLOW",
+        "diceColor" : "WHITE"
+      }, {
+        "ownerColor" : "YELLOW",
+        "diceColor" : "NEUTRAL"
+      } ],
+      "defaultProductionBonus" : {
+        "coins" : 0,
+        "wood" : 0,
+        "stone" : 0,
+        "servants" : 0,
+        "faithPoints" : 0,
+        "battlePoints" : 0,
+        "victoryPoints" : 0
+      },
+      "defaultHarvestBonus" : {
+        "coins" : 1,
+        "wood" : 0,
+        "stone" : 0,
+        "servants" : 0,
+        "faithPoints" : 0,
+        "battlePoints" : 2,
+        "victoryPoints" : 0
+      },
+      "deployedLeaders" : [ ],
+      "activatedLeaders" : [ ]
+    },
+    "isAlive" : true
+  } ],
+  "playOrder" : [ "qwq", "sd", "qwq", "sd", "qwq" ],
+  "id" : 141723159,
+  "timerPlayMove" : 100,
+  "timerStartingGame" : 10,
+  "full" : false
+}

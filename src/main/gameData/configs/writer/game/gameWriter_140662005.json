@@ -1,0 +1,6551 @@
+{
+  "board" : {
+    "age" : 1,
+    "turn" : 1,
+    "excommunications" : [ {
+      "@type" : "AssetsExcommunications",
+      "age" : 1,
+      "excommunicated" : [ ],
+      "malus" : {
+        "coins" : 0,
+        "wood" : 0,
+        "stone" : 0,
+        "servants" : 1,
+        "faithPoints" : 0,
+        "battlePoints" : 0,
+        "victoryPoints" : 0
+      }
+    }, {
+      "@type" : "StrengthsExcommunication",
+      "age" : 2,
+      "excommunicated" : [ ],
+      "malus" : {
+        "harvestBonus" : 0,
+        "productionBonus" : 0,
+        "towerStrengths" : {
+          "BLUE" : -4,
+          "BLACK" : 0,
+          "YELLOW" : 0,
+          "PURPLE" : 0,
+          "GREEN" : 0
+        },
+        "diceBonus" : {
+          "WHITE" : 0,
+          "BLACK" : 0,
+          "ORANGE" : 0
+        },
+        "towerStrength" : {
+          "BLUE" : -4,
+          "BLACK" : 0,
+          "YELLOW" : 0,
+          "PURPLE" : 0,
+          "GREEN" : 0
+        }
+      }
+    }, {
+      "@type" : "EndGameCardsExcommunication",
+      "age" : 3,
+      "excommunicated" : [ ],
+      "blockedCardColor" : "GREEN"
+    } ],
+    "production" : [ ],
+    "harvest" : [ ],
+    "council" : {
+      "favorsAmount" : 1,
+      "councilBonus" : {
+        "coins" : 1,
+        "wood" : 0,
+        "stone" : 0,
+        "servants" : 0,
+        "faithPoints" : 0,
+        "battlePoints" : 0,
+        "victoryPoints" : 0
+      },
+      "favorBonuses" : [ {
+        "coins" : 0,
+        "wood" : 1,
+        "stone" : 1,
+        "servants" : 0,
+        "faithPoints" : 0,
+        "battlePoints" : 0,
+        "victoryPoints" : 0
+      }, {
+        "coins" : 0,
+        "wood" : 0,
+        "stone" : 0,
+        "servants" : 2,
+        "faithPoints" : 0,
+        "battlePoints" : 0,
+        "victoryPoints" : 0
+      }, {
+        "coins" : 2,
+        "wood" : 0,
+        "stone" : 0,
+        "servants" : 0,
+        "faithPoints" : 0,
+        "battlePoints" : 0,
+        "victoryPoints" : 0
+      }, {
+        "coins" : 0,
+        "wood" : 0,
+        "stone" : 0,
+        "servants" : 0,
+        "faithPoints" : 0,
+        "battlePoints" : 2,
+        "victoryPoints" : 0
+      }, {
+        "coins" : 0,
+        "wood" : 0,
+        "stone" : 0,
+        "servants" : 0,
+        "faithPoints" : 1,
+        "battlePoints" : 0,
+        "victoryPoints" : 0
+      } ],
+      "familyMembers" : [ ]
+    },
+    "towers" : {
+      "BLUE" : {
+        "floors" : [ {
+          "instantBonus" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "cardSlot" : {
+            "@type" : "BlueCard",
+            "name" : "Dame",
+            "cost" : {
+              "coins" : 4,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "age" : 1,
+            "immediateEffects" : [ ],
+            "permanentBonus" : {
+              "harvestBonus" : 0,
+              "productionBonus" : 0,
+              "towerStrengths" : {
+                "BLUE" : 0,
+                "BLACK" : 0,
+                "YELLOW" : 2,
+                "PURPLE" : 0,
+                "GREEN" : 0
+              },
+              "diceBonus" : {
+                "WHITE" : 0,
+                "BLACK" : 0,
+                "ORANGE" : 0
+              },
+              "towerStrength" : {
+                "BLUE" : 0,
+                "BLACK" : 0,
+                "YELLOW" : 2,
+                "PURPLE" : 0,
+                "GREEN" : 0
+              }
+            },
+            "pickDiscounts" : {
+              "BLUE" : {
+                "coins" : 1,
+                "wood" : 0,
+                "stone" : 0,
+                "servants" : 0,
+                "faithPoints" : 0,
+                "battlePoints" : 0,
+                "victoryPoints" : 0
+              },
+              "BLACK" : {
+                "coins" : 0,
+                "wood" : 0,
+                "stone" : 0,
+                "servants" : 0,
+                "faithPoints" : 0,
+                "battlePoints" : 0,
+                "victoryPoints" : 0
+              },
+              "YELLOW" : {
+                "coins" : 0,
+                "wood" : 0,
+                "stone" : 0,
+                "servants" : 0,
+                "faithPoints" : 0,
+                "battlePoints" : 0,
+                "victoryPoints" : 0
+              },
+              "PURPLE" : {
+                "coins" : 0,
+                "wood" : 0,
+                "stone" : 0,
+                "servants" : 0,
+                "faithPoints" : 0,
+                "battlePoints" : 0,
+                "victoryPoints" : 0
+              },
+              "GREEN" : {
+                "coins" : 0,
+                "wood" : 0,
+                "stone" : 0,
+                "servants" : 0,
+                "faithPoints" : 0,
+                "battlePoints" : 0,
+                "victoryPoints" : 0
+              }
+            },
+            "towerBonusAllowed" : true
+          },
+          "familyMemberSlot" : null,
+          "actionCost" : 1
+        }, {
+          "instantBonus" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "cardSlot" : {
+            "@type" : "BlueCard",
+            "name" : "Preacher",
+            "cost" : {
+              "coins" : 2,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "age" : 1,
+            "immediateEffects" : [ {
+              "@type" : "AssetsEffect",
+              "bonus" : {
+                "coins" : 0,
+                "wood" : 0,
+                "stone" : 0,
+                "servants" : 0,
+                "faithPoints" : 0,
+                "battlePoints" : 0,
+                "victoryPoints" : 0
+              }
+            } ],
+            "permanentBonus" : {
+              "harvestBonus" : 0,
+              "productionBonus" : 0,
+              "towerStrengths" : {
+                "BLUE" : 0,
+                "BLACK" : 0,
+                "YELLOW" : 0,
+                "PURPLE" : 0,
+                "GREEN" : 0
+              },
+              "diceBonus" : {
+                "WHITE" : 0,
+                "BLACK" : 0,
+                "ORANGE" : 0
+              },
+              "towerStrength" : {
+                "BLUE" : 0,
+                "BLACK" : 0,
+                "YELLOW" : 0,
+                "PURPLE" : 0,
+                "GREEN" : 0
+              }
+            },
+            "pickDiscounts" : {
+              "BLUE" : {
+                "coins" : 0,
+                "wood" : 0,
+                "stone" : 0,
+                "servants" : 0,
+                "faithPoints" : 0,
+                "battlePoints" : 0,
+                "victoryPoints" : 0
+              },
+              "BLACK" : {
+                "coins" : 0,
+                "wood" : 0,
+                "stone" : 0,
+                "servants" : 0,
+                "faithPoints" : 0,
+                "battlePoints" : 0,
+                "victoryPoints" : 0
+              },
+              "YELLOW" : {
+                "coins" : 0,
+                "wood" : 0,
+                "stone" : 0,
+                "servants" : 0,
+                "faithPoints" : 0,
+                "battlePoints" : 0,
+                "victoryPoints" : 0
+              },
+              "PURPLE" : {
+                "coins" : 0,
+                "wood" : 0,
+                "stone" : 0,
+                "servants" : 0,
+                "faithPoints" : 0,
+                "battlePoints" : 0,
+                "victoryPoints" : 0
+              },
+              "GREEN" : {
+                "coins" : 0,
+                "wood" : 0,
+                "stone" : 0,
+                "servants" : 0,
+                "faithPoints" : 0,
+                "battlePoints" : 0,
+                "victoryPoints" : 0
+              }
+            },
+            "towerBonusAllowed" : false
+          },
+          "familyMemberSlot" : null,
+          "actionCost" : 3
+        }, {
+          "instantBonus" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 1,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "cardSlot" : {
+            "@type" : "BlueCard",
+            "name" : "Warlord",
+            "cost" : {
+              "coins" : 2,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "age" : 1,
+            "immediateEffects" : [ {
+              "@type" : "AssetsEffect",
+              "bonus" : {
+                "coins" : 0,
+                "wood" : 0,
+                "stone" : 0,
+                "servants" : 0,
+                "faithPoints" : 0,
+                "battlePoints" : 0,
+                "victoryPoints" : 0
+              }
+            } ],
+            "permanentBonus" : {
+              "harvestBonus" : 0,
+              "productionBonus" : 0,
+              "towerStrengths" : {
+                "BLUE" : 0,
+                "BLACK" : 0,
+                "YELLOW" : 0,
+                "PURPLE" : 0,
+                "GREEN" : 2
+              },
+              "diceBonus" : {
+                "WHITE" : 0,
+                "BLACK" : 0,
+                "ORANGE" : 0
+              },
+              "towerStrength" : {
+                "BLUE" : 0,
+                "BLACK" : 0,
+                "YELLOW" : 0,
+                "PURPLE" : 0,
+                "GREEN" : 2
+              }
+            },
+            "pickDiscounts" : {
+              "BLUE" : {
+                "coins" : 0,
+                "wood" : 0,
+                "stone" : 0,
+                "servants" : 0,
+                "faithPoints" : 0,
+                "battlePoints" : 0,
+                "victoryPoints" : 0
+              },
+              "BLACK" : {
+                "coins" : 0,
+                "wood" : 0,
+                "stone" : 0,
+                "servants" : 0,
+                "faithPoints" : 0,
+                "battlePoints" : 0,
+                "victoryPoints" : 0
+              },
+              "YELLOW" : {
+                "coins" : 0,
+                "wood" : 0,
+                "stone" : 0,
+                "servants" : 0,
+                "faithPoints" : 0,
+                "battlePoints" : 0,
+                "victoryPoints" : 0
+              },
+              "PURPLE" : {
+                "coins" : 0,
+                "wood" : 0,
+                "stone" : 0,
+                "servants" : 0,
+                "faithPoints" : 0,
+                "battlePoints" : 0,
+                "victoryPoints" : 0
+              },
+              "GREEN" : {
+                "coins" : 0,
+                "wood" : 0,
+                "stone" : 0,
+                "servants" : 0,
+                "faithPoints" : 0,
+                "battlePoints" : 0,
+                "victoryPoints" : 0
+              }
+            },
+            "towerBonusAllowed" : true
+          },
+          "familyMemberSlot" : null,
+          "actionCost" : 5
+        }, {
+          "instantBonus" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 2,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "cardSlot" : {
+            "@type" : "BlueCard",
+            "name" : "Abbess",
+            "cost" : {
+              "coins" : 3,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "age" : 1,
+            "immediateEffects" : [ {
+              "@type" : "ActionEffect",
+              "strength" : {
+                "harvestBonus" : 0,
+                "productionBonus" : 0,
+                "towerStrengths" : {
+                  "BLUE" : 4,
+                  "BLACK" : 4,
+                  "YELLOW" : 4,
+                  "PURPLE" : 4,
+                  "GREEN" : 4
+                },
+                "diceBonus" : {
+                  "WHITE" : 0,
+                  "BLACK" : 0,
+                  "ORANGE" : 0
+                },
+                "towerStrength" : {
+                  "BLUE" : 4,
+                  "BLACK" : 4,
+                  "YELLOW" : 4,
+                  "PURPLE" : 4,
+                  "GREEN" : 4
+                }
+              },
+              "discount" : {
+                "coins" : 0,
+                "wood" : 0,
+                "stone" : 0,
+                "servants" : 0,
+                "faithPoints" : 0,
+                "battlePoints" : 0,
+                "victoryPoints" : 0
+              }
+            }, {
+              "@type" : "AssetsEffect",
+              "bonus" : {
+                "coins" : 0,
+                "wood" : 0,
+                "stone" : 0,
+                "servants" : 0,
+                "faithPoints" : 0,
+                "battlePoints" : 0,
+                "victoryPoints" : 0
+              }
+            } ],
+            "permanentBonus" : {
+              "harvestBonus" : 0,
+              "productionBonus" : 0,
+              "towerStrengths" : {
+                "BLUE" : 0,
+                "BLACK" : 0,
+                "YELLOW" : 0,
+                "PURPLE" : 0,
+                "GREEN" : 0
+              },
+              "diceBonus" : {
+                "WHITE" : 0,
+                "BLACK" : 0,
+                "ORANGE" : 0
+              },
+              "towerStrength" : {
+                "BLUE" : 0,
+                "BLACK" : 0,
+                "YELLOW" : 0,
+                "PURPLE" : 0,
+                "GREEN" : 0
+              }
+            },
+            "pickDiscounts" : {
+              "BLUE" : {
+                "coins" : 0,
+                "wood" : 0,
+                "stone" : 0,
+                "servants" : 0,
+                "faithPoints" : 0,
+                "battlePoints" : 0,
+                "victoryPoints" : 0
+              },
+              "BLACK" : {
+                "coins" : 0,
+                "wood" : 0,
+                "stone" : 0,
+                "servants" : 0,
+                "faithPoints" : 0,
+                "battlePoints" : 0,
+                "victoryPoints" : 0
+              },
+              "YELLOW" : {
+                "coins" : 0,
+                "wood" : 0,
+                "stone" : 0,
+                "servants" : 0,
+                "faithPoints" : 0,
+                "battlePoints" : 0,
+                "victoryPoints" : 0
+              },
+              "PURPLE" : {
+                "coins" : 0,
+                "wood" : 0,
+                "stone" : 0,
+                "servants" : 0,
+                "faithPoints" : 0,
+                "battlePoints" : 0,
+                "victoryPoints" : 0
+              },
+              "GREEN" : {
+                "coins" : 0,
+                "wood" : 0,
+                "stone" : 0,
+                "servants" : 0,
+                "faithPoints" : 0,
+                "battlePoints" : 0,
+                "victoryPoints" : 0
+              }
+            },
+            "towerBonusAllowed" : true
+          },
+          "familyMemberSlot" : null,
+          "actionCost" : 7
+        } ]
+      },
+      "YELLOW" : {
+        "floors" : [ {
+          "instantBonus" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "cardSlot" : {
+            "@type" : "YellowCard",
+            "name" : "Chapel",
+            "cost" : {
+              "coins" : 1,
+              "wood" : 0,
+              "stone" : 2,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "age" : 1,
+            "immediateEffects" : [ {
+              "@type" : "AssetsEffect",
+              "bonus" : {
+                "coins" : 0,
+                "wood" : 0,
+                "stone" : 0,
+                "servants" : 0,
+                "faithPoints" : 0,
+                "battlePoints" : 0,
+                "victoryPoints" : 0
+              }
+            } ],
+            "productionCosts" : [ {
+              "coins" : 1,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            } ],
+            "productionResults" : [ {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 1,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            } ],
+            "actionStrength" : {
+              "harvestBonus" : 0,
+              "productionBonus" : 2,
+              "towerStrengths" : {
+                "BLUE" : 0,
+                "BLACK" : 0,
+                "YELLOW" : 0,
+                "PURPLE" : 0,
+                "GREEN" : 0
+              },
+              "diceBonus" : {
+                "WHITE" : 0,
+                "BLACK" : 0,
+                "ORANGE" : 0
+              },
+              "towerStrength" : {
+                "BLUE" : 0,
+                "BLACK" : 0,
+                "YELLOW" : 0,
+                "PURPLE" : 0,
+                "GREEN" : 0
+              }
+            },
+            "cardMultiplier" : ""
+          },
+          "familyMemberSlot" : null,
+          "actionCost" : 1
+        }, {
+          "instantBonus" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "cardSlot" : {
+            "@type" : "YellowCard",
+            "name" : "Stonemason's Shop",
+            "cost" : {
+              "coins" : 1,
+              "wood" : 0,
+              "stone" : 2,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "age" : 1,
+            "immediateEffects" : [ {
+              "@type" : "AssetsEffect",
+              "bonus" : {
+                "coins" : 0,
+                "wood" : 0,
+                "stone" : 0,
+                "servants" : 0,
+                "faithPoints" : 0,
+                "battlePoints" : 0,
+                "victoryPoints" : 0
+              }
+            } ],
+            "productionCosts" : [ {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 1,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }, {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 2,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            } ],
+            "productionResults" : [ {
+              "coins" : 3,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }, {
+              "coins" : 5,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            } ],
+            "actionStrength" : {
+              "harvestBonus" : 0,
+              "productionBonus" : 3,
+              "towerStrengths" : {
+                "BLUE" : 0,
+                "BLACK" : 0,
+                "YELLOW" : 0,
+                "PURPLE" : 0,
+                "GREEN" : 0
+              },
+              "diceBonus" : {
+                "WHITE" : 0,
+                "BLACK" : 0,
+                "ORANGE" : 0
+              },
+              "towerStrength" : {
+                "BLUE" : 0,
+                "BLACK" : 0,
+                "YELLOW" : 0,
+                "PURPLE" : 0,
+                "GREEN" : 0
+              }
+            },
+            "cardMultiplier" : ""
+          },
+          "familyMemberSlot" : null,
+          "actionCost" : 3
+        }, {
+          "instantBonus" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 1,
+            "victoryPoints" : 0
+          },
+          "cardSlot" : {
+            "@type" : "YellowCard",
+            "name" : "Carpenter's Shop",
+            "cost" : {
+              "coins" : 1,
+              "wood" : 2,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "age" : 1,
+            "immediateEffects" : [ {
+              "@type" : "AssetsEffect",
+              "bonus" : {
+                "coins" : 0,
+                "wood" : 0,
+                "stone" : 0,
+                "servants" : 0,
+                "faithPoints" : 0,
+                "battlePoints" : 0,
+                "victoryPoints" : 0
+              }
+            } ],
+            "productionCosts" : [ {
+              "coins" : 0,
+              "wood" : 1,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }, {
+              "coins" : 0,
+              "wood" : 2,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            } ],
+            "productionResults" : [ {
+              "coins" : 3,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }, {
+              "coins" : 5,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            } ],
+            "actionStrength" : {
+              "harvestBonus" : 0,
+              "productionBonus" : 4,
+              "towerStrengths" : {
+                "BLUE" : 0,
+                "BLACK" : 0,
+                "YELLOW" : 0,
+                "PURPLE" : 0,
+                "GREEN" : 0
+              },
+              "diceBonus" : {
+                "WHITE" : 0,
+                "BLACK" : 0,
+                "ORANGE" : 0
+              },
+              "towerStrength" : {
+                "BLUE" : 0,
+                "BLACK" : 0,
+                "YELLOW" : 0,
+                "PURPLE" : 0,
+                "GREEN" : 0
+              }
+            },
+            "cardMultiplier" : ""
+          },
+          "familyMemberSlot" : null,
+          "actionCost" : 5
+        }, {
+          "instantBonus" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 2,
+            "victoryPoints" : 0
+          },
+          "cardSlot" : {
+            "@type" : "YellowCard",
+            "name" : "Mint",
+            "cost" : {
+              "coins" : 0,
+              "wood" : 1,
+              "stone" : 3,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "age" : 1,
+            "immediateEffects" : [ {
+              "@type" : "AssetsEffect",
+              "bonus" : {
+                "coins" : 0,
+                "wood" : 0,
+                "stone" : 0,
+                "servants" : 0,
+                "faithPoints" : 0,
+                "battlePoints" : 0,
+                "victoryPoints" : 0
+              }
+            } ],
+            "productionCosts" : [ ],
+            "productionResults" : [ {
+              "coins" : 1,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            } ],
+            "actionStrength" : {
+              "harvestBonus" : 0,
+              "productionBonus" : 5,
+              "towerStrengths" : {
+                "BLUE" : 0,
+                "BLACK" : 0,
+                "YELLOW" : 0,
+                "PURPLE" : 0,
+                "GREEN" : 0
+              },
+              "diceBonus" : {
+                "WHITE" : 0,
+                "BLACK" : 0,
+                "ORANGE" : 0
+              },
+              "towerStrength" : {
+                "BLUE" : 0,
+                "BLACK" : 0,
+                "YELLOW" : 0,
+                "PURPLE" : 0,
+                "GREEN" : 0
+              }
+            },
+            "cardMultiplier" : "YELLOW"
+          },
+          "familyMemberSlot" : null,
+          "actionCost" : 7
+        } ]
+      },
+      "PURPLE" : {
+        "floors" : [ {
+          "instantBonus" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "cardSlot" : {
+            "@type" : "PurpleCard",
+            "name" : "Fighting Heresies",
+            "cost" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 3,
+              "victoryPoints" : 0
+            },
+            "age" : 1,
+            "immediateEffects" : [ {
+              "@type" : "AssetsEffect",
+              "bonus" : {
+                "coins" : 0,
+                "wood" : 0,
+                "stone" : 0,
+                "servants" : 0,
+                "faithPoints" : 0,
+                "battlePoints" : 0,
+                "victoryPoints" : 0
+              }
+            } ],
+            "endgameBonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 5
+            },
+            "optionalBpRequirement" : 5,
+            "optionalBpCost" : 0
+          },
+          "familyMemberSlot" : null,
+          "actionCost" : 1
+        }, {
+          "instantBonus" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "cardSlot" : {
+            "@type" : "PurpleCard",
+            "name" : "Building the Walls",
+            "cost" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 3,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "age" : 1,
+            "immediateEffects" : [ {
+              "@type" : "AssetsEffect",
+              "bonus" : {
+                "coins" : 0,
+                "wood" : 0,
+                "stone" : 0,
+                "servants" : 0,
+                "faithPoints" : 0,
+                "battlePoints" : 0,
+                "victoryPoints" : 0
+              }
+            }, {
+              "@type" : "CouncilFavorsEffect",
+              "amount" : 1
+            } ],
+            "endgameBonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 3
+            },
+            "optionalBpRequirement" : 0,
+            "optionalBpCost" : 0
+          },
+          "familyMemberSlot" : null,
+          "actionCost" : 3
+        }, {
+          "instantBonus" : {
+            "coins" : 1,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "cardSlot" : {
+            "@type" : "PurpleCard",
+            "name" : "Support to the Bishop",
+            "cost" : {
+              "coins" : 2,
+              "wood" : 1,
+              "stone" : 1,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "age" : 1,
+            "immediateEffects" : [ {
+              "@type" : "AssetsEffect",
+              "bonus" : {
+                "coins" : 0,
+                "wood" : 0,
+                "stone" : 0,
+                "servants" : 0,
+                "faithPoints" : 0,
+                "battlePoints" : 0,
+                "victoryPoints" : 0
+              }
+            } ],
+            "endgameBonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 1
+            },
+            "optionalBpRequirement" : 4,
+            "optionalBpCost" : 2
+          },
+          "familyMemberSlot" : null,
+          "actionCost" : 5
+        }, {
+          "instantBonus" : {
+            "coins" : 2,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "cardSlot" : {
+            "@type" : "PurpleCard",
+            "name" : "Raising a Statue",
+            "cost" : {
+              "coins" : 0,
+              "wood" : 2,
+              "stone" : 2,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "age" : 1,
+            "immediateEffects" : [ {
+              "@type" : "CouncilFavorsEffect",
+              "amount" : 2
+            } ],
+            "endgameBonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 4
+            },
+            "optionalBpRequirement" : 0,
+            "optionalBpCost" : 0
+          },
+          "familyMemberSlot" : null,
+          "actionCost" : 7
+        } ]
+      },
+      "GREEN" : {
+        "floors" : [ {
+          "instantBonus" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "cardSlot" : {
+            "@type" : "GreenCard",
+            "name" : "Gravel Pit",
+            "cost" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "age" : 1,
+            "immediateEffects" : [ {
+              "@type" : "AssetsEffect",
+              "bonus" : {
+                "coins" : 0,
+                "wood" : 0,
+                "stone" : 2,
+                "servants" : 0,
+                "faithPoints" : 0,
+                "battlePoints" : 0,
+                "victoryPoints" : 0
+              }
+            } ],
+            "harvestResult" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 2,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "actionStrength" : {
+              "harvestBonus" : 4,
+              "productionBonus" : 0,
+              "towerStrengths" : {
+                "BLUE" : 0,
+                "BLACK" : 0,
+                "YELLOW" : 0,
+                "PURPLE" : 0,
+                "GREEN" : 0
+              },
+              "diceBonus" : {
+                "WHITE" : 0,
+                "BLACK" : 0,
+                "ORANGE" : 0
+              },
+              "towerStrength" : {
+                "BLUE" : 0,
+                "BLACK" : 0,
+                "YELLOW" : 0,
+                "PURPLE" : 0,
+                "GREEN" : 0
+              }
+            },
+            "councilFavourAmount" : 0
+          },
+          "familyMemberSlot" : null,
+          "actionCost" : 1
+        }, {
+          "instantBonus" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "cardSlot" : {
+            "@type" : "GreenCard",
+            "name" : "Monastery",
+            "cost" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "age" : 1,
+            "immediateEffects" : [ {
+              "@type" : "AssetsEffect",
+              "bonus" : {
+                "coins" : 0,
+                "wood" : 0,
+                "stone" : 0,
+                "servants" : 1,
+                "faithPoints" : 0,
+                "battlePoints" : 2,
+                "victoryPoints" : 0
+              }
+            } ],
+            "harvestResult" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 1,
+              "servants" : 0,
+              "faithPoints" : 1,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "actionStrength" : {
+              "harvestBonus" : 6,
+              "productionBonus" : 0,
+              "towerStrengths" : {
+                "BLUE" : 0,
+                "BLACK" : 0,
+                "YELLOW" : 0,
+                "PURPLE" : 0,
+                "GREEN" : 0
+              },
+              "diceBonus" : {
+                "WHITE" : 0,
+                "BLACK" : 0,
+                "ORANGE" : 0
+              },
+              "towerStrength" : {
+                "BLUE" : 0,
+                "BLACK" : 0,
+                "YELLOW" : 0,
+                "PURPLE" : 0,
+                "GREEN" : 0
+              }
+            },
+            "councilFavourAmount" : 0
+          },
+          "familyMemberSlot" : null,
+          "actionCost" : 3
+        }, {
+          "instantBonus" : {
+            "coins" : 0,
+            "wood" : 1,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "cardSlot" : {
+            "@type" : "GreenCard",
+            "name" : "Commercial Hub",
+            "cost" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "age" : 1,
+            "immediateEffects" : [ ],
+            "harvestResult" : {
+              "coins" : 1,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "actionStrength" : {
+              "harvestBonus" : 1,
+              "productionBonus" : 0,
+              "towerStrengths" : {
+                "BLUE" : 0,
+                "BLACK" : 0,
+                "YELLOW" : 0,
+                "PURPLE" : 0,
+                "GREEN" : 0
+              },
+              "diceBonus" : {
+                "WHITE" : 0,
+                "BLACK" : 0,
+                "ORANGE" : 0
+              },
+              "towerStrength" : {
+                "BLUE" : 0,
+                "BLACK" : 0,
+                "YELLOW" : 0,
+                "PURPLE" : 0,
+                "GREEN" : 0
+              }
+            },
+            "councilFavourAmount" : 0
+          },
+          "familyMemberSlot" : null,
+          "actionCost" : 5
+        }, {
+          "instantBonus" : {
+            "coins" : 0,
+            "wood" : 2,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "cardSlot" : {
+            "@type" : "GreenCard",
+            "name" : "City",
+            "cost" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "age" : 1,
+            "immediateEffects" : [ {
+              "@type" : "AssetsEffect",
+              "bonus" : {
+                "coins" : 3,
+                "wood" : 0,
+                "stone" : 0,
+                "servants" : 0,
+                "faithPoints" : 0,
+                "battlePoints" : 0,
+                "victoryPoints" : 0
+              }
+            } ],
+            "harvestResult" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "actionStrength" : {
+              "harvestBonus" : 5,
+              "productionBonus" : 0,
+              "towerStrengths" : {
+                "BLUE" : 0,
+                "BLACK" : 0,
+                "YELLOW" : 0,
+                "PURPLE" : 0,
+                "GREEN" : 0
+              },
+              "diceBonus" : {
+                "WHITE" : 0,
+                "BLACK" : 0,
+                "ORANGE" : 0
+              },
+              "towerStrength" : {
+                "BLUE" : 0,
+                "BLACK" : 0,
+                "YELLOW" : 0,
+                "PURPLE" : 0,
+                "GREEN" : 0
+              }
+            },
+            "councilFavourAmount" : 1
+          },
+          "familyMemberSlot" : null,
+          "actionCost" : 7
+        } ]
+      }
+    },
+    "faithTrack" : [ {
+      "coins" : 0,
+      "wood" : 0,
+      "stone" : 0,
+      "servants" : 0,
+      "faithPoints" : 0,
+      "battlePoints" : 0,
+      "victoryPoints" : 0
+    }, {
+      "coins" : 0,
+      "wood" : 0,
+      "stone" : 0,
+      "servants" : 0,
+      "faithPoints" : 0,
+      "battlePoints" : 0,
+      "victoryPoints" : 1
+    }, {
+      "coins" : 0,
+      "wood" : 0,
+      "stone" : 0,
+      "servants" : 0,
+      "faithPoints" : 0,
+      "battlePoints" : 0,
+      "victoryPoints" : 2
+    }, {
+      "coins" : 0,
+      "wood" : 0,
+      "stone" : 0,
+      "servants" : 0,
+      "faithPoints" : 0,
+      "battlePoints" : 0,
+      "victoryPoints" : 3
+    }, {
+      "coins" : 0,
+      "wood" : 0,
+      "stone" : 0,
+      "servants" : 0,
+      "faithPoints" : 0,
+      "battlePoints" : 0,
+      "victoryPoints" : 4
+    }, {
+      "coins" : 0,
+      "wood" : 0,
+      "stone" : 0,
+      "servants" : 0,
+      "faithPoints" : 0,
+      "battlePoints" : 0,
+      "victoryPoints" : 5
+    }, {
+      "coins" : 0,
+      "wood" : 0,
+      "stone" : 0,
+      "servants" : 0,
+      "faithPoints" : 0,
+      "battlePoints" : 0,
+      "victoryPoints" : 7
+    }, {
+      "coins" : 0,
+      "wood" : 0,
+      "stone" : 0,
+      "servants" : 0,
+      "faithPoints" : 0,
+      "battlePoints" : 0,
+      "victoryPoints" : 9
+    }, {
+      "coins" : 0,
+      "wood" : 0,
+      "stone" : 0,
+      "servants" : 0,
+      "faithPoints" : 0,
+      "battlePoints" : 0,
+      "victoryPoints" : 11
+    }, {
+      "coins" : 0,
+      "wood" : 0,
+      "stone" : 0,
+      "servants" : 0,
+      "faithPoints" : 0,
+      "battlePoints" : 0,
+      "victoryPoints" : 13
+    }, {
+      "coins" : 0,
+      "wood" : 0,
+      "stone" : 0,
+      "servants" : 0,
+      "faithPoints" : 0,
+      "battlePoints" : 0,
+      "victoryPoints" : 15
+    }, {
+      "coins" : 0,
+      "wood" : 0,
+      "stone" : 0,
+      "servants" : 0,
+      "faithPoints" : 0,
+      "battlePoints" : 0,
+      "victoryPoints" : 17
+    }, {
+      "coins" : 0,
+      "wood" : 0,
+      "stone" : 0,
+      "servants" : 0,
+      "faithPoints" : 0,
+      "battlePoints" : 0,
+      "victoryPoints" : 19
+    }, {
+      "coins" : 0,
+      "wood" : 0,
+      "stone" : 0,
+      "servants" : 0,
+      "faithPoints" : 0,
+      "battlePoints" : 0,
+      "victoryPoints" : 22
+    }, {
+      "coins" : 0,
+      "wood" : 0,
+      "stone" : 0,
+      "servants" : 0,
+      "faithPoints" : 0,
+      "battlePoints" : 0,
+      "victoryPoints" : 25
+    }, {
+      "coins" : 0,
+      "wood" : 0,
+      "stone" : 0,
+      "servants" : 0,
+      "faithPoints" : 0,
+      "battlePoints" : 0,
+      "victoryPoints" : 30
+    }, null, null, null, null, null, null, null, null, null, null, null, null, null, null ],
+    "market" : {
+      "slots" : [ null, null ],
+      "bonuses" : [ {
+        "@class" : "it.polimi.ingsw.lim.model.Assets",
+        "coins" : 5,
+        "wood" : 0,
+        "stone" : 0,
+        "servants" : 0,
+        "faithPoints" : 0,
+        "battlePoints" : 0,
+        "victoryPoints" : 0
+      }, {
+        "@class" : "it.polimi.ingsw.lim.model.Assets",
+        "coins" : 0,
+        "wood" : 0,
+        "stone" : 0,
+        "servants" : 5,
+        "faithPoints" : 0,
+        "battlePoints" : 0,
+        "victoryPoints" : 0
+      } ]
+    },
+    "dice" : {
+      "WHITE" : 1,
+      "BLACK" : 1,
+      "ORANGE" : 6
+    }
+  },
+  "players" : [ {
+    "nickname" : "qw",
+    "color" : "GREEN",
+    "resources" : {
+      "coins" : 5,
+      "wood" : 3,
+      "stone" : 3,
+      "servants" : 3,
+      "faithPoints" : 0,
+      "battlePoints" : 0,
+      "victoryPoints" : 0
+    },
+    "strengths" : {
+      "harvestBonus" : 0,
+      "productionBonus" : 0,
+      "towerStrengths" : {
+        "BLUE" : 0,
+        "BLACK" : 0,
+        "YELLOW" : 0,
+        "PURPLE" : 0,
+        "GREEN" : 0
+      },
+      "diceBonus" : {
+        "WHITE" : 0,
+        "BLACK" : 0,
+        "ORANGE" : 0
+      },
+      "towerStrength" : {
+        "BLUE" : 0,
+        "BLACK" : 0,
+        "YELLOW" : 0,
+        "PURPLE" : 0,
+        "GREEN" : 0
+      }
+    },
+    "diceOverride" : { },
+    "leaderCards" : [ {
+      "cardName" : "Lorenzo de' Medici",
+      "leaderCardId" : 13,
+      "assetsRequirement" : {
+        "coins" : 0,
+        "wood" : 0,
+        "stone" : 0,
+        "servants" : 0,
+        "faithPoints" : 0,
+        "battlePoints" : 0,
+        "victoryPoints" : 35
+      },
+      "cardsRequirement" : { },
+      "deployed" : false,
+      "discarded" : false
+    }, {
+      "cardName" : "Sandro Botticelli",
+      "leaderCardId" : 9,
+      "assetsRequirement" : {
+        "coins" : 0,
+        "wood" : 10,
+        "stone" : 0,
+        "servants" : 0,
+        "faithPoints" : 0,
+        "battlePoints" : 0,
+        "victoryPoints" : 0
+      },
+      "cardsRequirement" : { },
+      "deployed" : false,
+      "discarded" : false,
+      "effect" : {
+        "@type" : "AssetsEffect",
+        "bonus" : {
+          "coins" : 0,
+          "wood" : 0,
+          "stone" : 0,
+          "servants" : 0,
+          "faithPoints" : 0,
+          "battlePoints" : 2,
+          "victoryPoints" : 1
+        }
+      },
+      "activated" : false
+    }, {
+      "cardName" : "Leonardo da Vinci",
+      "leaderCardId" : 8,
+      "assetsRequirement" : null,
+      "cardsRequirement" : { },
+      "deployed" : false,
+      "discarded" : false,
+      "effect" : {
+        "@type" : "ActionEffect",
+        "strength" : {
+          "harvestBonus" : 0,
+          "productionBonus" : 0,
+          "towerStrengths" : {
+            "BLUE" : 0,
+            "BLACK" : 0,
+            "YELLOW" : 0,
+            "PURPLE" : 0,
+            "GREEN" : 0
+          },
+          "diceBonus" : {
+            "WHITE" : 0,
+            "BLACK" : 0,
+            "ORANGE" : 0
+          },
+          "towerStrength" : {
+            "BLUE" : 0,
+            "BLACK" : 0,
+            "YELLOW" : 0,
+            "PURPLE" : 0,
+            "GREEN" : 0
+          }
+        },
+        "discount" : null
+      },
+      "activated" : false
+    } ],
+    "pickDiscounts" : {
+      "BLUE" : {
+        "coins" : 0,
+        "wood" : 0,
+        "stone" : 0,
+        "servants" : 0,
+        "faithPoints" : 0,
+        "battlePoints" : 0,
+        "victoryPoints" : 0
+      },
+      "BLACK" : {
+        "coins" : 0,
+        "wood" : 0,
+        "stone" : 0,
+        "servants" : 0,
+        "faithPoints" : 0,
+        "battlePoints" : 0,
+        "victoryPoints" : 0
+      },
+      "YELLOW" : {
+        "coins" : 0,
+        "wood" : 0,
+        "stone" : 0,
+        "servants" : 0,
+        "faithPoints" : 0,
+        "battlePoints" : 0,
+        "victoryPoints" : 0
+      },
+      "PURPLE" : {
+        "coins" : 0,
+        "wood" : 0,
+        "stone" : 0,
+        "servants" : 0,
+        "faithPoints" : 0,
+        "battlePoints" : 0,
+        "victoryPoints" : 0
+      },
+      "GREEN" : {
+        "coins" : 0,
+        "wood" : 0,
+        "stone" : 0,
+        "servants" : 0,
+        "faithPoints" : 0,
+        "battlePoints" : 0,
+        "victoryPoints" : 0
+      }
+    },
+    "cards" : {
+      "BLUE" : [ ],
+      "YELLOW" : [ ],
+      "PURPLE" : [ ],
+      "GREEN" : [ ]
+    },
+    "familyMembers" : [ {
+      "ownerColor" : "GREEN",
+      "diceColor" : "BLACK"
+    }, {
+      "ownerColor" : "GREEN",
+      "diceColor" : "ORANGE"
+    }, {
+      "ownerColor" : "GREEN",
+      "diceColor" : "WHITE"
+    }, {
+      "ownerColor" : "GREEN",
+      "diceColor" : "NEUTRAL"
+    } ],
+    "defaultProductionBonus" : {
+      "coins" : 0,
+      "wood" : 0,
+      "stone" : 0,
+      "servants" : 0,
+      "faithPoints" : 0,
+      "battlePoints" : 0,
+      "victoryPoints" : 0
+    },
+    "defaultHarvestBonus" : {
+      "coins" : 0,
+      "wood" : 0,
+      "stone" : 0,
+      "servants" : 1,
+      "faithPoints" : 0,
+      "battlePoints" : 2,
+      "victoryPoints" : 0
+    },
+    "deployedLeaders" : [ ],
+    "activatedLeaders" : [ ]
+  }, {
+    "nickname" : "qwe",
+    "color" : "YELLOW",
+    "resources" : {
+      "coins" : 6,
+      "wood" : 3,
+      "stone" : 3,
+      "servants" : 3,
+      "faithPoints" : 0,
+      "battlePoints" : 0,
+      "victoryPoints" : 0
+    },
+    "strengths" : {
+      "harvestBonus" : 0,
+      "productionBonus" : 0,
+      "towerStrengths" : {
+        "BLUE" : 0,
+        "BLACK" : 0,
+        "YELLOW" : 0,
+        "PURPLE" : 0,
+        "GREEN" : 0
+      },
+      "diceBonus" : {
+        "WHITE" : 0,
+        "BLACK" : 0,
+        "ORANGE" : 0
+      },
+      "towerStrength" : {
+        "BLUE" : 0,
+        "BLACK" : 0,
+        "YELLOW" : 0,
+        "PURPLE" : 0,
+        "GREEN" : 0
+      }
+    },
+    "diceOverride" : { },
+    "leaderCards" : [ {
+      "cardName" : "Sisto IV",
+      "leaderCardId" : 14,
+      "assetsRequirement" : {
+        "coins" : 6,
+        "wood" : 6,
+        "stone" : 6,
+        "servants" : 6,
+        "faithPoints" : 0,
+        "battlePoints" : 0,
+        "victoryPoints" : 0
+      },
+      "cardsRequirement" : { },
+      "deployed" : false,
+      "discarded" : false
+    }, {
+      "cardName" : "Santa Rita",
+      "leaderCardId" : 16,
+      "assetsRequirement" : {
+        "coins" : 0,
+        "wood" : 0,
+        "stone" : 0,
+        "servants" : 0,
+        "faithPoints" : 8,
+        "battlePoints" : 0,
+        "victoryPoints" : 0
+      },
+      "cardsRequirement" : { },
+      "deployed" : false,
+      "discarded" : false
+    }, {
+      "cardName" : "Lucrezia Borgia",
+      "leaderCardId" : 11,
+      "assetsRequirement" : null,
+      "cardsRequirement" : { },
+      "deployed" : false,
+      "discarded" : false
+    } ],
+    "pickDiscounts" : {
+      "BLUE" : {
+        "coins" : 0,
+        "wood" : 0,
+        "stone" : 0,
+        "servants" : 0,
+        "faithPoints" : 0,
+        "battlePoints" : 0,
+        "victoryPoints" : 0
+      },
+      "BLACK" : {
+        "coins" : 0,
+        "wood" : 0,
+        "stone" : 0,
+        "servants" : 0,
+        "faithPoints" : 0,
+        "battlePoints" : 0,
+        "victoryPoints" : 0
+      },
+      "YELLOW" : {
+        "coins" : 0,
+        "wood" : 0,
+        "stone" : 0,
+        "servants" : 0,
+        "faithPoints" : 0,
+        "battlePoints" : 0,
+        "victoryPoints" : 0
+      },
+      "PURPLE" : {
+        "coins" : 0,
+        "wood" : 0,
+        "stone" : 0,
+        "servants" : 0,
+        "faithPoints" : 0,
+        "battlePoints" : 0,
+        "victoryPoints" : 0
+      },
+      "GREEN" : {
+        "coins" : 0,
+        "wood" : 0,
+        "stone" : 0,
+        "servants" : 0,
+        "faithPoints" : 0,
+        "battlePoints" : 0,
+        "victoryPoints" : 0
+      }
+    },
+    "cards" : {
+      "BLUE" : [ ],
+      "YELLOW" : [ ],
+      "PURPLE" : [ ],
+      "GREEN" : [ ]
+    },
+    "familyMembers" : [ {
+      "ownerColor" : "YELLOW",
+      "diceColor" : "BLACK"
+    }, {
+      "ownerColor" : "YELLOW",
+      "diceColor" : "ORANGE"
+    }, {
+      "ownerColor" : "YELLOW",
+      "diceColor" : "WHITE"
+    }, {
+      "ownerColor" : "YELLOW",
+      "diceColor" : "NEUTRAL"
+    } ],
+    "defaultProductionBonus" : {
+      "coins" : 0,
+      "wood" : 0,
+      "stone" : 0,
+      "servants" : 0,
+      "faithPoints" : 0,
+      "battlePoints" : 0,
+      "victoryPoints" : 0
+    },
+    "defaultHarvestBonus" : {
+      "coins" : 2,
+      "wood" : 0,
+      "stone" : 0,
+      "servants" : 1,
+      "faithPoints" : 0,
+      "battlePoints" : 0,
+      "victoryPoints" : 0
+    },
+    "deployedLeaders" : [ ],
+    "activatedLeaders" : [ ]
+  } ],
+  "cardsDeck" : {
+    "developementCards" : {
+      "1" : {
+        "BLUE" : [ ],
+        "BLACK" : [ {
+          "@type" : "BlackCard",
+          "name" : "incendiare l'accampamento nemico",
+          "cost" : {
+            "coins" : 0,
+            "wood" : 1,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 1,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 1,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ]
+        }, {
+          "@type" : "BlackCard",
+          "name" : "Sacco della cappella",
+          "cost" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 1,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 1,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ]
+        }, {
+          "@type" : "BlackCard",
+          "name" : "Assecondare il generale",
+          "cost" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 1,
+            "battlePoints" : 1,
+            "victoryPoints" : 0
+          },
+          "age" : 1,
+          "immediateEffects" : [ {
+            "@type" : "ActionEffect",
+            "strength" : {
+              "harvestBonus" : 0,
+              "productionBonus" : 0,
+              "towerStrengths" : {
+                "BLUE" : 2,
+                "BLACK" : 2,
+                "YELLOW" : 2,
+                "PURPLE" : 2,
+                "GREEN" : 2
+              },
+              "diceBonus" : {
+                "WHITE" : 0,
+                "BLACK" : 0,
+                "ORANGE" : 0
+              },
+              "towerStrength" : {
+                "BLUE" : 2,
+                "BLACK" : 2,
+                "YELLOW" : 2,
+                "PURPLE" : 2,
+                "GREEN" : 2
+              }
+            },
+            "discount" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ]
+        }, {
+          "@type" : "BlackCard",
+          "name" : "Vendere gli schiavi",
+          "cost" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 1,
+            "faithPoints" : 1,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 1,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ]
+        }, {
+          "@type" : "BlackCard",
+          "name" : "Comprare gli schiavi",
+          "cost" : {
+            "coins" : 1,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 1,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 1,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ]
+        }, {
+          "@type" : "BlackCard",
+          "name" : "Rapire la Nipote dell'Imperatore",
+          "cost" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 1,
+            "battlePoints" : 2,
+            "victoryPoints" : 0
+          },
+          "age" : 1,
+          "immediateEffects" : [ ]
+        }, {
+          "@type" : "BlackCard",
+          "name" : "Tradire il Sacerdote",
+          "cost" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 1,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 1,
+          "immediateEffects" : [ {
+            "@type" : "ActionEffect",
+            "strength" : {
+              "harvestBonus" : 0,
+              "productionBonus" : 0,
+              "towerStrengths" : {
+                "BLUE" : 3,
+                "BLACK" : 3,
+                "YELLOW" : 3,
+                "PURPLE" : 3,
+                "GREEN" : 3
+              },
+              "diceBonus" : {
+                "WHITE" : 0,
+                "BLACK" : 0,
+                "ORANGE" : 0
+              },
+              "towerStrength" : {
+                "BLUE" : 3,
+                "BLACK" : 3,
+                "YELLOW" : 3,
+                "PURPLE" : 3,
+                "GREEN" : 3
+              }
+            },
+            "discount" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ]
+        }, {
+          "@type" : "BlackCard",
+          "name" : "Corrompere il Messo Papale",
+          "cost" : {
+            "coins" : 1,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 1,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 1,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ]
+        } ],
+        "YELLOW" : [ ],
+        "PURPLE" : [ ],
+        "GREEN" : [ ]
+      },
+      "2" : {
+        "BLUE" : [ {
+          "@type" : "BlueCard",
+          "name" : "Captain",
+          "cost" : {
+            "coins" : 4,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 2,
+          "immediateEffects" : [ {
+            "@type" : "ActionEffect",
+            "strength" : {
+              "harvestBonus" : 0,
+              "productionBonus" : 0,
+              "towerStrengths" : {
+                "BLUE" : 0,
+                "BLACK" : 0,
+                "YELLOW" : 0,
+                "PURPLE" : 0,
+                "GREEN" : 6
+              },
+              "diceBonus" : {
+                "WHITE" : 0,
+                "BLACK" : 0,
+                "ORANGE" : 0
+              },
+              "towerStrength" : {
+                "BLUE" : 0,
+                "BLACK" : 0,
+                "YELLOW" : 0,
+                "PURPLE" : 0,
+                "GREEN" : 6
+              }
+            },
+            "discount" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          }, {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "permanentBonus" : {
+            "harvestBonus" : 0,
+            "productionBonus" : 0,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "pickDiscounts" : {
+            "BLUE" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "BLACK" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "YELLOW" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "PURPLE" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "GREEN" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          },
+          "towerBonusAllowed" : true
+        }, {
+          "@type" : "BlueCard",
+          "name" : "Architect",
+          "cost" : {
+            "coins" : 3,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 2,
+          "immediateEffects" : [ {
+            "@type" : "ActionEffect",
+            "strength" : {
+              "harvestBonus" : 0,
+              "productionBonus" : 0,
+              "towerStrengths" : {
+                "BLUE" : 6,
+                "BLACK" : 0,
+                "YELLOW" : 0,
+                "PURPLE" : 0,
+                "GREEN" : 0
+              },
+              "diceBonus" : {
+                "WHITE" : 0,
+                "BLACK" : 0,
+                "ORANGE" : 0
+              },
+              "towerStrength" : {
+                "BLUE" : 6,
+                "BLACK" : 0,
+                "YELLOW" : 0,
+                "PURPLE" : 0,
+                "GREEN" : 0
+              }
+            },
+            "discount" : {
+              "coins" : 0,
+              "wood" : 1,
+              "stone" : 1,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "permanentBonus" : {
+            "harvestBonus" : 0,
+            "productionBonus" : 0,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "pickDiscounts" : {
+            "BLUE" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "BLACK" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "YELLOW" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "PURPLE" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "GREEN" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          },
+          "towerBonusAllowed" : true
+        }, {
+          "@type" : "BlueCard",
+          "name" : "Patron",
+          "cost" : {
+            "coins" : 3,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 2,
+          "immediateEffects" : [ {
+            "@type" : "ActionEffect",
+            "strength" : {
+              "harvestBonus" : 0,
+              "productionBonus" : 0,
+              "towerStrengths" : {
+                "BLUE" : 0,
+                "BLACK" : 0,
+                "YELLOW" : 6,
+                "PURPLE" : 0,
+                "GREEN" : 0
+              },
+              "diceBonus" : {
+                "WHITE" : 0,
+                "BLACK" : 0,
+                "ORANGE" : 0
+              },
+              "towerStrength" : {
+                "BLUE" : 0,
+                "BLACK" : 0,
+                "YELLOW" : 6,
+                "PURPLE" : 0,
+                "GREEN" : 0
+              }
+            },
+            "discount" : {
+              "coins" : 2,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "permanentBonus" : {
+            "harvestBonus" : 0,
+            "productionBonus" : 0,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "pickDiscounts" : {
+            "BLUE" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "BLACK" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "YELLOW" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "PURPLE" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "GREEN" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          },
+          "towerBonusAllowed" : true
+        }, {
+          "@type" : "BlueCard",
+          "name" : "Hero",
+          "cost" : {
+            "coins" : 4,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 2,
+          "immediateEffects" : [ {
+            "@type" : "ActionEffect",
+            "strength" : {
+              "harvestBonus" : 0,
+              "productionBonus" : 0,
+              "towerStrengths" : {
+                "BLUE" : 0,
+                "BLACK" : 0,
+                "YELLOW" : 0,
+                "PURPLE" : 6,
+                "GREEN" : 0
+              },
+              "diceBonus" : {
+                "WHITE" : 0,
+                "BLACK" : 0,
+                "ORANGE" : 0
+              },
+              "towerStrength" : {
+                "BLUE" : 0,
+                "BLACK" : 0,
+                "YELLOW" : 0,
+                "PURPLE" : 6,
+                "GREEN" : 0
+              }
+            },
+            "discount" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "permanentBonus" : {
+            "harvestBonus" : 0,
+            "productionBonus" : 0,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "pickDiscounts" : {
+            "BLUE" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "BLACK" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "YELLOW" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "PURPLE" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "GREEN" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          },
+          "towerBonusAllowed" : true
+        }, {
+          "@type" : "BlueCard",
+          "name" : "Peasant",
+          "cost" : {
+            "coins" : 4,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 2,
+          "immediateEffects" : [ ],
+          "permanentBonus" : {
+            "harvestBonus" : 3,
+            "productionBonus" : 0,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "pickDiscounts" : {
+            "BLUE" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "BLACK" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "YELLOW" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "PURPLE" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "GREEN" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          },
+          "towerBonusAllowed" : true
+        }, {
+          "@type" : "BlueCard",
+          "name" : "Scholar",
+          "cost" : {
+            "coins" : 4,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 2,
+          "immediateEffects" : [ ],
+          "permanentBonus" : {
+            "harvestBonus" : 0,
+            "productionBonus" : 3,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "pickDiscounts" : {
+            "BLUE" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "BLACK" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "YELLOW" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "PURPLE" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "GREEN" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          },
+          "towerBonusAllowed" : true
+        }, {
+          "@type" : "BlueCard",
+          "name" : "Papal Messenger",
+          "cost" : {
+            "coins" : 5,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 2,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "permanentBonus" : {
+            "harvestBonus" : 0,
+            "productionBonus" : 0,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "pickDiscounts" : {
+            "BLUE" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "BLACK" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "YELLOW" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "PURPLE" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "GREEN" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          },
+          "towerBonusAllowed" : true
+        }, {
+          "@type" : "BlueCard",
+          "name" : "Royal Messenger",
+          "cost" : {
+            "coins" : 5,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 2,
+          "immediateEffects" : [ {
+            "@type" : "CouncilFavorsEffect",
+            "amount" : 3
+          } ],
+          "permanentBonus" : {
+            "harvestBonus" : 0,
+            "productionBonus" : 0,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "pickDiscounts" : {
+            "BLUE" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "BLACK" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "YELLOW" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "PURPLE" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "GREEN" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          },
+          "towerBonusAllowed" : true
+        } ],
+        "BLACK" : [ ],
+        "YELLOW" : [ {
+          "@type" : "YellowCard",
+          "name" : "Marketplace",
+          "cost" : {
+            "coins" : 0,
+            "wood" : 2,
+            "stone" : 1,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 2,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "productionCosts" : [ {
+            "coins" : 3,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          } ],
+          "productionResults" : [ {
+            "coins" : 0,
+            "wood" : 2,
+            "stone" : 2,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          } ],
+          "actionStrength" : {
+            "harvestBonus" : 0,
+            "productionBonus" : 3,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "cardMultiplier" : ""
+        }, {
+          "@type" : "YellowCard",
+          "name" : "Treasury",
+          "cost" : {
+            "coins" : 0,
+            "wood" : 3,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 2,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "productionCosts" : [ {
+            "coins" : 1,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          }, {
+            "coins" : 2,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          } ],
+          "productionResults" : [ {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 3
+          }, {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 5
+          } ],
+          "actionStrength" : {
+            "harvestBonus" : 0,
+            "productionBonus" : 3,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "cardMultiplier" : ""
+        }, {
+          "@type" : "YellowCard",
+          "name" : "Painters' Guild",
+          "cost" : {
+            "coins" : 0,
+            "wood" : 4,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 2,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "productionCosts" : [ {
+            "coins" : 0,
+            "wood" : 1,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          }, {
+            "coins" : 0,
+            "wood" : 3,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          } ],
+          "productionResults" : [ {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 3
+          }, {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 7
+          } ],
+          "actionStrength" : {
+            "harvestBonus" : 0,
+            "productionBonus" : 4,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "cardMultiplier" : ""
+        }, {
+          "@type" : "YellowCard",
+          "name" : "Sculptors' Guild",
+          "cost" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 4,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 2,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "productionCosts" : [ {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 1,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          }, {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 3,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          } ],
+          "productionResults" : [ {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 3
+          }, {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 7
+          } ],
+          "actionStrength" : {
+            "harvestBonus" : 0,
+            "productionBonus" : 5,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "cardMultiplier" : ""
+        }, {
+          "@type" : "YellowCard",
+          "name" : "Stonemasons' Guild",
+          "cost" : {
+            "coins" : 0,
+            "wood" : 1,
+            "stone" : 2,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 2,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "productionCosts" : [ {
+            "coins" : 0,
+            "wood" : 1,
+            "stone" : 1,
+            "servants" : 1,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          } ],
+          "productionResults" : [ {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 6
+          } ],
+          "actionStrength" : {
+            "harvestBonus" : 0,
+            "productionBonus" : 4,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "cardMultiplier" : ""
+        }, {
+          "@type" : "YellowCard",
+          "name" : "Baptistery",
+          "cost" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 3,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 2,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "productionCosts" : [ {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 1,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          } ],
+          "productionResults" : [ {
+            "coins" : 2,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 2
+          } ],
+          "actionStrength" : {
+            "harvestBonus" : 0,
+            "productionBonus" : 2,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "cardMultiplier" : ""
+        }, {
+          "@type" : "YellowCard",
+          "name" : "Barracks",
+          "cost" : {
+            "coins" : 0,
+            "wood" : 1,
+            "stone" : 1,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 2,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "productionCosts" : [ {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 1,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          } ],
+          "productionResults" : [ {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 3,
+            "victoryPoints" : 0
+          } ],
+          "actionStrength" : {
+            "harvestBonus" : 0,
+            "productionBonus" : 1,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "cardMultiplier" : ""
+        }, {
+          "@type" : "YellowCard",
+          "name" : "Stronghold",
+          "cost" : {
+            "coins" : 2,
+            "wood" : 2,
+            "stone" : 2,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 2,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "productionCosts" : [ ],
+          "productionResults" : [ {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 2,
+            "victoryPoints" : 2
+          } ],
+          "actionStrength" : {
+            "harvestBonus" : 0,
+            "productionBonus" : 6,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "cardMultiplier" : ""
+        } ],
+        "PURPLE" : [ {
+          "@type" : "PurpleCard",
+          "name" : "Hiring Soldiers",
+          "cost" : {
+            "coins" : 6,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 2,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "endgameBonus" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 5
+          },
+          "optionalBpRequirement" : 0,
+          "optionalBpCost" : 0
+        }, {
+          "@type" : "PurpleCard",
+          "name" : "Repairing the Abbey",
+          "cost" : {
+            "coins" : 2,
+            "wood" : 2,
+            "stone" : 2,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 2,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "endgameBonus" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 6
+          },
+          "optionalBpRequirement" : 0,
+          "optionalBpCost" : 0
+        }, {
+          "@type" : "PurpleCard",
+          "name" : "Building the Bastions",
+          "cost" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 4,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 2,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "endgameBonus" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 2
+          },
+          "optionalBpRequirement" : 0,
+          "optionalBpCost" : 0
+        }, {
+          "@type" : "PurpleCard",
+          "name" : "Support to the King",
+          "cost" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 3,
+            "victoryPoints" : 0
+          },
+          "age" : 2,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "endgameBonus" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 3
+          },
+          "optionalBpRequirement" : 6,
+          "optionalBpCost" : 0
+        }, {
+          "@type" : "PurpleCard",
+          "name" : "Improving the Canals",
+          "cost" : {
+            "coins" : 3,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 2,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 2,
+          "immediateEffects" : [ {
+            "@type" : "ActionEffect",
+            "strength" : {
+              "harvestBonus" : 4,
+              "productionBonus" : 0,
+              "towerStrengths" : {
+                "BLUE" : 0,
+                "BLACK" : 0,
+                "YELLOW" : 0,
+                "PURPLE" : 0,
+                "GREEN" : 0
+              },
+              "diceBonus" : {
+                "WHITE" : 0,
+                "BLACK" : 0,
+                "ORANGE" : 0
+              },
+              "towerStrength" : {
+                "BLUE" : 0,
+                "BLACK" : 0,
+                "YELLOW" : 0,
+                "PURPLE" : 0,
+                "GREEN" : 0
+              }
+            },
+            "discount" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "endgameBonus" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 5
+          },
+          "optionalBpRequirement" : 0,
+          "optionalBpCost" : 0
+        }, {
+          "@type" : "PurpleCard",
+          "name" : "Hosting Foreigners",
+          "cost" : {
+            "coins" : 0,
+            "wood" : 4,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 2,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "endgameBonus" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 4
+          },
+          "optionalBpRequirement" : 0,
+          "optionalBpCost" : 0
+        }, {
+          "@type" : "PurpleCard",
+          "name" : "Crusade",
+          "cost" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 4,
+            "victoryPoints" : 0
+          },
+          "age" : 2,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "endgameBonus" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 5
+          },
+          "optionalBpRequirement" : 8,
+          "optionalBpCost" : 0
+        }, {
+          "@type" : "PurpleCard",
+          "name" : "Support to the Cardinal",
+          "cost" : {
+            "coins" : 3,
+            "wood" : 2,
+            "stone" : 2,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 2,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "endgameBonus" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 4
+          },
+          "optionalBpRequirement" : 7,
+          "optionalBpCost" : 4
+        } ],
+        "GREEN" : [ {
+          "@type" : "GreenCard",
+          "name" : "Gold Mine",
+          "cost" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 2,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 1,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "harvestResult" : {
+            "coins" : 2,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "actionStrength" : {
+            "harvestBonus" : 1,
+            "productionBonus" : 0,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "councilFavourAmount" : 0
+        }, {
+          "@type" : "GreenCard",
+          "name" : "Mountain Town",
+          "cost" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 2,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 1,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "harvestResult" : {
+            "coins" : 0,
+            "wood" : 2,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 1,
+            "victoryPoints" : 0
+          },
+          "actionStrength" : {
+            "harvestBonus" : 3,
+            "productionBonus" : 0,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "councilFavourAmount" : 0
+        }, {
+          "@type" : "GreenCard",
+          "name" : "Mining Town",
+          "cost" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 2,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 1,
+              "servants" : 2,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "harvestResult" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 2,
+            "servants" : 1,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "actionStrength" : {
+            "harvestBonus" : 4,
+            "productionBonus" : 0,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "councilFavourAmount" : 0
+        }, {
+          "@type" : "GreenCard",
+          "name" : "Rock Pit",
+          "cost" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 2,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 1,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "harvestResult" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 3,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "actionStrength" : {
+            "harvestBonus" : 3,
+            "productionBonus" : 0,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "councilFavourAmount" : 0
+        }, {
+          "@type" : "GreenCard",
+          "name" : "Estate",
+          "cost" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 2,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 1,
+              "stone" : 0,
+              "servants" : 2,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "harvestResult" : {
+            "coins" : 1,
+            "wood" : 2,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "actionStrength" : {
+            "harvestBonus" : 4,
+            "productionBonus" : 0,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "councilFavourAmount" : 0
+        }, {
+          "@type" : "GreenCard",
+          "name" : "Hermitage",
+          "cost" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 2,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 1,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "harvestResult" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 1,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "actionStrength" : {
+            "harvestBonus" : 2,
+            "productionBonus" : 0,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "councilFavourAmount" : 0
+        }, {
+          "@type" : "GreenCard",
+          "name" : "Manor House",
+          "cost" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 2,
+          "immediateEffects" : [ ],
+          "harvestResult" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 2,
+            "faithPoints" : 0,
+            "battlePoints" : 2,
+            "victoryPoints" : 0
+          },
+          "actionStrength" : {
+            "harvestBonus" : 5,
+            "productionBonus" : 0,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "councilFavourAmount" : 0
+        }, {
+          "@type" : "GreenCard",
+          "name" : "Dukedom",
+          "cost" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 2,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 4,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "harvestResult" : {
+            "coins" : 1,
+            "wood" : 0,
+            "stone" : 1,
+            "servants" : 2,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "actionStrength" : {
+            "harvestBonus" : 6,
+            "productionBonus" : 0,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "councilFavourAmount" : 0
+        } ]
+      },
+      "3" : {
+        "BLUE" : [ {
+          "@type" : "BlueCard",
+          "name" : "Noble",
+          "cost" : {
+            "coins" : 6,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 3,
+          "immediateEffects" : [ {
+            "@type" : "CardMultipliedEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 2
+            },
+            "multiplierColor" : "GREEN"
+          } ],
+          "permanentBonus" : {
+            "harvestBonus" : 0,
+            "productionBonus" : 0,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "pickDiscounts" : {
+            "BLUE" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "BLACK" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "YELLOW" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "PURPLE" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "GREEN" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          },
+          "towerBonusAllowed" : true
+        }, {
+          "@type" : "BlueCard",
+          "name" : "Governor",
+          "cost" : {
+            "coins" : 6,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 3,
+          "immediateEffects" : [ {
+            "@type" : "CardMultipliedEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 2
+            },
+            "multiplierColor" : "YELLOW"
+          } ],
+          "permanentBonus" : {
+            "harvestBonus" : 0,
+            "productionBonus" : 0,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "pickDiscounts" : {
+            "BLUE" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "BLACK" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "YELLOW" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "PURPLE" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "GREEN" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          },
+          "towerBonusAllowed" : true
+        }, {
+          "@type" : "BlueCard",
+          "name" : "Paramour",
+          "cost" : {
+            "coins" : 7,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 3,
+          "immediateEffects" : [ {
+            "@type" : "CardMultipliedEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 2
+            },
+            "multiplierColor" : "BLUE"
+          } ],
+          "permanentBonus" : {
+            "harvestBonus" : 0,
+            "productionBonus" : 0,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "pickDiscounts" : {
+            "BLUE" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "BLACK" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "YELLOW" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "PURPLE" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "GREEN" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          },
+          "towerBonusAllowed" : true
+        }, {
+          "@type" : "BlueCard",
+          "name" : "Herald",
+          "cost" : {
+            "coins" : 6,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 3,
+          "immediateEffects" : [ {
+            "@type" : "CardMultipliedEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 2
+            },
+            "multiplierColor" : "PURPLE"
+          } ],
+          "permanentBonus" : {
+            "harvestBonus" : 0,
+            "productionBonus" : 0,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "pickDiscounts" : {
+            "BLUE" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "BLACK" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "YELLOW" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "PURPLE" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "GREEN" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          },
+          "towerBonusAllowed" : true
+        }, {
+          "@type" : "BlueCard",
+          "name" : "Cardinal",
+          "cost" : {
+            "coins" : 4,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 3,
+          "immediateEffects" : [ {
+            "@type" : "ActionEffect",
+            "strength" : {
+              "harvestBonus" : 4,
+              "productionBonus" : 0,
+              "towerStrengths" : {
+                "BLUE" : 0,
+                "BLACK" : 0,
+                "YELLOW" : 0,
+                "PURPLE" : 0,
+                "GREEN" : 0
+              },
+              "diceBonus" : {
+                "WHITE" : 0,
+                "BLACK" : 0,
+                "ORANGE" : 0
+              },
+              "towerStrength" : {
+                "BLUE" : 0,
+                "BLACK" : 0,
+                "YELLOW" : 0,
+                "PURPLE" : 0,
+                "GREEN" : 0
+              }
+            },
+            "discount" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          }, {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "permanentBonus" : {
+            "harvestBonus" : 0,
+            "productionBonus" : 0,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "pickDiscounts" : {
+            "BLUE" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "BLACK" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "YELLOW" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "PURPLE" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "GREEN" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          },
+          "towerBonusAllowed" : true
+        }, {
+          "@type" : "BlueCard",
+          "name" : "Bishop",
+          "cost" : {
+            "coins" : 5,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 3,
+          "immediateEffects" : [ {
+            "@type" : "ActionEffect",
+            "strength" : {
+              "harvestBonus" : 0,
+              "productionBonus" : 4,
+              "towerStrengths" : {
+                "BLUE" : 0,
+                "BLACK" : 0,
+                "YELLOW" : 0,
+                "PURPLE" : 0,
+                "GREEN" : 0
+              },
+              "diceBonus" : {
+                "WHITE" : 0,
+                "BLACK" : 0,
+                "ORANGE" : 0
+              },
+              "towerStrength" : {
+                "BLUE" : 0,
+                "BLACK" : 0,
+                "YELLOW" : 0,
+                "PURPLE" : 0,
+                "GREEN" : 0
+              }
+            },
+            "discount" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          }, {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "permanentBonus" : {
+            "harvestBonus" : 0,
+            "productionBonus" : 0,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "pickDiscounts" : {
+            "BLUE" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "BLACK" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "YELLOW" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "PURPLE" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "GREEN" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          },
+          "towerBonusAllowed" : true
+        }, {
+          "@type" : "BlueCard",
+          "name" : "General",
+          "cost" : {
+            "coins" : 5,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 3,
+          "immediateEffects" : [ {
+            "@type" : "AssetsMultipliedEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 1
+            },
+            "multiplier" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 2,
+              "victoryPoints" : 0
+            }
+          } ],
+          "permanentBonus" : {
+            "harvestBonus" : 0,
+            "productionBonus" : 0,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "pickDiscounts" : {
+            "BLUE" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "BLACK" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "YELLOW" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "PURPLE" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "GREEN" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          },
+          "towerBonusAllowed" : true
+        }, {
+          "@type" : "BlueCard",
+          "name" : "Ambassador",
+          "cost" : {
+            "coins" : 6,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 3,
+          "immediateEffects" : [ {
+            "@type" : "ActionEffect",
+            "strength" : {
+              "harvestBonus" : 0,
+              "productionBonus" : 0,
+              "towerStrengths" : {
+                "BLUE" : 7,
+                "BLACK" : 0,
+                "YELLOW" : 7,
+                "PURPLE" : 7,
+                "GREEN" : 7
+              },
+              "diceBonus" : {
+                "WHITE" : 0,
+                "BLACK" : 0,
+                "ORANGE" : 0
+              },
+              "towerStrength" : {
+                "BLUE" : 7,
+                "BLACK" : 0,
+                "YELLOW" : 7,
+                "PURPLE" : 7,
+                "GREEN" : 7
+              }
+            },
+            "discount" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "permanentBonus" : {
+            "harvestBonus" : 0,
+            "productionBonus" : 0,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "pickDiscounts" : {
+            "BLUE" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "BLACK" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "YELLOW" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "PURPLE" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            },
+            "GREEN" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          },
+          "towerBonusAllowed" : true
+        } ],
+        "BLACK" : [ ],
+        "YELLOW" : [ {
+          "@type" : "YellowCard",
+          "name" : "Bank",
+          "cost" : {
+            "coins" : 3,
+            "wood" : 1,
+            "stone" : 3,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 3,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "productionCosts" : [ ],
+          "productionResults" : [ {
+            "coins" : 5,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          } ],
+          "actionStrength" : {
+            "harvestBonus" : 0,
+            "productionBonus" : 2,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "cardMultiplier" : ""
+        }, {
+          "@type" : "YellowCard",
+          "name" : "Fair",
+          "cost" : {
+            "coins" : 4,
+            "wood" : 3,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 3,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "productionCosts" : [ {
+            "coins" : 4,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          } ],
+          "productionResults" : [ {
+            "coins" : 0,
+            "wood" : 3,
+            "stone" : 3,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          } ],
+          "actionStrength" : {
+            "harvestBonus" : 0,
+            "productionBonus" : 4,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "cardMultiplier" : ""
+        }, {
+          "@type" : "YellowCard",
+          "name" : "Garden",
+          "cost" : {
+            "coins" : 0,
+            "wood" : 4,
+            "stone" : 2,
+            "servants" : 2,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 3,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "productionCosts" : [ ],
+          "productionResults" : [ {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 3
+          } ],
+          "actionStrength" : {
+            "harvestBonus" : 0,
+            "productionBonus" : 1,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "cardMultiplier" : ""
+        }, {
+          "@type" : "YellowCard",
+          "name" : "Fortess",
+          "cost" : {
+            "coins" : 2,
+            "wood" : 2,
+            "stone" : 4,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 3,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "productionCosts" : [ ],
+          "productionResults" : [ {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 2
+          } ],
+          "actionStrength" : {
+            "harvestBonus" : 0,
+            "productionBonus" : 5,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "cardMultiplier" : ""
+        }, {
+          "@type" : "YellowCard",
+          "name" : "Palace",
+          "cost" : {
+            "coins" : 3,
+            "wood" : 3,
+            "stone" : 1,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 3,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "productionCosts" : [ {
+            "coins" : 1,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          } ],
+          "productionResults" : [ {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 2,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 4
+          } ],
+          "actionStrength" : {
+            "harvestBonus" : 0,
+            "productionBonus" : 6,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "cardMultiplier" : ""
+        }, {
+          "@type" : "YellowCard",
+          "name" : "Church",
+          "cost" : {
+            "coins" : 0,
+            "wood" : 1,
+            "stone" : 4,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 3,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "productionCosts" : [ {
+            "coins" : 0,
+            "wood" : 1,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          }, {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 1,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          } ],
+          "productionResults" : [ {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 2,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          }, {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 2,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          } ],
+          "actionStrength" : {
+            "harvestBonus" : 0,
+            "productionBonus" : 1,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "cardMultiplier" : ""
+        }, {
+          "@type" : "YellowCard",
+          "name" : "Military Academy",
+          "cost" : {
+            "coins" : 0,
+            "wood" : 2,
+            "stone" : 2,
+            "servants" : 1,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 3,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "productionCosts" : [ {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 1,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          } ],
+          "productionResults" : [ {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 3,
+            "victoryPoints" : 1
+          } ],
+          "actionStrength" : {
+            "harvestBonus" : 0,
+            "productionBonus" : 3,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "cardMultiplier" : ""
+        }, {
+          "@type" : "YellowCard",
+          "name" : "Cathedral",
+          "cost" : {
+            "coins" : 0,
+            "wood" : 4,
+            "stone" : 4,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 3,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "productionCosts" : [ ],
+          "productionResults" : [ {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 1
+          } ],
+          "actionStrength" : {
+            "harvestBonus" : 0,
+            "productionBonus" : 2,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "cardMultiplier" : ""
+        } ],
+        "PURPLE" : [ {
+          "@type" : "PurpleCard",
+          "name" : "Hiring Mercenaries",
+          "cost" : {
+            "coins" : 8,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 3,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "endgameBonus" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 6
+          },
+          "optionalBpRequirement" : 0,
+          "optionalBpCost" : 0
+        }, {
+          "@type" : "PurpleCard",
+          "name" : "Repairing the Cathedral",
+          "cost" : {
+            "coins" : 3,
+            "wood" : 3,
+            "stone" : 3,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 3,
+          "immediateEffects" : [ {
+            "@type" : "ActionEffect",
+            "strength" : {
+              "harvestBonus" : 0,
+              "productionBonus" : 0,
+              "towerStrengths" : {
+                "BLUE" : 7,
+                "BLACK" : 0,
+                "YELLOW" : 7,
+                "PURPLE" : 7,
+                "GREEN" : 7
+              },
+              "diceBonus" : {
+                "WHITE" : 0,
+                "BLACK" : 0,
+                "ORANGE" : 0
+              },
+              "towerStrength" : {
+                "BLUE" : 7,
+                "BLACK" : 0,
+                "YELLOW" : 7,
+                "PURPLE" : 7,
+                "GREEN" : 7
+              }
+            },
+            "discount" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          }, {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "endgameBonus" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 5
+          },
+          "optionalBpRequirement" : 4,
+          "optionalBpCost" : 2
+        }, {
+          "@type" : "PurpleCard",
+          "name" : "Building the Towers",
+          "cost" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 6,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 3,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "endgameBonus" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 4
+          },
+          "optionalBpRequirement" : 0,
+          "optionalBpCost" : 0
+        }, {
+          "@type" : "PurpleCard",
+          "name" : "Promoting Sacred Art",
+          "cost" : {
+            "coins" : 0,
+            "wood" : 6,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 3,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "endgameBonus" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 3
+          },
+          "optionalBpRequirement" : 0,
+          "optionalBpCost" : 0
+        }, {
+          "@type" : "PurpleCard",
+          "name" : "Military Conquest",
+          "cost" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 6,
+            "victoryPoints" : 0
+          },
+          "age" : 3,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "endgameBonus" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 7
+          },
+          "optionalBpRequirement" : 12,
+          "optionalBpCost" : 0
+        }, {
+          "@type" : "PurpleCard",
+          "name" : "Improving the Roads",
+          "cost" : {
+            "coins" : 4,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 3,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 3,
+          "immediateEffects" : [ {
+            "@type" : "ActionEffect",
+            "strength" : {
+              "harvestBonus" : 3,
+              "productionBonus" : 0,
+              "towerStrengths" : {
+                "BLUE" : 0,
+                "BLACK" : 0,
+                "YELLOW" : 0,
+                "PURPLE" : 0,
+                "GREEN" : 0
+              },
+              "diceBonus" : {
+                "WHITE" : 0,
+                "BLACK" : 0,
+                "ORANGE" : 0
+              },
+              "towerStrength" : {
+                "BLUE" : 0,
+                "BLACK" : 0,
+                "YELLOW" : 0,
+                "PURPLE" : 0,
+                "GREEN" : 0
+              }
+            },
+            "discount" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "endgameBonus" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 5
+          },
+          "optionalBpRequirement" : 0,
+          "optionalBpCost" : 0
+        }, {
+          "@type" : "PurpleCard",
+          "name" : "Sacred War",
+          "cost" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 8,
+            "victoryPoints" : 0
+          },
+          "age" : 3,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "endgameBonus" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 8
+          },
+          "optionalBpRequirement" : 15,
+          "optionalBpCost" : 0
+        }, {
+          "@type" : "PurpleCard",
+          "name" : "Support to the Pope",
+          "cost" : {
+            "coins" : 4,
+            "wood" : 3,
+            "stone" : 3,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 3,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "endgameBonus" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 10
+          },
+          "optionalBpRequirement" : 10,
+          "optionalBpCost" : 5
+        } ],
+        "GREEN" : [ {
+          "@type" : "GreenCard",
+          "name" : "Trading Town",
+          "cost" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 3,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 1,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 1,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "harvestResult" : {
+            "coins" : 3,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "actionStrength" : {
+            "harvestBonus" : 1,
+            "productionBonus" : 0,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "councilFavourAmount" : 0
+        }, {
+          "@type" : "GreenCard",
+          "name" : "Dukedom",
+          "cost" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 3,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 1,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 1
+            }
+          } ],
+          "harvestResult" : {
+            "coins" : 0,
+            "wood" : 2,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 2
+          },
+          "actionStrength" : {
+            "harvestBonus" : 3,
+            "productionBonus" : 0,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "councilFavourAmount" : 0
+        }, {
+          "@type" : "GreenCard",
+          "name" : "Colony",
+          "cost" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 3,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 2,
+              "victoryPoints" : 0
+            }
+          } ],
+          "harvestResult" : {
+            "coins" : 0,
+            "wood" : 1,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 4
+          },
+          "actionStrength" : {
+            "harvestBonus" : 5,
+            "productionBonus" : 0,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "councilFavourAmount" : 0
+        }, {
+          "@type" : "GreenCard",
+          "name" : "Marble Pit",
+          "cost" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 3,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 3
+            }
+          } ],
+          "harvestResult" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 2,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 1
+          },
+          "actionStrength" : {
+            "harvestBonus" : 2,
+            "productionBonus" : 0,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "councilFavourAmount" : 0
+        }, {
+          "@type" : "GreenCard",
+          "name" : "Province",
+          "cost" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 3,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 1,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "harvestResult" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 1,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 4
+          },
+          "actionStrength" : {
+            "harvestBonus" : 6,
+            "productionBonus" : 0,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "councilFavourAmount" : 0
+        }, {
+          "@type" : "GreenCard",
+          "name" : "Sanctuary",
+          "cost" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 3,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 1,
+              "battlePoints" : 0,
+              "victoryPoints" : 0
+            }
+          } ],
+          "harvestResult" : {
+            "coins" : 1,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 1,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "actionStrength" : {
+            "harvestBonus" : 1,
+            "productionBonus" : 0,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "councilFavourAmount" : 0
+        }, {
+          "@type" : "GreenCard",
+          "name" : "Castle",
+          "cost" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 3,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 2,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 0,
+              "faithPoints" : 0,
+              "battlePoints" : 0,
+              "victoryPoints" : 2
+            }
+          } ],
+          "harvestResult" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 1,
+            "faithPoints" : 0,
+            "battlePoints" : 3,
+            "victoryPoints" : 0
+          },
+          "actionStrength" : {
+            "harvestBonus" : 4,
+            "productionBonus" : 0,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "councilFavourAmount" : 0
+        }, {
+          "@type" : "GreenCard",
+          "name" : "Fortified Town",
+          "cost" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 0,
+            "faithPoints" : 0,
+            "battlePoints" : 0,
+            "victoryPoints" : 0
+          },
+          "age" : 3,
+          "immediateEffects" : [ {
+            "@type" : "AssetsEffect",
+            "bonus" : {
+              "coins" : 0,
+              "wood" : 0,
+              "stone" : 0,
+              "servants" : 1,
+              "faithPoints" : 0,
+              "battlePoints" : 3,
+              "victoryPoints" : 0
+            }
+          } ],
+          "harvestResult" : {
+            "coins" : 0,
+            "wood" : 0,
+            "stone" : 0,
+            "servants" : 2,
+            "faithPoints" : 0,
+            "battlePoints" : 1,
+            "victoryPoints" : 0
+          },
+          "actionStrength" : {
+            "harvestBonus" : 2,
+            "productionBonus" : 0,
+            "towerStrengths" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            },
+            "diceBonus" : {
+              "WHITE" : 0,
+              "BLACK" : 0,
+              "ORANGE" : 0
+            },
+            "towerStrength" : {
+              "BLUE" : 0,
+              "BLACK" : 0,
+              "YELLOW" : 0,
+              "PURPLE" : 0,
+              "GREEN" : 0
+            }
+          },
+          "councilFavourAmount" : 0
+        } ]
+      }
+    }
+  },
+  "availablePlayerColors" : [ "BLUE", "RED", "PURPLE" ],
+  "allDeployedLeaders" : [ ]
+}
