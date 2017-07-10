@@ -24,21 +24,24 @@ import static it.polimi.ingsw.lim.network.CommunicationConstants.*;
  */
 public class RMIClient implements RMIClientInterf, ServerInterface {
     /**
-     * Instance of RMI server interface.
-     */
-    RMIServerInterf rmiServer;
-    /**
-     * The UI controller's reference.
-     */
-    UIController uiCallback;
-    /**
      * RMI server's ip address.
      */
     private String address = "localhost";
+
     /**
      * RMI server's port number.
      */
     private int port = 1099;
+
+    /**
+     * Instance of RMI server interface.
+     */
+    RMIServerInterf rmiServer;
+
+    /**
+     * The UI controller's reference.
+     */
+    UIController uiCallback;
 
     /**
      * RMI client constructor.
@@ -58,8 +61,9 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
     private int getPort() {return port;}
 
     @Override
-    public void endGameNotification(ArrayList<Player> scoreboard) throws RemoteException {
-        uiCallback.getClientUI().endGameMessage(scoreboard);
+    public void updateClientGame(Board board, ArrayList<Player> players) {
+        uiCallback.updatePlayers(players);
+        uiCallback.updateBoard(board);
     }
 
     @Override
@@ -68,159 +72,8 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
     }
 
     @Override
-    public void askPlayerForFastHarvest(int basestr) throws RemoteException {
-        uiCallback.getClientUI().commandAdder(SERVANTS_HARVEST);
-    }
-
-    @Override
-    public void askPlayerForFastProduction(int baseStr) throws RemoteException {
-        uiCallback.getClientUI().commandAdder(SERVANTS_PRODUCTION);
-    }
-
-    @Override
-    public void askPlayerForFastTowerMove(HashMap<String, Integer> baseStr, Assets optionalPickDiscount) throws RemoteException {
-        uiCallback.getClientUI().commandAdder(PICK_FROM_TOWER);
-    }
-
-    @Override
-    public void askPlayerProductionOptions(ArrayList<ArrayList<Object[]>> options) throws RemoteException {
-        uiCallback.getClientUI().commandAdder(CHOOSE_PRODUCTION);
-    }
-
-    @Override
-    public void askPlayerForBpPick() throws RemoteException {
-        uiCallback.getClientUI().commandAdder(OPTIONAL_BP_PICK);
-    }
-
-    @Override
-    public void askPlayerForFavor(int favorAmount) throws RemoteException {
-        uiCallback.getClientUI().commandAdder(CHOOSE_FAVOR);
-        uiCallback.getTmpVar().setFavorAmount(favorAmount);
-    }
-
-    @Override
-    public void askPlayerForExcommunication() throws RemoteException {
-        uiCallback.getClientUI().commandAdder(EXCOMMUNICATION);
-    }
-
-    @Override
-    public void startLeaderCardDraft(ArrayList<Integer> leaderOptions) throws RemoteException {
-        uiCallback.getClientUI().commandAdder(CHOOSE_LEADER_DRAFT);
-        uiCallback.getTmpVar().setLeaderOptions(leaderOptions);
-    }
-
-    @Override
-    public void askPlayerFmToBoost() throws RemoteException {
-        uiCallback.getClientUI().commandAdder(LORENZO_MONTEFELTRO);
-    }
-
-    @Override
-    public void askPlayerToChooseLeaderToCopy(ArrayList<String> copyableLeaders) throws RemoteException {
-        uiCallback.getClientUI().commandAdder(LORENZO_MEDICI);
-        uiCallback.getTmpVar().setCopyableLeaders(copyableLeaders);
-    }
-
-    @Override
-    public void isUserPlaying(Boolean state) throws RemoteException {
-        uiCallback.getClientUI().notifyStartRound(state);
-    }
-
-    /**
-     * Print the chat message received.
-     * @param sender the username of the sender.
-     * @param message the chat message.
-     */
-    @Override
-    public void receiveChatMessageFromServer(String sender, String message) {
-        uiCallback.getClientUI().printChatMessage(sender, message);
-    }
-
-    @Override
-    public void receiveGameMessageFromServer(String message) throws RemoteException {
-        uiCallback.getClientUI().printGameMessage(message);
-    }
-
-    @Override
-    public String[] askLogin(String errorMsg) throws RemoteException {
-        if(errorMsg != null) uiCallback.getClientUI().printError(errorMsg);
-        return uiCallback.sendLoginInfo();
-    }
-
-    @Override
-    public void startListenToInput() throws RemoteException {
-        uiCallback.getClientUI().getLock().unlock();
-    }
-
-    @Override
-    public void updateClientGame(Board board, ArrayList<Player> players) {
-        uiCallback.updatePlayers(players);
-        uiCallback.updateBoard(board);
-    }
-
-    @Override
-    public void sendToClientStartGameNotification() throws RemoteException {
-        uiCallback.getClientUI().notifyStartGame();
-    }
-
-    /**
-     * Empty method used to check if an rmi connected user is alive.
-     * @throws RemoteException
-     */
-    @Override
-    public void isAlive() throws RemoteException { }
-
-    @Override
-    public void sendFamilyMemberColorForLorenzoMontefeltro(String fmColor) throws ClientNetworkException {
-        try {
-            rmiServer.familyMemberColorAbility(fmColor, uiCallback.getUsername(), this);
-        } catch (RemoteException e) {
-            throw new ClientNetworkException("[RMI]: Could not send set family member to 6 ability to server", e);
-        }
-    }
-
-    @Override
-    public void sendCopyLeaderForLorenzoMedici(int leaderIndex) throws ClientNetworkException {
-        try {
-            rmiServer.copyLeaderAbility(leaderIndex, uiCallback.getUsername(), this);
-        } catch (RemoteException e) {
-            throw new ClientNetworkException("[RMI]: Could not send copy leader ability to server", e);
-        }
-    }
-
-    @Override
-    public void leaderCardDraft(int leaderIndex) throws ClientNetworkException {
-        try {
-            rmiServer.draftLeaderCard(leaderIndex, uiCallback.getUsername(), this);
-        } catch (RemoteException e) {
-            throw new ClientNetworkException("[RMI]: Could not send leader card draft choice to server", e);
-        }
-    }
-
-    @Override
-    public void leaderCardActivate(int id) throws ClientNetworkException {
-        try {
-            rmiServer.activateLeaderCard(id, uiCallback.getUsername(), this);
-        } catch (RemoteException e) {
-            throw new ClientNetworkException("[RMI]: Could not send active leader card draft to server", e);
-        }
-    }
-
-    @Override
-    public void leaderCardDeploy(int id) throws ClientNetworkException {
-        try {
-            rmiServer.deployLeaderCard(id, uiCallback.getUsername(), this);
-        } catch (RemoteException e) {
-            throw new ClientNetworkException("[RMI]: Could not send deploy leader card to server", e);
-        }
-    }
-
-    @Override
-    public void leaderCardDiscard(int id) throws ClientNetworkException {
-        try {
-            rmiServer.discardLeaderCard(id, uiCallback.getUsername(), this);
-        } catch (RemoteException e) {
-            throw new ClientNetworkException("[RMI]: Could not send discard request to server", e);
-        }
+    public void endGameNotification(ArrayList<Player> scoreboard) throws RemoteException {
+        uiCallback.getClientUI().endGameMessage(scoreboard);
     }
 
     @Override
@@ -233,12 +86,22 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
     }
 
     @Override
+    public void askPlayerForFastHarvest(int basestr) throws RemoteException {
+        uiCallback.getClientUI().commandAdder(SERVANTS_HARVEST);
+    }
+
+    @Override
     public void fastProduction(int servantsDeployed) throws ClientNetworkException {
         try {
             rmiServer.fastProduction(servantsDeployed, uiCallback.getUsername(), this);
         } catch (RemoteException e) {
             throw new ClientNetworkException("[RMI]: Could not send bonus production action to server", e);
         }
+    }
+
+    @Override
+    public void askPlayerForFastProduction(int baseStr) throws RemoteException {
+        uiCallback.getClientUI().commandAdder(SERVANTS_PRODUCTION);
     }
 
     @Override
@@ -251,12 +114,22 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
     }
 
     @Override
+    public void askPlayerForFastTowerMove(HashMap<String, Integer> baseStr, Assets optionalPickDiscount) throws RemoteException {
+        uiCallback.getClientUI().commandAdder(PICK_FROM_TOWER);
+    }
+
+    @Override
     public void productionOption(ArrayList<Integer> prodChoice) throws ClientNetworkException {
         try {
             rmiServer.productionOption(prodChoice, uiCallback.getUsername(), this);
         } catch (RemoteException e) {
             throw new ClientNetworkException("[RMI]: Could not production action to server", e);
         }
+    }
+
+    @Override
+    public void askPlayerProductionOptions(ArrayList<ArrayList<Object[]>> options) throws RemoteException {
+        uiCallback.getClientUI().commandAdder(CHOOSE_PRODUCTION);
     }
 
     @Override
@@ -269,6 +142,11 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
     }
 
     @Override
+    public void askPlayerForBpPick() throws RemoteException {
+        uiCallback.getClientUI().commandAdder(OPTIONAL_BP_PICK);
+    }
+
+    @Override
     public void favorChoice(ArrayList<Integer> favorChoice) throws ClientNetworkException {
         try {
             rmiServer.favorChoice(favorChoice, uiCallback.getUsername(), this);
@@ -278,12 +156,23 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
     }
 
     @Override
+    public void askPlayerForFavor(int favorAmount) throws RemoteException {
+        uiCallback.getClientUI().commandAdder(CHOOSE_FAVOR);
+        uiCallback.getTmpVar().setFavorAmount(favorAmount);
+    }
+
+    @Override
     public void excommunicationChoice(boolean choice) throws ClientNetworkException {
         try {
             rmiServer.excommunicationChoice(choice, uiCallback.getUsername(), this);
         } catch (RemoteException e) {
             throw new ClientNetworkException("[RMI]: Could not send excommunication choice to server", e);
         }
+    }
+
+    @Override
+    public void askPlayerForExcommunication() throws RemoteException {
+        uiCallback.getClientUI().commandAdder(EXCOMMUNICATION);
     }
 
     @Override
@@ -311,6 +200,77 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
         }
     }
 
+    @Override
+    public void sendFamilyMemberColorForLorenzoMontefeltro(String fmColor) throws ClientNetworkException {
+        try {
+            rmiServer.familyMemberColorAbility(fmColor, uiCallback.getUsername(), this);
+        } catch (RemoteException e) {
+            throw new ClientNetworkException("[RMI]: Could not send set family member to 6 ability to server", e);
+        }
+    }
+
+    @Override
+    public void askPlayerFmToBoost() throws RemoteException {
+        uiCallback.getClientUI().commandAdder(LORENZO_MONTEFELTRO);
+    }
+
+    @Override
+    public void sendCopyLeaderForLorenzoMedici(int leaderIndex) throws ClientNetworkException {
+        try {
+            rmiServer.copyLeaderAbility(leaderIndex, uiCallback.getUsername(), this);
+        } catch (RemoteException e) {
+            throw new ClientNetworkException("[RMI]: Could not send copy leader ability to server", e);
+        }
+    }
+
+    @Override
+    public void askPlayerToChooseLeaderToCopy(ArrayList<String> copyableLeaders) throws RemoteException {
+        uiCallback.getClientUI().commandAdder(LORENZO_MEDICI);
+        uiCallback.getTmpVar().setCopyableLeaders(copyableLeaders);
+    }
+
+    @Override
+    public void leaderCardDraft(int leaderIndex) throws ClientNetworkException {
+        try {
+            rmiServer.draftLeaderCard(leaderIndex, uiCallback.getUsername(), this);
+        } catch (RemoteException e) {
+            throw new ClientNetworkException("[RMI]: Could not send leader card draft choice to server", e);
+        }
+    }
+
+    @Override
+    public void startLeaderCardDraft(ArrayList<Integer> leaderOptions) throws RemoteException {
+        uiCallback.getClientUI().commandAdder(CHOOSE_LEADER_DRAFT);
+        uiCallback.getTmpVar().setLeaderOptions(leaderOptions);
+    }
+
+    @Override
+    public void leaderCardDiscard(int id) throws ClientNetworkException {
+        try {
+            rmiServer.discardLeaderCard(id, uiCallback.getUsername(), this);
+        } catch (RemoteException e) {
+            throw new ClientNetworkException("[RMI]: Could not send discard request to server", e);
+        }
+    }
+
+    @Override
+    public void leaderCardDeploy(int id) throws ClientNetworkException {
+        try {
+            rmiServer.deployLeaderCard(id, uiCallback.getUsername(), this);
+        } catch (RemoteException e) {
+            throw new ClientNetworkException("[RMI]: Could not send deploy leader card to server", e);
+        }
+    }
+
+    @Override
+    public void leaderCardActivate(int id) throws ClientNetworkException {
+        try {
+            rmiServer.activateLeaderCard(id, uiCallback.getUsername(), this);
+        } catch (RemoteException e) {
+            throw new ClientNetworkException("[RMI]: Could not send active leader card draft to server", e);
+        }
+    }
+
     /**
      * Send a chat message to server.
      * @param sender the username of the sender.
@@ -323,6 +283,50 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
             rmiServer.receiveChatMessageFromClient(sender, message);
         } catch (RemoteException e) {
             throw new ClientNetworkException("[RMI]: Could not send chat message to server", e);
+        }
+    }
+
+    /**
+     * Print the chat message received.
+     * @param sender the username of the sender.
+     * @param message the chat message.
+     */
+    @Override
+    public void receiveChatMessageFromServer(String sender, String message) {
+        uiCallback.getClientUI().printChatMessage(sender, message);
+    }
+
+    @Override
+    public void receiveGameMessageFromServer(String message) throws RemoteException {
+        uiCallback.getClientUI().printGameMessage(message);
+    }
+
+    @Override
+    public void isUserPlaying(Boolean state) throws RemoteException {
+        uiCallback.getClientUI().notifyStartRound(state);
+    }
+
+    @Override
+    public void sendToClientStartGameNotification() throws RemoteException {
+        uiCallback.getClientUI().notifyStartGame();
+    }
+
+    @Override
+    public void startListenToInput() throws RemoteException {
+        uiCallback.getClientUI().getLock().unlock();
+    }
+
+    @Override
+    public String[] askLogin(String errorMsg) throws RemoteException {
+        if(errorMsg != null) uiCallback.getClientUI().printError(errorMsg);
+        return uiCallback.sendLoginInfo();
+    }
+
+    private void exportObject() throws ClientNetworkException {
+        try {
+            UnicastRemoteObject.exportObject(this, 0);
+        } catch (RemoteException e) {
+            throw new ClientNetworkException(e.getMessage(), e);
         }
     }
 
@@ -345,12 +349,11 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
         }
     }
 
-    private void exportObject() throws ClientNetworkException {
-        try {
-            UnicastRemoteObject.exportObject(this, 0);
-        } catch (RemoteException e) {
-            throw new ClientNetworkException(e.getMessage(), e);
-        }
-    }
+    /**
+     * Empty method used to check if an rmi connected user is alive.
+     * @throws RemoteException
+     */
+    @Override
+    public void isAlive() throws RemoteException { }
 }
 
