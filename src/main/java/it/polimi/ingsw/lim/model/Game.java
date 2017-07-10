@@ -665,8 +665,7 @@ public class Game {
     public void marketMove(FamilyMember fm, int position, int servantsDeployed) {
         Player actor = getPlayerFromColor(fm.getOwnerColor());
         actor.pullFamilyMember(fm.getDiceColor());
-        Assets actionCost = new Assets();
-        actionCost.addServants(servantsDeployed);
+        Assets actionCost = new Assets().addServants(servantsDeployed);
         removeAssetsFromPlayer(actionCost, actor);
         this.board.getMarket().addFamilyMember(fm, position);
         Object bonus = this.board.getMarket().getBonuses(position);

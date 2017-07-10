@@ -1,30 +1,52 @@
 package it.polimi.ingsw.lim;
 
-import static it.polimi.ingsw.lim.Settings.DUMPS_PATH;
-import static it.polimi.ingsw.lim.utils.Log.*;
-
-import it.polimi.ingsw.lim.network.server.JDBC;
-import it.polimi.ingsw.lim.utils.Log;
 import it.polimi.ingsw.lim.controller.Room;
 import it.polimi.ingsw.lim.controller.User;
+import it.polimi.ingsw.lim.network.server.JDBC;
 import it.polimi.ingsw.lim.network.server.RMI.RMIServer;
 import it.polimi.ingsw.lim.network.server.socket.SocketServer;
 import it.polimi.ingsw.lim.parser.Writer;
+import it.polimi.ingsw.lim.utils.Log;
 
 import java.io.File;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.logging.Level;
+
+import static it.polimi.ingsw.lim.Settings.DUMPS_PATH;
+import static it.polimi.ingsw.lim.utils.Log.createLogFile;
+import static it.polimi.ingsw.lim.utils.Log.getLog;
 
 
 /**
  * This is the server command line interface.
  */
 public class MainServer {
+
+    /**
+     * ArrayList of room.
+     */
+    private static ArrayList<Room> roomList;
+    /**
+     * User database.
+     */
+    private static JDBC jdbc;
+    /**
+     * Socket Server Port Number.
+     */
+    private int socketPort = 8989;
+    /**
+     * RMI Server Port Number.
+     */
+    private int RMIPort = 1099;
+    /**
+     * Declaration of SocketServer and RMIServer class.
+     */
+    private SocketServer socketServer;
+    private RMIServer rmiServer;
 
     /**
      * MainServer Constructor.
@@ -38,16 +60,10 @@ public class MainServer {
             getLog().log(Level.SEVERE, "[RMI]: Could not create RMIServer's instance", e);
         }
         roomList = new ArrayList<>();
-        System.out.println("[SERVER]: Please, enter 1 to reload saved server status, any other key will erase all the saved file.");
-        int decision;
-        try {
-            Scanner resume = new Scanner(System.in);
-            decision = resume.nextInt();
-        }
-        catch (InputMismatchException e){
-            decision = 0;
-        }
-        if (decision == 1) {
+        System.out.println("[SERVER]: Hello, do you want to restore previous saved game status? (yes/ otherwise no)");
+        Scanner scanner = new Scanner(System.in);
+        String decision = scanner.nextLine();
+        if (decision.equalsIgnoreCase("yes") || decision.equalsIgnoreCase("y")) {
             try {
                 for (File file : new File(DUMPS_PATH+"room/").listFiles()) {
                     if (file.getName().contains(".json")) {
@@ -84,32 +100,6 @@ public class MainServer {
             getLog().severe("[SQL]: Can't locate driver for SQLite ");
         }
     }
-
-    /**
-     * Socket Server Port Number.
-     */
-    private int socketPort = 8989;
-
-    /**
-     * RMI Server Port Number.
-     */
-    private int RMIPort = 1099;
-
-    /**
-     * ArrayList of room.
-     */
-    private static ArrayList<Room> roomList;
-
-    /**
-     * Declaration of SocketServer and RMIServer class.
-     */
-    private SocketServer socketServer;
-    private RMIServer rmiServer;
-
-    /**
-     * User database.
-     */
-    private static JDBC jdbc;
 
     /**
      * Getters.
@@ -180,19 +170,19 @@ public class MainServer {
     }
 
     /**
-     * Deploy socket server and rmi server.
-     */
-    private void startServer() {
-        socketServer.deployServer(socketPort);
-        rmiServer.deployServer(RMIPort);
-    }
-
-    /**
      * Server main method.
      * @param args
      */
     public static void main(String[] args) {
         MainServer server = new MainServer();
         server.startServer();
+    }
+
+    /**
+     * Deploy socket server and rmi server.
+     */
+    private void startServer() {
+        socketServer.deployServer(socketPort);
+        rmiServer.deployServer(RMIPort);
     }
 }
