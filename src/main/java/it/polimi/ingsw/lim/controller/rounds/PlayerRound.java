@@ -1,7 +1,7 @@
 package it.polimi.ingsw.lim.controller.rounds;
 
-import it.polimi.ingsw.lim.utils.Log;
 import it.polimi.ingsw.lim.controller.User;
+import it.polimi.ingsw.lim.utils.Log;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 import java.util.Timer;
@@ -67,7 +67,7 @@ public class PlayerRound implements Round {
      */
     public void endTurn (){
         Log.getLog().info("turn player ".concat(this.getUserName()).concat(" has ended "));
-        this.user.getRoom().switchRound();
+        this.user.getRoom().switchRound(true);
     }
 
     /**
