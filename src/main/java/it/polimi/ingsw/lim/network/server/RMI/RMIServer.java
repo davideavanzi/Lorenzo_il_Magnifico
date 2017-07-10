@@ -360,6 +360,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterf {
         } catch (BadRequestException e) {
             rmiClient.commandValidator(FAMILY_MEMBER, e.getMessage(), false);
         } catch (NullPointerException e) {
+            e.printStackTrace();
             rmiClient.commandValidator(FAMILY_MEMBER, "No user found",false);
         }
     }

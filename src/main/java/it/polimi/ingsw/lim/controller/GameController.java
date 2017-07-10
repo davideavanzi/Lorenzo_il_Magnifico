@@ -162,7 +162,7 @@ public class GameController {
                 if (cardAffordable || purpleAffordable) {
                     boolean useBp = false;
                     int servantsForTowerAction = this.game.servantsForTowerAction(fm, towerColor, floor);
-                    if (servantsDeployed < servantsForTowerAction || servantsDeployed >
+                    if (servantsDeployed+game.getFmStrength(fm) < servantsForTowerAction || servantsDeployed >
                             actor.getPlayer().getResources().getServants())
                         throw new BadRequestException("You did not set the right amount of servants to deploy " +
                                 "to perform the action");
@@ -237,7 +237,7 @@ public class GameController {
             Player actor = this.game.getPlayerFromColor(fm.getOwnerColor());
             int servantsForHarvestAction = this.game.servantsForHarvestAction(actor, fm, 0);
             this.game.giveAssetsToPlayer(actor.getDefaultHarvestBonus(), actor);
-            if (servantsDeployed < servantsForHarvestAction ||
+            if (servantsDeployed+game.getFmStrength(fm) < servantsForHarvestAction ||
                     servantsDeployed > this.game.getPlayerFromColor(fm.getOwnerColor()).getResources().getServants()) {
                 throw new BadRequestException("Wrong amount of servants deployed for harvest move");
             }
@@ -265,7 +265,7 @@ public class GameController {
         if(!this.game.isProductionMoveAllowed(fm))
             throw new BadRequestException("Production move not allowed");
         int servantsForProductionAction = this.game.servantsForProductionAction(actor.getPlayer(), fm, 0);
-        if (servantsDeployed < servantsForProductionAction ||
+        if (servantsDeployed+game.getFmStrength(fm) < servantsForProductionAction ||
                 servantsDeployed > this.game.getPlayerFromColor(fm.getOwnerColor()).getResources().getServants())
             throw new BadRequestException("Not enough servants to perform production action");
         this.pendingProduction = new PendingProduction();
@@ -298,7 +298,7 @@ public class GameController {
     public void moveInMarket(FamilyMember fm, int marketSlot, int servantsDeployed) throws BadRequestException {
         if (!game.isMarketMoveAllowed(fm, marketSlot))
             throw new BadRequestException("Market move not allowed");
-        if (game.servantsForMarketAction(fm) > servantsDeployed)
+        if (game.servantsForMarketAction(fm) > servantsDeployed+game.getFmStrength(fm))
             throw new BadRequestException("Not enough servants to perform market move");
         game.marketMove(fm, marketSlot, servantsDeployed);
         roomCallback.broadcastMessage
@@ -314,7 +314,7 @@ public class GameController {
      * @throws BadRequestException if the provided servants amount is invalid
      */
     public void moveInCouncil(FamilyMember fm, int servantsDeployed) throws BadRequestException {
-        if (!(game.servantsForCouncilAction(fm) > servantsDeployed))
+        if (!(game.servantsForCouncilAction(fm) > servantsDeployed+game.getFmStrength(fm)))
             throw new BadRequestException("Not enough servants to enter council");
         game.councilMove(fm, servantsDeployed);
         roomCallback.broadcastMessage

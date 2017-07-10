@@ -177,16 +177,17 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
 
     @Override
     public void placeFM(String fmColor, ArrayList<String> destination, String servants) throws ClientNetworkException {
-        int destArgs = Integer.parseInt(destination.get(1)); //floor's number or market slot
         int servantsNum = Integer.parseInt(servants);
         try {
             if (destination.get(0).equalsIgnoreCase(GREEN) ||
                     destination.get(0).equalsIgnoreCase(BLUE) ||
                     destination.get(0).equalsIgnoreCase(YELLOW) ||
                     destination.get(0).equalsIgnoreCase(PURPLE)) {
+                int destArgs = Integer.parseInt(destination.get(1)); //floor's number or market slot
                 String twrColor = destination.get(0);
                 rmiServer.moveInTower(fmColor, twrColor, destArgs, servantsNum, uiCallback.getUsername(), this);
             } else if (destination.get(0).equalsIgnoreCase(MARKET)) {
+                int destArgs = Integer.parseInt(destination.get(1)); //floor's number or market slot
                 rmiServer.moveInMarket(fmColor, destArgs, servantsNum, uiCallback.getUsername(), this);
             } else if (destination.get(0).equalsIgnoreCase(PRODUCTION)) {
                 rmiServer.moveInProduction(fmColor, servantsNum, uiCallback.getUsername(), this);
