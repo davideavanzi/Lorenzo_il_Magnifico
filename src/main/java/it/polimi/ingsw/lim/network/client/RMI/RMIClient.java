@@ -211,7 +211,7 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
 
     @Override
     public void askPlayerFmToBoost() throws RemoteException {
-        uiCallback.getClientUI().commandAdder(LORENZO_MONTEFELTRO);
+        uiCallback.getClientUI().commandAdder(LUDOVICO_MONTEFELTRO);
     }
 
     @Override

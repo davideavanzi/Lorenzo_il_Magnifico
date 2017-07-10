@@ -437,37 +437,35 @@ public class UIController {
     /**
      * Constants used by UI.
      */
-    class UIConstant {
+    public class UIConstant {
 
         /**
          * Command
          */
-        static final String CHAT = "chat";
-        static final String TURN = "showTurn";
-        static final String INFO = "showPersonalInfo";
-        static final String CARD = "showCard";
-        static final String BOARD = "showBoard";
-        static final String ALL_PLAYER_INFO = "showAllPlayerInfo";
-        static final String FAMILY_MEMBER = "putFamilyMember";
-        static final String LEADER_CARD = "leaderCard";
-        static final String PRINT_LEADER_CARD = "printLeader";
-        static final String CHOOSE_LEADER_DRAFT = "leaderDraft";
-        static final String LORENZO_MEDICI = "LorenzoDeMedici";
-        static final String LORENZO_MONTEFELTRO = "LorenzoDaMontefeltro";
-        static final String EXCOMMUNICATION = "excommunication";
-        static final String CHOOSE_FAVOR = "askForCouncilFavor";
-        static final String OPTIONAL_BP_PICK = "purpleCardPayment";
-        static final String CHOOSE_PRODUCTION = "chooseProduction";
-        static final String SERVANTS_PRODUCTION = "servantsProduction";
-        static final String SERVANTS_HARVEST = "servantsHarvest";
-        static final String PICK_FROM_TOWER = "pickFromTower";
+        public static final String CHAT_CMD = "chat";
+        public static final String TURN_CMD = "showTurn";
+        public static final String CARD_CMD = "showCard";
+        public static final String BOARD_CMD = "showBoard";
+        public static final String ALL_PLAYER_INFO_CMD = "showAllPlayerInfo";
+        public static final String FAMILY_MEMBER_CMD = "putFamilyMember";
+        public static final String LEADER_CARD_CMD = "leaderCard";
+        public static final String PRINT_LEADER_CARD_CMD = "printLeader";
+        public static final String CHOOSE_LEADER_DRAFT_CMD = "leaderDraft";
+        public static final String LORENZO_MEDICI_CMD = "LorenzoDeMedici";
+        public static final String LORENZO_MONTEFELTRO_CMD = "LorenzoDaMontefeltro";
+        public static final String EXCOMMUNICATION_CMD = "excommunication";
+        public static final String CHOOSE_FAVOR_CMD = "askForCouncilFavor";
+        public static final String OPTIONAL_BP_PICK_CMD = "purpleCardPayment";
+        public static final String CHOOSE_PRODUCTION_CMD = "chooseProduction";
+        public static final String SERVANTS_PRODUCTION_CMD = "servantsProduction";
+        public static final String SERVANTS_HARVEST_CMD = "servantsHarvest";
+        public static final String PICK_FROM_TOWER_CMD = "pickFromTower";
 
         /**
          * Command description
          */
         static final String CHAT_DESCR = "Broadcast a message to all client in your room";
         static final String TURN_DESCR = "Show the round order in this turn";
-        static final String INFO_DESCR = "Show the personal information of a specific player";
         static final String CARD_DESCR = "Show information about a specific card";
         static final String BOARD_DESCR = "Show the game board";
         static final String ALL_PLAYER_INFO_DESCR = "Show the personal board of all board";

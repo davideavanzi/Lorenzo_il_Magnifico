@@ -158,7 +158,7 @@ public class SocketClient implements Runnable, ServerInterface {
     @Override
     public void sendFamilyMemberColorForLorenzoMontefeltro(String familiarColor) throws ClientNetworkException {
         try {
-            sendObjToServer(new Object[] {LORENZO_MONTEFELTRO, familiarColor});
+            sendObjToServer(new Object[] {LUDOVICO_MONTEFELTRO, familiarColor});
         } catch (IOException e) {
             throw new ClientNetworkException("[SOCKET]: Could not send the color of the familiar to boost to server", e);
         }
@@ -194,7 +194,7 @@ public class SocketClient implements Runnable, ServerInterface {
     @Override
     public void leaderCardDeploy(int id) throws ClientNetworkException {
         try {
-            sendObjToServer(new Object[] {CHOOSE_LEADER_DRAFT, id});
+            sendObjToServer(new Object[] {DEPLOY_LEADER, id});
         } catch (IOException e) {
             throw new ClientNetworkException("[SOCKET]: Could not send deploy leader card request to server", e);
         }
@@ -203,7 +203,7 @@ public class SocketClient implements Runnable, ServerInterface {
     @Override
     public void leaderCardDiscard(int id) throws ClientNetworkException {
         try {
-            sendObjToServer(new Object[] {CHOOSE_LEADER_DRAFT, id});
+            sendObjToServer(new Object[] {DISCARD_LEADER, id});
         } catch (IOException e) {
             throw new ClientNetworkException("[SOCKET]: Could not send discard leader card request to server", e);
         }

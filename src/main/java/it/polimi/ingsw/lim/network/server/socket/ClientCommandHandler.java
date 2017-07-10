@@ -82,12 +82,12 @@ class ClientCommandHandler {
                 } catch (BadRequestException e) {
                     handlerCallback.commandValidator(LORENZO_MEDICI, e.getMessage(), false);
                 }
-            } else if (commandID.equals(LORENZO_MONTEFELTRO)) {
+            } else if (commandID.equals(LUDOVICO_MONTEFELTRO)) {
                 try {
                     gameController.applyLeaderFmBonus((String)command[1], handlerCallback.getUser());
-                    handlerCallback.commandValidator(LORENZO_MONTEFELTRO, LORENZO_MONTEFELTRO_OK, true);
+                    handlerCallback.commandValidator(LUDOVICO_MONTEFELTRO, LUDOVICO_MONTEFELTRO_OK, true);
                 } catch (BadRequestException e) {
-                    handlerCallback.commandValidator(LORENZO_MONTEFELTRO, e.getMessage(), false);
+                    handlerCallback.commandValidator(LUDOVICO_MONTEFELTRO, e.getMessage(), false);
                 }
             } else if (commandID.equals(ACTIVATE_LEADER)) {
                 try {
@@ -152,12 +152,6 @@ class ClientCommandHandler {
                 } catch (BadRequestException e) {
                     handlerCallback.commandValidator(PICK_FROM_TOWER, e.getMessage(), false);
                 }
-            } else if (commandID.equals(ACTIVATE_LEADER)) {
-
-            } else if (commandID.equals(DEPLOY_LEADER)) {
-
-            } else if (commandID.equals(DISCARD_LEADER)) {
-
             } else {
                 getLog().log(Level.SEVERE, () ->"[COMMAND_HANDLER]: Invalid message identifier: "+commandID);
             }

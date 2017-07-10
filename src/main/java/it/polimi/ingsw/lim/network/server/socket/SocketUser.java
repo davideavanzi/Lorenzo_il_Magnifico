@@ -121,7 +121,7 @@ public class SocketUser extends User {
 
     @Override
     public void notifyGameStart() {
-        this.sch.sendNoficationStartGame();
+        this.sch.sendNotificationStartGame();
     }
 }
 

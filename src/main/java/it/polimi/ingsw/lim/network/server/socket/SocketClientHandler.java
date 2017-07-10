@@ -70,7 +70,7 @@ public class SocketClientHandler implements Runnable {
 
 
     void endGameNotification(ArrayList<Player> scoreboard) {
-        sendObjectToClient(new Object[] {END_GAME});
+        sendObjectToClient(new Object[] {END_GAME, scoreboard});
 
     }
 
@@ -89,7 +89,7 @@ public class SocketClientHandler implements Runnable {
     }
 
     void sendClientFmToBoost() {
-        sendObjectToClient(new Object[] {LORENZO_MONTEFELTRO});
+        sendObjectToClient(new Object[] {LUDOVICO_MONTEFELTRO});
 
     }
 
@@ -189,7 +189,7 @@ public class SocketClientHandler implements Runnable {
     /**
      * Notify the player that the game is started.
      */
-    void sendNoficationStartGame() {
+    void sendNotificationStartGame() {
         sendObjectToClient(new Object[] {START_GAME});
     }
 

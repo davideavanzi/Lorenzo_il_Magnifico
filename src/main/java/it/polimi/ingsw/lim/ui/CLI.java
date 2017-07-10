@@ -3,7 +3,6 @@ package it.polimi.ingsw.lim.ui;
 import com.diogonunes.jcdp.color.ColoredPrinter;
 import com.diogonunes.jcdp.color.api.Ansi;
 import com.vdurmont.emoji.EmojiParser;
-import it.polimi.ingsw.lim.exceptions.ClientNetworkException;
 import it.polimi.ingsw.lim.model.leaders.LeaderCard;
 import it.polimi.ingsw.lim.model.leaders.Leaders;
 import it.polimi.ingsw.lim.utils.Lock;
@@ -242,7 +241,7 @@ public class CLI extends AbsUI {
         do {
             waitForIntInput();
         } while (!(inputNum.equals(1) || inputNum.equals(2)));
-        availableCmdList.remove(OPTIONAL_BP_PICK);
+        availableCmdList.remove(OPTIONAL_BP_PICK_CMD);
         uiCallback.sendOptionalBpPick(inputNum.equals(1));
         lock.unlock();
     }
@@ -260,7 +259,7 @@ public class CLI extends AbsUI {
             waitForIntInput();
             favorChoice.add(inputNum);
         } while (count < uiCallback.getTmpVar().getFavorAmount() && inputNum >= 0);
-        availableCmdList.remove(CHOOSE_FAVOR);
+        availableCmdList.remove(CHOOSE_FAVOR_CMD);
         uiCallback.sendFavorChoice(favorChoice);
         lock.unlock();
     }
@@ -274,7 +273,7 @@ public class CLI extends AbsUI {
         do {
             waitForIntInput();
         } while (!(inputNum.equals(1) || inputNum.equals(2)));
-        availableCmdList.remove(EXCOMMUNICATION);
+        availableCmdList.remove(EXCOMMUNICATION_CMD);
         uiCallback.sendExcommunicationChoice(inputNum.equals(1));
         lock.unlock();
     }
@@ -292,7 +291,7 @@ public class CLI extends AbsUI {
         do {
             waitForIntInput();
         } while (inputNum-1 <= 0 || inputNum-1 > uiCallback.getPlayer(uiCallback.getUsername()).getFamilyMembers().size()-1);
-        availableCmdList.remove(LORENZO_MONTEFELTRO);
+        availableCmdList.remove(LORENZO_MONTEFELTRO_CMD);
         uiCallback.sendFamilyMemberColor(uiCallback.getPlayer(uiCallback.getUsername()).getFamilyMembers().get(inputNum-1).getDiceColor());
     }
 
@@ -309,7 +308,7 @@ public class CLI extends AbsUI {
         do {
             waitForIntInput();
         } while (inputNum-1 <= 0 || inputNum-1 > uiCallback.getTmpVar().getCopyableLeaders().size()-1);
-        availableCmdList.remove(LORENZO_MEDICI);
+        availableCmdList.remove(LORENZO_MEDICI_CMD);
         uiCallback.sendCopyLeader(inputNum-1);
     }
 
@@ -323,7 +322,7 @@ public class CLI extends AbsUI {
         do {
             waitForIntInput();
         } while (inputNum-1 <= 0 || inputNum-1 > 3);
-        availableCmdList.remove(CHOOSE_LEADER_DRAFT);
+        availableCmdList.remove(CHOOSE_LEADER_DRAFT_CMD);
         uiCallback.sendDraftToServer(inputNum-1);
     }
 
@@ -455,7 +454,7 @@ public class CLI extends AbsUI {
      * Create place family member packet and send it to the server.
      */
     private void placeFamilyMember() {
-        availableCmdList.remove(FAMILY_MEMBER);
+        availableCmdList.remove(FAMILY_MEMBER_CMD);
         uiCallback.sendPlaceFM(fmColor(), fmDestination(), fmServant());
         lock.unlock();
     }
@@ -592,7 +591,8 @@ public class CLI extends AbsUI {
      * Print the available command.
      */
     private void printCmd() {
-        availableCmdList.keySet().forEach(command -> System.out.printf("%-30s%s%n", ("-> ~ ").concat(command), ("- ").concat(cmdDescr.get(command))));
+        availableCmdList.keySet().forEach(command -> System.out.printf("%-30s%s%n", ("-> ~ ")
+                .concat(command), ("- ").concat(cmdDescr.get(command))));
         printMessage("");
     }
 
@@ -604,13 +604,11 @@ public class CLI extends AbsUI {
     public void notifyStartRound(boolean isMyTurn) {
         if (isMyTurn) {
             printTurnSplitter();
-            availableCmdList.put(FAMILY_MEMBER, cmdList.get(FAMILY_MEMBER));
-            availableCmdList.put(LEADER_CARD, cmdList.get(LEADER_CARD));
-            printCmd();
+            availableCmdList.put(FAMILY_MEMBER_CMD, cmdList.get(FAMILY_MEMBER_CMD));
+            availableCmdList.put(LEADER_CARD_CMD, cmdList.get(LEADER_CARD_CMD));
         } else {
-            commandRemover(FAMILY_MEMBER);
-            commandRemover(LEADER_CARD);
-            commandRemover(CHOOSE_LEADER_DRAFT);
+            commandRemover(FAMILY_MEMBER_CMD);
+            commandRemover(LEADER_CARD_CMD);
         }
     }
 
@@ -620,6 +618,7 @@ public class CLI extends AbsUI {
     @Override
     public void printGameBoard() {
         printBoard();
+        printCmd();
     }
 
     /**
@@ -627,11 +626,10 @@ public class CLI extends AbsUI {
      */
     @Override
     public void notifyStartGame () {
-        availableCmdList.put(TURN, cmdList.get(TURN));
-        availableCmdList.put(INFO, cmdList.get(INFO));
-        availableCmdList.put(CARD, cmdList.get(CARD));
-        availableCmdList.put(BOARD, cmdList.get(BOARD));
-        availableCmdList.put(ALL_PLAYER_INFO, cmdList.get(ALL_PLAYER_INFO));
+        availableCmdList.put(TURN_CMD, cmdList.get(TURN_CMD));
+        availableCmdList.put(CARD_CMD, cmdList.get(CARD_CMD));
+        availableCmdList.put(BOARD_CMD, cmdList.get(BOARD_CMD));
+        availableCmdList.put(ALL_PLAYER_INFO_CMD, cmdList.get(ALL_PLAYER_INFO_CMD));
     }
 
     /**
@@ -656,49 +654,47 @@ public class CLI extends AbsUI {
      * Populate the Command HashMap.
      */
     private void initializeCmdList() {
-        cmdList.put(CHAT, () -> chat());
-        cmdList.put(TURN, () -> turnOrder());
-        cmdList.put(INFO, () -> showPersonalInfo());
-        cmdList.put(CARD, () -> showCard());
-        cmdList.put(BOARD, () -> printBoard());
-        cmdList.put(ALL_PLAYER_INFO, () -> printPlayerBoard());
-        cmdList.put(FAMILY_MEMBER, () -> placeFamilyMember());
-        cmdList.put(LEADER_CARD, () -> leaderCardManager());
-        cmdList.put(CHOOSE_LEADER_DRAFT, () -> leaderCardDraft());
-        cmdList.put(LORENZO_MEDICI, () -> askPlayerLeaderToCopy());
-        cmdList.put(LORENZO_MONTEFELTRO, () -> askPlayerFmTohBoost());
-        cmdList.put(EXCOMMUNICATION, () -> askForExcommunication());
-        cmdList.put(CHOOSE_FAVOR, () -> askForFavor());
-        cmdList.put(OPTIONAL_BP_PICK, () -> askForOptionalBpPick());
-        cmdList.put(CHOOSE_PRODUCTION, () -> askForProductionOptions());
-        cmdList.put(SERVANTS_PRODUCTION, () -> askForFastProduction());
-        cmdList.put(SERVANTS_HARVEST, () -> askForFastHarvest());
-        cmdList.put(PICK_FROM_TOWER, () -> askForFastTowerMove());
+        cmdList.put(CHAT_CMD, () -> chat());
+        cmdList.put(TURN_CMD, () -> turnOrder());
+        cmdList.put(CARD_CMD, () -> showCard());
+        cmdList.put(BOARD_CMD, () -> printBoard());
+        cmdList.put(ALL_PLAYER_INFO_CMD, () -> printPlayerBoard());
+        cmdList.put(FAMILY_MEMBER_CMD, () -> placeFamilyMember());
+        cmdList.put(LEADER_CARD_CMD, () -> leaderCardManager());
+        cmdList.put(CHOOSE_LEADER_DRAFT_CMD, () -> leaderCardDraft());
+        cmdList.put(LORENZO_MEDICI_CMD, () -> askPlayerLeaderToCopy());
+        cmdList.put(LORENZO_MONTEFELTRO_CMD, () -> askPlayerFmTohBoost());
+        cmdList.put(EXCOMMUNICATION_CMD, () -> askForExcommunication());
+        cmdList.put(CHOOSE_FAVOR_CMD, () -> askForFavor());
+        cmdList.put(OPTIONAL_BP_PICK_CMD, () -> askForOptionalBpPick());
+        cmdList.put(CHOOSE_PRODUCTION_CMD, () -> askForProductionOptions());
+        cmdList.put(SERVANTS_PRODUCTION_CMD, () -> askForFastProduction());
+        cmdList.put(SERVANTS_HARVEST_CMD, () -> askForFastHarvest());
+        cmdList.put(PICK_FROM_TOWER_CMD, () -> askForFastTowerMove());
     }
 
     /**
      * Populate the Description HashMap.
      */
     private void initializeCmdDescr() {
-        cmdDescr.put(CHAT, CHAT_DESCR);
-        cmdDescr.put(TURN, TURN_DESCR);
-        cmdDescr.put(INFO, INFO_DESCR);
-        cmdDescr.put(CARD, CARD_DESCR);
-        cmdDescr.put(BOARD, BOARD_DESCR);
-        cmdDescr.put(ALL_PLAYER_INFO, ALL_PLAYER_INFO_DESCR);
-        cmdDescr.put(FAMILY_MEMBER, FAMILY_MEMBER_DESCR);
-        cmdDescr.put(LEADER_CARD, LEADER_CARD_DESCR);
-        cmdDescr.put(CHOOSE_LEADER_DRAFT, CHOOSE_LEADER_DRAFT_DESCR);
-        cmdDescr.put(PRINT_LEADER_CARD, PRINT_LEADER_CARD_DESCR);
-        cmdDescr.put(LORENZO_MEDICI, LORENZO_MEDICI_DESCR);
-        cmdDescr.put(LORENZO_MONTEFELTRO, LORENZO_MONTEFELTRO_DESCR);
-        cmdDescr.put(EXCOMMUNICATION, EXCOMMUNICATION_DESCR);
-        cmdDescr.put(CHOOSE_FAVOR, CHOOSE_FAVOR_DESCR);
-        cmdDescr.put(OPTIONAL_BP_PICK, OPTIONAL_BP_PICK_DESCR);
-        cmdDescr.put(CHOOSE_PRODUCTION, CHOOSE_PRODUCTION_DESCR);
-        cmdDescr.put(SERVANTS_PRODUCTION, SERVANTS_PRODUCTION_DESCR);
-        cmdDescr.put(SERVANTS_HARVEST, SERVANTS_HARVEST_DESCR);
-        cmdDescr.put(PICK_FROM_TOWER, PICK_FROM_TOWER_DESCR);
+        cmdDescr.put(CHAT_CMD, CHAT_DESCR);
+        cmdDescr.put(TURN_CMD, TURN_DESCR);
+        cmdDescr.put(CARD_CMD, CARD_DESCR);
+        cmdDescr.put(BOARD_CMD, BOARD_DESCR);
+        cmdDescr.put(ALL_PLAYER_INFO_CMD, ALL_PLAYER_INFO_DESCR);
+        cmdDescr.put(FAMILY_MEMBER_CMD, FAMILY_MEMBER_DESCR);
+        cmdDescr.put(LEADER_CARD_CMD, LEADER_CARD_DESCR);
+        cmdDescr.put(CHOOSE_LEADER_DRAFT_CMD, CHOOSE_LEADER_DRAFT_DESCR);
+        cmdDescr.put(PRINT_LEADER_CARD_CMD, PRINT_LEADER_CARD_DESCR);
+        cmdDescr.put(LORENZO_MEDICI_CMD, LORENZO_MEDICI_DESCR);
+        cmdDescr.put(LORENZO_MONTEFELTRO_CMD, LORENZO_MONTEFELTRO_DESCR);
+        cmdDescr.put(EXCOMMUNICATION_CMD, EXCOMMUNICATION_DESCR);
+        cmdDescr.put(CHOOSE_FAVOR_CMD, CHOOSE_FAVOR_DESCR);
+        cmdDescr.put(OPTIONAL_BP_PICK_CMD, OPTIONAL_BP_PICK_DESCR);
+        cmdDescr.put(CHOOSE_PRODUCTION_CMD, CHOOSE_PRODUCTION_DESCR);
+        cmdDescr.put(SERVANTS_PRODUCTION_CMD, SERVANTS_PRODUCTION_DESCR);
+        cmdDescr.put(SERVANTS_HARVEST_CMD, SERVANTS_HARVEST_DESCR);
+        cmdDescr.put(PICK_FROM_TOWER_CMD, PICK_FROM_TOWER_DESCR);
     }
 
     private void initializeCommandLine() {
@@ -708,7 +704,7 @@ public class CLI extends AbsUI {
 
         initializeCmdDescr();
         initializeCmdList();
-        availableCmdList.put(CHAT, cmdList.get(CHAT));
+        availableCmdList.put(CHAT_CMD, cmdList.get(CHAT_CMD));
     }
 
     /**
@@ -721,15 +717,7 @@ public class CLI extends AbsUI {
         printMessage("Enter a username: ");
         loginInfo[0] = userInput.nextLine().trim();
         printMessage("Enter a password: ");
-        Console console;
-        char[] passwd;
-        if((console = System.console()) != null) {
-            if ((passwd = console.readPassword()) != null) {
-                loginInfo[1] = String.valueOf(passwd);
-            }
-        } else {
-            loginInfo[1] = userInput.nextLine().trim();
-        }
+        loginInfo[1] = userInput.nextLine().trim();
         return loginInfo;
     }
 
@@ -771,6 +759,7 @@ public class CLI extends AbsUI {
                 "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~***" +
                 " IT'S YOUR TURN ***~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
     }
 
     @Override
