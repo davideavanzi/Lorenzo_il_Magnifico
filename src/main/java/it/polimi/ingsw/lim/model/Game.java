@@ -172,7 +172,7 @@ public class Game {
     public void setUpGame(Parser parsedGame) throws GameSetupException {
         getLog().info("[GAME SETUP BEGIN]");
         this.board.setAge(1);
-        this.board.setTurn(0); //it is updated by one as soon as the game starts.
+        this.board.setTurn(1); //it is updated by one as soon as the game starts.
         int playersNumber = this.players.size();
         if (playersNumber < 2 || playersNumber > 5)
             throw new GameSetupException("Wrong player number on game setup");

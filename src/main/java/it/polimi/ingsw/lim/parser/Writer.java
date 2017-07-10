@@ -1,9 +1,8 @@
 package it.polimi.ingsw.lim.parser;
 
-import it.polimi.ingsw.lim.utils.Log;
 import it.polimi.ingsw.lim.controller.Room;
 import it.polimi.ingsw.lim.model.Game;
-
+import it.polimi.ingsw.lim.utils.Log;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
 
@@ -33,7 +32,6 @@ public class Writer {
             mapper.writeValue(file, game);
         }catch (IOException e){
             Log.getLog().severe("[WRITER]:Unable to open or create game writer file "+id);
-            e.printStackTrace();
             return null;
         }
         return pathToWriterFile;
@@ -69,7 +67,6 @@ public class Writer {
             mapper.writeValue(file, room);
         }catch (IOException e){
             Log.getLog().severe("[WRITER]:Unable to open or create room writer file "+id);
-            e.printStackTrace();
         }
         return pathToWriterFile;
     }
@@ -85,7 +82,6 @@ public class Writer {
             room = mapper.readValue(file, Room.class);
         } catch (IOException e) {
             Log.getLog().severe("[READER]:Unable to open room writer file");
-            e.printStackTrace();
         }
         return room;
     }

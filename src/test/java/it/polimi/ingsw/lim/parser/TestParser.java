@@ -1,15 +1,15 @@
 package it.polimi.ingsw.lim.parser;
 
-import it.polimi.ingsw.lim.utils.Log;
 import it.polimi.ingsw.lim.exceptions.InvalidCardException;
 import it.polimi.ingsw.lim.exceptions.InvalidExcommunicationException;
 import it.polimi.ingsw.lim.exceptions.InvalidTimerException;
-import it.polimi.ingsw.lim.model.*;
+import it.polimi.ingsw.lim.model.Assets;
+import it.polimi.ingsw.lim.model.Strengths;
 import it.polimi.ingsw.lim.model.cards.*;
 import it.polimi.ingsw.lim.model.excommunications.*;
 import it.polimi.ingsw.lim.model.immediateEffects.*;
-import junit.framework.*;
-import org.junit.*;
+import it.polimi.ingsw.lim.utils.Log;
+import junit.framework.AssertionFailedError;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -183,39 +183,33 @@ public class TestParser{
                 testGreenCardParser(testParser);
                 getLog().info("GreenCardParser Tested");
             } catch (AssertionFailedError e) {
-                e.printStackTrace();
                 getLog().info("GreenCardNotEqual");
             }
             try {
                 testBlueCardParser(testParser);
                 getLog().info("BlueCardParser Tested");
             } catch (AssertionFailedError e) {
-                e.printStackTrace();
                 getLog().info("BlueCardNotEqual");
             }
             try {
                 testYellowCardParser(testParser);
                 getLog().info("YellowCardParser Tested");
             } catch (AssertionFailedError e) {
-                e.printStackTrace();
                 getLog().info("YellowCardNotEqual");
             }
             try {
                 testPurpleCardParser(testParser);
                 getLog().info("PurpleCardParser Tested");
             } catch (AssertionFailedError e) {
-                e.printStackTrace();
                 getLog().info("PurpleCardNotEqual");
             }
             try {
                 testBlackCardParser(testParser);
                 getLog().info("BlackCardParser Tested");
             } catch (AssertionFailedError e) {
-                e.printStackTrace();
                 getLog().info("BlackCardNotEqual");
             }
         } catch (InvalidCardException e) {
-            e.printStackTrace();
             getLog().info("InvalidCardException");
         }
     }
@@ -273,7 +267,6 @@ public class TestParser{
                 Log.getLog().info("***First age excomm equals***");
             }
             catch (AssertionFailedError e) {
-                e.printStackTrace();
                 getLog().info("firstAgeExcommunicationNotEqual");
             }
             try {
@@ -282,7 +275,6 @@ public class TestParser{
                 Log.getLog().info("***Second age excomm equals***");
             }
             catch (AssertionFailedError e) {
-                e.printStackTrace();
                 getLog().info("SecondAgeExcommunicationNotEqual");
             }
             try {
@@ -292,12 +284,10 @@ public class TestParser{
                 Log.getLog().info("***Third age excomm equals***");
             }
             catch (AssertionFailedError e) {
-                e.printStackTrace();
                 getLog().info("ThirdAgeExcommunicationNotEqual");
             }
         }
         catch (InvalidExcommunicationException e) {
-            e.printStackTrace();
             getLog().info("InvalidExcommunicationException");
         }
     }

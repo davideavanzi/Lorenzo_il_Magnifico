@@ -168,7 +168,7 @@ public class UIController {
      */
     void sendFastTowerMove (int servantsDeployed, String towerColor, int floor) {
         try {
-            clientProtocol.fastTowerMove(servantsDeployed, towerColor, floor);
+            clientProtocol.fastTowerMove(servantsDeployed, towerColor.toUpperCase(), floor);
         } catch (ClientNetworkException e) {
             clientUI.printError(e.getMessage());
         }
@@ -230,7 +230,7 @@ public class UIController {
      */
     void sendPlaceFM(String color, ArrayList<String> destination, String servants) {
         try {
-            clientProtocol.placeFM(color, destination, servants);
+            clientProtocol.placeFM(color.toUpperCase(), destination, servants);
         } catch (ClientNetworkException e) {
             clientUI.printError(e.getMessage());
         }
@@ -242,7 +242,7 @@ public class UIController {
      */
     void sendFamilyMemberColor(String fmColor) {
         try {
-            clientProtocol.sendFamilyMemberColorForLorenzoMontefeltro(fmColor);
+            clientProtocol.sendFamilyMemberColorForLorenzoMontefeltro(fmColor.toUpperCase());
         } catch (ClientNetworkException e) {
             clientUI.printError(e.getMessage());
         }

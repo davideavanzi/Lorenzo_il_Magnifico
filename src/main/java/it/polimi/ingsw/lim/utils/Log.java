@@ -29,7 +29,7 @@ public class Log {
             MyFormatter formatter = new MyFormatter();
             logFile.setFormatter(formatter);
         } catch (IOException ioe) {
-            ioe.printStackTrace();
+            Log.getLog().severe("IOE in creating log file");
         }
     }
 
