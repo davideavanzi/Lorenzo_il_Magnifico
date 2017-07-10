@@ -327,7 +327,7 @@ public class CLI extends AbsUI {
     }
 
     private void leaderCardManager() {
-        String[] list = new String[] {"Activate Leader Card, Discarded Leader Card, Deploy Leader Card"};
+        String[] list = new String[] {"Activate Leader Card", "Discarded Leader Card", "Deploy Leader Card"};
         int count = 1;
         printMessageln("What action would you like to do?");
         for (String move : list) {
@@ -336,7 +336,7 @@ public class CLI extends AbsUI {
         }
         do {
             waitForIntInput();
-        } while (inputNum-1 <= 0 || inputNum-1 > 2);
+        } while (inputNum < 0 || inputNum > 3);
         int actionChoice = inputNum;
         count = 1;
 
