@@ -595,6 +595,11 @@ public class GameController {
                 (game.getPlayers().stream().filter(player -> game.isNotExcommunicable(player))
                         .collect(Collectors.toList()));
         playersToExcomm.forEach(player -> game.excommunicatePlayer(player));
+        game.getPlayers().forEach(player -> {
+            int fp = player.getResources().getFaithPoints();
+            player.resetFaithPoints();
+            game.giveAssetsToPlayer(game.getBoard().getFaithTrack()[fp], player);
+            if (game.playerHasActiveLeader(14, player)) game.giveAssetsToPlayer(SISTOIV_CHURCH_BONUS, player);});
     }
 
     public void applyExcommunication(ArrayList<Player> toExcommunicate) {
