@@ -73,14 +73,12 @@ public class Market implements Serializable {
 
     @JsonIgnore
     public boolean isPositionAvailable(int position) {
-        return position > 0 && position < slots.length;
+        return position-1 >= 0 && position-1 < slots.length;
     }
 
     @JsonIgnore
     public boolean isPositionOccupied(int position){
-        if(this.slots[position-1] != null)
-            return true;
-        return false;
+        return (isPositionAvailable(position) && this.slots[position-1] != null);
     }
 
     public void clear(){

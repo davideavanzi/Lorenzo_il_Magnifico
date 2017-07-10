@@ -14,13 +14,17 @@ import static it.polimi.ingsw.lim.Settings.*;
 public class Strengths implements Serializable {
 
     /**
-     *
+     * Strength to perform a harvest action
      */
     private int harvestBonus;
     /**
-     *
+     * Strength to perform a production action
      */
     private int productionBonus;
+
+    /**
+     * Strengths to perform a tower action
+     */
     private HashMap<String, Integer> towerStrengths;
     /**
      *
@@ -90,7 +94,6 @@ public class Strengths implements Serializable {
 
     /**
      * This method adds two strengths. it adds only tower bonus if they are specified in the hashmap.
-     * TODO: HashMap has empty values or default zeros?
      * @param operand
      */
     public Strengths add(Strengths operand) {

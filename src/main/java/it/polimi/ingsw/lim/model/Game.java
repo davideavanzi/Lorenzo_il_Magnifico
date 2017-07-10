@@ -625,7 +625,7 @@ public class Game {
 
     public boolean isMarketMoveAllowed(FamilyMember fm, int position) {
         Market market = this.getBoard().getMarket();
-        return market.isPositionAvailable(position) && (market.isPositionOccupied(position) ||
+        return market.isPositionAvailable(position) || (market.isPositionOccupied(position) &&
                 playerHasActiveLeader(2, getPlayerFromColor(fm.getOwnerColor())));
     }
 
