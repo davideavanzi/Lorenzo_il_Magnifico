@@ -44,7 +44,6 @@ public class Market implements Serializable {
 
     public void addFamilyMember(FamilyMember fm, int position) {
         this.slots[position - 1] = fm;
-        System.out.println("ADDITION RESULT:" +this.slots[position-1].toString());
     }
 
     @JsonIgnore
