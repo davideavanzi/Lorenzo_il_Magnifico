@@ -3,6 +3,7 @@ package it.polimi.ingsw.lim.model;
 import it.polimi.ingsw.lim.controller.GameController;
 import it.polimi.ingsw.lim.exceptions.GameSetupException;
 import it.polimi.ingsw.lim.parser.Parser;
+import it.polimi.ingsw.lim.utils.Log;
 import junit.framework.AssertionFailedError;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +21,6 @@ import static org.junit.Assert.assertEquals;
  */
 public class TestGame {
     Game game;
-    GameController gameController;
 
     @Before
     public void createGame() {
@@ -183,11 +183,35 @@ public class TestGame {
         assertEquals(game.isTowerOccupied(GREEN_COLOR), true);
         assertEquals(game.getPlayer("nick1").getFamilyMembers().size(), 3);
         assertEquals(game.isTowerMoveAllowed("GREEN", 1, game.getPlayer("nick2").getFamilyMember("BLACK")), false);
+        assertEquals(game.getPlayer("nick1").getCardsOfColor("GREEN").size(), 1);
+
     }
 
     private void testFmInGame(){
         FamilyMember fm = game.getPlayer("nick1").getFamilyMember("BLACK");
         assertEquals((Integer)game.getFmStrength(fm), game.getBoard().getDice().get("BLACK"));
+        assertEquals(game.calcHarvestActionStr(game.getPlayer("nick1"), fm, 2, 0), game.getFmStrength(fm) + 2);
+        assertEquals(game.calcProductionActionStr(game.getPlayer("nick1"), fm, 3, 0), game.getFmStrength(fm) + 3);
+        assertEquals(game.servantsForTowerAction(game.getPlayer("nick1").getFamilyMember("NEUTRAL"), "GREEN", 4), -7);
+        assertEquals(game.servantsForCouncilAction(game.getPlayer("nick1").getFamilyMember("NEUTRAL")), -1);
+        assertEquals(game.servantsForFastTowerAction(4, "GREEN", 4, game.getPlayer("nick1")), -3);
+        assertEquals(game.servantsForHarvestAction(game.getPlayer("nick1"), game.getPlayer("nick1").getFamilyMember("NEUTRAL"), 0), -1);
+        assertEquals(game.servantsForMarketAction(game.getPlayer("nick1").getFamilyMember("NEUTRAL")), -1);
+        assertEquals(game.servantsForProductionAction(game.getPlayer("nick1"), game.getPlayer("nick1").getFamilyMember("NEUTRAL"), 0), -1);
+    }
+
+    private void testMarketMove(){
+        int prevServants = game.getPlayer("nick1").getResources().getServants();
+        game.marketMove(game.getPlayer("nick1").getFamilyMember("NEUTRAL"), 1, 1);
+        assertEquals(game.getPlayer("nick1").getResources().getServants(), (prevServants - 1));
+        assertEquals(game.isMarketMoveAllowed(game.getPlayer("nick1").getFamilyMember("BLACK"), 1), false);
+        assertEquals(game.isMarketMoveAllowed(game.getPlayer("nick1").getFamilyMember("BLACK"), 2), true);
+    }
+
+    private void testCouncilMove(){
+        int prevServants = game.getPlayer("nick2").getResources().getServants();
+        game.councilMove(game.getPlayer("nick2").getFamilyMember("NEUTRAL"), 1);
+        assertEquals(game.getPlayer("nick2").getResources().getServants(), (prevServants - 1));
     }
 
     @Test
@@ -208,6 +232,9 @@ public class TestGame {
         testExcommunicationInGame();
         testTowerMoveInGame();
         testFmInGame();
+        testMarketMove();
+        //testCouncilMove();
+        game.setUpTurn();
     }
 
 }
