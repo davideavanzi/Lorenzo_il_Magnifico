@@ -13,7 +13,6 @@ import it.polimi.ingsw.lim.model.excommunications.*;
 import it.polimi.ingsw.lim.model.immediateEffects.*;
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.Console;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -281,7 +280,7 @@ public class CLI extends AbsUI {
     /**
      * Ask the player what family members' value will be set to 6, independently to the dice.
      */
-    private void askPlayerFmTohBoost() {
+    private void askPlayerFmToBoost() {
         printMessageln("You have activate Lorenzo Da Monteferltro, please choose a family member to boost to value 6:");
         int count = 1;
         for(FamilyMember fm : uiCallback.getPlayer(uiCallback.getUsername()).getFamilyMembers()) {
@@ -323,6 +322,7 @@ public class CLI extends AbsUI {
             waitForIntInput();
         } while (inputNum-1 <= 0 || inputNum-1 > 3);
         availableCmdList.remove(CHOOSE_LEADER_DRAFT_CMD);
+        availableCmdList.remove(CHOOSE_LEADER_DRAFT_CMD);
         uiCallback.sendDraftToServer(inputNum-1);
     }
 
@@ -336,17 +336,18 @@ public class CLI extends AbsUI {
         }
         do {
             waitForIntInput();
-        } while (inputNum < 0 || inputNum > 3);
-        int actionChoice = inputNum;
+        } while (inputNum-1 <= 0 || inputNum-1 > 2);
+        userInput.nextLine();
+        int actionChoice = inputNum-1;
         count = 1;
 
         for (LeaderCard card : uiCallback.getPlayer(uiCallback.getUsername()).getLeaderCards()) {
-            printMessageln("ID: " + card.getLeaderCardId() + "Leader's Name: " + card.getCardName());
+            printMessageln("ID: " + card.getLeaderCardId() + "  Leader's Name: " + card.getCardName());
             count++;
         }
         do {
             waitForIntInput();
-        } while (inputNum-1 <= 0 || inputNum-1 > count);
+        } while (inputNum-1 <= 0);
         uiCallback.sendLeaderAction(actionChoice, inputNum-1);
     }
 
@@ -603,12 +604,13 @@ public class CLI extends AbsUI {
     @Override
     public void notifyStartRound(boolean isMyTurn) {
         if (isMyTurn) {
-            printTurnSplitter();
             availableCmdList.put(FAMILY_MEMBER_CMD, cmdList.get(FAMILY_MEMBER_CMD));
             availableCmdList.put(LEADER_CARD_CMD, cmdList.get(LEADER_CARD_CMD));
+
         } else {
             commandRemover(FAMILY_MEMBER_CMD);
             commandRemover(LEADER_CARD_CMD);
+            printCmd();
         }
     }
 
@@ -618,6 +620,7 @@ public class CLI extends AbsUI {
     @Override
     public void printGameBoard() {
         printBoard();
+        printTurnSplitter();
         printCmd();
     }
 
@@ -663,7 +666,7 @@ public class CLI extends AbsUI {
         cmdList.put(LEADER_CARD_CMD, () -> leaderCardManager());
         cmdList.put(CHOOSE_LEADER_DRAFT_CMD, () -> leaderCardDraft());
         cmdList.put(LORENZO_MEDICI_CMD, () -> askPlayerLeaderToCopy());
-        cmdList.put(LORENZO_MONTEFELTRO_CMD, () -> askPlayerFmTohBoost());
+        cmdList.put(LORENZO_MONTEFELTRO_CMD, () -> askPlayerFmToBoost());
         cmdList.put(EXCOMMUNICATION_CMD, () -> askForExcommunication());
         cmdList.put(CHOOSE_FAVOR_CMD, () -> askForFavor());
         cmdList.put(OPTIONAL_BP_PICK_CMD, () -> askForOptionalBpPick());
@@ -759,7 +762,7 @@ public class CLI extends AbsUI {
                 "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~***" +
                 " IT'S YOUR TURN ***~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-
+        System.out.println();
     }
 
     @Override

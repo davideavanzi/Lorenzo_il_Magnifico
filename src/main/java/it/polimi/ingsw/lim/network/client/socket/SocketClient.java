@@ -156,7 +156,7 @@ public class SocketClient implements Runnable, ServerInterface {
     }
 
     @Override
-    public void sendFamilyMemberColorForLorenzoMontefeltro(String familiarColor) throws ClientNetworkException {
+    public void sendFamilyMemberColor(String familiarColor) throws ClientNetworkException {
         try {
             sendObjToServer(new Object[] {"LUDOVICO MONTEFELTRO", familiarColor});
         } catch (IOException e) {

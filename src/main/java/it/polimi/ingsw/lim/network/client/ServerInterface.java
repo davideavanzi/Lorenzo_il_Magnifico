@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 public interface ServerInterface {
 
-    void sendFamilyMemberColorForLorenzoMontefeltro(String leaderIndex) throws ClientNetworkException;
+    void sendFamilyMemberColor(String leaderIndex) throws ClientNetworkException;
 
     void sendCopyLeaderForLorenzoMedici(int leaderIndex) throws ClientNetworkException;
 

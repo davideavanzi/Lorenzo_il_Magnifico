@@ -14,40 +14,40 @@ public class CommunicationConstants {
 
     public static final String CMD_VALIDATOR = "CMD_VALIDATOR";
     public static final String GAME_MSG = "GAME_MSG";
-    public static final String CHAT = "CHAT_CMD";
-    public static final String TURN = "TURN_CMD";
+    public static final String CHAT = "CHAT";
+    public static final String TURN = "TURN";
 
-    public static final String BOARD = "BOARD_CMD";
+    public static final String BOARD = "BOARD";
     public static final String PLAYERS = "PLAYERS";
 
-    public static final String FAMILY_MEMBER = "FAMILY_MEMBER_CMD";
+    public static final String FAMILY_MEMBER = "FAMILY_MEMBER";
     public static final String FAMILY_MEMBER_OK = "You have placed family member correctly on board";
 
-    public static final String LEADER_CARD = "LEADER_CARD_CMD";
+    public static final String LEADER_CARD = "LEADER_CARD";
     public static final String LEADER_CARD_OK = "You have completed a leader card action correctly";
 
     public static final String CHOOSE_LEADER_DRAFT = "CHOOSE_LEADER_DRAFT";
     public static final String CHOOSE_LEADER_DRAFT_OK = "You have take a leader card";
 
-    public static final String EXCOMMUNICATION = "EXCOMMUNICATION_CMD";
+    public static final String EXCOMMUNICATION = "EXCOMMUNICATION";
     public static final String EXCOMMUNICATION_OK = "You have been correctly excommunicated";
 
-    public static final String CHOOSE_FAVOR = "CHOOSE_FAVOR_CMD";
+    public static final String CHOOSE_FAVOR = "CHOOSE_FAVOR";
     public static final String CHOOSE_FAVOR_OK = "The council's favors have correctly chosen";
 
-    public static final String OPTIONAL_BP_PICK = "OPTIONAL_BP_PICK_CMD";
+    public static final String OPTIONAL_BP_PICK = "OPTIONAL_BP_PICK";
     public static final String OPTIONAL_BP_PICK_OK = "You have pay a purple card with battle point";
 
-    public static final String CHOOSE_PRODUCTION = "CHOOSE_PRODUCTION_CMD";
+    public static final String CHOOSE_PRODUCTION = "CHOOSE_PRODUCTION";
     public static final String CHOOSE_PRODUCTION_OK = "The production is started correctly";
 
-    public static final String SERVANTS_PRODUCTION = "SERVANTS_PRODUCTION_CMD";
+    public static final String SERVANTS_PRODUCTION = "SERVANTS_PRODUCTION";
     public static final String SERVANTS_PRODUCTION_OK = "The server has received your servants-production request correctly";
 
-    public static final String SERVANTS_HARVEST = "SERVANTS_HARVEST_CMD";
+    public static final String SERVANTS_HARVEST = "SERVANTS_HARVEST";
     public static final String SERVANTS_HARVEST_OK = "The server has received your servants-harvest request correctly";
 
-    public static final String PICK_FROM_TOWER = "PICK_FROM_TOWER_CMD";
+    public static final String PICK_FROM_TOWER = "PICK_FROM_TOWER";
     public static final String PICK_FROM_TOWER_OK = "The server has received your pick card from tower action correctly";
 
     public static final String END_GAME = "END_GAME";

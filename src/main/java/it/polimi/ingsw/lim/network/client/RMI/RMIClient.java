@@ -202,7 +202,7 @@ public class RMIClient implements RMIClientInterf, ServerInterface {
     }
 
     @Override
-    public void sendFamilyMemberColorForLorenzoMontefeltro(String fmColor) throws ClientNetworkException {
+    public void sendFamilyMemberColor(String fmColor) throws ClientNetworkException {
         try {
             rmiServer.familyMemberColorAbility(fmColor, uiCallback.getUsername(), this);
         } catch (RemoteException e) {

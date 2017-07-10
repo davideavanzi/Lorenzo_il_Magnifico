@@ -242,7 +242,7 @@ public class UIController {
      */
     void sendFamilyMemberColor(String fmColor) {
         try {
-            clientProtocol.sendFamilyMemberColorForLorenzoMontefeltro(fmColor.toUpperCase());
+            clientProtocol.sendFamilyMemberColor(fmColor.toUpperCase());
         } catch (ClientNetworkException e) {
             clientUI.printError(e.getMessage());
         }
