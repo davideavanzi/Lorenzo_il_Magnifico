@@ -2,10 +2,10 @@ package it.polimi.ingsw.lim;
 
 import it.polimi.ingsw.lim.controller.Room;
 import it.polimi.ingsw.lim.controller.User;
-import it.polimi.ingsw.lim.network.server.JDBC;
 import it.polimi.ingsw.lim.network.server.RMI.RMIServer;
 import it.polimi.ingsw.lim.network.server.socket.SocketServer;
 import it.polimi.ingsw.lim.parser.Writer;
+import it.polimi.ingsw.lim.utils.JDBC;
 import it.polimi.ingsw.lim.utils.Log;
 
 import java.io.File;
@@ -24,33 +24,8 @@ import static it.polimi.ingsw.lim.utils.Log.getLog;
 /**
  * This is the server command line interface.
  */
+@SuppressWarnings("SQUID.1166")
 public class MainServer {
-
-    /**
-     * Socket Server Port Number.
-     */
-    private int socketPort = 8989;
-
-    /**
-     * RMI Server Port Number.
-     */
-    private int RMIPort = 1099;
-
-    /**
-     * ArrayList of room.
-     */
-    private static ArrayList<Room> roomList;
-
-    /**
-     * Declaration of SocketServer and RMIServer class.
-     */
-    private SocketServer socketServer;
-
-    private RMIServer rmiServer;
-    /**
-     * User database.
-     */
-    private static JDBC jdbc;
 
     /**
      * ArrayList of room.
@@ -97,76 +72,6 @@ public class MainServer {
     public static JDBC getJDBC(){
         return jdbc;
     }
-
-    /**
-     * Create the userdata database.
-     */
-    private void createDB() {
-        try {
-            jdbc = new JDBC();
-        } catch (SQLException e){
-            getLog().severe("[SQL]: Some errors in SQL query ");
-        } catch (ClassNotFoundException e){
-            getLog().severe("[SQL]: Can't locate driver for SQLite ");
-        }
-    }
-
-    /**
-     * Reload saved game.
-     * In case the server crash you can reload all data and continue the match!
-     */
-    private void reloadSavedGame() {
-        System.out.println("[SERVER]: Please, enter 1 to reload saved server status, any other key will erase all the saved file.");
-        int decision;
-        try {
-            Scanner resume = new Scanner(System.in);
-            decision = resume.nextInt();
-        }
-        catch (InputMismatchException e){
-            decision = 0;
-        }
-        if (decision == 1) {
-        System.out.println("[SERVER]: Hello, do you want to restore previous saved game status? (yes/ otherwise no)");
-        Scanner scanner = new Scanner(System.in);
-        String decision = scanner.nextLine();
-        if (decision.equalsIgnoreCase("yes") || decision.equalsIgnoreCase("y")) {
-            try {
-                for (File file : new File(DUMPS_PATH+"room/").listFiles()) {
-                    if (file.getName().contains(".json")) {
-                        roomList.add(Writer.readerRoom(file));
-                        roomList.get(roomList.size()-1).getUsersList().forEach(user -> user.hasDied());
-                        Log.getLog().info("[SERVER]: importing room");
-                    }
-                }
-            } catch (NullPointerException e) {
-                Log.getLog().info("[SERVER]: No room file in dumps path");
-            }
-        } else {
-            try {
-                for (File file : new File(DUMPS_PATH+"room/").listFiles()) {
-                    if (file.getName().contains(".json")) {
-                        file.delete();
-                    }
-                }
-                for (File file : new File(DUMPS_PATH+"game/").listFiles()) {
-                    if (file.getName().contains(".json")) {
-                        file.delete();
-                    }
-                }
-            } catch (NullPointerException e) {
-                Log.getLog().info("[SERVER]: No room file in dumps path");
-            }
-        }
-    }
-
-    /**
-     * Getters.
-     * @return the user DB.
-     */
-    public static JDBC getJDBC(){
-        return jdbc;
-    }
-
 
     /**
      * @return the roomList's ArrayList.
@@ -234,6 +139,57 @@ public class MainServer {
     public static void main(String[] args) {
         MainServer server = new MainServer();
         server.startServer();
+    }
+
+    /**
+     * Create the userdata database.
+     */
+    private void createDB() {
+        try {
+            jdbc = new JDBC();
+        } catch (SQLException e){
+            getLog().severe("[SQL]: Some errors in SQL query ");
+        } catch (ClassNotFoundException e){
+            getLog().severe("[SQL]: Can't locate driver for SQLite ");
+        }
+    }
+
+    /**
+     * Reload saved game.
+     * In case the server crash you can reload all data and continue the match!
+     */
+    private void reloadSavedGame() {
+        System.out.println("[SERVER]: Hello, do you want to restore previous saved game status? (yes/ otherwise no)");
+        Scanner scanner = new Scanner(System.in);
+        String decision = scanner.nextLine();
+        if (decision.equalsIgnoreCase("yes") || decision.equalsIgnoreCase("y")) {
+            try {
+                for (File file : new File(DUMPS_PATH+"room/").listFiles()) {
+                    if (file.getName().contains(".json")) {
+                        roomList.add(Writer.readerRoom(file));
+                        roomList.get(roomList.size()-1).getUsersList().forEach(user -> user.hasDied());
+                        Log.getLog().info("[SERVER]: importing room");
+                    }
+                }
+            } catch (NullPointerException e) {
+                Log.getLog().info("[SERVER]: No room file in dumps path");
+            }
+        } else {
+            try {
+                for (File file : new File(DUMPS_PATH+"room/").listFiles()) {
+                    if (file.getName().contains(".json")) {
+                        file.delete();
+                    }
+                }
+                for (File file : new File(DUMPS_PATH+"game/").listFiles()) {
+                    if (file.getName().contains(".json")) {
+                        file.delete();
+                    }
+                }
+            } catch (NullPointerException e) {
+                Log.getLog().info("[SERVER]: No room file in dumps path");
+            }
+        }
     }
 
     /**

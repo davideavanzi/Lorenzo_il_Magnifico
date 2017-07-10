@@ -129,6 +129,7 @@ public class GameController {
      * @param roomCallback the room that the game controller belong to
      * @return true if the game is successfully restored false otherwise
      */
+    @SuppressWarnings("SQUID.1166")
     public boolean restartGame(Room roomCallback) {
         try {
             this.game = new Game();
@@ -659,4 +660,5 @@ public class GameController {
             return councilFavorsAccumulator;
         }
     }
+
 }

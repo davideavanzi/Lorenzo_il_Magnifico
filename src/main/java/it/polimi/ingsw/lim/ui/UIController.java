@@ -119,7 +119,6 @@ public class UIController {
      * @param board
      */
     public void updateBoard(Board board) {
-        System.out.println("BOARD RECEIVED!");
         localBoard = board;
         getClientUI().printGameBoard();
     }

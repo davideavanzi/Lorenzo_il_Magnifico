@@ -7,6 +7,7 @@ import it.polimi.ingsw.lim.ui.UIController;
 
 public class MainClient {
 
+    private MainClient(){}
     /**
      * This is the launcher of the Game.
      * @param args
@@ -29,7 +30,7 @@ public class MainClient {
                 "        )          (_/                                  (_/        (/            ",
                 Ansi.Attribute.BOLD, Ansi.FColor.YELLOW, Ansi.BColor.RED);
         cp.clear();
-        System.out.println();
+        cp.println("\n");
     }
 
 }

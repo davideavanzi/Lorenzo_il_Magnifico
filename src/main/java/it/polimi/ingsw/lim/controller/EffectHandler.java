@@ -1,10 +1,9 @@
 package it.polimi.ingsw.lim.controller;
 
 
-import it.polimi.ingsw.lim.model.*;
+import it.polimi.ingsw.lim.model.Game;
+import it.polimi.ingsw.lim.model.Player;
 import it.polimi.ingsw.lim.model.immediateEffects.*;
-
-import java.util.HashMap;
 
 /**
  * Created by ava on 15/06/17.
@@ -22,15 +21,12 @@ public class EffectHandler {
         recipient.gameMessage("You're about to activate an immediate Action effect from the card you picked.");
 
         if (effect.getStrength().getHarvestBonus() > 0) {
-            //Perform fast harvest action
             recipient.getRoom().getGameController()
                     .beginFastHarvest(effect.getStrength(),recipient);
         } else if (effect.getStrength().getProductionBonus() > 0) {
             recipient.getRoom().getGameController()
                     .beginFastProduction(effect.getStrength(),recipient);
         } else {
-            /* Parse possible target towers and send them to the gameController */
-            HashMap<String, Integer> targetTowers = new HashMap<>();
             recipient.getRoom().getGameController()
                     .beginFastTowerMove(effect.getStrength(), effect.getDiscount(), recipient);
         }

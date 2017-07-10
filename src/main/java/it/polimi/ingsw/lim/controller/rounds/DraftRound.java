@@ -2,6 +2,7 @@ package it.polimi.ingsw.lim.controller.rounds;
 
 import it.polimi.ingsw.lim.controller.Room;
 import it.polimi.ingsw.lim.controller.User;
+import it.polimi.ingsw.lim.exceptions.BadRequestException;
 import it.polimi.ingsw.lim.model.leaders.LeaderCard;
 import it.polimi.ingsw.lim.model.leaders.Leaders;
 
@@ -82,9 +83,10 @@ public class DraftRound implements Round, Runnable {
         });
     }
 
-    public void applyChoice(String username, int choice) {
+    public void applyChoice(String username, int choice) throws BadRequestException {
         if (chosenLeaders.get(username).size() < timerCounter)
             chosenLeaders.get(username).add(leaderQueue.get(username).remove(choice));
+        else throw new BadRequestException("Wrong leader draft choice!");
     }
 
     @Override

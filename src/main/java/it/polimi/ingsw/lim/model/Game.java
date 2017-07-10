@@ -540,7 +540,7 @@ public class Game {
         if (isPlayerServantsExcommunicated(actor))
             servantsDeployed /= 2;
         if (this.board.getProduction().size() >= PRODUCTION_DEFAULTSPACE_SIZE  &&
-                !playerHasActiveLeader(2, getPlayerFromColor(fm.getOwnerColor()))) baseStr -= PRODUCTION_STR_MALUS;
+                !playerHasActiveLeader(2, actor)) baseStr -= PRODUCTION_STR_MALUS;
         return baseStr+servantsDeployed+actor.getStrengths().getProductionBonus();
     }
 

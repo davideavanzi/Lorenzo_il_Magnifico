@@ -16,8 +16,9 @@ import static it.polimi.ingsw.lim.utils.Log.getLog;
 import static java.lang.Thread.sleep;
 
 /**
- *
+ * An user connected with rmi
  */
+@SuppressWarnings("SQUID.1166")
 public class RMIUser extends User {
     /**
      * rmi Client reference.
@@ -42,28 +43,13 @@ public class RMIUser extends User {
     }
 
     @JsonIgnore
-    public void setRci(RMIClientInterf rci) {
-        this.rci = rci;
-    }
-
-    @JsonIgnore
     public RMIClientInterf getRci() {
         return rci;
     }
 
-    /**
-     * Send end game notification to client.
-     * @param players scoreboard of the match
-     */
-    @Override
-    public void notifyEndGame(ArrayList<Player> players) {
-        if (!this.getIsAlive())
-            return;
-        try {
-            RMIServer.endGameNotification(players, this.rci);
-        } catch (RemoteException e) {
-            getLog().log(Level.SEVERE, "[RMI]: Remote error sending end game notification to client.");
-        }
+    @JsonIgnore
+    public void setRci(RMIClientInterf rci) {
+        this.rci = rci;
     }
 
     @Override
@@ -146,23 +132,13 @@ public class RMIUser extends User {
 
     @Override
     public void askLeaderDraft(ArrayList<Integer> leaderOptions) {
-        if (!this.getIsAlive())
-            return;
-        try {
-            RMIServer.sendToClientLeaderCardDraft(leaderOptions, this.rci);
-        } catch (RemoteException e) {
-            getLog().log(Level.SEVERE, "[RMI]: Remote error sending draft leader request to client.");
-        }
+        //todo implementare
     }
 
     @Override
     public void askFmToBoost(){
-        if (!this.getIsAlive()) return;
-        try {
-            RMIServer.sendClientFmToBoost(this.rci);
-        } catch (RemoteException e) {
-            getLog().log(Level.SEVERE, "[RMI]: Remote error sending \"Federico Da Montefeltro\" action request to client.");
-        }    }
+        //todo implementare
+    }
 
     @Override
     public void chooseLeaderToCopy(ArrayList<String> copyableLeaders) {
@@ -196,6 +172,11 @@ public class RMIUser extends User {
         }
     }
 
+    @Override
+    public void notifyEndGame(ArrayList<Player> players){
+        //todo implementare
+    }
+
     /**
      *
      * @param board the game board
@@ -212,10 +193,6 @@ public class RMIUser extends User {
         }
     }
 
-    /**
-     * Notify the client that the round is change.
-     * @param isPlaying if player's turn
-     */
     @JsonIgnore
     @Override
     public void isPlayerRound(boolean isPlaying) {
@@ -228,9 +205,6 @@ public class RMIUser extends User {
         }
     }
 
-    /**
-     * Notify the client that the game is started.
-     */
     @Override
     public void notifyGameStart() {
         try {
@@ -240,24 +214,17 @@ public class RMIUser extends User {
         }
     }
 
-    /**
-     * Check if the client is alive.
-     * @throws RemoteException
-     */
     private void ping() throws RemoteException {
       this.rci.isAlive();
     }
 
-    /**
-     * KeepAlive thread.
-     */
     private class RMIAliveness implements Runnable{
 
         private RMIUser user;
+
         RMIAliveness(RMIUser user) {
             this.user = user;
         }
-
         @Override
         public void run() {
             try {
@@ -266,7 +233,8 @@ public class RMIUser extends User {
                     user.ping();
                 }
             } catch (InterruptedException e) {
-                getLog().log(Level.SEVERE, () -> "[RMI]: Aliveness thread interrupted for user "+user.getUsername());
+                Thread.currentThread().interrupt();
+                getLog().log(Level.SEVERE, () -> "RMI Aliveness thread interrupted for user "+user.getUsername());
             } catch (RemoteException | NullPointerException e) {
                 user.hasDied();
             }

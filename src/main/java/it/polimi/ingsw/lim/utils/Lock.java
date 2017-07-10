@@ -15,6 +15,7 @@ public class Lock {
                 wait();
             }
         } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
             Log.getLog().log(Level.SEVERE, "Lock Error", e);
         }
         isLocked = true;
