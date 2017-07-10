@@ -145,6 +145,7 @@ public class Game {
 
     /**
      * This method adds a player to the game.
+     * @param nickname the nickname of the user
      */
     public Player addPlayer(String nickname) {
         String color = this.availablePlayerColors.remove(0);
@@ -155,6 +156,7 @@ public class Game {
 
     /**
      * This method sets up the game after it is created by the constructor.
+     * @param parsedGame the parsed game
      */
     public void setUpGame(Parser parsedGame) throws GameSetupException {
         getLog().info("[GAME SETUP BEGIN]");
@@ -190,10 +192,6 @@ public class Game {
             this.board.addExcommunication(parsedGame.getExcommunications().get(i)
                     .get(randomGenerator.nextInt(parsedGame.getExcommunications().get(i).size())));
         }
-        /*
-         * Distribute initial resources starting from the first player,
-         * the following will have a coin more than the player before them.
-         */
         getLog().log(Level.INFO, () -> "Giving initial resources to"+playersNumber+"players");
         int moreCoin = 0;
         for (Player pl : players) {
@@ -262,9 +260,10 @@ public class Game {
      * This method checks if a player is able to put a family member in a tower on a specified floor.
      * it checks if that floor is occupied, if there are others family members of that player in the tower and
      * if the player has enough strength to perform the action
-     * @param towerColor
-     * @param floorNumber
+     * @param towerColor the destination tower's color
+     * @param floorNumber the destination floor's number
      * @param fm the family member performing the action
+     * @return true if the moved is allowed by game rules
      */
     @JsonIgnore
     public boolean isTowerMoveAllowed(String towerColor, int floorNumber, FamilyMember fm) {
@@ -277,19 +276,13 @@ public class Game {
             if (slot != null && slot.getOwnerColor().equals(fm.getOwnerColor()) && !fm.getDiceColor().equals(NEUTRAL_COLOR))
                 return false;
         }
-        //TODO: useless? add servants in the count?
-        /*
-        if (destination.getActionCost() >
-                this.getFmStrength(fm) +
-                        getPlayerFromColor(fm.getOwnerColor()).getStrengths().getTowerStrength(towerColor))
-            return false; */
         return true;
     }
 
     /**
      * this method tells if a player (fot from it's family member) can take one more card
-     * @param fm
-     * @return
+     * @param fm the family member performing the action
+     * @return true if the user is able to pick the card under the game rules
      */
      private boolean canPickCard(String towerColor, FamilyMember fm) {
         Player pl = getPlayerFromColor(fm.getOwnerColor());
@@ -303,16 +296,15 @@ public class Game {
     /**
      * This method checks if a specified move into a tower is affordable by the player performing the move.
      * it also checks if is a purple card and has an optional cost to pick the card
-     * @param towerColor
-     * @param floorNumber
-     * @param fm
+     * @param towerColor the destination tower's color
+     * @param floorNumber the destination floor's number
+     * @param fm the family member performing the action
      * @return this.getPlayerFromColor(fm.getOwnerColor()
      */
     @JsonIgnore
     public boolean isTowerMoveAffordable(String towerColor, int floorNumber, FamilyMember fm) {
         Player pl = this.getPlayerFromColor(fm.getOwnerColor());
         Floor destination = this.getTower(towerColor).getFloor(floorNumber);
-        //Checking Costs
         Assets cardCost = destination.getCardSlot().getCost().subtractToZero
                         (pl.getPickDiscount(towerColor));
         Assets additionalCost = new Assets();
@@ -867,7 +859,7 @@ public class Game {
     }
 
     public boolean isLeaderDiscardable(int leaderId, Player pl) {
-        return (!pl.getLeaderById(leaderId).isDiscarded());
+        return (pl.getLeaderById(leaderId) != null && !pl.getLeaderById(leaderId).isDiscarded());
     }
 
     public ArrayList<String> getAllDeployedLeaders() {
