@@ -581,6 +581,8 @@ public class GameController {
     }
 
     ArrayList<Player> buildRanking() {
+        game.getPlayers().forEach(player -> game.calcEndGameBonus(player));
+        game.applyVpOnBpRank();
         HashMap<Player, Integer> playerWithPoints = new HashMap<>(game.getPlayers().stream().collect(
                 Collectors.toMap(player -> player, player -> player.getResources().getVictoryPoints())));
         ArrayList<Integer> orderPoints = new ArrayList<>(playerWithPoints.values());

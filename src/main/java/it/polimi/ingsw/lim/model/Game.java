@@ -728,7 +728,6 @@ public class Game {
             pl.getCardsOfColor(PURPLE_COLOR).forEach(card -> pl.setResources(
                     pl.getResources().add(((PurpleCard)card).getEndgameBonus())));
         }
-        applyVpOnBpRank();
         pl.setResources(pl.getResources().addVictoryPoints(pl.getResources().sumAll()/ENDGAME_VP_ASSETS_DIVIDER));
     }
 
